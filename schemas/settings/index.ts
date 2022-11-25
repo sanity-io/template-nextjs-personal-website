@@ -14,16 +14,16 @@ export default defineType({
   fields: [
     defineField({
       name: 'title',
-      description: 'This field is the title of your blog.',
+      description: 'This field is the title of your personal website.',
       title: 'Title',
       type: 'string',
       initialValue: demo.title,
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'description',
+      name: 'overview',
       description:
-        'Used both for the <meta> description tag for SEO, and the blog subheader.',
+        'Used both for the <meta> description tag for SEO, and the personal website subheader.',
       title: 'Descriprion',
       type: 'array',
       initialValue: demo.description,
