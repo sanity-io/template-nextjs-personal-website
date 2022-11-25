@@ -11,7 +11,7 @@ export const description = [
         _key: '4a58edd077880',
         _type: 'span',
         marks: [],
-        text: 'A statically generated blog example using ',
+        text: 'A statically generated personal blog example using ',
       },
       {
         _key: '4a58edd077881',
@@ -54,4 +54,5 @@ export const description = [
   },
 ]
 
-export const ogImageTitle = 'A Next.js Blog with a Native Authoring Experience'
+export const ogImageTitle =
+  'A Next.js Personal Blog with a Native Authoring Experience'
