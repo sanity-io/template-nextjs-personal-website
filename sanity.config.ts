@@ -15,7 +15,8 @@ import postType from 'schemas/post'
 import settingsType from 'schemas/settings'
 
 const title =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Blog with Sanity.io'
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
+  'Next.js Personal Website with Sanity.io'
 
 export default defineConfig({
   basePath: '/studio',

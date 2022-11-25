@@ -1,15 +1,15 @@
-# A Next.js Blog with a Native Authoring Experience<!-- omit in toc -->
+# A Next.js Personal Website with a Native Authoring Experience<!-- omit in toc -->
 
-This starter is a statically generated blog that uses [Next.js][nextjs] for the frontend and [Sanity][sanity-homepage] to handle its content. It comes with a native Sanity Studio that offers features like real-time collaboration, instant side-by-side content previews, and intuitive editing.
+This starter is a statically generated personal website that uses [Next.js][nextjs] for the frontend and [Sanity][sanity-homepage] to handle its content. It comes with a native Sanity Studio that offers features like real-time collaboration, instant side-by-side content previews, and intuitive editing.
 
-The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. You can use this starter to kick-start a blog or learn these technologies.
+The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. You can use this starter to kick-start a personal website or learn these technologies.
 
-[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
+[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy] - NEEDS TO BE UPDATED
 
 ## Features
 
-- A performant, static blog with editable posts, authors, and site settings
-- A native and customizable authoring environment, accessible on `yourblog.com/studio`
+- A performant, static personal personal website with editable projects, projects page details, about section and site settings
+- A native and customizable authoring environment, accessible on `yourpersonalwebsite.com/studio`
 - Real-time and collaborative content editing with fine-grained revision history
 - Side-by-side instant content preview that works across your whole site
 - Support for block content and the most advanced custom fields capability in the industry
@@ -30,15 +30,15 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
   - [Step 4. Deploy to production](#step-4-deploy-to-production)
 - [Questions and Answers](#questions-and-answers)
   - [It doesn't work! Where can I get help?](#it-doesnt-work-where-can-i-get-help)
-  - [How can I remove the "Next steps" block from my blog?](#how-can-i-remove-the-next-steps-block-from-my-blog)
+  - [How can I remove the "Next steps" block from my personal site?](#how-can-i-remove-the-next-steps-block-from-my-personal-site)
   - [How can I set up Incremental Static Revalidation?](#how-can-i-set-up-incremental-static-revalidation)
 - [Next steps](#next-steps)
 
 ## Project Overview
 
-| [Blog](https://nextjs-blog.sanity.build)                                                                       | [Studio](https://nextjs-blog.sanity.build/studio)                                                                       |
-| -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| ![Blog](https://user-images.githubusercontent.com/44635000/197511913-94ea36dd-099d-4dbf-b71f-3335879621c9.png) | ![Sanity Studio](https://user-images.githubusercontent.com/44635000/197511725-b2a2e2e5-287b-41a9-84c6-ec90d37ca480.png) |
+| [Personal Website](https://nextjs-blog.sanity.build)                                                                       | [Studio](https://nextjs-blog.sanity.build/studio)                                                                       |
+| -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| ![Personal Website](https://user-images.githubusercontent.com/44635000/197511913-94ea36dd-099d-4dbf-b71f-3335879621c9.png) | ![Sanity Studio](https://user-images.githubusercontent.com/44635000/197511725-b2a2e2e5-287b-41a9-84c6-ec90d37ca480.png) |
 
 ### Important files and folders
 
@@ -84,7 +84,7 @@ npm install && npm run dev
 
 When you run this development server, the changes you make in your frontend and studio configuration will be applied live using hot reloading.
 
-Your blog should be up and running on [http://localhost:3000][localhost-3000]! You can create and edit content on [http://localhost:3000/studio][localhost-3000-studio].
+Your personal website should be up and running on [http://localhost:3000][localhost-3000]! You can create and edit content on [http://localhost:3000/studio][localhost-3000-studio].
 
 ### Step 4. Deploy to production
 
@@ -112,7 +112,7 @@ In case of any issues or questions, you can post:
 - [Sanity's GitHub Discussions][sanity-github]
 - [Sanity's Community Slack][sanity-community]
 
-### How can I remove the "Next steps" block from my blog?
+### How can I remove the "Next steps" block from my personal website?
 
 You can remove it by deleting the `IntroTemplate` component in `/components/IndexPage.tsx`.
 
