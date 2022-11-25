@@ -11,6 +11,7 @@ import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import durationType from 'schemas/duration'
+import pageType from 'schemas/page'
 import projectType from 'schemas/project'
 import settingsType from 'schemas/settings'
 import timelineType from 'schemas/timeline'
@@ -26,7 +27,7 @@ export default defineConfig({
   title,
   schema: {
     // If you want more content types, you can add them to this array
-    types: [durationType, projectType, timelineType, settingsType],
+    types: [durationType, projectType, timelineType, settingsType, pageType],
   },
   plugins: [
     deskTool({
