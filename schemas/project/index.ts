@@ -1,8 +1,6 @@
 import { DocumentIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
-import { stringInfo } from './infoblocks/stringInfo'
-
 export default defineType({
   name: 'project',
   title: 'Project',
@@ -46,12 +44,6 @@ export default defineType({
         hotspot: true,
       },
     }),
-    {
-      title: 'Info block',
-      name: 'infoBlock',
-      type: 'array',
-      of: [stringInfo],
-    },
     defineField({
       name: 'description',
       description: 'Project description.',

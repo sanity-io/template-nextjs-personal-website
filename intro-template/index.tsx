@@ -8,7 +8,6 @@ import cover from './cover.png'
 
 export default memo(function IntroTemplate() {
   const [studioURL, setStudioURL] = useState(null)
-  const [createPostURL, setCreatePostURL] = useState(null)
   const [isLocalHost, setIsLocalhost] = useState(false)
 
   const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -18,17 +17,14 @@ export default memo(function IntroTemplate() {
     process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG
   const repoURL = `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}`
   const removeBlockURL = hasRepoEnvVars
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#how-can-i-remove-the-next-steps-block-from-my-blog`
-    : `https://github.com/sanity-io/nextjs-blog-cms-sanity-v3#how-can-i-remove-the-next-steps-block-from-my-blog`
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#how-can-i-remove-the-next-steps-block-from-my-app`
+    : `https://github.com/sanity-io/template-nextjs-clean#how-can-i-remove-the-next-steps-block-from-my-app`
 
   const [hasUTMtags, setHasUTMtags] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setStudioURL(`${window.location.origin}/studio`)
-      setCreatePostURL(
-        `${window.location.origin}/studio/intent/create/template=post;type=post/`
-      )
       setIsLocalhost(window.location.hostname === 'localhost')
       setHasUTMtags(window.location.search.includes('utm'))
     }
@@ -40,7 +36,7 @@ export default memo(function IntroTemplate() {
 
   return (
     <div className="flex justify-center border border-gray-200 bg-gray-50">
-      <div className="mt-20 mb-8 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32 ">
+      <div className="mt-20 mb-4 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32 ">
         <div className="self-center">
           <Image
             alt="An illustration of a browser window, a terminal window, the Sanity.io logo and the NextJS logo"
@@ -52,7 +48,7 @@ export default memo(function IntroTemplate() {
         </div>
 
         <div className="mx-6 md:mx-0 md:mr-24">
-          <h2 className="mb-8 text-xl font-bold tracking-wide md:text-5xl">
+          <h2 className="mb-5 text-xl font-bold tracking-wide md:text-5xl">
             Next steps
           </h2>
 
@@ -65,7 +61,7 @@ export default memo(function IntroTemplate() {
               <p>
                 <a
                   href={
-                    'https://github.com/sanity-io/nextjs-blog-cms-sanity-v3#step-2-set-up-the-project-locally'
+                    'https://github.com/sanity-io/template-nextjs-clean#step-2-set-up-the-project-locally'
                   }
                   className={`mx-1 underline hover:text-blue-800`}
                   target="_blank"
@@ -83,44 +79,14 @@ export default memo(function IntroTemplate() {
               element={
                 <div>
                   <div className="col-span-2 mt-1 mb-2 font-semibold">
-                    Create content with Sanity Studio
-                  </div>
-                  <div className="text-xs text-gray-700">
-                    Your Sanity Studio is deployed at
-                    <Link
-                      className="mx-1 underline hover:text-blue-800"
-                      href={studioURL}
-                    >
-                      {studioURL}
-                    </Link>
-                  </div>
-
-                  <div className="mt-3">
-                    <Link
-                      className="inline-flex rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-800"
-                      href={createPostURL}
-                    >
-                      Go to Sanity Studio
-                    </Link>
-                  </div>
-                </div>
-              }
-            />
-
-            <Box
-              circleTitle="2"
-              element={
-                <div>
-                  <div className="col-span-2 mt-1 mb-2 font-semibold">
-                    Modify and deploy the project
+                    Create a schema
                   </div>
 
                   {isLocalHost ? (
                     <div className="text-xs text-gray-700">
-                      Start editing your content structure by changing the post
-                      schema in
-                      <div className="w-fit bg-slate-200 px-2">
-                        <pre>schemas/post.ts</pre>
+                      Start editing your content structure in
+                      <div className="bg-slate-200 w-fit px-2">
+                        <pre>sanity.config.ts</pre>
                       </div>
                     </div>
                   ) : (
@@ -149,6 +115,35 @@ export default memo(function IntroTemplate() {
                       </div>
                     </>
                   )}
+                </div>
+              }
+            />
+
+            <Box
+              circleTitle="2"
+              element={
+                <div>
+                  <div className="col-span-2 mt-1 mb-2 font-semibold">
+                    Create content with Sanity Studio
+                  </div>
+                  <div className="text-xs text-gray-700">
+                    Your Sanity Studio is deployed at
+                    <Link
+                      className="mx-1 underline hover:text-blue-800"
+                      href={studioURL}
+                    >
+                      {studioURL}
+                    </Link>
+                  </div>
+
+                  <div className="mt-3">
+                    <Link
+                      className="inline-flex rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-800"
+                      href={studioURL}
+                    >
+                      Go to Sanity Studio
+                    </Link>
+                  </div>
                 </div>
               }
             />
@@ -203,7 +198,7 @@ function Box({
   return (
     <li className="mt-2 grid grid-flow-col grid-rows-1 place-content-start gap-3">
       <div className="row-span-3 select-none">
-        <div className="relative flex h-6 w-6 select-none items-center justify-center rounded-full bg-gray-200 p-4 text-center">
+        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center">
           {circleTitle}
         </div>
       </div>
