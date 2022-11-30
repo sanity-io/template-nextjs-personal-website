@@ -2,6 +2,8 @@ import 'tailwindcss/tailwind.css'
 
 import { IBM_Plex_Mono, Inter, PT_Serif } from '@next/font/google'
 
+import { Providers } from './providers'
+
 const serif = PT_Serif({
   variable: '--font-serif',
   style: ['normal', 'italic'],
@@ -30,7 +32,9 @@ export default function RootLayout({
       className={`${mono.variable} ${sans.variable} ${serif.variable}`}
     >
       <head />
-      <body className="bg-white text-black">{children}</body>
+      <body className="bg-white text-black dark:bg-black dark:text-white">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
