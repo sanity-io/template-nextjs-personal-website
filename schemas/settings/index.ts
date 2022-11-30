@@ -62,6 +62,19 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'showcaseProjects',
+      title: 'Show case projects',
+      description:
+        'These are the projects that will appear first on your landing page.',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'project' }],
+        },
+      ],
+    }),
+    defineField({
       name: 'footer',
       description:
         'This is a block of text that will be displayed at the bottom of the page.',
