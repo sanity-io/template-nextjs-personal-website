@@ -41,6 +41,8 @@ export default defineType({
     {
       title: 'Info block',
       name: 'infoBlock',
+      description:
+        'This field will allow you to add multiple different snappy information about your project',
       type: 'array',
       of: [blockInfo],
     },
