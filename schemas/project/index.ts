@@ -1,5 +1,5 @@
 import { DocumentIcon } from '@sanity/icons'
-import { defineField, defineType } from 'sanity'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 import { blockInfo } from './blockInfo'
 
@@ -44,7 +44,7 @@ export default defineType({
       description:
         'This field will allow you to add multiple different snappy information about your project',
       type: 'array',
-      of: [blockInfo],
+      of: [defineArrayMember(blockInfo)],
     },
     defineField({
       name: 'coverImage',

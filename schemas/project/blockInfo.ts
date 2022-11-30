@@ -3,7 +3,7 @@ import { defineField, defineType } from 'sanity'
 export const blockInfo = defineType({
   name: 'blockInfo',
   title: 'Object Info',
-  type: 'document',
+  type: 'object',
   // Uncomment below to have edits publish automatically as you type
   // liveEdit: true,
   fields: [
