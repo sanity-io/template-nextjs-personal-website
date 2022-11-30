@@ -1,6 +1,8 @@
 import { DocumentIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
+import { blockInfo } from './blockInfo'
+
 export default defineType({
   name: 'project',
   title: 'Project',
@@ -36,6 +38,12 @@ export default defineType({
       of: [{ type: 'block' }],
       validation: (rule) => rule.max(155).required(),
     }),
+    {
+      title: 'Info block',
+      name: 'infoBlock',
+      type: 'array',
+      of: [blockInfo],
+    },
     defineField({
       name: 'coverImage',
       title: 'Cover Image',
