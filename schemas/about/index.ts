@@ -52,15 +52,95 @@ export default defineType({
       validation: (rule) => rule.max(155).required(),
     }),
     defineField({
-      name: 'timelines',
-      title: 'Timelines',
-      description: 'Used for the header page.',
       type: 'array',
+      name: 'work',
+      title: 'Work Experience',
       of: [
-        {
-          type: 'reference',
-          to: [{ type: 'timeline' }],
-        },
+        defineArrayMember({
+          type: 'object',
+          name: 'event',
+          title: 'Event',
+          fields: [
+            defineField({
+              type: 'string',
+              name: 'title',
+              title: 'Title',
+            }),
+            defineField({
+              type: 'string',
+              name: 'description',
+              title: 'Description',
+            }),
+            defineField({
+              type: 'duration',
+              name: 'duration',
+              title: 'Duration',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              duration: 'duration',
+            },
+            prepare({ title, duration }) {
+              return {
+                title,
+                subtitle: [
+                  duration.start && new Date(duration.start).toISOString(),
+                  duration.end && new Date(duration.end).toISOString(),
+                ]
+                  .filter(Boolean)
+                  .join(' - '),
+              }
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      type: 'array',
+      name: 'educcation',
+      title: 'Education',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'event',
+          title: 'Event',
+          fields: [
+            defineField({
+              type: 'string',
+              name: 'title',
+              title: 'Title',
+            }),
+            defineField({
+              type: 'string',
+              name: 'description',
+              title: 'Description',
+            }),
+            defineField({
+              type: 'duration',
+              name: 'duration',
+              title: 'Duration',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              duration: 'duration',
+            },
+            prepare({ title, duration }) {
+              return {
+                title,
+                subtitle: [
+                  duration.start && new Date(duration.start).toISOString(),
+                  duration.end && new Date(duration.end).toISOString(),
+                ]
+                  .filter(Boolean)
+                  .join(' - '),
+              }
+            },
+          },
+        }),
       ],
     }),
   ],

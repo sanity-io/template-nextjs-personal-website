@@ -9,7 +9,7 @@ export const singletonPlugin = (types: string[]) => {
   return {
     name: 'singletonPlugin',
     document: {
-      // Hide 'Settings' from new document options
+      // Hide 'Menu, About and Landing Page and Settings' from new document options
       // https://user-images.githubusercontent.com/81981/195728798-e0c6cf7e-d442-4e58-af3a-8cd99d7fcc28.png
       newDocumentOptions: (prev, { creationContext }) => {
         if (creationContext.type === 'global') {
@@ -38,8 +38,8 @@ export const pageStructure = (
   typeDefArray: DocumentDefinition[]
 ): StructureResolver => {
   return (S) => {
-    // The `Settings` root list item
-
+    // Goes through all of the singletons that were provided and translates them into something the
+    // Desktool can understand
     const singletonItems = typeDefArray.map((typeDef) => {
       return S.listItem()
         .title(typeDef.title)

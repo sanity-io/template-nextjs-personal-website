@@ -2,8 +2,8 @@ import { CogIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
-  name: 'settings',
-  title: 'Landing Page and Site Settings',
+  name: 'landingpage',
+  title: 'Landing Page',
   type: 'document',
   icon: CogIcon,
   // Uncomment below to have edits publish automatically as you type
@@ -48,18 +48,6 @@ export default defineType({
         }),
       ],
       validation: (rule) => rule.max(155).required(),
-    }),
-    defineField({
-      name: 'navigation',
-      title: 'Navigation Items',
-      description: 'Used for the header page.',
-      type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{ type: 'page' }],
-        },
-      ],
     }),
     defineField({
       name: 'showcaseProjects',
