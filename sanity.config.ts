@@ -6,7 +6,7 @@ import { visionTool } from '@sanity/vision'
 import { apiVersion, dataset, previewSecretId, projectId } from 'lib/sanity.api'
 import { previewDocumentNode } from 'plugins/previewPane'
 import { productionUrl } from 'plugins/productionUrl'
-import { settingsStructure, singletonPlugin } from 'plugins/settings'
+import { pageStructure, singletonPlugin } from 'plugins/settings'
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
@@ -39,7 +39,7 @@ export default defineConfig({
   },
   plugins: [
     deskTool({
-      structure: settingsStructure([settingsType, aboutType]),
+      structure: pageStructure([settingsType, aboutType]),
       // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
       defaultDocumentNode: previewDocumentNode({ apiVersion, previewSecretId }),
     }),

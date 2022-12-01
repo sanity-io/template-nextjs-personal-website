@@ -32,9 +32,9 @@ export const singletonPlugin = (types: string[]) => {
   }
 }
 
-// The StructureResolver is how we're changing the DeskTool structure to linking to a single "Settings" document, instead of rendering "settings" in a list
-// like how "Post" and "Author" is handled.
-export const settingsStructure = (
+// The StructureResolver is how we're changing the DeskTool structure to linking to a single "About" document, instead of rendering "settings" in a list
+// like how "Projects" is handled.
+export const pageStructure = (
   typeDefArray: DocumentDefinition[]
 ): StructureResolver => {
   return (S) => {
