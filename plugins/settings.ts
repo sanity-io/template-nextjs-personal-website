@@ -39,6 +39,7 @@ export const settingsStructure = (
 ): StructureResolver => {
   return (S) => {
     // The `Settings` root list item
+
     const singletonItems = typeDefArray.map((typeDef) => {
       return S.listItem()
         .title(typeDef.title)
@@ -54,9 +55,7 @@ export const settingsStructure = (
     // The default root list items (except custom ones)
     const defaultListItems = S.documentTypeListItems().filter(
       (listItem) =>
-        !singletonItems.find(
-          (singleton) => singleton.getId() === listItem.getId()
-        )
+        !typeDefArray.find((singleton) => singleton.name === listItem.getId())
     )
 
     return S.list()
