@@ -28,12 +28,6 @@ export default defineType({
         defineArrayMember({
           type: 'block',
         }),
-        defineArrayMember({
-          type: 'reference',
-          name: 'timeline',
-          title: 'Embedded timeline',
-          to: [{ type: 'timeline' }],
-        }),
       ],
     }),
   ],

@@ -11,11 +11,10 @@ import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import aboutType from 'schemas/about'
-import durationType from 'schemas/duration'
+import durationType from 'schemas/components/duration'
 import pageType from 'schemas/page'
 import projectType from 'schemas/project'
 import settingsType from 'schemas/settings'
-import timelineType from 'schemas/timeline'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
@@ -28,14 +27,7 @@ export default defineConfig({
   title,
   schema: {
     // If you want more content types, you can add them to this array
-    types: [
-      durationType,
-      projectType,
-      timelineType,
-      settingsType,
-      aboutType,
-      pageType,
-    ],
+    types: [durationType, projectType, settingsType, aboutType, pageType],
   },
   plugins: [
     deskTool({
