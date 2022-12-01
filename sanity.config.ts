@@ -12,6 +12,7 @@ import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import aboutType from 'schemas/about'
 import durationType from 'schemas/components/duration'
+import menuType from 'schemas/menu'
 import pageType from 'schemas/page'
 import projectType from 'schemas/project'
 import settingsType from 'schemas/settings'
@@ -27,16 +28,23 @@ export default defineConfig({
   title,
   schema: {
     // If you want more content types, you can add them to this array
-    types: [durationType, projectType, settingsType, aboutType, pageType],
+    types: [
+      durationType,
+      projectType,
+      settingsType,
+      aboutType,
+      pageType,
+      menuType,
+    ],
   },
   plugins: [
     deskTool({
-      structure: pageStructure([settingsType, aboutType]),
+      structure: pageStructure([settingsType, menuType, aboutType]),
       // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
       defaultDocumentNode: previewDocumentNode({ apiVersion, previewSecretId }),
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    singletonPlugin([settingsType.name, aboutType.name]),
+    singletonPlugin([settingsType.name, menuType.name, aboutType.name]),
     // Add the "Open preview" action
     productionUrl({
       apiVersion,

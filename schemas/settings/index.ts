@@ -50,18 +50,6 @@ export default defineType({
       validation: (rule) => rule.max(155).required(),
     }),
     defineField({
-      name: 'navigation',
-      title: 'Navigation Items',
-      description: 'Used for the header page.',
-      type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{ type: 'page' }],
-        },
-      ],
-    }),
-    defineField({
       name: 'showcaseProjects',
       title: 'Show case projects',
       description:
