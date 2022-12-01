@@ -2,8 +2,8 @@ import { CogIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
-  name: 'settings',
-  title: 'Landing Page and Site Settings',
+  name: 'landingpage',
+  title: 'Landing Page',
   type: 'document',
   icon: CogIcon,
   // Uncomment below to have edits publish automatically as you type

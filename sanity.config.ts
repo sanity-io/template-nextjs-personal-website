@@ -15,7 +15,7 @@ import durationType from 'schemas/components/duration'
 import menuType from 'schemas/menu'
 import pageType from 'schemas/page'
 import projectType from 'schemas/project'
-import settingsType from 'schemas/settings'
+import landingpage from 'schemas/settings'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
@@ -31,7 +31,7 @@ export default defineConfig({
     types: [
       durationType,
       projectType,
-      settingsType,
+      landingpage,
       aboutType,
       pageType,
       menuType,
@@ -39,17 +39,17 @@ export default defineConfig({
   },
   plugins: [
     deskTool({
-      structure: pageStructure([settingsType, menuType, aboutType]),
+      structure: pageStructure([landingpage, menuType, aboutType]),
       // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
       defaultDocumentNode: previewDocumentNode({ apiVersion, previewSecretId }),
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    singletonPlugin([settingsType.name, menuType.name, aboutType.name]),
+    singletonPlugin([landingpage.name, menuType.name, aboutType.name]),
     // Add the "Open preview" action
     productionUrl({
       apiVersion,
       previewSecretId,
-      types: [settingsType.name],
+      types: [landingpage.name],
     }),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
