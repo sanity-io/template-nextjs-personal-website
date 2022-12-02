@@ -30,7 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const settings = await getSettings()
-  const menuItems = await getMenuItems()
+  const menu = await getMenuItems()
 
   return (
     <html
@@ -40,7 +40,7 @@ export default async function RootLayout({
       <head />
       <body className="bg-white text-black dark:bg-black dark:text-white">
         <Providers>
-          {/* <Navbar menuItems={menuItems} /> */}
+          {<Navbar menu={menu} />}
           {children}
 
           {/* <Footer footer={settings?.footer} /> */}
