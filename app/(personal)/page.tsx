@@ -1,28 +1,23 @@
 import IntroTemplate from 'intro-template'
 
-import { getAbout } from './about/queries'
 import { Header, Project } from './components'
 import { getSettings } from './queries'
 
 export default async function Page() {
-  const about = await getAbout()
   const settings = await getSettings()
   const projects = settings?.showcaseProjects
-  console.log(projects)
 
   return (
     <div>
-      <Header title={settings.title} />
-      <div>
-        {projects.map((project, key) => (
-          <Project
-            key={key}
-            title={project.title}
-            overview={project.overview}
-            coverImage={project.coverImage}
-          />
-        ))}
-      </div>
+      <Header title={settings.title} description={settings.overview} />
+      {projects && projects.length > 0 && (
+        <div className="mb-20 rounded-md border-2">
+          {projects.map((project, key) => (
+            <Project key={key} project={project} odd={key % 2} />
+          ))}
+        </div>
+      )}
+
       {/* <IntroTemplate /> */}
     </div>
   )

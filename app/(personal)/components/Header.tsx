@@ -13,9 +13,6 @@ export function Header(props: HeaderProps) {
       <div className="font-serif text-2xl text-gray-600">
         <PortableText value={props.description} />
       </div>
-      <div className="font-inter text-sm text-gray-600">
-        You can follow me on Twitter, Twitch, LinkedIn, and GitHub.
-      </div>
     </div>
   )
 }
