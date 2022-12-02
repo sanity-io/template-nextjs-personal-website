@@ -1,18 +1,52 @@
 import { PortableText } from '@portabletext/react'
-import { Page } from 'app/(personal)/queries'
+
+import { About } from './queries'
+import { TimelineItem } from './timeline-item/timeline-item'
 
 interface AboutProps {
-  page?: Page
+  about: About
 }
 
-export function AboutPage(props: AboutProps) {
-  const name = props.page?.title
-  const content = props.page?.content
+export function AboutPage({ about }: AboutProps) {
+  const { overview, education: educationList, work: workList } = about
 
   return (
-    <div className="m-16">
-      <div className="text-2xl font-extrabold">{name}</div>
-      {/* <PortableText value={content} /> */}
+    <div>
+      <div className="text-5xl font-extrabold">About</div>
+      <div className="w-3/5 font-serif text-xl text-gray-600">
+        <PortableText value={overview} />
+      </div>
+
+      <div className="flex pt-16">
+        {workList && (
+          <div className="flex-1">
+            <div className="text-l pb-5 font-bold">Work</div>
+            {workList.map((work, index) => (
+              <div key={index}>
+                <TimelineItem
+                  item={work}
+                  isLast={workList.length - 1 === index}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {educationList && (
+          <div className="flex-1">
+            <div className="text-l pb-5 font-bold">Education</div>
+            {educationList &&
+              educationList.map((education, index) => (
+                <div key={index}>
+                  <TimelineItem
+                    item={education}
+                    isLast={educationList.length - 1 === index}
+                  />
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -99,7 +99,7 @@ export default defineType({
     }),
     defineField({
       type: 'array',
-      name: 'educcation',
+      name: 'education',
       title: 'Education',
       of: [
         defineArrayMember({
