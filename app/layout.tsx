@@ -2,7 +2,10 @@ import 'tailwindcss/tailwind.css'
 
 import { IBM_Plex_Mono, Inter, PT_Serif } from '@next/font/google'
 
+import { getAbout } from './about/queries'
+import { Footer, Navbar } from './components'
 import { Providers } from './providers'
+import { getMenuItems, getPages, getSettings } from './queries'
 
 const serif = PT_Serif({
   variable: '--font-serif',
@@ -21,11 +24,14 @@ const mono = IBM_Plex_Mono({
   weight: ['500', '700'],
 })
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const settings = await getSettings()
+  const menuItems = await getMenuItems()
+
   return (
     <html
       lang="en"
@@ -33,7 +39,12 @@ export default function RootLayout({
     >
       <head />
       <body className="bg-white text-black dark:bg-black dark:text-white">
-        <Providers>{children}</Providers>
+        <Providers>
+          {/* <Navbar menuItems={menuItems} /> */}
+          {children}
+
+          {/* <Footer footer={settings?.footer} /> */}
+        </Providers>
       </body>
     </html>
   )

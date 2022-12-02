@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { PreviewSuspense } from '../../components/PreviewSuspense'
 import { AboutPage } from '../AboutPage'
-import { getAbout } from '../queries'
+import { getAbout, getPageBySlug } from '../queries'
 import { AboutPagePreview } from './AboutPagePreview'
 
 export default async function Preview() {
@@ -13,9 +13,9 @@ export default async function Preview() {
   }
 
   const token = previewData().token || null
-  const about = getAbout(token)
+  const about = getPageBySlug('about')
   return (
-    <PreviewSuspense fallback={<AboutPage about={await about} />}>
+    <PreviewSuspense fallback={<AboutPage page={await about} />}>
       <AboutPagePreview token={token} />
     </PreviewSuspense>
   )

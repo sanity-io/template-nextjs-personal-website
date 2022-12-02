@@ -1,13 +1,23 @@
+import { PortableText } from '@portabletext/react'
 import React from 'react'
 interface HeaderProps {
-  name: string
+  title?: string
+  description?: any[]
 }
 export function Header(props: HeaderProps) {
+  console.log(props.title)
+
   return (
-    <div className="m-10 text-center ">
-      <div className="mb-4 text-2xl font-bold">{props.name}</div>
-      <div className="text-gray-600">Description</div>
-      <div className="text-xs text-gray-600">Follow me</div>
+    <div className="m-10 text-center">
+      <div className="font-inter mb-3 text-4xl font-extrabold">
+        {props.title}
+      </div>
+      <div className="font-serif text-2xl text-gray-600">
+        <PortableText value={props.description} />
+      </div>
+      <div className="font-inter text-sm text-gray-600">
+        You can follow me on Twitter, Twitch, LinkedIn, and GitHub.
+      </div>
     </div>
   )
 }

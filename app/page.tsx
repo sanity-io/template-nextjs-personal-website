@@ -1,19 +1,29 @@
 import IntroTemplate from 'intro-template'
 
 import { getAbout } from './about/queries'
-import { Footer, Header, Navbar, Project } from './components'
-import { getFooter } from './queries'
+import { Header, Project } from './components'
+import { getSettings } from './queries'
 
 export default async function Page() {
   const about = await getAbout()
-  const settings = await getFooter()
+  const settings = await getSettings()
+  const projects = settings?.showcaseProjects
+  console.log(projects)
 
   return (
     <div>
-      <Navbar />
-      <Header name={about.name} />
-      <Project />
-      <Footer footer={settings.footer} />
+      <Header title={settings.title} />
+      <div className="mx-12">
+        {projects.map((project, key) => (
+          <Project
+            key={key}
+            title={project.title}
+            overview={project.overview}
+            coverImage={project.coverImage}
+          />
+        ))}
+      </div>
+      {/* <IntroTemplate /> */}
     </div>
   )
 }
