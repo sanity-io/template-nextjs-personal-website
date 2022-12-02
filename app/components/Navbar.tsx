@@ -11,20 +11,24 @@ export function Navbar({ menu }: { menu: Menu }) {
 
   return (
     <div className="p-4 sm:px-5 md:px-6">
-      <div className="flex items-center">
-        {menuItems.map((menuItem, key) => (
-          <Link
-            key={key}
-            className={`font-inter  mr-4 hover:text-white ${
-              menuItem.slug.current === 'home' ? 'text-black' : 'text-gray-600'
-            }`}
-            href={`/${
-              menuItem.slug.current === 'home' ? '' : menuItem.slug.current
-            }`}
-          >
-            {menuItem.title}
-          </Link>
-        ))}
+      <div className="flex justify-between">
+        <div>
+          {menuItems.map((menuItem, key) => (
+            <Link
+              key={key}
+              className={`font-inter  mr-4 hover:text-white ${
+                menuItem.slug.current === 'home'
+                  ? 'text-black'
+                  : 'text-gray-600'
+              }`}
+              href={`/${
+                menuItem.slug.current === 'home' ? '' : menuItem.slug.current
+              }`}
+            >
+              {menuItem.title}
+            </Link>
+          ))}
+        </div>
 
         <div className="px-3 text-lg">
           <ThemeToggle />
