@@ -42,3 +42,38 @@ export async function getAbout(
   }
   return undefined
 }
+export interface Page {
+  name?: string
+  overview?: any[]
+  content?: any[]
+}
+
+const pageFields = groq`	
+  _id,	
+  title,	
+  slug,	
+  content,	
+`
+
+export const pageSlugsQuery = groq`	
+*[_type == "page" && defined(slug.current)][].slug.current	
+`
+
+export const pagesBySlugQuery = groq`	
+*[_type == "page" && slug.current == $slug][0] {	
+  ${pageFields}	
+}	
+`
+
+export async function getPageBySlug(slug: string): Promise<Page> {
+  if (projectId) {
+    const client = createClient({
+      projectId,
+      dataset,
+      apiVersion,
+      useCdn,
+    })
+    return (await client.fetch(pagesBySlugQuery, { slug })) || ({} as any)
+  }
+  return {} as any
+}
