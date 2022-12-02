@@ -41,7 +41,7 @@ export default async function RootLayout({
       <body className="bg-white text-black dark:bg-black dark:text-white">
         <Providers>
           {<Navbar menu={menu} />}
-          {children}
+          <div className="mt-28">{children}</div>
 
           {/* <Footer footer={settings?.footer} /> */}
         </Providers>
