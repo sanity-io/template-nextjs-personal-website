@@ -15,7 +15,7 @@ export default async function Preview() {
   const token = previewData().token || null
   const about = getPageBySlug('about')
   return (
-    <PreviewSuspense fallback={<AboutPage page={await about} />}>
+    <PreviewSuspense fallback={<AboutPage about={await about} />}>
       <AboutPagePreview token={token} />
     </PreviewSuspense>
   )
