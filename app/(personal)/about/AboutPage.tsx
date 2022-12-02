@@ -12,7 +12,7 @@ export function AboutPage({ about }: AboutProps) {
 
   return (
     <div>
-      <div className="text-5xl font-extrabold">About</div>
+      <div className="pb-5 text-5xl font-extrabold">About</div>
       <div className="w-3/5 font-serif text-xl text-gray-600">
         <PortableText value={overview} />
       </div>

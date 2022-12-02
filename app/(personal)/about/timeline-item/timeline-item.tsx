@@ -12,6 +12,11 @@ interface TimelineItemProps {
 
 export function TimelineItem(props: TimelineItemProps) {
   const { isLast, item } = props
+  const startYear = new Date(item.duration.start).getFullYear()
+  const endYear = item.duration.end
+    ? new Date(item.duration.end).getFullYear()
+    : 'Now'
+
   return (
     <div className={`flex min-h-[200px] ${!isLast && 'pb-2'}`}>
       <div className="flex flex-col">
@@ -22,11 +27,11 @@ export function TimelineItem(props: TimelineItemProps) {
         {!isLast && <div className="mt-2 w-px grow self-center bg-gray-200" />}
       </div>
       <div className="flex-initial pl-4">
-        <div>{item.title}</div>
-        <div>
-          {item.duration.start} - {item.duration.end}
+        <div className="text-black">{item.title}</div>
+        <div className="text-sm text-gray-600 ">
+          {startYear} - {endYear}
         </div>
-        <div>{item.description}</div>
+        <div className="pt-3 font-serif text-gray-600">{item.description}</div>
       </div>
     </div>
   )

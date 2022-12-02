@@ -86,8 +86,8 @@ export default defineType({
               return {
                 title,
                 subtitle: [
-                  duration.start && new Date(duration.start).toISOString(),
-                  duration.end && new Date(duration.end).toISOString(),
+                  duration.start && new Date(duration.start).getFullYear(),
+                  duration.end && new Date(duration.end).getFullYear(),
                 ]
                   .filter(Boolean)
                   .join(' - '),
@@ -132,8 +132,8 @@ export default defineType({
               return {
                 title,
                 subtitle: [
-                  duration.start && new Date(duration.start).toISOString(),
-                  duration.end && new Date(duration.end).toISOString(),
+                  duration.start && new Date(duration.start).getFullYear(),
+                  duration.end && new Date(duration.end).getFullYear(),
                 ]
                   .filter(Boolean)
                   .join(' - '),
