@@ -3,8 +3,6 @@ import { Menu, Page } from 'app/(personal)/queries'
 import Link from 'next/link'
 
 import ThemeToggle from './ThemeToggle'
-// import { useIsSanityUser } from '../'
-// import { SanityMenu } from './SanityMenu'
 
 export function Navbar({ menu }: { menu: Menu }) {
   const { menuItems } = menu
