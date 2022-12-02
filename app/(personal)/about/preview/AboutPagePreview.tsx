@@ -1,6 +1,6 @@
 'use client'
 
-import { Page } from 'app/queries'
+import { Page } from 'app/(personal)/queries'
 import { usePreview } from 'lib/sanity.preview'
 
 import { AboutPage } from '../AboutPage'

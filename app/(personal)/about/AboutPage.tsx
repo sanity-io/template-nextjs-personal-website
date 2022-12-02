@@ -1,5 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { Page } from 'app/queries'
+import { Page } from 'app/(personal)/queries'
 
 interface AboutProps {
   page?: Page

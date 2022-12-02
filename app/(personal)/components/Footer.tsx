@@ -1,5 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { Settings } from 'app/queries'
+import { Settings } from 'app/(personal)/queries'
 
 export function Footer({ footer }: Settings) {
   return (

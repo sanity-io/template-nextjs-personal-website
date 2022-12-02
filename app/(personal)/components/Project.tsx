@@ -1,5 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { ShowcaseProjects } from 'app/queries'
+import { ShowcaseProjects } from 'app/(personal)/queries'
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 
