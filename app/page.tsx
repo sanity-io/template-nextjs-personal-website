@@ -13,7 +13,7 @@ export default async function Page() {
   return (
     <div>
       <Header title={settings.title} />
-      <div className="mx-12">
+      <div>
         {projects.map((project, key) => (
           <Project
             key={key}

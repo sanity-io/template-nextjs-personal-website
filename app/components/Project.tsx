@@ -11,7 +11,7 @@ export function Project(props: ProjectProps) {
   const { title, overview, coverImage, imageRightPosition } = props
 
   return (
-    <div className="mx-12 grid grid-cols-3 rounded-md border-2">
+    <div className="grid grid-cols-3 rounded-md border-2">
       <div className="col-span-2 ">
         <Image
           className="h-full w-auto p-4"

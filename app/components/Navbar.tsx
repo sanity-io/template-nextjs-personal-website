@@ -10,7 +10,7 @@ export function Navbar({ menu }: { menu: Menu }) {
   const { menuItems } = menu
 
   return (
-    <div className="p-4 sm:px-5 md:px-6">
+    <div className="">
       <div className="flex justify-between">
         <div>
           {menuItems.map((menuItem, key) => (

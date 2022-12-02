@@ -6,7 +6,7 @@ interface HeaderProps {
 }
 export function Header(props: HeaderProps) {
   return (
-    <div className="m-10 text-center">
+    <div className="my-10 text-center">
       <div className="font-inter mb-3 text-4xl font-extrabold">
         {props.title}
       </div>
