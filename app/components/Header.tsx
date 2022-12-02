@@ -5,8 +5,6 @@ interface HeaderProps {
   description?: any[]
 }
 export function Header(props: HeaderProps) {
-  console.log(props.title)
-
   return (
     <div className="m-10 text-center">
       <div className="font-inter mb-3 text-4xl font-extrabold">
