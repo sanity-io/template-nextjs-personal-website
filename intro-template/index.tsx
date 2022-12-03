@@ -35,7 +35,7 @@ export default memo(function IntroTemplate() {
   }
 
   return (
-    <div className="flex justify-center border border-gray-200 bg-gray-50">
+    <div className="mb-4 flex justify-center border border-gray-200 bg-gray-50 dark:text-black">
       <div className="mt-20 mb-4 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32 ">
         <div className="self-center">
           <Image
@@ -91,7 +91,7 @@ export default memo(function IntroTemplate() {
                     </div>
                   ) : (
                     <>
-                      <div className="text-xs text-gray-700">
+                      <div className="dar text-xs text-gray-700">
                         Your code can be found at
                         <a
                           className="mx-1 underline hover:text-blue-800"

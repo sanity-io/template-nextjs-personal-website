@@ -18,7 +18,7 @@ export default async function Page() {
         </div>
       )}
 
-      {/* <IntroTemplate /> */}
+      <IntroTemplate />
     </div>
   )
 }
