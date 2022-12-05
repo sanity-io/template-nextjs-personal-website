@@ -7,7 +7,7 @@ interface TimelineItem {
 
 export function TimelineSection({ timelines }: { timelines: TimelineItem[] }) {
   return (
-    <div className="flex pt-16">
+    <div className="flex gap-2 pt-16">
       {timelines.map((timeline, key) => {
         const { title, milestones } = timeline
         return (
