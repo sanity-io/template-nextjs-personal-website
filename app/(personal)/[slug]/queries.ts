@@ -10,15 +10,12 @@ const projectFields = groq`
   description
 `
 
-export const projectsSlugsQuery = groq`
-*[_type == "page" && defined(slug.current)][].slug.current
-`
-
 export const projectBySlugQuery = groq`
 *[_type == "project" && slug.current == $slug][0] {
   ${projectFields}
 }
 `
+console.log(getProjectBySlug('project-a'))
 
 export interface Project {
   title?: string
@@ -28,7 +25,9 @@ export interface Project {
   description?: any[]
 }
 
-export async function getProjectBySlug(slug: string): Promise<Project> {
+export async function getProjectBySlug(
+  slug: string
+): Promise<Project> | undefined {
   if (projectId) {
     const client = createClient({
       projectId,

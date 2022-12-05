@@ -1,4 +1,9 @@
-export function Project() {
+import { Project } from '../[slug]/queries'
+
+export function Project({ project }: { project: Project }) {
+  const title = project.title
+  console.log(title)
+
   return (
     <div>
       <div className="grid grid-cols-4 gap-4 rounded-md border">

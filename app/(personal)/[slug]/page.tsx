@@ -7,11 +7,11 @@ export default async function SlugRoute({
 }: {
   params: { slug: 'project-a' }
 }) {
-  const data = getProjectBySlug('project-a')
-  console.log(data)
+  const project = await getProjectBySlug(params.slug)
+  console.log(project)
 
   //   return <Project data={await data} settings={await settings} />
-  return <Project />
+  return <Project project={project} />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`
