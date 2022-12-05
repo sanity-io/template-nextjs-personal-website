@@ -35,7 +35,7 @@ export default memo(function IntroTemplate() {
   }
 
   return (
-    <div className="mb-4 flex justify-center border border-gray-200 bg-gray-50 dark:bg-black">
+    <div className="mb-4 flex justify-center border border-gray-200">
       <div className="mt-20 mb-4 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32 ">
         <div className="self-center">
           <Image
@@ -198,7 +198,7 @@ function Box({
   return (
     <li className="mt-2 grid grid-flow-col grid-rows-1 place-content-start gap-3">
       <div className="row-span-3 select-none">
-        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center">
+        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center dark:bg-gray-400">
           {circleTitle}
         </div>
       </div>
