@@ -2,10 +2,9 @@ import 'tailwindcss/tailwind.css'
 
 import { IBM_Plex_Mono, Inter, PT_Serif } from '@next/font/google'
 
-import { getAbout } from './about/queries'
 import { Footer, Navbar } from './components'
 import { Providers } from './providers'
-import { getHome, getPages, getSettings } from './queries'
+import { getHome, getSettings } from './queries'
 
 const serif = PT_Serif({
   variable: '--font-serif',
@@ -29,8 +28,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const settings = await getHome()
-  const menu = await getSettings()
+  const { menuItems, footer } = await getSettings()
 
   return (
     <html
@@ -40,10 +38,10 @@ export default async function RootLayout({
       <head />
       <body className="flex min-h-screen flex-col bg-white text-black dark:bg-black dark:text-white">
         <Providers>
-          <Navbar menu={menu} />
+          <Navbar menu={menuItems} />
           <div className="mt-12 flex-grow px-32">{children}</div>
 
-          <Footer footer={settings?.footer} />
+          <Footer footer={footer} />
         </Providers>
       </body>
     </html>
