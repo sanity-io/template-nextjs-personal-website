@@ -1,47 +1,59 @@
+import { PortableText } from '@portabletext/react'
+import { urlForImage } from 'lib/sanity.image'
+import Image from 'next/image'
+import Link from 'next/link'
+
 import { Project } from '../[slug]/queries'
+import { Header } from './Header'
 
 export function Project({ project }: { project: Project }) {
-  const title = project.title
-  console.log(title)
-
   return (
     <div>
-      <div className="grid grid-cols-4 gap-4 rounded-md border">
-        <div className="... col-span-4">04</div>
-        <BoxElement title={'Duration'} text={'2022-'} />
-        <BoxElement title={'Duration'} text={'2022-'} />
-        <BoxElement title={'Duration'} text={'2022-'} />
-        <BoxElement title={'Duration'} text={'2022-'} isLast />
-      </div>
-      <div className="pt-12 font-serif text-gray-600">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi suscipit,
-        sapien et viverra consectetur, ligula mauris tempor enim, at tristique
-        est justo ut nisl. Ut consectetur ut lorem sit amet commodo. Nam
-        elementum, eros non maximus convallis, purus tortor cursus nisl, eget
-        tincidunt nisl dui eget mauris. Vestibulum luctus porta eros vel
-        dapibus. Ut bibendum sollicitudin orci sollicitudin pharetra.
-        Pellentesque habitant morbi tristique senectus et netus et malesuada
-        fames ac turpis egestas. Fusce egestas, velit eget lacinia rhoncus, odio
-        ipsum iaculis velit, id laoreet augue neque eget ex. Phasellus eu sapien
-        sit amet lectus placerat interdum eu a turpis.
-      </div>
-    </div>
-  )
-}
+      <Header title={project.title} description={project.overview} />
+      <div className="grid grid-cols-4 rounded-md border">
+        <div className="col-span-4">
+          <Image
+            className="h-auto w-full rounded-md"
+            alt={`Cover image for ${project.title}`}
+            width={3500}
+            height={2000}
+            sizes="100vw"
+            src={
+              project.coverImage?.asset?._ref &&
+              urlForImage(project.coverImage)
+                .height(2000)
+                .width(3500)
+                .fit('crop')
+                .url()
+            }
+          />
+        </div>
 
-function BoxElement({
-  title,
-  text,
-  isLast,
-}: {
-  title: string
-  text: string
-  isLast?: boolean
-}) {
-  return (
-    <div className={`${!isLast && 'border-r'} p-4`}>
-      <div className="font-inter text-sm">{title}</div>
-      <div className="">{text}</div>
+        <div className="border-r p-4">
+          <div className="font-inter text-sm">Duration</div>
+          <div>{`${project.duration.start} -  ${project.duration.end}`}</div>
+        </div>
+
+        <div className="border-r p-4">
+          <div className="font-inter text-sm">Client</div>
+          <div>{project.client}</div>
+        </div>
+
+        <div className="border-r p-4">
+          <div className="font-inter text-sm">Site</div>
+          <Link target="_blank" href={project.site}>
+            {project.site}
+          </Link>
+        </div>
+
+        <div className="p-4">
+          <div className="font-inter text-sm">Tags</div>
+          <div>Tags</div>
+        </div>
+      </div>
+      <div className="py-12 font-serif text-gray-600">
+        <PortableText value={project?.description} />
+      </div>
     </div>
   )
 }

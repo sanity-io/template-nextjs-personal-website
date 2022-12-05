@@ -7,7 +7,11 @@ const projectFields = groq`
   "slug": slug.current,
   overview,
   coverImage,
-  description
+  description,
+  duration, 
+  client, 
+  site, 
+  tags[]->
 `
 
 export const projectBySlugQuery = groq`
@@ -15,14 +19,17 @@ export const projectBySlugQuery = groq`
   ${projectFields}
 }
 `
-console.log(getProjectBySlug('project-a'))
 
 export interface Project {
-  title?: string
-  slug?: string
-  overview?: any[]
+  title: string
+  slug: string
+  overview: any[]
   coverImage?: { asset?: any }
   description?: any[]
+  duration?: any
+  client?: string
+  site?: string
+  tags?: any[]
 }
 
 export async function getProjectBySlug(
