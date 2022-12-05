@@ -3,7 +3,7 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'menu',
-  title: 'Menu header',
+  title: 'Menu',
   type: 'document',
   icon: MenuIcon,
   // Uncomment below to have edits publish automatically as you type
@@ -12,13 +12,26 @@ export default defineType({
     defineField({
       name: 'menuItems',
       title: 'Menu Item list',
-      description:
-        'This is a list of pages that will be displayed as a menu on the header of your personal website.',
+      description: 'Links displayed on the header of your site.',
       type: 'array',
       of: [
         {
+          title: 'Reference',
           type: 'reference',
-          to: [{ type: 'page' }],
+          to: [
+            {
+              type: 'home',
+            },
+            {
+              type: 'page',
+            },
+            {
+              type: 'project',
+            },
+            {
+              type: 'projects',
+            },
+          ],
         },
       ],
     }),

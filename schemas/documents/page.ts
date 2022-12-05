@@ -20,13 +20,20 @@ export default defineType({
         source: 'title',
       },
     }),
+    // Portable text
     defineField({
       type: 'array',
       name: 'content',
       title: 'Content',
       of: [
+        // Paragraphs
         defineArrayMember({
           type: 'block',
+        }),
+        // Custom blocks
+        defineArrayMember({
+          name: 'timeline',
+          type: 'timeline',
         }),
       ],
     }),

@@ -1,7 +1,7 @@
 import { DocumentIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
-import { blockInfo } from './blockInfo'
+import { blockInfo } from '../objects/blockInfo'
 
 export default defineType({
   name: 'project',
