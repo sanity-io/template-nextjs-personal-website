@@ -1,6 +1,7 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 import { Page } from 'app/(personal)/queries'
 
+import { Header } from '../components'
 import { TimelineSection } from '../components/timeline/timeline-section'
 
 interface AboutProps {
@@ -22,9 +23,8 @@ export function AboutPage(props: AboutProps) {
 
   return (
     <div>
-      <div className="pb-5 text-5xl font-extrabold">{title}</div>
-      <div className="w-3/5 pb-16 font-serif text-xl text-gray-600">
-        <PortableText value={overview} />
+      <div className="w-3/5">
+        <Header title={title} description={overview} />
       </div>
 
       {<PortableText value={content} components={components} />}

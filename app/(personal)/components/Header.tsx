@@ -6,11 +6,11 @@ interface HeaderProps {
 }
 export function Header(props: HeaderProps) {
   return (
-    <div className="mb-10 text-center">
-      <div className="font-inter mb-3 text-4xl font-extrabold">
+    <div>
+      <div className="font-inter pb-5 text-5xl font-extrabold">
         {props.title}
       </div>
-      <div className="font-serif text-2xl text-gray-600">
+      <div className="pb-16 font-serif text-xl text-gray-600">
         <PortableText value={props.description} />
       </div>
     </div>
