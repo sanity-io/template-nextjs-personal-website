@@ -2,7 +2,6 @@ import 'tailwindcss/tailwind.css'
 
 import { IBM_Plex_Mono, Inter, PT_Serif } from '@next/font/google'
 
-import { getAbout } from './about/queries'
 import { Footer, Navbar } from './components'
 import { Providers } from './providers'
 import { getHome, getMenuItems, getPages } from './queries'

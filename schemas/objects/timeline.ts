@@ -4,11 +4,29 @@ export default defineType({
   name: 'timeline',
   title: 'Timeline',
   type: 'object',
+  preview: {
+    select: {
+      items: 'items',
+    },
+    prepare({ items }) {
+      const hasItems = items && items.length > 0
+      const timelineNames =
+        hasItems && items.map((timeline) => timeline.title).join(', ')
+
+      return {
+        title: 'Timelines',
+        subtitle: hasItems
+          ? `${timelineNames} (${items.length} items)`
+          : 'No timelines',
+      }
+    },
+  },
   fields: [
     {
       name: 'items',
       title: 'Items',
       type: 'array',
+      validation: (Rule) => Rule.max(2),
       of: [
         {
           name: 'item',
@@ -63,8 +81,13 @@ export default defineType({
                     prepare({ title, duration }) {
                       return {
                         title,
-                        subtitle:
-                          '(Consider using date-fns to generate a readable range)',
+                        subtitle: [
+                          duration.start &&
+                            new Date(duration.start).getFullYear(),
+                          duration.end && new Date(duration.end).getFullYear(),
+                        ]
+                          .filter(Boolean)
+                          .join(' - '),
                       }
                     },
                   },

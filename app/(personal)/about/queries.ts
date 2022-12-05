@@ -2,29 +2,9 @@ import { apiVersion, dataset, projectId, useCdn } from 'lib/sanity.api'
 import { groq } from 'next-sanity'
 import { createClient } from 'next-sanity'
 
-export const aboutQuery = groq`
-*[_type == "about"][0]
-`
-
 export interface About {
   name?: string
   overview?: any[]
-}
-
-export async function getAbout(
-  token?: string | null
-): Promise<About | undefined> {
-  if (projectId) {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion,
-      useCdn,
-      token: token || undefined,
-    })
-    return await client.fetch(aboutQuery)
-  }
-  return undefined
 }
 
 export interface Page {
@@ -33,10 +13,21 @@ export interface Page {
   content?: any[]
 }
 
+export interface MilestoneItem {
+  title?: string
+  description?: any[]
+  tags?: string[]
+  duration?: {
+    start?: string
+    end?: string
+  }
+}
+
 const pageFields = groq`
   _id,
   title,
   slug,
+  overview,
   content,
 `
 

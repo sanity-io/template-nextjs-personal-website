@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { PreviewSuspense } from '../../components/PreviewSuspense'
 import { AboutPage } from '../AboutPage'
-import { getAbout, getPageBySlug } from '../queries'
+import { getPageBySlug } from '../queries'
 import { AboutPagePreview } from './AboutPagePreview'
 
 export default async function Preview() {
