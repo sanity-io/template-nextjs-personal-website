@@ -81,8 +81,13 @@ export default defineType({
                     prepare({ title, duration }) {
                       return {
                         title,
-                        subtitle:
-                          '(Consider using date-fns to generate a readable range)',
+                        subtitle: [
+                          duration.start &&
+                            new Date(duration.start).getFullYear(),
+                          duration.end && new Date(duration.end).getFullYear(),
+                        ]
+                          .filter(Boolean)
+                          .join(' - '),
                       }
                     },
                   },
