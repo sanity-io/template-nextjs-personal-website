@@ -1,8 +1,10 @@
+import { MilestoneItem } from 'app/(personal)/queries'
+
 import { TimelineItem } from './timeline-item'
 
 interface TimelineItem {
   title: string
-  milestones: object[]
+  milestones: MilestoneItem[]
 }
 
 export function TimelineSection({ timelines }: { timelines: TimelineItem[] }) {
@@ -17,7 +19,7 @@ export function TimelineSection({ timelines }: { timelines: TimelineItem[] }) {
             {milestones.map((experience, index) => (
               <div key={index}>
                 <TimelineItem
-                  item={experience}
+                  milestone={experience}
                   isLast={milestones.length - 1 === index}
                 />
               </div>

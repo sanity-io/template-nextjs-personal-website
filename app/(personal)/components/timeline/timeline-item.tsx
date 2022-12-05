@@ -1,19 +1,13 @@
-interface TimelineItemProps {
-  isLast: boolean
-  item: {
-    title: string
-    duration: {
-      start: string
-      end: string
-    }
-    tags: string[]
-    description: string
-  }
-}
+import { MilestoneItem } from 'app/(personal)/queries'
 
-export function TimelineItem(props: TimelineItemProps) {
-  const { isLast, item } = props
-  const { title, description, tags, duration } = item
+export function TimelineItem({
+  isLast,
+  milestone,
+}: {
+  isLast: boolean
+  milestone: MilestoneItem
+}) {
+  const { title, description, tags, duration } = milestone
   const startYear = new Date(duration.start).getFullYear()
   const endYear = duration.end ? new Date(duration.end).getFullYear() : 'Now'
 
