@@ -91,7 +91,7 @@ export default memo(function IntroTemplate() {
                     </div>
                   ) : (
                     <>
-                      <div className="dar text-xs text-gray-700">
+                      <div className="text-xs text-gray-700">
                         Your code can be found at
                         <a
                           className="mx-1 underline hover:text-blue-800"
