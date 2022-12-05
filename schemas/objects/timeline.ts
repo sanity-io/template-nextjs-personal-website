@@ -9,11 +9,15 @@ export default defineType({
       items: 'items',
     },
     prepare({ items }) {
-      const timelineNames = items.map((timeline) => timeline.title).join(', ')
+      const hasItems = items && items.length > 0
+      const timelineNames =
+        hasItems && items.map((timeline) => timeline.title).join(', ')
 
       return {
         title: 'Timelines',
-        subtitle: `${timelineNames} (${items.length} items)`,
+        subtitle: hasItems
+          ? `${timelineNames} (${items.length} items)`
+          : 'No timelines',
       }
     },
   },
@@ -22,6 +26,7 @@ export default defineType({
       name: 'items',
       title: 'Items',
       type: 'array',
+      validation: (Rule) => Rule.max(2),
       of: [
         {
           name: 'item',
