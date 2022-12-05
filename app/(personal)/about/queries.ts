@@ -13,6 +13,16 @@ export interface Page {
   content?: any[]
 }
 
+export interface MilestoneItem {
+  title?: string
+  description?: any[]
+  tags?: string[]
+  duration?: {
+    start?: string
+    end?: string
+  }
+}
+
 const pageFields = groq`
   _id,
   title,

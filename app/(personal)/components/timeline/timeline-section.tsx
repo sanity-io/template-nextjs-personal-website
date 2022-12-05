@@ -1,4 +1,4 @@
-import { MilestoneItem } from 'app/(personal)/queries'
+import { MilestoneItem } from 'app/(personal)/about/queries'
 
 import { TimelineItem } from './timeline-item'
 
