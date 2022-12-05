@@ -37,6 +37,7 @@ const pageFields = groq`
   _id,
   title,
   slug,
+  overview,
   content,
 `
 

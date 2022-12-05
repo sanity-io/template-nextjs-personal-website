@@ -45,6 +45,7 @@ export const pagesQuery = groq`
 export interface Page {
   title?: string
   slug?: Slug
+  overview?: any[]
   content?: any[]
 }
 
