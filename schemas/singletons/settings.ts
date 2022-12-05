@@ -1,11 +1,11 @@
-import { MenuIcon } from '@sanity/icons'
+import { CogIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
 export default defineType({
-  name: 'menu',
-  title: 'Menu header',
+  name: 'settings',
+  title: 'Settings',
   type: 'document',
-  icon: MenuIcon,
+  icon: CogIcon,
   // Uncomment below to have edits publish automatically as you type
   // liveEdit: true,
   fields: [

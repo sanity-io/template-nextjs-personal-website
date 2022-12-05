@@ -68,17 +68,17 @@ export async function getPages(
   return undefined
 }
 
-export interface Menu {
+export interface Settings {
   menuItems?: Page[]
 }
 
-export const menuQuery = groq`
-*[_type == "menu"][0]{menuItems[]->{title, slug, content}}
+export const settingsQuery = groq`
+*[_type == "settings"][0]{menuItems[]->{title, slug, content}}
 `
 
-export async function getMenuItems(
+export async function getSettings(
   token?: string | null
-): Promise<Menu | undefined> {
+): Promise<Settings | undefined> {
   if (projectId) {
     const client = createClient({
       projectId,
@@ -87,7 +87,7 @@ export async function getMenuItems(
       useCdn,
       token: token || undefined,
     })
-    return await client.fetch(menuQuery)
+    return await client.fetch(settingsQuery)
   }
   return undefined
 }
