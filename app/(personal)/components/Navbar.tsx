@@ -1,18 +1,15 @@
 'use client'
-import { Page, Settings } from 'app/(personal)/queries'
+import { Page } from 'app/(personal)/queries'
 import Link from 'next/link'
 
 import { ThemeToggle } from './ThemeToggle'
 
-export function Navbar({ menu }: { menu: Settings }) {
-  const { menuItems } = menu
-
-  console.log(menuItems)
+export function Navbar({ menu }: { menu: Page[] }) {
   return (
     <div className="sticky top-0 flex items-center justify-between bg-white px-32 py-5 dark:bg-black">
       <div>
-        {menuItems &&
-          menuItems.map((menuItem, key) => (
+        {menu &&
+          menu.map((menuItem, key) => (
             <Link
               key={key}
               className={`font-inter  mr-4 hover:text-black dark:hover:text-white ${
