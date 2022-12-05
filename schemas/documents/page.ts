@@ -25,8 +25,14 @@ export default defineType({
       name: 'content',
       title: 'Content',
       of: [
+        // Paragraphs
         defineArrayMember({
           type: 'block',
+        }),
+        // Custom blocks
+        defineArrayMember({
+          name: 'timeline',
+          type: 'timeline',
         }),
       ],
     }),

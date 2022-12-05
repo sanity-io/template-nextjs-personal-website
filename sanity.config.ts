@@ -10,12 +10,13 @@ import { pageStructure, singletonPlugin } from 'plugins/settings'
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
-import aboutType from 'schemas/about'
-import durationType from 'schemas/components/duration'
-import menuType from 'schemas/menu'
-import pageType from 'schemas/page'
-import projectType from 'schemas/project'
-import landingpage from 'schemas/settings'
+import page from 'schemas/documents/page'
+import projectType from 'schemas/documents/project'
+import durationType from 'schemas/objects/duration'
+import timeline from 'schemas/objects/timeline'
+import home from 'schemas/singletons/home'
+import menu from 'schemas/singletons/menu'
+import projects from 'schemas/singletons/projects'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
@@ -29,27 +30,31 @@ export default defineConfig({
   schema: {
     // If you want more content types, you can add them to this array
     types: [
+      // Singletons
+      home,
+      menu,
+      projects,
+      // Documents
       durationType,
+      page,
       projectType,
-      landingpage,
-      aboutType,
-      pageType,
-      menuType,
+      // Objects
+      timeline,
     ],
   },
   plugins: [
     deskTool({
-      structure: pageStructure([landingpage, menuType, aboutType]),
+      structure: pageStructure([home, projects, menu]),
       // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
       defaultDocumentNode: previewDocumentNode({ apiVersion, previewSecretId }),
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    singletonPlugin([landingpage.name, menuType.name, aboutType.name]),
+    singletonPlugin([home.name, menu.name]),
     // Add the "Open preview" action
     productionUrl({
       apiVersion,
       previewSecretId,
-      types: [landingpage.name],
+      types: [home.name],
     }),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
