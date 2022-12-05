@@ -2,7 +2,7 @@
 import { Menu, Page } from 'app/(personal)/queries'
 import Link from 'next/link'
 
-import ThemeToggle from './ThemeToggle'
+import { ThemeToggle } from './ThemeToggle'
 
 export function Navbar({ menu }: { menu: Menu }) {
   const { menuItems } = menu
