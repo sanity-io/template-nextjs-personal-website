@@ -38,10 +38,10 @@ export default async function RootLayout({
       className={`${mono.variable} ${sans.variable} ${serif.variable}`}
     >
       <head />
-      <body className="bg-white text-black dark:bg-black dark:text-white">
+      <body className="flex min-h-screen flex-col bg-white text-black dark:bg-black dark:text-white">
         <Providers>
           <Navbar menu={menu} />
-          <div className="mt-12 px-32">{children}</div>
+          <div className="mt-12 flex-grow px-32">{children}</div>
 
           <Footer footer={settings?.footer} />
         </Providers>

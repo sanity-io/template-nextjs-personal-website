@@ -15,7 +15,7 @@ export function Navbar({ menu }: { menu: Menu }) {
             key={key}
             className={`font-inter  mr-4 hover:text-black dark:hover:text-white ${
               menuItem.slug.current === 'home'
-                ? 'text-black dark:text-white'
+                ? 'font-semibold text-black dark:text-white'
                 : 'text-gray-600'
             }`}
             href={`/${
