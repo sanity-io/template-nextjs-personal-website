@@ -8,7 +8,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 ## Features
 
-- A performant, static personal personal website with editable projects, projects page details, about section and site settings
+- A performant, static personal personal website with editable projects
 - A native and customizable authoring environment, accessible on `yourpersonalwebsite.com/studio`
 - Real-time and collaborative content editing with fine-grained revision history
 - Side-by-side instant content preview that works across your whole site

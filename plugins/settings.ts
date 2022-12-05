@@ -1,5 +1,5 @@
 /**
- * This plugin contains all the logic for setting up the `Settings` singleton
+ * This plugin contains all the logic for setting up the singletons
  */
 
 import { type DocumentDefinition } from 'sanity'
@@ -9,7 +9,7 @@ export const singletonPlugin = (types: string[]) => {
   return {
     name: 'singletonPlugin',
     document: {
-      // Hide 'Menu, About and Landing Page and Settings' from new document options
+      // Hide 'Singletons (such as Home)' from new document options
       // https://user-images.githubusercontent.com/81981/195728798-e0c6cf7e-d442-4e58-af3a-8cd99d7fcc28.png
       newDocumentOptions: (prev, { creationContext }) => {
         if (creationContext.type === 'global') {
@@ -20,7 +20,7 @@ export const singletonPlugin = (types: string[]) => {
 
         return prev
       },
-      // Removes the "duplicate" action on the "settings" singleton
+      // Removes the "duplicate" action on the Singletons (such as Home)
       actions: (prev, { schemaType }) => {
         if (types.includes(schemaType)) {
           return prev.filter(({ action }) => action !== 'duplicate')
@@ -32,7 +32,7 @@ export const singletonPlugin = (types: string[]) => {
   }
 }
 
-// The StructureResolver is how we're changing the DeskTool structure to linking to a single "About" document, instead of rendering "settings" in a list
+// The StructureResolver is how we're changing the DeskTool structure to linking to document (named Singleton)
 // like how "Projects" is handled.
 export const pageStructure = (
   typeDefArray: DocumentDefinition[]
