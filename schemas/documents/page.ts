@@ -21,6 +21,18 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'overview',
+      description:
+        'Used both for the <meta> description tag for SEO, and the personal website subheader.',
+      title: 'Overview',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'block',
+        }),
+      ],
+    }),
+    defineField({
       type: 'array',
       name: 'content',
       title: 'Content',
