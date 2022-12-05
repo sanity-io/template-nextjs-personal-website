@@ -6,16 +6,16 @@ interface TimelineItemProps {
       start: string
       end: string
     }
+    tags: string[]
     description: string
   }
 }
 
 export function TimelineItem(props: TimelineItemProps) {
   const { isLast, item } = props
-  const startYear = new Date(item.duration.start).getFullYear()
-  const endYear = item.duration.end
-    ? new Date(item.duration.end).getFullYear()
-    : 'Now'
+  const { title, description, tags, duration } = item
+  const startYear = new Date(duration.start).getFullYear()
+  const endYear = duration.end ? new Date(duration.end).getFullYear() : 'Now'
 
   return (
     <div className={`flex min-h-[200px] ${!isLast && 'pb-2'}`}>
@@ -27,11 +27,17 @@ export function TimelineItem(props: TimelineItemProps) {
         {!isLast && <div className="mt-2 w-px grow self-center bg-gray-200" />}
       </div>
       <div className="flex-initial pl-4">
-        <div className="text-black">{item.title}</div>
+        <div className="text-black dark:text-white">{title}</div>
         <div className="text-sm text-gray-600 ">
+          {tags.map((tag, key) => (
+            <span key={key}>
+              {tag}
+              <span className="mx-1">●</span>
+            </span>
+          ))}
           {startYear} - {endYear}
         </div>
-        <div className="pt-3 font-serif text-gray-600">{item.description}</div>
+        <div className="pt-3 font-serif text-gray-600">{description}</div>
       </div>
     </div>
   )
