@@ -4,6 +4,19 @@ export default defineType({
   name: 'timeline',
   title: 'Timeline',
   type: 'object',
+  preview: {
+    select: {
+      items: 'items',
+    },
+    prepare({ items }) {
+      const timelineNames = items.map((timeline) => timeline.title).join(', ')
+
+      return {
+        title: 'Timelines',
+        subtitle: `${timelineNames} (${items.length} items)`,
+      }
+    },
+  },
   fields: [
     {
       name: 'items',
