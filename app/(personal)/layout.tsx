@@ -35,15 +35,15 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${mono.variable} ${sans.variable} ${serif.variable} px-32 py-5`}
+      className={`${mono.variable} ${sans.variable} ${serif.variable}`}
     >
       <head />
-      <body className="bg-white text-black dark:bg-black dark:text-white">
+      <body className="flex min-h-screen flex-col bg-white text-black dark:bg-black dark:text-white">
         <Providers>
-          {<Navbar menu={menu} />}
-          <div className="mt-28">{children}</div>
+          <Navbar menu={menu} />
+          <div className="mt-12 flex-grow px-32">{children}</div>
 
-          {/* <Footer footer={settings?.footer} /> */}
+          <Footer footer={settings?.footer} />
         </Providers>
       </body>
     </html>

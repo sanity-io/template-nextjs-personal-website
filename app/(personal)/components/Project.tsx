@@ -16,7 +16,7 @@ export function Project(props: ProjectProps) {
   if (odd === 1) {
     return (
       <Link href={`/projects/${slug}`}>
-        <div className={'flex border-t-2 border-b-2'}>
+        <div className="flex border-t border-b">
           <div className="ml-4">
             <div className="font-inter mb-2 mt-4 text-2xl font-extrabold">
               {project.title}

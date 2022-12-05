@@ -3,7 +3,7 @@ import { Settings } from 'app/(personal)/queries'
 
 export function Footer({ footer }: Settings) {
   return (
-    <footer className="fixed bottom-0 w-full border-t-2 py-6 text-center">
+    <footer className="bottom-0 w-screen border-t bg-white py-4 text-center dark:bg-black">
       <PortableText value={footer} />
     </footer>
   )

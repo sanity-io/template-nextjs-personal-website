@@ -11,14 +11,13 @@ export default async function Page() {
     <div>
       <Header title={settings.title} description={settings.overview} />
       {projects && projects.length > 0 && (
-        <div className="mb-20 rounded-md border-2">
+        <div className="mb-20 rounded-md border">
           {projects.map((project, key) => (
             <Project key={key} project={project} odd={key % 2} />
           ))}
         </div>
       )}
-
-      {/* <IntroTemplate /> */}
+      <IntroTemplate />
     </div>
   )
 }
