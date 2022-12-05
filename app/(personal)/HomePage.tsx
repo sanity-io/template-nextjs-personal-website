@@ -9,7 +9,7 @@ export function HomePage({ home }: { home: Home }) {
   return (
     <div>
       <div className="text-center">
-        <Header title={title} description={overview} />
+        <Header centered title={title} description={overview} />
       </div>
       {showcaseProjects && showcaseProjects.length > 0 && (
         <div className="mb-20 rounded-md border">

@@ -23,10 +23,7 @@ export function AboutPage(props: AboutProps) {
 
   return (
     <div>
-      <div className="w-3/5">
-        <Header title={title} description={overview} />
-      </div>
-
+      <Header title={title} description={overview} />
       {<PortableText value={content} components={components} />}
     </div>
   )
