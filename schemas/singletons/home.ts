@@ -25,26 +25,6 @@ export default defineType({
       of: [
         defineArrayMember({
           type: 'block',
-          options: {},
-          styles: [],
-          lists: [],
-          marks: {
-            decorators: [],
-            annotations: [
-              defineType({
-                type: 'object',
-                name: 'link',
-                fields: [
-                  {
-                    type: 'string',
-                    name: 'href',
-                    title: 'URL',
-                    validation: (rule) => rule.required(),
-                  },
-                ],
-              }),
-            ],
-          },
         }),
       ],
       validation: (rule) => rule.max(155).required(),
@@ -71,25 +51,6 @@ export default defineType({
       of: [
         defineArrayMember({
           type: 'block',
-          options: {},
-          styles: [],
-          lists: [],
-          marks: {
-            decorators: [],
-            annotations: [
-              defineType({
-                type: 'object',
-                name: 'link',
-                fields: [
-                  {
-                    type: 'string',
-                    name: 'href',
-                    title: 'URL',
-                  },
-                ],
-              }),
-            ],
-          },
         }),
       ],
     }),

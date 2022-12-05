@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { PreviewSuspense } from '../components/PreviewSuspense'
 import { HomePage } from '../HomePage'
-import { getSettings } from '../queries'
+import { getHome } from '../queries'
 import { HomePagePreview } from './HomePagePreview'
 
 export default async function Preview() {
@@ -13,9 +13,9 @@ export default async function Preview() {
   }
 
   const token = previewData().token || null
-  const settings = getSettings('/')
+  const home = getHome('/')
   return (
-    <PreviewSuspense fallback={<HomePage settings={await settings} />}>
+    <PreviewSuspense fallback={<HomePage home={await home} />}>
       <HomePagePreview token={token} />
     </PreviewSuspense>
   )

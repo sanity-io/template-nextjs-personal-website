@@ -5,7 +5,7 @@ import { IBM_Plex_Mono, Inter, PT_Serif } from '@next/font/google'
 import { getAbout } from './about/queries'
 import { Footer, Navbar } from './components'
 import { Providers } from './providers'
-import { getMenuItems, getPages, getSettings } from './queries'
+import { getHome, getMenuItems, getPages } from './queries'
 
 const serif = PT_Serif({
   variable: '--font-serif',
@@ -29,7 +29,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const settings = await getSettings()
+  const settings = await getHome()
   const menu = await getMenuItems()
 
   return (

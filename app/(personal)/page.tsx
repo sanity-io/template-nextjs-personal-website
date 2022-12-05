@@ -1,10 +1,10 @@
 import { HomePage } from './HomePage'
-import { getSettings } from './queries'
+import { getHome } from './queries'
 
 export default async function Home() {
-  const settings = await getSettings()
+  const home = await getHome()
 
-  return <HomePage settings={settings} />
+  return <HomePage home={home} />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`

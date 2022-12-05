@@ -1,17 +1,17 @@
 import IntroTemplate from 'intro-template'
 
 import { Header, ProjectListItem } from './components'
-import { Settings } from './queries'
+import { Home } from './queries'
 
-export function HomePage({ settings }: { settings: Settings }) {
-  const projects = settings?.showcaseProjects
+export function HomePage({ home }: { home: Home }) {
+  const { title, overview, showcaseProjects } = home
 
   return (
     <div>
-      <Header title={settings.title} description={settings.overview} />
-      {projects && projects.length > 0 && (
+      <Header title={title} description={overview} />
+      {showcaseProjects && showcaseProjects.length > 0 && (
         <div className="mb-20 rounded-md border">
-          {projects.map((project, key) => (
+          {showcaseProjects.map((project, key) => (
             <ProjectListItem key={key} project={project} odd={key % 2} />
           ))}
         </div>

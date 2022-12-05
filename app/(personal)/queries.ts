@@ -2,12 +2,12 @@ import { apiVersion, dataset, projectId, useCdn } from 'lib/sanity.api'
 import { groq } from 'next-sanity'
 import { createClient } from 'next-sanity'
 
-const settingsFields = groq`
+const homeFields = groq`
 _id, title, overview, showcaseProjects[]->{title, overview, coverImage}, footer,
 `
 
-export const settingsQuery = groq`
-*[_type == "landingpage"][0]{${settingsFields}}
+export const homeQuery = groq`
+*[_type == "home"][0]{${homeFields}}
 `
 
 export interface ShowcaseProjects {
@@ -15,16 +15,16 @@ export interface ShowcaseProjects {
   overview?: any[]
   coverImage?: { asset?: any }
 }
-export interface Settings {
+export interface Home {
   title?: string
   overview?: any[]
   showcaseProjects?: ShowcaseProjects[]
   footer?: any[]
 }
 
-export async function getSettings(
+export async function getHome(
   token?: string | null
-): Promise<Settings | undefined> {
+): Promise<Home | undefined> {
   if (projectId) {
     const client = createClient({
       projectId,
@@ -33,7 +33,7 @@ export async function getSettings(
       useCdn,
       token: token || undefined,
     })
-    return await client.fetch(settingsQuery)
+    return await client.fetch(homeQuery)
   }
   return undefined
 }
