@@ -17,6 +17,14 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      type: 'slug',
+      name: 'slug',
+      title: 'Slug',
+      options: {
+        source: 'title',
+      },
+    }),
+    defineField({
       name: 'overview',
       description:
         'Used both for the <meta> description tag for SEO, and the personal website subheader.',
