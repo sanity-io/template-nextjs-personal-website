@@ -1,11 +1,11 @@
-import { MenuIcon } from '@sanity/icons'
-import { defineField, defineType } from 'sanity'
+import { CogIcon } from '@sanity/icons'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
-  name: 'menu',
-  title: 'Menu header',
+  name: 'settings',
+  title: 'Settings',
   type: 'document',
-  icon: MenuIcon,
+  icon: CogIcon,
   // Uncomment below to have edits publish automatically as you type
   // liveEdit: true,
   fields: [
@@ -33,6 +33,18 @@ export default defineType({
             },
           ],
         },
+      ],
+    }),
+    defineField({
+      name: 'footer',
+      description:
+        'This is a block of text that will be displayed at the bottom of the page.',
+      title: 'Footer Info',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'block',
+        }),
       ],
     }),
   ],
