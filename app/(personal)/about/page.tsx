@@ -1,10 +1,24 @@
+import { previewData } from 'next/headers'
 import React from 'react'
 
+import { PreviewSuspense } from '../components/PreviewSuspense'
 import { AboutPage } from './AboutPage'
+import { AboutPagePreview } from './AboutPagePreview'
 import { getPageBySlug } from './queries'
 
 export default async function About() {
-  const page = await getPageBySlug('about')
+  const token = previewData().token || null
+  const about = await getPageBySlug('about')
 
-  return <AboutPage page={page} />
+  return (
+    <>
+      {token ? (
+        <PreviewSuspense fallback={<AboutPage page={about} />}>
+          <AboutPagePreview token={token} />
+        </PreviewSuspense>
+      ) : (
+        <AboutPage page={about} />
+      )}
+    </>
+  )
 }

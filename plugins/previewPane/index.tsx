@@ -21,7 +21,15 @@ export const previewDocumentNode = ({
       case page.name:
         return S.document().views([
           S.view.form(),
-          S.view.component(PreviewPane).title('Preview'),
+          S.view
+            .component((props) => (
+              <PreviewPane
+                previewSecretId={previewSecretId}
+                apiVersion={apiVersion}
+                {...props}
+              />
+            ))
+            .title('Preview'),
         ])
 
       default:
