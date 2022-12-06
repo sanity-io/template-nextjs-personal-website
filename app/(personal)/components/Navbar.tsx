@@ -6,7 +6,7 @@ import { ThemeToggle } from './ThemeToggle'
 
 export function Navbar({ menu }: { menu: Page[] }) {
   return (
-    <div className="sticky top-0 flex items-center justify-between bg-white px-32 py-5 dark:bg-black">
+    <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-32 py-5 dark:bg-black">
       <div>
         {menu &&
           menu.map((menuItem, key) => (
