@@ -5,7 +5,7 @@ import { getProjectBySlug } from './queries'
 export default async function SlugRoute({
   params,
 }: {
-  params: { slug: 'project-a' }
+  params: { slug: string }
 }) {
   const project = await getProjectBySlug(params.slug)
 

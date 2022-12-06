@@ -3,7 +3,7 @@ import { groq } from 'next-sanity'
 import { createClient } from 'next-sanity'
 
 const homeFields = groq`
-_id, title, overview, showcaseProjects[]->{title, overview, coverImage, tags}, footer,
+_id, title, overview, showcaseProjects[]->{title, overview, coverImage, tags, slug}, footer,
 `
 
 export const homeQuery = groq`
@@ -15,6 +15,7 @@ export interface ShowcaseProjects {
   overview?: any[]
   coverImage?: { asset?: any }
   tags?: string[]
+  slug?: { current?: string }
 }
 export interface Home {
   title?: string
@@ -45,13 +46,9 @@ export const pagesQuery = groq`
 
 export interface Page {
   title?: string
-  slug?: Slug
+  slug?: { current?: string }
   overview?: any[]
   content?: any[]
-}
-
-export interface Slug {
-  current?: string
 }
 
 export async function getPages(

@@ -11,7 +11,7 @@ const projectFields = groq`
   duration, 
   client, 
   site, 
-  tags[]->
+  tags
 `
 
 export const projectBySlugQuery = groq`

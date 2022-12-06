@@ -11,26 +11,20 @@ interface ProjectProps {
 
 export function ProjectListItem(props: ProjectProps) {
   const { project, odd } = props
-  //Fix slug
-  const slug = project.title
 
   if (odd === 1) {
     return (
-      <Link href={`/projects/${slug}`}>
-        <div className="flex border-t border-b">
-          <TextBox project={project} />
-          <ImageBox project={project} />
-        </div>
-      </Link>
+      <div className="flex border-t border-b">
+        <TextBox project={project} />
+        <ImageBox project={project} />
+      </div>
     )
   } else {
     return (
-      <Link href={`/projects/${slug}`}>
-        <div className="flex">
-          <ImageBox project={project} />
-          <TextBox project={project} />
-        </div>
-      </Link>
+      <div className="flex">
+        <ImageBox project={project} />
+        <TextBox project={project} />
+      </div>
     )
   }
 }

@@ -7,6 +7,11 @@ import { Project } from '../[slug]/queries'
 import { Header } from './Header'
 
 export function Project({ project }: { project: Project }) {
+  const startYear = new Date(project?.duration?.start).getFullYear()
+  const endYear = project?.duration?.end
+    ? new Date(project?.duration?.end).getFullYear()
+    : 'Now'
+
   return (
     <div>
       <Header title={project.title} description={project.overview} />
@@ -30,25 +35,39 @@ export function Project({ project }: { project: Project }) {
         </div>
 
         <div className="border-r p-4">
-          <div className="font-inter text-sm">Duration</div>
-          <div>{`${project.duration.start} -  ${project.duration.end}`}</div>
+          <div className="text-sm">Duration</div>
+          {startYear && (
+            <div className="text-lg">{`${startYear} -  ${endYear}`}</div>
+          )}
+        </div>
+
+        <div className="border-r p-4 text-lg">
+          <div className="text-sm">Client</div>
+          <div>{project?.client}</div>
         </div>
 
         <div className="border-r p-4">
-          <div className="font-inter text-sm">Client</div>
-          <div>{project.client}</div>
-        </div>
-
-        <div className="border-r p-4">
-          <div className="font-inter text-sm">Site</div>
-          <Link target="_blank" href={project.site}>
-            {project.site}
-          </Link>
+          <div className="text-sm">Site</div>
+          {project.site && (
+            <Link
+              target="_blank"
+              className="break-words text-lg"
+              href={project.site}
+            >
+              {project.site}
+            </Link>
+          )}
         </div>
 
         <div className="p-4">
-          <div className="font-inter text-sm">Tags</div>
-          <div>Tags</div>
+          <div className="text-sm">Tags</div>
+          <div className="flex flex-row flex-wrap text-lg">
+            {project?.tags?.map((tag, key) => (
+              <div key={key} className="mr-1 break-words ">
+                #{tag}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className="py-12 font-serif text-gray-600">
