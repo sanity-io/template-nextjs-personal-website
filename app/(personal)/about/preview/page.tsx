@@ -12,7 +12,8 @@ export default async function Preview() {
     return redirect(`/about`)
   }
 
-  const token = previewData().token || null
+  const token = process.env.SANITY_API_WRITE_TOKEN
+  //const token = previewData().token || null
   const about = getPageBySlug('about')
   return (
     <PreviewSuspense fallback={<AboutPage page={await about} />}>
