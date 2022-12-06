@@ -11,21 +11,12 @@ interface ProjectProps {
 export function ProjectListItem(props: ProjectProps) {
   const { project, odd } = props
 
-  if (odd === 1) {
-    return (
-      <div className="flex border-t border-b">
-        <TextBox project={project} />
-        <ImageBox project={project} />
-      </div>
-    )
-  } else {
-    return (
-      <div className="flex">
-        <ImageBox project={project} />
-        <TextBox project={project} />
-      </div>
-    )
-  }
+  return (
+    <div className={`flex ${odd && 'flex-row-reverse border-t border-b'}`}>
+      <ImageBox project={project} />
+      <TextBox project={project} />
+    </div>
+  )
 }
 
 function ImageBox({ project }: { project: ShowcaseProjects }) {
