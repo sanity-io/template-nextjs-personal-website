@@ -64,5 +64,5 @@ export default async function preview(
     previewData.token = token
   }
 
-  return redirectToPreview(res, previewData, '/')
+  return redirectToPreview(res, previewData, '/preview')
 }
