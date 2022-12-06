@@ -2,7 +2,6 @@ import { PortableText } from '@portabletext/react'
 import { ShowcaseProjects } from 'app/(personal)/queries'
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
-import Link from 'next/link'
 
 interface ProjectProps {
   project?: ShowcaseProjects
@@ -11,28 +10,13 @@ interface ProjectProps {
 
 export function ProjectListItem(props: ProjectProps) {
   const { project, odd } = props
-  //Fix slug
-  const slug = project.title
 
-  if (odd === 1) {
-    return (
-      <Link href={`/projects/${slug}`}>
-        <div className="flex border-t border-b">
-          <TextBox project={project} />
-          <ImageBox project={project} />
-        </div>
-      </Link>
-    )
-  } else {
-    return (
-      <Link href={`/projects/${slug}`}>
-        <div className="flex">
-          <ImageBox project={project} />
-          <TextBox project={project} />
-        </div>
-      </Link>
-    )
-  }
+  return (
+    <div className={`flex ${odd && 'flex-row-reverse border-t border-b'}`}>
+      <ImageBox project={project} />
+      <TextBox project={project} />
+    </div>
+  )
 }
 
 function ImageBox({ project }: { project: ShowcaseProjects }) {
