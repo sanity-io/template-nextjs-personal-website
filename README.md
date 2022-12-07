@@ -4,7 +4,7 @@ This starter is a statically generated personal website that uses [Next.js][next
 
 The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. You can use this starter to kick-start a personal website or learn these technologies.
 
-[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy] - NEEDS TO BE UPDATED
+[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy] - IMAGE AND DEMO LINK NEED TO BE UPDATED
 
 ## Features
 
@@ -47,7 +47,6 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 | `sanity.config.ts`                          |  Config file for Sanity Studio                           |
 | `sanity.cli.ts`                             |  Config file for Sanity CLI                              |
 | `/pages/studio/[[...index]].tsx`            |  Where Sanity Studio is mounted                          |
-| `/pages/api/revalidate.ts`                  |  Serverless route for triggering ISR                     |
 | `/pages/api/preview.ts`                     |  Serverless route for triggering Preview mode            |
 | `/schemas`                                  |  Where Sanity Studio gets its content types from         |
 | `/plugins`                                  |  Where the advanced Sanity Studio customization is setup |
@@ -123,7 +122,7 @@ You can remove it by deleting the `IntroTemplate` component in `/components/Inde
 - [How to query content?][sanity-groq]
 - [What is content modelling?][sanity-content-modelling]
 
-[vercel-deploy]: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsanity-io%2Fnextjs-blog-cms-sanity-v3&repository-name=blog-nextjs-sanity&project-name=blog-nextjs-sanity&demo-title=Blog%20with%20Built-in%20Content%20Editing&demo-description=A%20Sanity-powered%20blog%20with%20built-in%20content%20editing%20%26%20instant%20previews&demo-url=https%3A%2F%2Fnextjs-blog.sanity.build%2F%3Futm_source%3Dvercel%26utm_medium%3Dreferral&demo-image=https%3A%2F%2Fuser-images.githubusercontent.com%2F81981%2F197501516-c7c8092d-0305-4abe-afb7-1e896ef7b90a.png&integration-ids=oac_hb2LITYajhRQ0i4QznmKH7gx&external-id=nextjs;template=nextjs-blog-cms-sanity-v3
+[vercel-deploy]: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsanity-io%2Ftemplate-nextjs-personal-website&project-name=personal-website-nextjs-sanity&repository-name=personal-website-nextjs-sanity&demo-title=Personal%20Website%20with%20Built-in%20Content%20Editing&demo-description=A%20Sanity-powered%20personal%20blog%20with%20built-in%20content%20editing%20and%20instant%20previews.&demo-url=https%3A%2F%2Fgoogle.com&demo-image=https%3A%2F%2Fvia.placeholder.com%2F1920x1820%3Ftext%3Dplaceholder&integration-ids=oac_hb2LITYajhRQ0i4QznmKH7gx&external-id=nextjs;template=nextjs-personal-blog-cms-sanity-v3
 [integration]: https://www.sanity.io/docs/vercel-integration?utm_source=github.com&utm_medium=referral&utm_campaign=nextjs-v3vercelstarter
 [`.env.local.example`]: .env.local.example
 [nextjs]: https://github.com/vercel/next.js
