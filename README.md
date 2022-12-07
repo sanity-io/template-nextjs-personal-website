@@ -36,9 +36,9 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 ## Project Overview
 
-| [Personal Website](https://nextjs-blog.sanity.build)                                                                       | [Studio](https://nextjs-blog.sanity.build/studio)                                                                       |
-| -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| ![Personal Website](https://user-images.githubusercontent.com/44635000/197511913-94ea36dd-099d-4dbf-b71f-3335879621c9.png) | ![Sanity Studio](https://user-images.githubusercontent.com/44635000/197511725-b2a2e2e5-287b-41a9-84c6-ec90d37ca480.png) |
+| Personal Website                                                                                                          | Studio                                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| ![Personal Website](https://user-images.githubusercontent.com/6951139/206195014-7fde8132-a937-4f2b-af74-283f15204ce1.png) | ![Sanity Studio](https://user-images.githubusercontent.com/6951139/206196298-f63e0a88-c2dc-4e05-9d1a-d3997650faf5.png) |
 
 ### Important files and folders
 
@@ -122,7 +122,7 @@ You can remove it by deleting the `IntroTemplate` component in `/components/Inde
 - [How to query content?][sanity-groq]
 - [What is content modelling?][sanity-content-modelling]
 
-[vercel-deploy]: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsanity-io%2Ftemplate-nextjs-personal-website&project-name=personal-website-nextjs-sanity&repository-name=personal-website-nextjs-sanity&demo-title=Personal%20Website%20with%20Built-in%20Content%20Editing&demo-description=A%20Sanity-powered%20personal%20blog%20with%20built-in%20content%20editing%20and%20instant%20previews.&demo-url=https%3A%2F%2Fgoogle.com&demo-image=https%3A%2F%2Fvia.placeholder.com%2F1920x1820%3Ftext%3Dplaceholder&integration-ids=oac_hb2LITYajhRQ0i4QznmKH7gx&external-id=nextjs;template=nextjs-personal-blog-cms-sanity-v3
+[vercel-deploy]: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsanity-io%2Ftemplate-nextjs-personal-website&project-name=personal-website-nextjs-sanity&repository-name=personal-website-nextjs-sanity&demo-title=Personal%20Website%20with%20Built-in%20Content%20Editing&demo-description=A%20Sanity-powered%20personal%20website%20with%20built-in%20content%20editing%20and%20instant%20previews.&demo-url=https%3A%2F%2Fgoogle.com&demo-image=https%3A%2F%2Fuser-images.githubusercontent.com%2F6951139%2F206195014-7fde8132-a937-4f2b-af74-283f15204ce1.png&integration-ids=oac_hb2LITYajhRQ0i4QznmKH7gx&external-id=nextjs;template=nextjs-personal-personal-website-cms-sanity-v3
 [integration]: https://www.sanity.io/docs/vercel-integration?utm_source=github.com&utm_medium=referral&utm_campaign=nextjs-v3vercelstarter
 [`.env.local.example`]: .env.local.example
 [nextjs]: https://github.com/vercel/next.js
