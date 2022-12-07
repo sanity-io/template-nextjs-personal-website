@@ -10,7 +10,7 @@ export function HomePage({ home }: { home: HomePagePayload }) {
 
   return (
     <div>
-      <Header centered title={title} description={overview} />
+      {title && <Header centered title={title} description={overview} />}
       {showcaseProjects && showcaseProjects.length > 0 && (
         <div className="mb-20 rounded-md border">
           {showcaseProjects.map((project, key) => (

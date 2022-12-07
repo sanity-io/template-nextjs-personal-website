@@ -14,6 +14,7 @@ export default defineType({
       description: 'This field is the title of your personal website.',
       title: 'Title',
       type: 'string',
+      initialValue: 'Jane Doe',
       validation: (rule) => rule.required(),
     }),
     defineField({
