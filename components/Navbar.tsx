@@ -15,7 +15,7 @@ export function Navbar({ menuItems }: NavbarProps) {
           menuItems.map((menuItem, key) => (
             <Link
               key={key}
-              className={`font-inter  mr-4 hover:text-black dark:hover:text-white ${
+              className={`mr-4  hover:text-black dark:hover:text-white ${
                 menuItem?._type === 'home'
                   ? 'font-semibold text-black dark:text-white'
                   : 'text-gray-600'
