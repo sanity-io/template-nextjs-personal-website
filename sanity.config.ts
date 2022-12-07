@@ -15,7 +15,6 @@ import projectType from 'schemas/documents/project'
 import durationType from 'schemas/objects/duration'
 import timeline from 'schemas/objects/timeline'
 import home from 'schemas/singletons/home'
-import projects from 'schemas/singletons/projects'
 import settings from 'schemas/singletons/settings'
 
 const title =
@@ -33,7 +32,6 @@ export default defineConfig({
       // Singletons
       home,
       settings,
-      projects,
       // Documents
       durationType,
       page,
@@ -44,7 +42,7 @@ export default defineConfig({
   },
   plugins: [
     deskTool({
-      structure: pageStructure([home, projects, settings]),
+      structure: pageStructure([home, settings]),
       // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
       defaultDocumentNode: previewDocumentNode({ apiVersion, previewSecretId }),
     }),

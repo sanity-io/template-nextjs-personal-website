@@ -28,9 +28,6 @@ export default defineType({
             {
               type: 'project',
             },
-            {
-              type: 'projects',
-            },
           ],
         },
       ],

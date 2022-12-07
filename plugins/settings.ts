@@ -33,7 +33,7 @@ export const singletonPlugin = (types: string[]) => {
 }
 
 // The StructureResolver is how we're changing the DeskTool structure to linking to document (named Singleton)
-// like how "Projects" is handled.
+// like how "Home" is handled.
 export const pageStructure = (
   typeDefArray: DocumentDefinition[]
 ): StructureResolver => {
