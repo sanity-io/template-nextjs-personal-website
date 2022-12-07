@@ -78,7 +78,6 @@ const Iframe = memo(function Iframe(
     url.searchParams.set('secret', secret)
   }
 
-  console.log(url)
   return (
     <iframe
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}

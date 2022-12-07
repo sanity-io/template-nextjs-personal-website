@@ -1,4 +1,4 @@
-import { HomePage } from '../../components/HomePage'
+import { HomePage } from '../../components/home/HomePage'
 import { getHome } from '../../lib/sanity.client'
 
 export default async function IndexRoute() {

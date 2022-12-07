@@ -1,7 +1,7 @@
 import { previewData } from 'next/headers'
 
-import { Page } from '../../../components/Page'
-import { PagePreview } from '../../../components/PagePreview'
+import { Page } from '../../../components/page/Page'
+import { PagePreview } from '../../../components/page/PagePreview'
 import { PreviewSuspense } from '../../../components/PreviewSuspense'
 import { getPageBySlug } from '../../../lib/sanity.client'
 

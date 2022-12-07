@@ -1,9 +1,9 @@
 import IntroTemplate from 'intro-template'
 import Link from 'next/link'
 
-import type { HomePagePayload } from '../types'
-import { Header } from './Header'
-import { ProjectListItem } from './ProjectListItem'
+import type { HomePagePayload } from '../../types'
+import { Header } from '../Header'
+import { ProjectListItem } from '../ProjectListItem'
 
 export function HomePage({ home }: { home: HomePagePayload }) {
   const { title, overview, showcaseProjects } = home
