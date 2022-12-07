@@ -107,7 +107,7 @@ export const settingsQuery = groq`
       "href": "/"
     },
     (_type == 'page') => {    
-      "href": "/page/" + slug.current      
+      "href": slug.current      
     },  
     (_type == 'project') => {    
       "href": "/project/" + slug.current      
