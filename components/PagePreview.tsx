@@ -6,9 +6,15 @@ import { pagesBySlugQuery } from '../lib/sanity.queries'
 import type { PagePayload } from '../types'
 import { Page } from './Page'
 
-export function AboutPagePreview({ token }: { token: null | string }) {
+export function PagePreview({
+  token,
+  slug,
+}: {
+  token: null | string
+  slug: string
+}) {
   const about: PagePayload = usePreview(token, pagesBySlugQuery, {
-    slug: 'about',
+    slug: slug,
   })
 
   return <Page page={about} />

@@ -1,9 +1,9 @@
 import { previewData } from 'next/headers'
 
-import { Page } from '../../../../components/Page'
-import { AboutPagePreview } from '../../../../components/PagePreview'
-import { PreviewSuspense } from '../../../../components/PreviewSuspense'
-import { getPageBySlug } from '../../../../lib/sanity.client'
+import { Page } from '../../../components/Page'
+import { PagePreview } from '../../../components/PagePreview'
+import { PreviewSuspense } from '../../../components/PreviewSuspense'
+import { getPageBySlug } from '../../../lib/sanity.client'
 
 export default async function PageSlugRoute({
   params,
@@ -18,7 +18,7 @@ export default async function PageSlugRoute({
     <>
       {token ? (
         <PreviewSuspense fallback={<Page page={about} />}>
-          <AboutPagePreview token={token} />
+          <PagePreview token={token} slug={params.slug} />
         </PreviewSuspense>
       ) : (
         <Page page={about} />
