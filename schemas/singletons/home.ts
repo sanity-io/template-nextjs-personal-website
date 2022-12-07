@@ -15,7 +15,6 @@ export default defineType({
       description: 'This field is the title of your personal website.',
       title: 'Title',
       type: 'string',
-      initialValue: demo.title,
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -37,7 +36,6 @@ export default defineType({
           type: 'block',
         }),
       ],
-      initialValue: demo.description,
       validation: (rule) => rule.max(155).required(),
     }),
     defineField({
