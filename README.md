@@ -4,7 +4,7 @@ This starter is a statically generated personal website that uses [Next.js][next
 
 The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. You can use this starter to kick-start a personal website or learn these technologies.
 
-[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy] - IMAGE AND DEMO LINK NEED TO BE UPDATED
+[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
 
 ## Features
 
@@ -59,7 +59,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 Use the Deploy Button below. It will let you deploy the starter using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-sanity-example) as well as connect it to your Sanity Content Lake using [the Sanity Vercel Integration][integration].
 
-[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy] - IMAGE AND DEMO LINK NEED TO BE UPDATED
+[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
 
 ### Step 2. Set up the project locally
 
