@@ -7,11 +7,7 @@ export default async function IndexRoute({
 }: {
   children: React.ReactNode
 }) {
-  const settings = await getSettings()
-
-  if (!settings) {
-    return
-  }
+  const settings = (await getSettings()) || { menuItems: [], footer: [] }
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">
