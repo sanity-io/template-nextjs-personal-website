@@ -103,16 +103,8 @@ export const settingsQuery = groq`
   footer,
   menuItems[]->{
     _type,
-    (_type == 'home') => {    
-      "href": "/"
-    },
-    (_type == 'page') => {    
-      "href": "/page/" + slug.current      
-    },  
-    (_type == 'project') => {    
-      "href": "/project/" + slug.current      
-    },    
     content,
+    "slug": slug.current,
     title
   }
 }

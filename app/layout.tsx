@@ -11,7 +11,8 @@ const serif = PT_Serif({
 const sans = Inter({
   variable: '--font-sans',
   subsets: ['latin'],
-  weight: ['500', '700', '800'],
+  // @todo: understand why extrabold (800) isn't being respected when explicitly specified in this weight array
+  // weight: ['500', '700', '800'],
 })
 const mono = IBM_Plex_Mono({
   variable: '--font-mono',

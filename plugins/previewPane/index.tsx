@@ -5,8 +5,8 @@
 // https://www.sanity.io/docs/structure-builder-reference
 
 import { DefaultDocumentNodeResolver } from 'sanity/desk'
-import page from 'schemas/documents/page'
 
+import { PREVIEWABLE_DOCUMENT_TYPES } from '../../sanity.config'
 import { PreviewPane } from './PreviewPane'
 
 export const previewDocumentNode = ({
@@ -17,23 +17,23 @@ export const previewDocumentNode = ({
   previewSecretId: `${string}.${string}`
 }): DefaultDocumentNodeResolver => {
   return (S, { schemaType }) => {
-    switch (schemaType) {
-      case page.name:
-        return S.document().views([
-          S.view.form(),
-          S.view
-            .component((props) => (
-              <PreviewPane
-                previewSecretId={previewSecretId}
-                apiVersion={apiVersion}
-                {...props}
-              />
-            ))
-            .title('Preview'),
-        ])
-
-      default:
-        return null
+    if (PREVIEWABLE_DOCUMENT_TYPES.includes(schemaType)) {
+      return S.document().views([
+        // Default form view
+        S.view.form(),
+        // Preview
+        S.view
+          .component((props) => (
+            <PreviewPane
+              previewSecretId={previewSecretId}
+              apiVersion={apiVersion}
+              {...props}
+            />
+          ))
+          .title('Preview'),
+      ])
     }
+
+    return null
   }
 }

@@ -1,6 +1,6 @@
-'use client'
 import Link from 'next/link'
 
+import { resolveHref } from '../lib/sanity.links'
 import { MenuItem } from '../types'
 
 interface NavbarProps {
@@ -15,12 +15,12 @@ export function Navbar({ menuItems }: NavbarProps) {
           menuItems.map((menuItem, key) => (
             <Link
               key={key}
-              className={`font-inter  mr-4 hover:text-black dark:hover:text-white ${
+              className={`mr-4  hover:text-black dark:hover:text-white ${
                 menuItem?._type === 'home'
                   ? 'font-semibold text-black dark:text-white'
                   : 'text-gray-600'
               }`}
-              href={menuItem?.href}
+              href={resolveHref(menuItem?._type, menuItem?.slug)}
             >
               {menuItem.title}
             </Link>
@@ -29,5 +29,3 @@ export function Navbar({ menuItems }: NavbarProps) {
     </div>
   )
 }
-
-function resolveHref(menuItem: MenuItem) {}

@@ -7,14 +7,17 @@ export type PreviewProps = ComponentProps<UserViewComponent>
  * This component is responsible for rendering a preview of a post inside the Studio.
  */
 import { getSecret } from 'plugins/productionUrl/utils'
-import React, { memo, startTransition, useEffect, useState } from 'react'
+import { memo } from 'react'
 import { useClient } from 'sanity'
 import { suspend } from 'suspend-react'
 
+import { resolveHref } from '../../lib/sanity.links'
+
 interface IframeProps {
-  slug?: string
-  previewSecretId: `${string}.${string}`
   apiVersion: string
+  documentType: string
+  previewSecretId: `${string}.${string}`
+  slug?: string
 }
 
 export function PreviewPane(
@@ -25,9 +28,12 @@ export function PreviewPane(
 ) {
   const { document, previewSecretId, apiVersion } = props
   const { displayed } = document
-  const slug = (displayed?.slug as any)?.current
+  const documentType = displayed?._type
+  let slug = (displayed?.slug as any)?.current
 
-  if (!slug) {
+  const href = resolveHref(documentType, displayed?.slug as string)
+
+  if (!href) {
     return (
       <Card tone="primary" margin={5} padding={6}>
         <Text align="center">
@@ -45,6 +51,7 @@ export function PreviewPane(
       <Suspense fallback={null}>
         <Iframe
           apiVersion={apiVersion}
+          documentType={documentType}
           previewSecretId={previewSecretId}
           slug={slug}
         />
@@ -58,7 +65,7 @@ const fetchSecret = Symbol('preview.secret')
 const Iframe = memo(function Iframe(
   props: Omit<IframeProps, 'slug'> & Required<Pick<IframeProps, 'slug'>>
 ) {
-  const { apiVersion, previewSecretId, slug } = props
+  const { apiVersion, documentType, previewSecretId, slug } = props
   const client = useClient({ apiVersion })
 
   const secret = suspend(
@@ -69,6 +76,7 @@ const Iframe = memo(function Iframe(
   )
 
   const url = new URL('/api/preview', location.origin)
+  url.searchParams.set('documentType', documentType)
   url.searchParams.set('slug', slug)
   if (secret) {
     url.searchParams.set('secret', secret)

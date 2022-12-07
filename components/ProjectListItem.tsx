@@ -45,9 +45,7 @@ function ImageBox({ project }: { project: ShowcaseProjects }) {
 function TextBox({ project }: { project: ShowcaseProjects }) {
   return (
     <div className="relative z-0 mx-5">
-      <div className="font-inter mb-2 mt-4 text-2xl font-extrabold">
-        {project.title}
-      </div>
+      <div className="mb-2 mt-4 text-2xl font-extrabold">{project.title}</div>
       <div className="font-serif text-gray-500">
         <PortableText value={project.overview} />
       </div>

@@ -8,6 +8,7 @@ export interface MenuItem {
   content?: any[]
   href?: string
   overview?: any[]
+  slug?: string
   title?: string
 }
 

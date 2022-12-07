@@ -3,8 +3,8 @@ import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { ProjectPayload } from '../types'
-import { Header } from './Header'
+import type { ProjectPayload } from '../../types'
+import { Header } from '../Header'
 
 export function ProjectPage({ project }: { project: ProjectPayload }) {
   const startYear = new Date(project?.duration?.start).getFullYear()
@@ -17,26 +17,30 @@ export function ProjectPage({ project }: { project: ProjectPayload }) {
       <Header title={project.title} description={project.overview} />
       <div className="grid grid-cols-4 rounded-md border">
         <div className="col-span-4">
-          <Image
-            className="h-auto w-full rounded-md"
-            alt={`Cover image for ${project.title}`}
-            width={3500}
-            height={2000}
-            sizes="100vw"
-            src={
-              project.coverImage?.asset?._ref &&
-              urlForImage(project.coverImage)
-                .height(2000)
-                .width(3500)
-                .fit('crop')
-                .url()
-            }
-          />
+          {project.coverImage?.asset?._ref ? (
+            <Image
+              className="h-auto w-full rounded-md"
+              alt={`Cover image for ${project.title}`}
+              width={3500}
+              height={2000}
+              sizes="100vw"
+              src={
+                project.coverImage?.asset?._ref &&
+                urlForImage(project.coverImage)
+                  .height(2000)
+                  .width(3500)
+                  .fit('crop')
+                  .url()
+              }
+            />
+          ) : (
+            <div className="bg-gray-200" style={{ paddingTop: '50%' }} />
+          )}
         </div>
 
         <div className="border-r p-4">
           <div className="text-sm">Duration</div>
-          {startYear && (
+          {Boolean(startYear && endYear) && (
             <div className="text-lg">{`${startYear} -  ${endYear}`}</div>
           )}
         </div>

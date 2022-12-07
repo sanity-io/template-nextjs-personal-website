@@ -42,7 +42,7 @@ export const productionUrl = definePlugin<{
         }
 
         if (types.has(document._type)) {
-          url.searchParams.set('type', document._type)
+          url.searchParams.set('documentType', document._type)
           console.log('Open preview URL', url.toString())
           return url.toString()
         }
