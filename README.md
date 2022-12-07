@@ -14,7 +14,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - Side-by-side instant content preview that works across your whole site
 - Support for block content and the most advanced custom fields capability in the industry
 - Webhook-triggered Incremental Static Revalidation; no need to wait for a rebuild to publish new content
-- Free and boosted Sanity project with unlimited admin users, free content updates, and pay-as-you-go for API overages
+- Free Sanity project with unlimited admin users, free content updates, and pay-as-you-go for API overages
 - A project with starter-friendly and not too heavy-handed TypeScript and Tailwind.css
 
 ## Table of Contents
@@ -59,7 +59,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 Use the Deploy Button below. It will let you deploy the starter using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-sanity-example) as well as connect it to your Sanity Content Lake using [the Sanity Vercel Integration][integration].
 
-[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
+[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy] - IMAGE AND DEMO LINK NEED TO BE UPDATED
 
 ### Step 2. Set up the project locally
 
