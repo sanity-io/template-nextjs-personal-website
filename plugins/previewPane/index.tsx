@@ -6,6 +6,7 @@
 
 import { DefaultDocumentNodeResolver } from 'sanity/desk'
 import page from 'schemas/documents/page'
+import project from 'schemas/documents/project'
 
 import { PreviewPane } from './PreviewPane'
 
@@ -19,6 +20,19 @@ export const previewDocumentNode = ({
   return (S, { schemaType }) => {
     switch (schemaType) {
       case page.name:
+        return S.document().views([
+          S.view.form(),
+          S.view
+            .component((props) => (
+              <PreviewPane
+                previewSecretId={previewSecretId}
+                apiVersion={apiVersion}
+                {...props}
+              />
+            ))
+            .title('Preview'),
+        ])
+      case project.name:
         return S.document().views([
           S.view.form(),
           S.view

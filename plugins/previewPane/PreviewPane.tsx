@@ -25,7 +25,7 @@ export function PreviewPane(
 ) {
   const { document, previewSecretId, apiVersion } = props
   const { displayed } = document
-  const slug = (displayed?.slug as any)?.current
+  let slug = (displayed?.slug as any)?.current
 
   if (!slug) {
     return (
@@ -35,6 +35,10 @@ export function PreviewPane(
         </Text>
       </Card>
     )
+  }
+
+  if (displayed._type === 'project') {
+    slug = `project/${slug}`
   }
 
   return (
@@ -74,6 +78,7 @@ const Iframe = memo(function Iframe(
     url.searchParams.set('secret', secret)
   }
 
+  console.log(url)
   return (
     <iframe
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}
