@@ -5,6 +5,10 @@
 import { type DocumentDefinition } from 'sanity'
 import { type StructureResolver } from 'sanity/desk'
 
+import { apiVersion, previewSecretId } from '../lib/sanity.api'
+import { PREVIEWABLE_DOCUMENT_TYPES } from '../sanity.config'
+import { PreviewPane } from './previewPane/PreviewPane'
+
 export const singletonPlugin = (types: string[]) => {
   return {
     name: 'singletonPlugin',
@@ -49,6 +53,25 @@ export const pageStructure = (
             .id(typeDef.name)
             .schemaType(typeDef.name)
             .documentId(typeDef.name)
+            .views([
+              // @todo: consider DRYing with `plugins/previewPane/index.tsx`
+              // Default form view
+              S.view.form(),
+              // Preview
+              ...(PREVIEWABLE_DOCUMENT_TYPES.includes(typeDef.name)
+                ? [
+                    S.view
+                      .component((props) => (
+                        <PreviewPane
+                          previewSecretId={previewSecretId}
+                          apiVersion={apiVersion}
+                          {...props}
+                        />
+                      ))
+                      .title('Preview'),
+                  ]
+                : []),
+            ])
         )
     })
 

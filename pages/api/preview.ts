@@ -10,6 +10,8 @@ import type { PageConfig } from 'next/types'
 import { createClient } from 'next-sanity'
 import { getSecret } from 'plugins/productionUrl/utils'
 
+import { resolveHref } from '../../lib/sanity.links'
+
 // res.setPreviewData only exists in the nodejs runtime, setting the config here allows changing the global runtime
 // option in next.config.mjs without breaking preview mode
 export const config: PageConfig = { runtime: 'nodejs' }
@@ -68,5 +70,12 @@ export default async function preview(
     previewData.token = token
   }
 
-  return redirectToPreview(res, previewData, `/${req.query.slug}`)
+  const href = resolveHref(
+    req.query.documentType as string,
+    req.query.slug as string
+  )
+
+  console.log('href', href)
+
+  return redirectToPreview(res, previewData, href)
 }
