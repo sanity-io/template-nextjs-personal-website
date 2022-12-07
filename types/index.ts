@@ -1,8 +1,3 @@
-export interface Author {
-  name?: string
-  picture?: any
-}
-
 export interface MenuItem {
   _type: string
   content?: any[]
@@ -20,17 +15,6 @@ export interface MilestoneItem {
     start?: string
     end?: string
   }
-}
-
-export interface Post {
-  _id: string
-  title?: string
-  coverImage?: any
-  date?: string
-  excerpt?: string
-  author?: Author
-  slug?: string
-  content?: any
 }
 
 export interface Settings {

@@ -9,7 +9,7 @@ import type {
   SettingsPayload,
 } from '../types'
 import {
-  homeQuery,
+  homePageQuery,
   pagesBySlugQuery,
   pagesQuery,
   projectBySlugQuery,
@@ -34,7 +34,7 @@ export async function getHome(
       useCdn,
       token: token || undefined,
     })
-    return await client.fetch(homeQuery)
+    return await client.fetch(homePageQuery)
   }
   return undefined
 }

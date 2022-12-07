@@ -22,8 +22,8 @@ export const usePreview = definePreview({
 
   // Another way to get around the `documentLimit` is to set `includeTypes` to just the document types that are used in preview mode.
   // You can run the `array::unique(*._type)` GROQ query in `Vision` in your Studio to see how many types are in your dataset.
-  // Just be careful that you don't forget the document types you might be using in strong references, such as `author` or `sanity.imageAsset`
-  // includeTypes: ['settings', 'post', 'author', 'sanity.imageAsset'],
+  // Just be careful that you don't forget the document types you might be using in strong references, such as `project` or `sanity.imageAsset`
+  // includeTypes: ['settings', 'project', 'page', 'sanity.imageAsset'],
 
   // If you have a lot of people in your Studio that are editing the content you're previewing
   // you could end up with a very high number of React rerenders. Normally this isn't a problem,
