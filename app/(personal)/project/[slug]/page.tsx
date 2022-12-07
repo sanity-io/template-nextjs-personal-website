@@ -1,8 +1,8 @@
-import { ProjectPreview } from 'components/ProjectPreview'
+import { ProjectPreview } from 'components/project/ProjectPreview'
 import { previewData } from 'next/headers'
 
 import { PreviewSuspense } from '../../../../components/PreviewSuspense'
-import { ProjectPage } from '../../../../components/ProjectPage'
+import { ProjectPage } from '../../../../components/project/ProjectPage'
 import { getProjectBySlug } from '../../../../lib/sanity.client'
 
 export default async function ProjectSlugRoute({

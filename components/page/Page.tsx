@@ -1,8 +1,8 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 
-import type { PagePayload } from '../types'
-import { Header } from './Header'
-import { TimelineSection } from './TimelineSection'
+import type { PagePayload } from '../../types'
+import { Header } from '../Header'
+import { TimelineSection } from '../TimelineSection'
 
 interface PageProps {
   page?: PagePayload
