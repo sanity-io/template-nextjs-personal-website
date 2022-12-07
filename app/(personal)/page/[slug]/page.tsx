@@ -12,15 +12,16 @@ export default async function PageSlugRoute({
 }) {
   const { slug } = params
   const token = previewData().token || null
+  const about = await getPageBySlug(slug)
 
   return (
     <>
       {token ? (
-        <PreviewSuspense fallback={<Page page={await getPageBySlug(slug)} />}>
+        <PreviewSuspense fallback={<Page page={about} />}>
           <AboutPagePreview token={token} />
         </PreviewSuspense>
       ) : (
-        <Page page={await getPageBySlug(slug)} />
+        <Page page={about} />
       )}
     </>
   )
