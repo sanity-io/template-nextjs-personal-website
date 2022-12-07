@@ -1,5 +1,27 @@
 import { groq } from 'next-sanity'
 
+const homeFields = groq`
+  _id, 
+  footer,
+  overview, 
+  showcaseProjects[]->{
+    coverImage, 
+    overview, 
+    slug,
+    tags, 
+    title, 
+  }, 
+  title, 
+`
+
+const pageFields = groq`
+  _id,
+  content,
+  overview,
+  slug,
+  title,
+`
+
 const postFields = groq`
   _id,
   title,
@@ -7,15 +29,47 @@ const postFields = groq`
   excerpt,
   coverImage,
   "slug": slug.current,
-  "author": author->{name, picture},
+  "author": author->{
+    name, 
+    picture
+  },
 `
 
-export const homeQuery = groq`*[_type == "home"][0]`
+const projectFields = groq`
+  _id,
+  title,
+  "slug": slug.current,
+  overview,
+  coverImage,
+  description,
+  duration, 
+  client, 
+  site, 
+  tags
+`
+
+export const homeQuery = groq`
+*[_type == "home"][0]{${homeFields}}
+`
 
 export const indexQuery = groq`
 *[_type == "post"] | order(date desc, _updatedAt desc) {
   ${postFields}
 }`
+
+export const pagesQuery = groq`
+*[_type == "page"]
+`
+
+export const pageSlugsQuery = groq`
+*[_type == "page" && defined(slug.current)][].slug.current
+`
+
+export const pagesBySlugQuery = groq`
+*[_type == "page" && slug.current == $slug][0] {
+  ${pageFields}
+}
+`
 
 export const postAndMoreStoriesQuery = groq`
 {
@@ -38,27 +92,28 @@ export const postBySlugQuery = groq`
   ${postFields}
 }
 `
-
-export interface Author {
-  name?: string
-  picture?: any
+export const projectBySlugQuery = groq`
+*[_type == "project" && slug.current == $slug][0] {
+  ${projectFields}
 }
+`
 
-export interface Post {
-  _id: string
-  title?: string
-  coverImage?: any
-  date?: string
-  excerpt?: string
-  author?: Author
-  slug?: string
-  content?: any
-}
-
-export interface Settings {
-  title?: string
-  description?: any[]
-  ogImage?: {
-    title?: string
+export const settingsQuery = groq`
+*[_type == "settings"][0]{
+  footer,
+  menuItems[]->{
+    _type,
+    (_type == 'home') => {    
+      "href": "/"
+    },
+    (_type == 'page') => {    
+      "href": "/page/" + slug.current      
+    },  
+    (_type == 'project') => {    
+      "href": "/project/" + slug.current      
+    },    
+    content,
+    title
   }
 }
+`

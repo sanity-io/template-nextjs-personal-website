@@ -3,10 +3,10 @@ import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Project } from '../[slug]/queries'
+import type { ProjectPayload } from '../types'
 import { Header } from './Header'
 
-export function Project({ project }: { project: Project }) {
+export function ProjectPage({ project }: { project: ProjectPayload }) {
   const startYear = new Date(project?.duration?.start).getFullYear()
   const endYear = project?.duration?.end
     ? new Date(project?.duration?.end).getFullYear()

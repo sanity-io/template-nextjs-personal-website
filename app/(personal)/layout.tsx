@@ -1,49 +1,18 @@
-import 'tailwindcss/tailwind.css'
+import { Footer } from '../../components/Footer'
+import { Navbar } from '../../components/Navbar'
+import { getSettings } from '../../lib/sanity.client'
 
-import { IBM_Plex_Mono, Inter, PT_Serif } from '@next/font/google'
-
-import { Footer, Navbar } from './components'
-import { Providers } from './providers'
-import { getHome, getSettings } from './queries'
-
-const serif = PT_Serif({
-  variable: '--font-serif',
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  weight: ['400', '700'],
-})
-const sans = Inter({
-  variable: '--font-sans',
-  subsets: ['latin'],
-  weight: ['500', '700', '800'],
-})
-const mono = IBM_Plex_Mono({
-  variable: '--font-mono',
-  subsets: ['latin'],
-  weight: ['500', '700'],
-})
-
-export default async function RootLayout({
+export default async function IndexRoute({
   children,
 }: {
   children: React.ReactNode
 }) {
   const { menuItems, footer } = await getSettings()
-
   return (
-    <html
-      lang="en"
-      className={`${mono.variable} ${sans.variable} ${serif.variable}`}
-    >
-      <head />
-      <body className="flex min-h-screen flex-col bg-white text-black dark:bg-black dark:text-white">
-        <Providers>
-          <Navbar menu={menuItems} />
-          <div className="mt-12 flex-grow px-32">{children}</div>
-
-          <Footer footer={footer} />
-        </Providers>
-      </body>
-    </html>
+    <div className="flex min-h-screen flex-col bg-white text-black">
+      <Navbar menuItems={menuItems} />
+      <div className="mt-12 flex-grow px-32">{children}</div>
+      <Footer footer={footer} />
+    </div>
   )
 }

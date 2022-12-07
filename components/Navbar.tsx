@@ -1,34 +1,33 @@
 'use client'
-import { Page } from 'app/(personal)/queries'
 import Link from 'next/link'
 
-import { ThemeToggle } from './ThemeToggle'
+import { MenuItem } from '../types'
 
-export function Navbar({ menu }: { menu: Page[] }) {
+interface NavbarProps {
+  menuItems: MenuItem[]
+}
+
+export function Navbar({ menuItems }: NavbarProps) {
   return (
     <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-32 py-5 dark:bg-black">
       <div>
-        {menu &&
-          menu.map((menuItem, key) => (
+        {menuItems &&
+          menuItems.map((menuItem, key) => (
             <Link
               key={key}
               className={`font-inter  mr-4 hover:text-black dark:hover:text-white ${
-                menuItem.slug.current === 'home'
+                menuItem?._type === 'home'
                   ? 'font-semibold text-black dark:text-white'
                   : 'text-gray-600'
               }`}
-              href={`/${
-                menuItem.slug.current === 'home' ? '' : menuItem.slug.current
-              }`}
+              href={menuItem?.href}
             >
               {menuItem.title}
             </Link>
           ))}
       </div>
-
-      <div className="px-3 text-lg">
-        <ThemeToggle />
-      </div>
     </div>
   )
 }
+
+function resolveHref(menuItem: MenuItem) {}

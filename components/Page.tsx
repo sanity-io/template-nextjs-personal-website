@@ -1,14 +1,14 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react'
-import { Page } from 'app/(personal)/queries'
 
-import { Header } from '../components'
-import { TimelineSection } from '../components/timeline/timeline-section'
+import type { PagePayload } from '../types'
+import { Header } from './Header'
+import { TimelineSection } from './TimelineSection'
 
-interface AboutProps {
-  page?: Page
+interface PageProps {
+  page?: PagePayload
 }
 
-export function AboutPage(props: AboutProps) {
+export function Page(props: PageProps) {
   const { page } = props
   const { title, overview, content } = page || {}
 
@@ -24,7 +24,7 @@ export function AboutPage(props: AboutProps) {
   return (
     <div>
       <Header title={title} description={overview} />
-      {<PortableText value={content} components={components} />}
+      <PortableText value={content} components={components} />
     </div>
   )
 }
