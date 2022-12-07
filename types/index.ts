@@ -54,7 +54,6 @@ export interface HomePagePayload {
   title?: string
   overview?: any[]
   showcaseProjects?: ShowcaseProjects[]
-  footer?: any[]
 }
 
 export interface PagePayload {

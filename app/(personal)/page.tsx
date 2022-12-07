@@ -2,7 +2,12 @@ import { HomePage } from '../../components/HomePage'
 import { getHome } from '../../lib/sanity.client'
 
 export default async function IndexRoute() {
-  return <HomePage home={await getHome()} />
+  const home = (await getHome()) || {
+    title: '',
+    overview: [],
+    showcaseProjects: [],
+  }
+  return <HomePage home={home} />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`
