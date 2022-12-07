@@ -1,4 +1,5 @@
 import { HomeIcon } from '@sanity/icons'
+import * as demo from 'lib/demo.data'
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
@@ -14,7 +15,7 @@ export default defineType({
       description: 'This field is the title of your personal website.',
       title: 'Title',
       type: 'string',
-      initialValue: 'Jane Doe',
+      initialValue: demo.title,
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -36,6 +37,7 @@ export default defineType({
           type: 'block',
         }),
       ],
+      initialValue: demo.description,
       validation: (rule) => rule.max(155).required(),
     }),
     defineField({
