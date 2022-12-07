@@ -75,7 +75,5 @@ export default async function preview(
     req.query.slug as string
   )
 
-  console.log('href', href)
-
   return redirectToPreview(res, previewData, href)
 }
