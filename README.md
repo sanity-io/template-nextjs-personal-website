@@ -116,10 +116,6 @@ In case of any issues or questions, you can post:
 
 You can remove it by deleting the `IntroTemplate` component in `/components/IndexPage.tsx`.
 
-### How can I set up Incremental Static Revalidation?
-
-Go to the serverless function code in `/pages/api/revalidate.ts`. In the code comments, you'll find instructions for how to set up [ISR][vercel-isr].
-
 ## Next steps
 
 - [Join our Slack community to ask questions and get help][sanity-community]
@@ -142,6 +138,5 @@ Go to the serverless function code in `/pages/api/revalidate.ts`. In the code co
 [sanity-webhooks]: https://www.sanity.io/docs/webhooks?utm_source=github.com&utm_medium=referral&utm_campaign=nextjs-v3vercelstarter
 [localhost-3000]: http://localhost:3000
 [localhost-3000-studio]: http://localhost:3000/studio
-[vercel-isr]: https://nextjs.org/blog/next-12-1#on-demand-incremental-static-regeneration-beta
 [vercel]: https://vercel.com
 [vercel-github]: https://github.com/vercel/next.js/discussions
