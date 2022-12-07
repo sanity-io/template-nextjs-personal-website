@@ -1,11 +1,11 @@
-'use client'
 import IntroTemplate from 'intro-template'
 import Link from 'next/link'
 
-import { Header, ProjectListItem } from './components'
-import { Home } from './queries'
+import type { HomePagePayload } from '../types'
+import { Header } from './Header'
+import { ProjectListItem } from './ProjectListItem'
 
-export function HomePage({ home }: { home: Home }) {
+export function HomePage({ home }: { home: HomePagePayload }) {
   const { title, overview, showcaseProjects } = home
 
   return (
@@ -14,7 +14,7 @@ export function HomePage({ home }: { home: Home }) {
       {showcaseProjects && showcaseProjects.length > 0 && (
         <div className="mb-20 rounded-md border">
           {showcaseProjects.map((project, key) => (
-            <Link key={key} href={`/${project.slug.current}`}>
+            <Link key={key} href={`/project/${project.slug.current}`}>
               <ProjectListItem project={project} odd={key % 2} />
             </Link>
           ))}

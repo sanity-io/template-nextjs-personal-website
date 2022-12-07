@@ -1,4 +1,4 @@
-import { MilestoneItem } from 'app/(personal)/about/queries'
+import type { MilestoneItem } from '../types'
 
 export function TimelineItem({
   isLast,
@@ -8,8 +8,8 @@ export function TimelineItem({
   milestone: MilestoneItem
 }) {
   const { title, description, tags, duration } = milestone
-  const startYear = new Date(duration.start).getFullYear()
-  const endYear = duration.end ? new Date(duration.end).getFullYear() : 'Now'
+  const startYear = new Date(duration?.start).getFullYear()
+  const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
 
   return (
     <div className={`flex min-h-[200px] ${!isLast && 'pb-2'}`}>
@@ -23,7 +23,7 @@ export function TimelineItem({
       <div className="flex-initial pl-4">
         <div className="text-black dark:text-white">{title}</div>
         <div className="text-sm text-gray-600 ">
-          {tags.map((tag, key) => (
+          {tags?.map((tag, key) => (
             <span key={key}>
               {tag}
               <span className="mx-1">●</span>

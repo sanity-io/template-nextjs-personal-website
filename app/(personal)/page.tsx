@@ -1,9 +1,8 @@
-import { HomePage } from './HomePage'
-import { getHome } from './queries'
+import { HomePage } from '../../components/HomePage'
+import { getHome } from '../../lib/sanity.client'
 
-export default async function Home() {
+export default async function IndexRoute() {
   const home = await getHome()
-
   return <HomePage home={home} />
 }
 
