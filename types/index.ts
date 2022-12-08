@@ -7,21 +7,22 @@ export interface MenuItem {
 }
 
 export interface MilestoneItem {
-  title?: string
   description?: any[]
-  tags?: string[]
   duration?: {
     start?: string
     end?: string
   }
+  image?: Image
+  tags?: string[]
+  title?: string
 }
 
 export interface Settings {
-  title?: string
   description?: any[]
   ogImage?: {
     title?: string
   }
+  title?: string
 }
 
 export interface ShowcaseProject {

@@ -21,6 +21,9 @@ export function SiteMeta({
     ...(baseTitle ? [baseTitle] : []),
   ].join(' | ')
 
+  const imageUrl =
+    image && urlForImage(image)?.width(1200).height(627).fit('crop').url()
+
   return (
     <>
       <title>{metaTitle || demo.title}</title>
@@ -50,12 +53,7 @@ export function SiteMeta({
       {description && (
         <meta key="description" name="description" content={description} />
       )}
-      {image?.asset?._ref && (
-        <meta
-          property="og:image"
-          content={urlForImage(image).width(1200).height(627).fit('crop').url()}
-        />
-      )}
+      {imageUrl && <meta property="og:image" content={imageUrl} />}
     </>
   )
 }

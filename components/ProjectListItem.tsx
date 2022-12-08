@@ -31,7 +31,11 @@ export function ProjectListItem(props: ProjectProps) {
 
 // @todo: consider a generic image component
 function ImageBox({ project }: { project: ShowcaseProject }) {
-  if (!project?.coverImage) {
+  const imageUrl =
+    project.coverImage &&
+    urlForImage(project.coverImage)?.height(2000).width(3500).fit('crop').url()
+
+  if (!imageUrl) {
     return null
   }
 
@@ -42,11 +46,7 @@ function ImageBox({ project }: { project: ShowcaseProject }) {
       width={3500}
       height={2000}
       sizes="100vw"
-      src={urlForImage(project.coverImage)
-        .height(2000)
-        .width(3500)
-        .fit('crop')
-        .url()}
+      src={imageUrl}
     />
   )
 }

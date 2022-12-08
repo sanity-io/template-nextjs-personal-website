@@ -32,27 +32,24 @@ export function ProjectPage({
   const startYear = new Date(duration?.start).getFullYear()
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
+  const imageUrl =
+    coverImage &&
+    urlForImage(coverImage)?.height(2000).width(3500).fit('crop').url()
+
   return (
     <div>
       <Header title={title} description={overview} />
 
       <div className="grid grid-cols-4 rounded-md border">
         <div className="col-span-4">
-          {coverImage?.asset?._ref ? (
+          {imageUrl ? (
             <Image
               className="h-auto w-full rounded-md"
               alt={`Cover image for ${title}`}
               width={3500}
               height={2000}
               sizes="100vw"
-              src={
-                coverImage?.asset?._ref &&
-                urlForImage(coverImage)
-                  .height(2000)
-                  .width(3500)
-                  .fit('crop')
-                  .url()
-              }
+              src={imageUrl}
             />
           ) : (
             <div className="bg-gray-200" style={{ paddingTop: '50%' }} />

@@ -13,6 +13,7 @@ import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import page from 'schemas/documents/page'
 import project from 'schemas/documents/project'
 import duration from 'schemas/objects/duration'
+import milestone from 'schemas/objects/milestone'
 import timeline from 'schemas/objects/timeline'
 import home from 'schemas/singletons/home'
 import settings from 'schemas/singletons/settings'
@@ -43,6 +44,7 @@ export default defineConfig({
       page,
       project,
       // Objects
+      milestone,
       timeline,
     ],
   },
