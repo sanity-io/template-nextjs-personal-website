@@ -1,18 +1,17 @@
 import { Card, Text } from '@sanity/ui'
+import { resolveHref } from 'lib/sanity.links'
+import { getSecret } from 'plugins/productionUrl/utils'
 import { ComponentProps, Suspense } from 'react'
+import { memo } from 'react'
+import { useClient } from 'sanity'
 import { UserViewComponent } from 'sanity/desk'
-export type PreviewProps = ComponentProps<UserViewComponent>
+import { suspend } from 'suspend-react'
 
 /**
  * This component is responsible for rendering a preview of a post inside the Studio.
  */
-import { getSecret } from 'plugins/productionUrl/utils'
-import { memo } from 'react'
-import { useClient } from 'sanity'
-import { suspend } from 'suspend-react'
 
-import { resolveHref } from '../../lib/sanity.links'
-
+export type PreviewProps = ComponentProps<UserViewComponent>
 interface IframeProps {
   apiVersion: string
   documentType?: string

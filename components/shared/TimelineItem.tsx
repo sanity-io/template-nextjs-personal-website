@@ -15,7 +15,7 @@ export function TimelineItem({
   const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
 
   return (
-    <div className={`flex min-h-[200px] ${!isLast && 'pb-2'}`}>
+    <div className={`flex min-h-[200px] font-sans ${!isLast && 'pb-2'}`}>
       <div className="flex flex-col">
         {/* Thumbnail */}
         <div

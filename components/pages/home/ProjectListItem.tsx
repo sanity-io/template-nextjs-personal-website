@@ -1,4 +1,4 @@
-import { PortableText } from '@portabletext/react'
+import { CustomPortableText } from 'components/shared/CustomPortableText'
 import ImageBox from 'components/shared/ImageBox'
 import type { ShowcaseProject } from 'types'
 
@@ -40,7 +40,7 @@ function TextBox({ project }: { project: ShowcaseProject }) {
         </div>
         {/* Overview  */}
         <div className="font-serif text-gray-500">
-          <PortableText value={project.overview} />
+          <CustomPortableText value={project.overview} />
         </div>
       </div>
       {/* Tags */}
