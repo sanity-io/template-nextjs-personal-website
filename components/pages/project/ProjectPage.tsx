@@ -1,8 +1,7 @@
 import { PortableText } from '@portabletext/react'
 import { Header } from 'components/shared/Header'
+import ImageBox from 'components/shared/ImageBox'
 import ScrollUp from 'components/shared/ScrollUp'
-import { urlForImage } from 'lib/sanity.image'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { ProjectPayload } from 'types'
 
@@ -22,10 +21,6 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
   const startYear = new Date(duration?.start).getFullYear()
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
-  const imageUrl =
-    coverImage &&
-    urlForImage(coverImage)?.height(2000).width(3500).fit('crop').url()
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -34,18 +29,7 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
       <div className="rounded-md border">
         {/* Image  */}
         <div className="w-full">
-          {imageUrl ? (
-            <Image
-              className="h-auto w-full rounded-md"
-              alt={`Cover image for ${title}`}
-              width={3500}
-              height={2000}
-              sizes="100vw"
-              src={imageUrl}
-            />
-          ) : (
-            <div className="bg-gray-200" style={{ paddingTop: '50%' }} />
-          )}
+          <ImageBox image={coverImage} alt={`Cover image for ${title}`} />
         </div>
 
         <div className="divide-inherit grid grid-cols-4 divide-x">
