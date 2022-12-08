@@ -1,5 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { Header } from 'components/Header'
+import { Header } from 'components/shared/Header'
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 import Link from 'next/link'

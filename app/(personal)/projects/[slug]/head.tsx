@@ -1,5 +1,5 @@
 import { toPlainText } from '@portabletext/react'
-import { SiteMeta } from 'components/SiteMeta'
+import { SiteMeta } from 'components/global/SiteMeta'
 import { getHomePageTitle, getProjectBySlug } from 'lib/sanity.client'
 import { previewData } from 'next/headers'
 

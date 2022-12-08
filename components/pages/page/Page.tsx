@@ -1,7 +1,8 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react'
-import { Header } from 'components/Header'
-import { TimelineSection } from 'components/TimelineSection'
+import { Header } from 'components/shared/Header'
 import type { PagePayload } from 'types'
+
+import { TimelineSection } from './TimelineSection'
 
 export function Page({ data }: { data: PagePayload }) {
   // Default to an empty object to allow previews on non-existent documents

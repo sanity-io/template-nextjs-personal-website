@@ -1,5 +1,5 @@
-import { Header } from 'components/Header'
-import { ProjectListItem } from 'components/ProjectListItem'
+import { ProjectListItem } from 'components/pages/home/ProjectListItem'
+import { Header } from 'components/shared/Header'
 import IntroTemplate from 'intro-template'
 import { resolveHref } from 'lib/sanity.links'
 import Link from 'next/link'
