@@ -17,12 +17,10 @@ export function ProjectListItem(props: ProjectProps) {
       }`}
     >
       <div className="w-9/12">
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[3px] bg-gray-50">
-          <ImageBox
-            image={project.coverImage}
-            alt={`Cover image from ${project.title}`}
-          />
-        </div>
+        <ImageBox
+          image={project.coverImage}
+          alt={`Cover image from ${project.title}`}
+        />
       </div>
       <div className="flex w-1/4">
         <TextBox project={project} />

@@ -15,10 +15,10 @@ export default function ImageBox({
   height = 2000,
 }: ImageBoxProps) {
   const imageUrl =
-    image && urlForImage(image)?.height(height).width(width).fit('crop').url()
+    image && urlForImage(image)?.height(height).width(width).fit('fill').url()
 
   if (!imageUrl) {
-    return null
+    return <div>abc</div>
   }
 
   return (
