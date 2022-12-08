@@ -6,9 +6,9 @@ export function resolveHref(
     case 'home':
       return '/'
     case 'page':
-      return slug ? '/page/' + slug : undefined
+      return slug ? `/${slug}` : undefined
     case 'project':
-      return slug ? '/project/' + slug : undefined
+      return slug ? `/projects/${slug}` : undefined
     default:
       console.warn('Invalid document type:', documentType)
       return undefined

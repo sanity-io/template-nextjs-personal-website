@@ -25,10 +25,11 @@ export interface Settings {
 }
 
 export interface ShowcaseProject {
-  title?: string
-  overview?: any[]
+  _type: string
   coverImage?: { asset?: any }
+  overview?: any[]
   tags?: string[]
+  title?: string
   slug?: string
 }
 
