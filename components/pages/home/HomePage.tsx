@@ -35,6 +35,3 @@ export function HomePage({ data }: { data: HomePagePayload }) {
     </div>
   )
 }
-
-// FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`
-export const revalidate = 1

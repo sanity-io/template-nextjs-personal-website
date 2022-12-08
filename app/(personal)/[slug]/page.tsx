@@ -37,6 +37,3 @@ export default async function PageSlugRoute({
     </>
   )
 }
-
-// FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`
-export const revalidate = 1
