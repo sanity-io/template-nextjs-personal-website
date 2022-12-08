@@ -3,20 +3,9 @@ import { Header } from 'components/Header'
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 import type { ProjectPayload } from 'types'
 
-export function ProjectPage({
-  data,
-  preview,
-}: {
-  data: ProjectPayload
-  preview?: boolean
-}) {
-  if (!data && !preview) {
-    notFound()
-  }
-
+export function ProjectPage({ data }: { data: ProjectPayload }) {
   // Default to an empty object to allow previews on non-existent documents
   const {
     client,

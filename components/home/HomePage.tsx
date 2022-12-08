@@ -3,20 +3,9 @@ import { ProjectListItem } from 'components/ProjectListItem'
 import IntroTemplate from 'intro-template'
 import { resolveHref } from 'lib/sanity.links'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 import type { HomePagePayload } from 'types'
 
-export function HomePage({
-  data,
-  preview,
-}: {
-  data: HomePagePayload
-  preview?: boolean
-}) {
-  if (!data && !preview) {
-    notFound()
-  }
-
+export function HomePage({ data }: { data: HomePagePayload }) {
   // Default to an empty object to allow previews on non-existent documents
   const { overview, showcaseProjects, title } = data
 
