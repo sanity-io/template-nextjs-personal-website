@@ -77,6 +77,7 @@ export default defineType({
               },
             ],
           },
+          styles: [],
         }),
         // Custom blocks
         defineArrayMember({
