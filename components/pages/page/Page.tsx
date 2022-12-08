@@ -29,14 +29,17 @@ export function Page({ data }: { data: PagePayload }) {
 
   return (
     <div>
-      {/* Header */}
-      <Header title={title} description={overview} />
+      <div className="mb-14">
+        {/* Header */}
+        <Header title={title} description={overview} />
 
-      {/* Body */}
-      {body && <PortableText components={components} value={body} />}
+        {/* Body */}
+        {body && <PortableText components={components} value={body} />}
 
-      {/* Workaround: scroll to top on route change */}
-      <ScrollUp />
+        {/* Workaround: scroll to top on route change */}
+        <ScrollUp />
+      </div>
+      <div className="absolute left-0 w-screen border-t" />
     </div>
   )
 }
