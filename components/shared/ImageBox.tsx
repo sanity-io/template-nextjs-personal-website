@@ -6,6 +6,8 @@ interface ImageBoxProps {
   alt?: string
   width?: number
   height?: number
+  size?: string
+  classesWrapper?: string
 }
 
 export default function ImageBox({
@@ -13,19 +15,23 @@ export default function ImageBox({
   alt = 'Cover image',
   width = 3500,
   height = 2000,
+  size = '100vw',
+  classesWrapper,
 }: ImageBoxProps) {
   const imageUrl =
-    image && urlForImage(image)?.height(height).width(width).fit('fill').url()
+    image && urlForImage(image)?.height(height).width(width).fit('crop').url()
 
   return (
-    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[3px] bg-gray-50">
+    <div
+      className={`w-full overflow-hidden rounded-[3px] bg-gray-50 ${classesWrapper}`}
+    >
       {imageUrl && (
         <Image
           className="absolute h-full w-full"
           alt={alt}
           width={width}
           height={height}
-          sizes="100vw"
+          sizes={size}
           src={imageUrl}
         />
       )}

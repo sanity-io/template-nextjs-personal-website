@@ -16,7 +16,13 @@ export function Page({ data }: { data: PagePayload }) {
         return <TimelineSection timelines={items} />
       },
       image: ({ value }) => {
-        return <ImageBox image={value} alt={value.alt} />
+        return (
+          <ImageBox
+            image={value}
+            alt={value.alt}
+            classesWrapper="relative aspect-[16/9]"
+          />
+        )
       },
     },
   }

@@ -28,7 +28,11 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
 
       <div className="rounded-md border">
         {/* Image  */}
-        <ImageBox image={coverImage} alt={`Cover image for ${title}`} />
+        <ImageBox
+          image={coverImage}
+          alt={`Cover image for ${title}`}
+          classesWrapper="relative aspect-[16/9]"
+        />
 
         <div className="divide-inherit grid grid-cols-4 divide-x">
           {/* Duration */}
