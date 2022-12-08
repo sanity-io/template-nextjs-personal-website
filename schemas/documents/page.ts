@@ -11,6 +11,7 @@ export default defineType({
       type: 'string',
       name: 'title',
       title: 'Title',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       type: 'slug',
@@ -19,6 +20,7 @@ export default defineType({
       options: {
         source: 'title',
       },
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'overview',
@@ -53,6 +55,8 @@ export default defineType({
       type: 'array',
       name: 'body',
       title: 'Body',
+      description:
+        "This is where you can write the page's content. Including custom blocks like timelines for more a more visual display of information.",
       of: [
         // Paragraphs
         defineArrayMember({

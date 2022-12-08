@@ -9,6 +9,7 @@ export default defineType({
       type: 'string',
       name: 'title',
       title: 'Title',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       type: 'string',
@@ -19,6 +20,7 @@ export default defineType({
       name: 'image',
       title: 'Image',
       type: 'image',
+      description: "This image will be used as the milestone's cover image.",
       options: {
         hotspot: true,
       },
@@ -27,6 +29,8 @@ export default defineType({
       name: 'tags',
       title: 'Tags',
       type: 'array',
+      description:
+        'Tags to help categorize the milestone. For example: name of the university course, name of the project, the position you held within the project etc. ',
       of: [{ type: 'string' }],
       options: {
         layout: 'tags',
@@ -36,6 +40,7 @@ export default defineType({
       type: 'duration',
       name: 'duration',
       title: 'Duration',
+      validation: (rule) => rule.required(),
     }),
   ],
   preview: {

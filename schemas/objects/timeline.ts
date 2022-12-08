@@ -8,6 +8,8 @@ export default defineType({
     {
       name: 'items',
       title: 'Items',
+      description:
+        "Allows for creating a number of timelines (max 2) for displaying in the page's body",
       type: 'array',
       validation: (Rule) => Rule.max(2),
       of: [

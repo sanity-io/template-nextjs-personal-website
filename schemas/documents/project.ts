@@ -59,10 +59,13 @@ export default defineType({
     defineField({
       name: 'coverImage',
       title: 'Cover Image',
+      description:
+        'This image will be used as the cover image for the project. If you choose to add it to the show case projects, this is the image displayed in the list within the homepage.',
       type: 'image',
       options: {
         hotspot: true,
       },
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'duration',
