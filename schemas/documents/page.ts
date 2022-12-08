@@ -61,6 +61,22 @@ export default defineType({
         // Paragraphs
         defineArrayMember({
           type: 'block',
+          marks: {
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  {
+                    name: 'href',
+                    type: 'url',
+                    title: 'Url',
+                  },
+                ],
+              },
+            ],
+          },
         }),
         // Custom blocks
         defineArrayMember({

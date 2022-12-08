@@ -95,7 +95,27 @@ export default defineType({
       name: 'description',
       title: 'Project Description',
       type: 'array',
-      of: [{ type: 'block' }],
+      of: [
+        defineArrayMember({
+          type: 'block',
+          marks: {
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  {
+                    name: 'href',
+                    type: 'url',
+                    title: 'Url',
+                  },
+                ],
+              },
+            ],
+          },
+        }),
+      ],
     }),
   ],
 })
