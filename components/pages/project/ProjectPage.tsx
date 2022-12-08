@@ -84,9 +84,10 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
 
         {/* Description */}
         {description && (
-          <div className="font-serif text-gray-600">
-            <CustomPortableText value={description} />
-          </div>
+          <CustomPortableText
+            paragraphClasses="font-serif max-w-3xl text-xl text-gray-600"
+            value={description}
+          />
         )}
         {/* Workaround: scroll to top on route change */}
         <ScrollUp />
