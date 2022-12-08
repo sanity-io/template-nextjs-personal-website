@@ -67,7 +67,7 @@ function TextBox({ project }: { project: ShowcaseProject }) {
       {/* Tags */}
       <div className="mt-4 flex flex-row gap-x-2">
         {project.tags?.map((tag, key) => (
-          <div className="text-lg font-medium" key={key}>
+          <div className="text-lg font-medium lowercase" key={key}>
             #{tag}
           </div>
         ))}

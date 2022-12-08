@@ -86,7 +86,7 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
             <div className="text-sm">Tags</div>
             <div className="flex flex-row flex-wrap text-lg">
               {tags?.map((tag, key) => (
-                <div key={key} className="mr-1 break-words ">
+                <div key={key} className="mr-1 break-words lowercase">
                   #{tag}
                 </div>
               ))}
