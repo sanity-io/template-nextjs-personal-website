@@ -48,7 +48,7 @@ export default memo(function IntroTemplate() {
         </div>
 
         <div className="mx-6 md:mx-0 md:mr-24">
-          <h2 className="mb-5 text-xl font-bold tracking-wide md:text-5xl">
+          <h2 className="mb-5 text-xl font-bold tracking-tight md:text-5xl">
             Next steps
           </h2>
 
@@ -198,7 +198,7 @@ function Box({
   return (
     <li className="mt-2 grid grid-flow-col grid-rows-1 place-content-start gap-3">
       <div className="row-span-3 select-none">
-        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center dark:bg-gray-400">
+        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center">
           {circleTitle}
         </div>
       </div>

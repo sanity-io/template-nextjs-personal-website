@@ -1,9 +1,8 @@
+import { HomePage } from 'components/home/HomePage'
+import { HomePagePreview } from 'components/home/HomePagePreview'
+import { PreviewSuspense } from 'components/PreviewSuspense'
+import { getHomePage } from 'lib/sanity.client'
 import { previewData } from 'next/headers'
-
-import { HomePage } from '../../components/home/HomePage'
-import { HomePagePreview } from '../../components/home/HomePagePreview'
-import { PreviewSuspense } from '../../components/PreviewSuspense'
-import { getHomePage } from '../../lib/sanity.client'
 
 export default async function IndexRoute() {
   const token = previewData().token || null
@@ -17,12 +16,12 @@ export default async function IndexRoute() {
     <>
       {token ? (
         <>
-          <PreviewSuspense fallback={<HomePage home={home} />}>
+          <PreviewSuspense fallback={<HomePage data={home} preview />}>
             <HomePagePreview token={token} />
           </PreviewSuspense>
         </>
       ) : (
-        <HomePage home={home} />
+        <HomePage data={home} />
       )}
     </>
   )

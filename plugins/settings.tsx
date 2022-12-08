@@ -2,10 +2,10 @@
  * This plugin contains all the logic for setting up the singletons
  */
 
+import { apiVersion, previewSecretId } from 'lib/sanity.api'
 import { type DocumentDefinition } from 'sanity'
 import { type StructureResolver } from 'sanity/desk'
 
-import { apiVersion, previewSecretId } from '../lib/sanity.api'
 import { PREVIEWABLE_DOCUMENT_TYPES } from '../sanity.config'
 import { PreviewPane } from './previewPane/PreviewPane'
 

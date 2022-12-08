@@ -1,19 +1,18 @@
 import { apiVersion, dataset, projectId, useCdn } from 'lib/sanity.api'
-import { createClient } from 'next-sanity'
-
-import type {
-  HomePagePayload,
-  PagePayload,
-  ProjectPayload,
-  SettingsPayload,
-} from '../types'
 import {
   homePageQuery,
   homePageTitleQuery,
   pagesBySlugQuery,
   projectBySlugQuery,
   settingsQuery,
-} from './sanity.queries'
+} from 'lib/sanity.queries'
+import { createClient } from 'next-sanity'
+import type {
+  HomePagePayload,
+  PagePayload,
+  ProjectPayload,
+  SettingsPayload,
+} from 'types'
 
 /**
  * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false

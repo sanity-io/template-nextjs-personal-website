@@ -1,9 +1,8 @@
+import { PreviewSuspense } from 'components/PreviewSuspense'
+import { ProjectPage } from 'components/project/ProjectPage'
 import { ProjectPreview } from 'components/project/ProjectPreview'
+import { getProjectBySlug } from 'lib/sanity.client'
 import { previewData } from 'next/headers'
-
-import { PreviewSuspense } from '../../../../components/PreviewSuspense'
-import { ProjectPage } from '../../../../components/project/ProjectPage'
-import { getProjectBySlug } from '../../../../lib/sanity.client'
 
 export default async function ProjectSlugRoute({
   params,
@@ -11,20 +10,16 @@ export default async function ProjectSlugRoute({
   params: { slug: string }
 }) {
   const token = previewData().token || null
-  const project = await getProjectBySlug({ slug: params.slug })
-
-  if (!project) {
-    return null
-  }
+  const data = await getProjectBySlug({ slug: params.slug })
 
   return (
     <>
       {token ? (
-        <PreviewSuspense fallback={<ProjectPage project={project} />}>
+        <PreviewSuspense fallback={<ProjectPage data={data} preview />}>
           <ProjectPreview token={token} slug={params.slug} />
         </PreviewSuspense>
       ) : (
-        <ProjectPage project={project} />
+        <ProjectPage data={data} />
       )}
     </>
   )

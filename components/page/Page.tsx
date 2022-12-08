@@ -1,12 +1,22 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react'
+import { Header } from 'components/Header'
+import { TimelineSection } from 'components/TimelineSection'
+import { notFound } from 'next/navigation'
+import type { PagePayload } from 'types'
 
-import type { PagePayload } from '../../types'
-import { Header } from '../Header'
-import { TimelineSection } from '../TimelineSection'
+export function Page({
+  data,
+  preview,
+}: {
+  data: PagePayload
+  preview?: boolean
+}) {
+  if (!data && !preview) {
+    notFound()
+  }
 
-export function Page(props: { page: PagePayload }) {
-  const { page } = props
-  const { body, overview, title } = page
+  // Default to an empty object to allow previews on non-existent documents
+  const { body, overview, title } = data || {}
 
   const components: PortableTextComponents = {
     types: {
@@ -20,7 +30,7 @@ export function Page(props: { page: PagePayload }) {
   return (
     <div>
       <Header title={title} description={overview} />
-      {body && <PortableText value={body} components={components} />}
+      {body && <PortableText components={components} value={body} />}
     </div>
   )
 }

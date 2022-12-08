@@ -1,10 +1,9 @@
 import { PortableText } from '@portabletext/react'
+import { Block } from 'sanity'
 
-import type { HomePagePayload } from '../types'
-
-export function Footer({ footer }: HomePagePayload) {
+export function Footer({ footer }: { footer: Block[] }) {
   return (
-    <footer className="bottom-0 w-screen border-t bg-white py-4 text-center dark:bg-black">
+    <footer className="bottom-0 w-full bg-white py-20 text-center">
       {footer && <PortableText value={footer} />}
     </footer>
   )

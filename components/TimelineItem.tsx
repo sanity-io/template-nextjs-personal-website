@@ -1,4 +1,4 @@
-import type { MilestoneItem } from '../types'
+import type { MilestoneItem } from 'types'
 
 export function TimelineItem({
   isLast,
@@ -16,14 +16,18 @@ export function TimelineItem({
   return (
     <div className={`flex min-h-[200px] ${!isLast && 'pb-2'}`}>
       <div className="flex flex-col">
+        {/* Thumbnail */}
         <div
-          className="rounded-md bg-black dark:bg-white"
+          className="rounded-md bg-black"
           style={{ width: '65px', height: '65px' }}
         ></div>
+        {/* Vertical line */}
         {!isLast && <div className="mt-2 w-px grow self-center bg-gray-200" />}
       </div>
       <div className="flex-initial pl-4">
-        <div className="text-black dark:text-white">{title}</div>
+        {/* Title */}
+        <div className="font-bold text-black">{title}</div>
+        {/* Tags */}
         <div className="text-sm text-gray-600 ">
           {tags?.map((tag, key) => (
             <span key={key}>
@@ -33,6 +37,7 @@ export function TimelineItem({
           ))}
           {startYear} - {endYear}
         </div>
+        {/* Description */}
         <div className="pt-3 font-serif text-gray-600">{description}</div>
       </div>
     </div>

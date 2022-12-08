@@ -1,9 +1,10 @@
-import { previewData } from 'next/headers'
+import 'styles/index.css'
 
-import { Footer } from '../../components/Footer'
-import { Navbar } from '../../components/Navbar'
-import { PreviewBanner } from '../../components/PreviewBanner'
-import { getSettings } from '../../lib/sanity.client'
+import { Footer } from 'components/Footer'
+import { Navbar } from 'components/Navbar'
+import { PreviewBanner } from 'components/PreviewBanner'
+import { getSettings } from 'lib/sanity.client'
+import { previewData } from 'next/headers'
 
 export default async function IndexRoute({
   children,
