@@ -7,7 +7,7 @@ import { memo, useEffect, useState } from 'react'
 import cover from './cover.png'
 
 export default memo(function IntroTemplate() {
-  const [studioURL, setStudioURL] = useState(null)
+  const [studioURL, setStudioURL] = useState<string | null>(null)
   const [isLocalHost, setIsLocalhost] = useState(false)
 
   const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -31,7 +31,7 @@ export default memo(function IntroTemplate() {
   }, [])
 
   if (hasUTMtags || !studioURL) {
-    return
+    return null
   }
 
   return (
@@ -48,7 +48,7 @@ export default memo(function IntroTemplate() {
         </div>
 
         <div className="mx-6 md:mx-0 md:mr-24">
-          <h2 className="mb-5 text-xl font-bold tracking-wide md:text-5xl">
+          <h2 className="mb-5 text-xl font-extrabold tracking-tight md:text-5xl">
             Next steps
           </h2>
 
@@ -78,7 +78,7 @@ export default memo(function IntroTemplate() {
               circleTitle="1"
               element={
                 <div>
-                  <div className="col-span-2 mt-1 mb-2 font-semibold">
+                  <div className="col-span-2 mt-1 mb-2 font-bold">
                     Create a schema
                   </div>
 
@@ -123,7 +123,7 @@ export default memo(function IntroTemplate() {
               circleTitle="2"
               element={
                 <div>
-                  <div className="col-span-2 mt-1 mb-2 font-semibold">
+                  <div className="col-span-2 mt-1 mb-2 font-bold">
                     Create content with Sanity Studio
                   </div>
                   <div className="text-xs text-gray-700">
@@ -152,7 +152,7 @@ export default memo(function IntroTemplate() {
               circleTitle="3"
               element={
                 <div>
-                  <div className="col-span-2 mt-1 mb-3 font-semibold">
+                  <div className="col-span-2 mt-1 mb-3 font-bold">
                     Learn more and get help
                   </div>
                   <ul>
@@ -198,7 +198,7 @@ function Box({
   return (
     <li className="mt-2 grid grid-flow-col grid-rows-1 place-content-start gap-3">
       <div className="row-span-3 select-none">
-        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center dark:bg-gray-400">
+        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center">
           {circleTitle}
         </div>
       </div>
@@ -220,7 +220,7 @@ function BlueLink({ href, text }: { href: string; text: string }) {
   )
 }
 
-const RemoveBlock = ({ url }) => (
+const RemoveBlock = ({ url }: { url: string }) => (
   <a
     className="hover:text-blue-800"
     href={url}

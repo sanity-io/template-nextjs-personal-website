@@ -33,7 +33,27 @@ export default defineType({
         'Used both for the <meta> description tag for SEO, and project subheader.',
       title: 'Overview',
       type: 'array',
-      of: [{ type: 'block' }],
+      of: [
+        // Paragraphs
+        defineArrayMember({
+          lists: [],
+          marks: {
+            annotations: [],
+            decorators: [
+              {
+                title: 'Italic',
+                value: 'em',
+              },
+              {
+                title: 'Strong',
+                value: 'strong',
+              },
+            ],
+          },
+          styles: [],
+          type: 'block',
+        }),
+      ],
       validation: (rule) => rule.max(155).required(),
     }),
     defineField({
@@ -70,7 +90,6 @@ export default defineType({
     }),
     defineField({
       name: 'description',
-      description: 'Project description.',
       title: 'Project Description',
       type: 'array',
       of: [{ type: 'block' }],

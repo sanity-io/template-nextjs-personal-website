@@ -2,17 +2,24 @@ import { PortableText } from '@portabletext/react'
 import React from 'react'
 
 interface HeaderProps {
-  title?: string
-  description?: any[]
   centered?: boolean
+  description?: any[]
+  title?: string
 }
 export function Header(props: HeaderProps) {
   const { title, description, centered = false } = props
+  if (!description && !title) {
+    return null
+  }
   return (
     <div className={`${centered ? 'text-center' : 'w-3/5'}`}>
-      {title && <div className="pb-5 text-5xl font-extrabold">{title}</div>}
+      {/* Title */}
+      {title && (
+        <div className="text-5xl font-extrabold tracking-tight">{title}</div>
+      )}
+      {/* Description */}
       {description && (
-        <div className="pb-16 font-serif text-xl text-gray-600">
+        <div className="mt-4 font-serif text-2xl text-gray-600">
           <PortableText value={description} />
         </div>
       )}

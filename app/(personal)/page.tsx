@@ -1,28 +1,39 @@
+import { HomePage } from 'components/pages/home/HomePage'
+import { HomePagePreview } from 'components/pages/home/HomePagePreview'
+import { PreviewSuspense } from 'components/preview/PreviewSuspense'
+import { PreviewWrapper } from 'components/preview/PreviewWrapper'
+import { getHomePage } from 'lib/sanity.client'
 import { previewData } from 'next/headers'
-
-import { HomePage } from '../../components/home/HomePage'
-import { HomePagePreview } from '../../components/home/HomePagePreview'
-import { PreviewSuspense } from '../../components/PreviewSuspense'
-import { getHome } from '../../lib/sanity.client'
+import { notFound } from 'next/navigation'
 
 export default async function IndexRoute() {
   const token = previewData().token || null
-  const home = (await getHome()) || {
+  const data = (await getHomePage({ token })) || {
     title: '',
     overview: [],
     showcaseProjects: [],
+  }
+
+  if (!data && !token) {
+    notFound()
   }
 
   return (
     <>
       {token ? (
         <>
-          <PreviewSuspense fallback={<HomePage home={home} />}>
+          <PreviewSuspense
+            fallback={
+              <PreviewWrapper>
+                <HomePage data={data} />
+              </PreviewWrapper>
+            }
+          >
             <HomePagePreview token={token} />
           </PreviewSuspense>
         </>
       ) : (
-        <HomePage home={home} />
+        <HomePage data={data} />
       )}
     </>
   )

@@ -7,7 +7,10 @@ export function PreviewBanner({ loading }: PreviewBannerProps) {
   return (
     <div className="bg-black p-3 text-center text-white">
       {loading ? 'Loading...' : 'This page is a preview.'}{' '}
-      <a className="underline hover:opacity-50" href="/api/exit-preview">
+      <a
+        className="underline transition hover:opacity-50"
+        href="/api/exit-preview"
+      >
         Exit preview mode
       </a>
     </div>

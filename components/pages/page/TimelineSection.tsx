@@ -1,5 +1,5 @@
-import type { MilestoneItem } from '../types'
-import { TimelineItem } from './TimelineItem'
+import { TimelineItem } from 'components/pages/page/TimelineItem'
+import type { MilestoneItem } from 'types'
 
 interface TimelineItem {
   title: string
@@ -13,7 +13,7 @@ export function TimelineSection({ timelines }: { timelines: TimelineItem[] }) {
         const { title, milestones } = timeline
         return (
           <div className="max-w-[50%]" key={key}>
-            <div className="text-l pb-5 font-bold">{title}</div>
+            <div className="pb-5 text-xl font-bold">{title}</div>
 
             {milestones?.map((experience, index) => (
               <div key={index}>

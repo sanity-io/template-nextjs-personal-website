@@ -1,83 +1,70 @@
-export interface Author {
-  name?: string
-  picture?: any
-}
+import type { Block, Image } from 'sanity'
 
 export interface MenuItem {
   _type: string
-  content?: any[]
-  href?: string
-  overview?: any[]
   slug?: string
   title?: string
 }
 
 export interface MilestoneItem {
-  title?: string
   description?: any[]
-  tags?: string[]
   duration?: {
     start?: string
     end?: string
   }
-}
-
-export interface Post {
-  _id: string
+  image?: Image
+  tags?: string[]
   title?: string
-  coverImage?: any
-  date?: string
-  excerpt?: string
-  author?: Author
-  slug?: string
-  content?: any
 }
 
 export interface Settings {
-  title?: string
   description?: any[]
   ogImage?: {
     title?: string
   }
+  title?: string
 }
 
-export interface ShowcaseProjects {
-  title?: string
-  overview?: any[]
+export interface ShowcaseProject {
+  _type: string
   coverImage?: { asset?: any }
+  overview?: any[]
   tags?: string[]
-  slug?: { current?: string }
+  title?: string
+  slug?: string
 }
 
 // Page payloads
 
 export interface HomePagePayload {
+  footer?: Block[]
+  overview?: Block[]
+  showcaseProjects?: ShowcaseProject[]
   title?: string
-  overview?: any[]
-  showcaseProjects?: ShowcaseProjects[]
-  footer?: any[]
 }
 
 export interface PagePayload {
-  content?: any[]
+  body?: Block[]
   name?: string
-  overview?: any[]
-  title: string
+  overview?: Block[]
+  title?: string
 }
 
 export interface ProjectPayload {
-  title: string
-  slug: string
-  overview: any[]
-  coverImage?: { asset?: any }
+  client?: string
+  coverImage?: Image
   description?: any[]
   duration?: any
-  client?: string
+  overview?: Block[]
   site?: string
+  slug: string
   tags?: any[]
+  title?: string
 }
 
 export interface SettingsPayload {
-  menuItems?: MenuItem[]
   footer?: any[]
+  menuItems?: MenuItem[]
+  ogImage?: Image
+  title?: string
 }

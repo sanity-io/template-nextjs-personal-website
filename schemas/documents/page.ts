@@ -27,15 +27,32 @@ export default defineType({
       title: 'Overview',
       type: 'array',
       of: [
+        // Paragraphs
         defineArrayMember({
+          lists: [],
+          marks: {
+            annotations: [],
+            decorators: [
+              {
+                title: 'Italic',
+                value: 'em',
+              },
+              {
+                title: 'Strong',
+                value: 'strong',
+              },
+            ],
+          },
+          styles: [],
           type: 'block',
         }),
       ],
+      validation: (rule) => rule.max(155).required(),
     }),
     defineField({
       type: 'array',
-      name: 'content',
-      title: 'Content',
+      name: 'body',
+      title: 'Body',
       of: [
         // Paragraphs
         defineArrayMember({
@@ -49,4 +66,15 @@ export default defineType({
       ],
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+    },
+    prepare({ title }) {
+      return {
+        subtitle: 'Page',
+        title,
+      }
+    },
+  },
 })
