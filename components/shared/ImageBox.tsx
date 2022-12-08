@@ -8,7 +8,12 @@ interface ImageBoxProps {
   height?: number
 }
 
-export default function ImageBox({ image, alt, width, height }: ImageBoxProps) {
+export default function ImageBox({
+  image,
+  alt = 'Cover image',
+  width = 3500,
+  height = 2000,
+}: ImageBoxProps) {
   const imageUrl =
     image && urlForImage(image)?.height(height).width(width).fit('crop').url()
 
@@ -20,7 +25,7 @@ export default function ImageBox({ image, alt, width, height }: ImageBoxProps) {
     <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[3px] bg-gray-50">
       <Image
         className="absolute h-full w-full"
-        alt={alt || 'Cover image'}
+        alt={alt}
         width={width}
         height={height}
         sizes="100vw"
