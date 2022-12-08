@@ -12,18 +12,18 @@ export function ProjectListItem(props: ProjectProps) {
 
   return (
     <div
-      className={`flex flex-col gap-x-5 p-2 transition hover:bg-gray-50/50 lg:flex-row ${
-        odd && 'border-t border-b lg:flex-row-reverse'
+      className={`flex flex-col gap-x-5 p-2 transition hover:bg-gray-50/50 xl:flex-row ${
+        odd && 'border-t border-b xl:flex-row-reverse'
       }`}
     >
-      <div className="w-9/12">
+      <div className="w-full xl:w-9/12">
         <ImageBox
           image={project.coverImage}
           alt={`Cover image from ${project.title}`}
           classesWrapper="relative aspect-[16/9]"
         />
       </div>
-      <div className="flex lg:w-1/4">
+      <div className="flex xl:w-1/4">
         <TextBox project={project} />
       </div>
     </div>
@@ -32,10 +32,10 @@ export function ProjectListItem(props: ProjectProps) {
 
 function TextBox({ project }: { project: ShowcaseProject }) {
   return (
-    <div className="relative mt-5 flex w-full flex-col justify-between lg:mt-0 lg:p-3">
+    <div className="relative mt-2 flex w-full flex-col justify-between p-3 xl:mt-0">
       <div>
         {/* Title */}
-        <div className="mb-2 text-2xl font-extrabold tracking-tight">
+        <div className="mb-2 text-xl font-extrabold tracking-tight md:text-2xl">
           {project.title}
         </div>
         {/* Overview  */}
@@ -46,7 +46,7 @@ function TextBox({ project }: { project: ShowcaseProject }) {
       {/* Tags */}
       <div className="mt-4 flex flex-row gap-x-2">
         {project.tags?.map((tag, key) => (
-          <div className="text-lg font-medium lowercase" key={key}>
+          <div className="text-sm font-medium lowercase md:text-lg" key={key}>
             #{tag}
           </div>
         ))}

@@ -3,3 +3,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
+p:not(:last-child) {
+  margin-bottom: 0.875rem;
+}

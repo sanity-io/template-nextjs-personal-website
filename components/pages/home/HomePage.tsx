@@ -15,7 +15,7 @@ export function HomePage({ data }: { data: HomePagePayload }) {
       {title && <Header centered title={title} description={overview} />}
       {/* Showcase projects */}
       {showcaseProjects && showcaseProjects.length > 0 && (
-        <div className="rounded-md border">
+        <div className="mx-auto max-w-[100rem] rounded-md border">
           {showcaseProjects.map((project, key) => {
             const href = resolveHref(project._type, project.slug)
             if (!href) {

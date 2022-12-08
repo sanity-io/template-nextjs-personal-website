@@ -35,31 +35,31 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
             classesWrapper="relative aspect-[16/9]"
           />
 
-          <div className="divide-inherit grid grid-cols-4 divide-x">
+          <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-y-0 lg:divide-x">
             {/* Duration */}
             {!!(startYear && endYear) && (
-              <div className="p-4">
-                <div className="text-sm">Duration</div>
-                <div className="text-lg">{`${startYear} -  ${endYear}`}</div>
+              <div className="p-3 lg:p-4">
+                <div className="text-xs md:text-sm">Duration</div>
+                <div className="text-md md:text-lg">{`${startYear} -  ${endYear}`}</div>
               </div>
             )}
 
             {/* Client */}
             {client && (
-              <div className="p-4 text-lg">
-                <div className="text-sm">Client</div>
-                <div>{client}</div>
+              <div className="p-3 lg:p-4">
+                <div className="text-xs md:text-sm">Client</div>
+                <div className="text-md md:text-lg">{client}</div>
               </div>
             )}
 
             {/* Site */}
             {site && (
-              <div className="p-4">
-                <div className="text-sm">Site</div>
+              <div className="p-3 lg:p-4">
+                <div className="text-xs md:text-sm">Site</div>
                 {site && (
                   <Link
                     target="_blank"
-                    className="break-words text-lg"
+                    className="text-md break-words md:text-lg"
                     href={site}
                   >
                     {site}
@@ -69,9 +69,9 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
             )}
 
             {/* Tags */}
-            <div className="p-4">
-              <div className="text-sm">Tags</div>
-              <div className="flex flex-row flex-wrap text-lg">
+            <div className="p-3 lg:p-4">
+              <div className="text-xs md:text-sm">Tags</div>
+              <div className="text-md flex flex-row flex-wrap md:text-lg">
                 {tags?.map((tag, key) => (
                   <div key={key} className="mr-1 break-words ">
                     #{tag}
