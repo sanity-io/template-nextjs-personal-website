@@ -1,5 +1,6 @@
 import { PortableText } from '@portabletext/react'
 import { Header } from 'components/shared/Header'
+import ScrollUp from 'components/shared/ScrollUp'
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -27,7 +28,9 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <Header title={title} description={overview} />
+
       <div className="rounded-md border">
         {/* Image  */}
         <div className="w-full">
@@ -91,9 +94,12 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
           </div>
         </div>
       </div>
+      {/* Description */}
       <div className="font-serif text-gray-600">
         <PortableText value={description} />
       </div>
+      {/* Workaround: scroll to top on route change */}
+      <ScrollUp />
     </div>
   )
 }
