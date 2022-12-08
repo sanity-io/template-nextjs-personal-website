@@ -1,5 +1,4 @@
-import { PortableText } from '@portabletext/react'
-import React from 'react'
+import { CustomPortableText } from 'components/shared/CustomPortableText'
 
 interface HeaderProps {
   centered?: boolean
@@ -22,7 +21,7 @@ export function Header(props: HeaderProps) {
       {/* Description */}
       {description && (
         <div className="mt-4 font-serif text-xl text-gray-600 md:text-2xl">
-          <PortableText value={description} />
+          <CustomPortableText value={description} />
         </div>
       )}
     </div>

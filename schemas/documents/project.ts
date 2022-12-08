@@ -1,4 +1,4 @@
-import { DocumentIcon } from '@sanity/icons'
+import { DocumentIcon, ImageIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
@@ -114,6 +114,41 @@ export default defineType({
               },
             ],
           },
+          styles: [],
+        }),
+        // Custom blocks
+        defineArrayMember({
+          name: 'timeline',
+          type: 'timeline',
+        }),
+        defineField({
+          type: 'image',
+          icon: ImageIcon,
+          name: 'image',
+          title: 'Image',
+          options: {
+            hotspot: true,
+          },
+          preview: {
+            select: {
+              imageUrl: 'asset.url',
+              title: 'caption',
+            },
+          },
+          fields: [
+            defineField({
+              title: 'Caption',
+              name: 'caption',
+              type: 'string',
+            }),
+            defineField({
+              name: 'alt',
+              type: 'string',
+              title: 'Alt text',
+              description:
+                'Alternative text for screenreaders. Falls back on caption if not set',
+            }),
+          ],
         }),
       ],
     }),

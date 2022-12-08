@@ -7,3 +7,12 @@ html {
 p:not(:last-child) {
   margin-bottom: 0.875rem;
 }
+
+ol,
+ul {
+  margin-left: 1rem;
+}
+
+ol {
+  list-style-type: disc;
+}

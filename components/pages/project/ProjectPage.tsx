@@ -1,4 +1,4 @@
-import { PortableText } from '@portabletext/react'
+import { CustomPortableText } from 'components/shared/CustomPortableText'
 import { Header } from 'components/shared/Header'
 import ImageBox from 'components/shared/ImageBox'
 import ScrollUp from 'components/shared/ScrollUp'
@@ -83,9 +83,11 @@ export function ProjectPage({ data }: { data: ProjectPayload }) {
         </div>
 
         {/* Description */}
-        <div className="font-serif text-gray-600">
-          <PortableText value={description} />
-        </div>
+        {description && (
+          <div className="font-serif text-gray-600">
+            <CustomPortableText value={description} />
+          </div>
+        )}
         {/* Workaround: scroll to top on route change */}
         <ScrollUp />
       </div>
