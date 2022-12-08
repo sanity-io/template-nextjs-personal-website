@@ -55,6 +55,5 @@ export const settingsQuery = groq`
       title
     },
     ogImage,
-    title
   }
 `

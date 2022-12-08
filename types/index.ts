@@ -7,7 +7,7 @@ export interface MenuItem {
 }
 
 export interface MilestoneItem {
-  description?: any[]
+  description?: string
   duration?: {
     start?: string
     end?: string
@@ -17,21 +17,13 @@ export interface MilestoneItem {
   title?: string
 }
 
-export interface Settings {
-  description?: any[]
-  ogImage?: {
-    title?: string
-  }
-  title?: string
-}
-
 export interface ShowcaseProject {
   _type: string
-  coverImage?: { asset?: any }
-  overview?: any[]
+  coverImage?: Image
+  overview?: Block[]
+  slug?: string
   tags?: string[]
   title?: string
-  slug?: string
 }
 
 // Page payloads
@@ -53,18 +45,20 @@ export interface PagePayload {
 export interface ProjectPayload {
   client?: string
   coverImage?: Image
-  description?: any[]
-  duration?: any
+  description?: Block[]
+  duration?: {
+    start?: string
+    end?: string
+  }
   overview?: Block[]
   site?: string
   slug: string
-  tags?: any[]
+  tags?: string[]
   title?: string
 }
 
 export interface SettingsPayload {
-  footer?: any[]
+  footer?: Block[]
   menuItems?: MenuItem[]
   ogImage?: Image
-  title?: string
 }

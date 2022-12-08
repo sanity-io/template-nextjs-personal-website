@@ -14,7 +14,12 @@ export function Page({ data }: { data: PagePayload }) {
         <Header title={title} description={overview} />
 
         {/* Body */}
-        {body && <CustomPortableText value={body} />}
+        {body && (
+          <CustomPortableText
+            paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
+            value={body}
+          />
+        )}
 
         {/* Workaround: scroll to top on route change */}
         <ScrollUp />
