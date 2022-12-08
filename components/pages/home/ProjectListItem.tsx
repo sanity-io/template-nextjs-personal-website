@@ -1,6 +1,5 @@
 import { PortableText } from '@portabletext/react'
 import ImageBox from 'components/shared/ImageBox'
-import { urlForImage } from 'lib/sanity.image'
 import type { ShowcaseProject } from 'types'
 
 interface ProjectProps {
