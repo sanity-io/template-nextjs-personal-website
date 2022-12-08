@@ -1,6 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { urlForImage } from 'lib/sanity.image'
-import Image from 'next/image'
+import ImageBox from 'components/shared/ImageBox'
 import type { ShowcaseProject } from 'types'
 
 interface ProjectProps {
@@ -18,36 +17,16 @@ export function ProjectListItem(props: ProjectProps) {
       }`}
     >
       <div className="w-9/12">
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[3px] bg-gray-50">
-          <ImageBox project={project} />
-        </div>
+        <ImageBox
+          image={project.coverImage}
+          alt={`Cover image from ${project.title}`}
+          classesWrapper="relative aspect-[16/9]"
+        />
       </div>
       <div className="flex w-1/4">
         <TextBox project={project} />
       </div>
     </div>
-  )
-}
-
-// @todo: consider a generic image component
-function ImageBox({ project }: { project: ShowcaseProject }) {
-  const imageUrl =
-    project.coverImage &&
-    urlForImage(project.coverImage)?.height(2000).width(3500).fit('crop').url()
-
-  if (!imageUrl) {
-    return null
-  }
-
-  return (
-    <Image
-      className="absolute h-full w-full"
-      alt={`Cover image for ${project.title}`}
-      width={3500}
-      height={2000}
-      sizes="100vw"
-      src={imageUrl}
-    />
   )
 }
 
