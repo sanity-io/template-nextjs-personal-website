@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { memo, useEffect, useState } from 'react'
 
 import cover from './cover.png'
@@ -9,6 +10,7 @@ import cover from './cover.png'
 export default memo(function IntroTemplate() {
   const [studioURL, setStudioURL] = useState<string | null>(null)
   const [isLocalHost, setIsLocalhost] = useState(false)
+  const pathname = usePathname()
 
   const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
   const hasRepoEnvVars =
@@ -30,12 +32,17 @@ export default memo(function IntroTemplate() {
     }
   }, [])
 
+  // Only display this on the home page
+  if (pathname !== '/') {
+    return null
+  }
+
   if (hasUTMtags || !studioURL) {
     return null
   }
 
   return (
-    <div className="mb-4 flex justify-center border border-gray-200">
+    <div className="flex justify-center border-t border-gray-100 bg-gray-50/50">
       <div className="mt-20 mb-4 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32 ">
         <div className="self-center">
           <Image
@@ -48,7 +55,7 @@ export default memo(function IntroTemplate() {
         </div>
 
         <div className="mx-6 md:mx-0 md:mr-24">
-          <h2 className="mb-5 text-xl font-extrabold tracking-tight md:text-5xl">
+          <h2 className="mb-5 text-xl font-bold tracking-tight md:text-5xl">
             Next steps
           </h2>
 
@@ -78,7 +85,7 @@ export default memo(function IntroTemplate() {
               circleTitle="1"
               element={
                 <div>
-                  <div className="col-span-2 mt-1 mb-2 font-bold">
+                  <div className="col-span-2 mt-1 mb-2 font-semibold">
                     Create a schema
                   </div>
 
@@ -123,7 +130,7 @@ export default memo(function IntroTemplate() {
               circleTitle="2"
               element={
                 <div>
-                  <div className="col-span-2 mt-1 mb-2 font-bold">
+                  <div className="col-span-2 mt-1 mb-2 font-semibold">
                     Create content with Sanity Studio
                   </div>
                   <div className="text-xs text-gray-700">
@@ -152,7 +159,7 @@ export default memo(function IntroTemplate() {
               circleTitle="3"
               element={
                 <div>
-                  <div className="col-span-2 mt-1 mb-3 font-bold">
+                  <div className="col-span-2 mt-1 mb-3 font-semibold">
                     Learn more and get help
                   </div>
                   <ul>
