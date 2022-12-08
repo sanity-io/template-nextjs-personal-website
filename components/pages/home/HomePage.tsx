@@ -1,7 +1,6 @@
 import { ProjectListItem } from 'components/pages/home/ProjectListItem'
 import { Header } from 'components/shared/Header'
 import ScrollUp from 'components/shared/ScrollUp'
-import IntroTemplate from 'intro-template'
 import { resolveHref } from 'lib/sanity.links'
 import Link from 'next/link'
 import type { HomePagePayload } from 'types'
@@ -30,8 +29,6 @@ export function HomePage({ data }: { data: HomePagePayload }) {
           })}
         </div>
       )}
-      {/* Intro template */}
-      <IntroTemplate />
 
       {/* Workaround: scroll to top on route change */}
       <ScrollUp />
