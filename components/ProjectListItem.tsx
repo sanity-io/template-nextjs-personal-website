@@ -2,10 +2,10 @@ import { PortableText } from '@portabletext/react'
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 
-import type { ShowcaseProjects } from '../types'
+import type { ShowcaseProject } from '../types'
 
 interface ProjectProps {
-  project?: ShowcaseProjects
+  project: ShowcaseProject
   odd: number
 }
 
@@ -20,7 +20,7 @@ export function ProjectListItem(props: ProjectProps) {
   )
 }
 
-function ImageBox({ project }: { project: ShowcaseProjects }) {
+function ImageBox({ project }: { project: ShowcaseProject }) {
   return (
     <div className="col-span-4 p-2">
       <Image
@@ -42,7 +42,7 @@ function ImageBox({ project }: { project: ShowcaseProjects }) {
   )
 }
 
-function TextBox({ project }: { project: ShowcaseProjects }) {
+function TextBox({ project }: { project: ShowcaseProject }) {
   return (
     <div className="relative z-0 mx-5">
       <div className="mb-2 mt-4 text-2xl font-extrabold">{project.title}</div>

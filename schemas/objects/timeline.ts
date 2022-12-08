@@ -8,7 +8,7 @@ export default defineType({
     select: {
       items: 'items',
     },
-    prepare({ items }) {
+    prepare({ items }: { items: { title: string }[] }) {
       const hasItems = items && items.length > 0
       const timelineNames =
         hasItems && items.map((timeline) => timeline.title).join(', ')

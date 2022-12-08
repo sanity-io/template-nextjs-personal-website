@@ -29,8 +29,8 @@ export const PREVIEWABLE_DOCUMENT_TYPES: string[] = [
 
 export default defineConfig({
   basePath: '/studio',
-  projectId,
-  dataset,
+  projectId: projectId || '',
+  dataset: dataset || '',
   title,
   schema: {
     // If you want more content types, you can add them to this array

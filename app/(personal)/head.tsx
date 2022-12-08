@@ -1,15 +1,21 @@
-import PersonalWebsiteMeta from 'components/PersonalWebsiteMeta'
-import PersonalWebsiteMetaDescription from 'components/PersonalWebsiteMetaDescription'
-import * as demo from 'lib/demo.data'
-import { getHome } from 'lib/sanity.client'
+import { toPlainText } from '@portabletext/react'
+import { SiteMeta } from 'components/SiteMeta'
+import { getHomePage, getSettings } from 'lib/sanity.client'
+import { previewData } from 'next/headers'
 
 export default async function HomePageHead() {
-  const { title = demo.title, overview } = await getHome()
+  const token = previewData().token
+
+  const [settings, page] = await Promise.all([
+    getSettings({ token }),
+    getHomePage({ token }),
+  ])
+
   return (
-    <>
-      <title>{title}</title>
-      <PersonalWebsiteMeta />
-      <PersonalWebsiteMetaDescription value={overview} />
-    </>
+    <SiteMeta
+      description={page?.overview ? toPlainText(page.overview) : ''}
+      image={settings?.ogImage}
+      title={page?.title}
+    />
   )
 }

@@ -17,21 +17,29 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      type: 'slug',
-      name: 'slug',
-      title: 'Slug',
-      options: {
-        source: 'title',
-      },
-    }),
-    defineField({
       name: 'overview',
       description:
         'Used both for the <meta> description tag for SEO, and the personal website subheader.',
-      title: 'Descriprion',
+      title: 'Description',
       type: 'array',
       of: [
+        // Paragraphs
         defineArrayMember({
+          lists: [],
+          marks: {
+            annotations: [],
+            decorators: [
+              {
+                title: 'Italic',
+                value: 'em',
+              },
+              {
+                title: 'Strong',
+                value: 'strong',
+              },
+            ],
+          },
+          styles: [],
           type: 'block',
         }),
       ],
@@ -39,7 +47,7 @@ export default defineType({
     }),
     defineField({
       name: 'showcaseProjects',
-      title: 'Show case projects',
+      title: 'Showcase projects',
       description:
         'These are the projects that will appear first on your landing page.',
       type: 'array',
@@ -51,4 +59,15 @@ export default defineType({
       ],
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+    },
+    prepare({ title }) {
+      return {
+        subtitle: 'Home',
+        title,
+      }
+    },
+  },
 })

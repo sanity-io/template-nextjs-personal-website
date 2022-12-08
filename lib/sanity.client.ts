@@ -3,15 +3,14 @@ import { createClient } from 'next-sanity'
 
 import type {
   HomePagePayload,
-  MenuItem,
   PagePayload,
   ProjectPayload,
   SettingsPayload,
 } from '../types'
 import {
   homePageQuery,
+  homePageTitleQuery,
   pagesBySlugQuery,
-  pagesQuery,
   projectBySlugQuery,
   settingsQuery,
 } from './sanity.queries'
@@ -19,82 +18,52 @@ import {
 /**
  * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false
  */
-const client = projectId
-  ? createClient({ projectId, dataset, apiVersion, useCdn })
-  : null
-
-export async function getHome(
-  token?: string | null
-): Promise<HomePagePayload | undefined> {
-  if (projectId) {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion,
-      useCdn,
-      token: token || undefined,
-    })
-    return await client.fetch(homePageQuery)
-  }
-  return undefined
+const sanityClient = (token?: string) => {
+  return projectId
+    ? createClient({ projectId, dataset, apiVersion, useCdn, token })
+    : null
 }
 
-export async function getPageBySlug(slug: string): Promise<PagePayload> {
-  if (projectId) {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion,
-      useCdn,
-    })
-    return (await client.fetch(pagesBySlugQuery, { slug })) || ({} as any)
-  }
-  return {} as any
+export async function getHomePage({
+  token,
+}: {
+  token?: string
+}): Promise<HomePagePayload | undefined> {
+  return await sanityClient(token)?.fetch(homePageQuery)
 }
 
-export async function getPages(
-  token?: string | null
-): Promise<MenuItem[] | undefined> {
-  if (projectId) {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion,
-      useCdn,
-      token: token || undefined,
-    })
-    return await client.fetch(pagesQuery)
-  }
-  return undefined
+export async function getHomePageTitle({
+  token,
+}: {
+  token?: string
+}): Promise<string | undefined> {
+  return await sanityClient(token)?.fetch(homePageTitleQuery)
 }
 
-export async function getProjectBySlug(
+export async function getPageBySlug({
+  slug,
+  token,
+}: {
   slug: string
-): Promise<ProjectPayload> | undefined {
-  if (projectId) {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion,
-      useCdn,
-    })
-    return (await client.fetch(projectBySlugQuery, { slug })) || ({} as any)
-  }
-  return {} as any
+  token?: string
+}): Promise<PagePayload | undefined> {
+  return await sanityClient(token)?.fetch(pagesBySlugQuery, { slug })
 }
 
-export async function getSettings(
-  token?: string | null
-): Promise<SettingsPayload | undefined> {
-  if (projectId) {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion,
-      useCdn,
-      token: token || undefined,
-    })
-    return await client.fetch(settingsQuery)
-  }
-  return undefined
+export async function getProjectBySlug({
+  slug,
+  token,
+}: {
+  slug: string
+  token?: string
+}): Promise<ProjectPayload | undefined> {
+  return await sanityClient(token)?.fetch(projectBySlugQuery, { slug })
+}
+
+export async function getSettings({
+  token,
+}: {
+  token?: string
+}): Promise<SettingsPayload | undefined> {
+  return await sanityClient(token)?.fetch(settingsQuery)
 }

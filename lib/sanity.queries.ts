@@ -1,58 +1,59 @@
 import { groq } from 'next-sanity'
 
 export const homePageQuery = groq`
-*[_type == "home"][0]{
-  _id, 
-  footer,
-  overview, 
-  showcaseProjects[]->{
-    coverImage, 
+  *[_type == "home"][0]{
+    _id, 
+    footer,
     overview, 
-    slug,
-    tags, 
+    showcaseProjects[]->{
+      coverImage, 
+      overview, 
+      "slug": slug.current,
+      tags, 
+      title, 
+    }, 
     title, 
-  }, 
-  title, 
-}
+  }
 `
 
-export const pagesQuery = groq`
-*[_type == "page"]
+export const homePageTitleQuery = groq`
+  *[_type == "home"][0].title
 `
 
 export const pagesBySlugQuery = groq`
-*[_type == "page" && slug.current == $slug][0] {
-  _id,
-  content,
-  overview,
-  slug,
-  title,
-}
+  *[_type == "page" && slug.current == $slug][0] {
+    _id,
+    body,
+    overview,
+    slug,
+    title,
+  }
 `
 
 export const projectBySlugQuery = groq`
-*[_type == "project" && slug.current == $slug][0] {
-  _id,
-  title,
-  "slug": slug.current,
-  overview,
-  coverImage,
-  description,
-  duration, 
-  client, 
-  site, 
-  tags
-}
+  *[_type == "project" && slug.current == $slug][0] {
+    _id,
+    client, 
+    coverImage,
+    description,
+    duration, 
+    overview,
+    site, 
+    "slug": slug.current,
+    tags,
+    title,
+  }
 `
 
 export const settingsQuery = groq`
-*[_type == "settings"][0]{
-  footer,
-  menuItems[]->{
-    _type,
-    content,
-    "slug": slug.current,
+  *[_type == "settings"][0]{
+    footer,
+    menuItems[]->{
+      _type,
+      "slug": slug.current,
+      title
+    },
+    ogImage,
     title
   }
-}
 `

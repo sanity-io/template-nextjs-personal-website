@@ -8,7 +8,9 @@ export function TimelineItem({
   milestone: MilestoneItem
 }) {
   const { title, description, tags, duration } = milestone
-  const startYear = new Date(duration?.start).getFullYear()
+  const startYear = duration?.start
+    ? new Date(duration.start).getFullYear()
+    : undefined
   const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
 
   return (

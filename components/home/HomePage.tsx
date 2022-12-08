@@ -14,7 +14,7 @@ export function HomePage({ home }: { home: HomePagePayload }) {
       {showcaseProjects && showcaseProjects.length > 0 && (
         <div className="mb-20 rounded-md border">
           {showcaseProjects.map((project, key) => (
-            <Link key={key} href={`/project/${project.slug.current}`}>
+            <Link key={key} href={`/project/${project.slug}`}>
               <ProjectListItem project={project} odd={key % 2} />
             </Link>
           ))}

@@ -7,7 +7,7 @@ import { memo, useEffect, useState } from 'react'
 import cover from './cover.png'
 
 export default memo(function IntroTemplate() {
-  const [studioURL, setStudioURL] = useState(null)
+  const [studioURL, setStudioURL] = useState<string | null>(null)
   const [isLocalHost, setIsLocalhost] = useState(false)
 
   const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -31,7 +31,7 @@ export default memo(function IntroTemplate() {
   }, [])
 
   if (hasUTMtags || !studioURL) {
-    return
+    return null
   }
 
   return (
@@ -220,7 +220,7 @@ function BlueLink({ href, text }: { href: string; text: string }) {
   )
 }
 
-const RemoveBlock = ({ url }) => (
+const RemoveBlock = ({ url }: { url: string }) => (
   <a
     className="hover:text-blue-800"
     href={url}

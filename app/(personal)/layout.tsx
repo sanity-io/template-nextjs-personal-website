@@ -10,8 +10,11 @@ export default async function IndexRoute({
 }: {
   children: React.ReactNode
 }) {
-  const settings = (await getSettings()) || { menuItems: [], footer: [] }
   const token = previewData().token
+  const settings = (await getSettings({ token })) || {
+    menuItems: [],
+    footer: [],
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">

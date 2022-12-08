@@ -1,31 +1,26 @@
-import PersonalWebsiteMeta from 'components/PersonalWebsiteMeta'
-import PersonalWebsiteMetaDescription from 'components/PersonalWebsiteMetaDescription'
-import * as demo from 'lib/demo.data'
-import { getProjectBySlug } from 'lib/sanity.client'
-import { urlForImage } from 'lib/sanity.image'
+import { toPlainText } from '@portabletext/react'
+import { SiteMeta } from 'components/SiteMeta'
+import { getHomePageTitle, getProjectBySlug } from 'lib/sanity.client'
+import { previewData } from 'next/headers'
 
-export default async function SlugHead({
+export default async function ProjectPageHead({
   params,
 }: {
   params: { slug: string }
 }) {
-  const project = await getProjectBySlug(params.slug)
+  const token = previewData().token
+
+  const [homePageTitle, project] = await Promise.all([
+    getHomePageTitle({ token }),
+    getProjectBySlug({ slug: params.slug, token }),
+  ])
 
   return (
-    <>
-      <title>{project?.title}</title>
-      <PersonalWebsiteMeta />
-      <PersonalWebsiteMetaDescription value={project?.overview} />
-      {project.coverImage.asset._ref && (
-        <meta
-          property="og:image"
-          content={urlForImage(project?.coverImage)
-            .width(1200)
-            .height(627)
-            .fit('crop')
-            .url()}
-        />
-      )}
-    </>
+    <SiteMeta
+      baseTitle={homePageTitle}
+      description={project?.overview ? toPlainText(project.overview) : ''}
+      image={project?.coverImage}
+      title={project?.title}
+    />
   )
 }

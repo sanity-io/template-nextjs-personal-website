@@ -15,7 +15,7 @@ import { resolveHref } from '../../lib/sanity.links'
 
 interface IframeProps {
   apiVersion: string
-  documentType: string
+  documentType?: string
   previewSecretId: `${string}.${string}`
   slug?: string
 }
@@ -62,9 +62,7 @@ export function PreviewPane(
 
 // Used as a cache key that doesn't risk collision or getting affected by other components that might be using `suspend-react`
 const fetchSecret = Symbol('preview.secret')
-const Iframe = memo(function Iframe(
-  props: Omit<IframeProps, 'slug'> & Required<Pick<IframeProps, 'slug'>>
-) {
+const Iframe = memo(function Iframe(props: IframeProps) {
   const { apiVersion, documentType, previewSecretId, slug } = props
   const client = useClient({ apiVersion })
 
@@ -76,8 +74,12 @@ const Iframe = memo(function Iframe(
   )
 
   const url = new URL('/api/preview', location.origin)
-  url.searchParams.set('documentType', documentType)
-  url.searchParams.set('slug', slug)
+  if (documentType) {
+    url.searchParams.set('documentType', documentType)
+  }
+  if (slug) {
+    url.searchParams.set('slug', slug)
+  }
   if (secret) {
     url.searchParams.set('secret', secret)
   }

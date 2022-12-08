@@ -11,7 +11,11 @@ export default async function ProjectSlugRoute({
   params: { slug: string }
 }) {
   const token = previewData().token || null
-  const project = await getProjectBySlug(params.slug)
+  const project = await getProjectBySlug({ slug: params.slug })
+
+  if (!project) {
+    return null
+  }
 
   return (
     <>

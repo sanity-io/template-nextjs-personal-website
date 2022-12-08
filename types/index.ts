@@ -1,8 +1,7 @@
+import type { Block, Image } from 'sanity'
+
 export interface MenuItem {
   _type: string
-  content?: any[]
-  href?: string
-  overview?: any[]
   slug?: string
   title?: string
 }
@@ -25,43 +24,45 @@ export interface Settings {
   }
 }
 
-export interface ShowcaseProjects {
+export interface ShowcaseProject {
   title?: string
   overview?: any[]
   coverImage?: { asset?: any }
   tags?: string[]
-  slug?: { current?: string }
+  slug?: string
 }
 
 // Page payloads
 
 export interface HomePagePayload {
+  footer?: Block[]
+  overview?: Block[]
+  showcaseProjects?: ShowcaseProject[]
   title?: string
-  overview?: any[]
-  showcaseProjects?: ShowcaseProjects[]
-  footer?: any[]
 }
 
 export interface PagePayload {
-  content?: any[]
+  body?: Block[]
   name?: string
-  overview?: any[]
-  title: string
+  overview?: Block[]
+  title?: string
 }
 
 export interface ProjectPayload {
-  title: string
-  slug: string
-  overview: any[]
-  coverImage?: { asset?: any }
+  client?: string
+  coverImage?: Image
   description?: any[]
   duration?: any
-  client?: string
+  overview?: Block[]
   site?: string
+  slug: string
   tags?: any[]
+  title?: string
 }
 
 export interface SettingsPayload {
-  menuItems?: MenuItem[]
   footer?: any[]
+  menuItems?: MenuItem[]
+  ogImage?: Image
+  title?: string
 }

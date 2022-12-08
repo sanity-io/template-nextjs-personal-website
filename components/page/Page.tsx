@@ -4,13 +4,9 @@ import type { PagePayload } from '../../types'
 import { Header } from '../Header'
 import { TimelineSection } from '../TimelineSection'
 
-interface PageProps {
-  page?: PagePayload
-}
-
-export function Page(props: PageProps) {
+export function Page(props: { page: PagePayload }) {
   const { page } = props
-  const { title, overview, content } = page || {}
+  const { body, overview, title } = page
 
   const components: PortableTextComponents = {
     types: {
@@ -24,7 +20,7 @@ export function Page(props: PageProps) {
   return (
     <div>
       <Header title={title} description={overview} />
-      <PortableText value={content} components={components} />
+      {body && <PortableText value={body} components={components} />}
     </div>
   )
 }

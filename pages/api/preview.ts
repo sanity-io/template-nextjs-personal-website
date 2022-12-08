@@ -50,10 +50,6 @@ export default async function preview(
     return res.status(401).send('Invalid secret')
   }
 
-  if (!req.query.slug) {
-    return res.status(400).send('Slug missing')
-  }
-
   // If a secret is present in the URL, verify it and if valid we upgrade to token based preview mode, which works in Safari and Incognito mode
   if (req.query.secret) {
     const token = process.env.SANITY_API_READ_TOKEN
@@ -74,6 +70,14 @@ export default async function preview(
     req.query.documentType as string,
     req.query.slug as string
   )
+
+  if (!href) {
+    return res
+      .status(400)
+      .send(
+        'Unable to resolve preview URL based on the current document type and slug'
+      )
+  }
 
   return redirectToPreview(res, previewData, href)
 }

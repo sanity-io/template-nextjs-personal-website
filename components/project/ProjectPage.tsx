@@ -15,6 +15,7 @@ export function ProjectPage({ project }: { project: ProjectPayload }) {
   return (
     <div>
       <Header title={project.title} description={project.overview} />
+
       <div className="grid grid-cols-4 rounded-md border">
         <div className="col-span-4">
           {project.coverImage?.asset?._ref ? (

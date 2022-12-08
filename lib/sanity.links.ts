@@ -1,5 +1,3 @@
-// @todo - consider renaming / moving elsewhere
-
 export function resolveHref(
   documentType?: string,
   slug?: string
