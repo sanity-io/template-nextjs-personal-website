@@ -37,11 +37,11 @@ export function ProjectPage({
     urlForImage(coverImage)?.height(2000).width(3500).fit('crop').url()
 
   return (
-    <div>
+    <div className="space-y-6">
       <Header title={title} description={overview} />
-
-      <div className="grid grid-cols-4 rounded-md border">
-        <div className="col-span-4">
+      <div className="rounded-md border">
+        {/* Image  */}
+        <div className="w-full">
           {imageUrl ? (
             <Image
               className="h-auto w-full rounded-md"
@@ -56,39 +56,53 @@ export function ProjectPage({
           )}
         </div>
 
-        <div className="border-r p-4">
-          <div className="text-sm">Duration</div>
-          {Boolean(startYear && endYear) && (
-            <div className="text-lg">{`${startYear} -  ${endYear}`}</div>
+        <div className="divide-inherit grid grid-cols-4 divide-x">
+          {/* Duration */}
+          {!!(startYear && endYear) && (
+            <div className="p-4">
+              <div className="text-sm">Duration</div>
+              <div className="text-lg">{`${startYear} -  ${endYear}`}</div>
+            </div>
           )}
-        </div>
 
-        <div className="border-r p-4 text-lg">
-          <div className="text-sm">Client</div>
-          <div>{client}</div>
-        </div>
+          {/* Client */}
+          {client && (
+            <div className="p-4 text-lg">
+              <div className="text-sm">Client</div>
+              <div>{client}</div>
+            </div>
+          )}
 
-        <div className="border-r p-4">
-          <div className="text-sm">Site</div>
+          {/* Site */}
           {site && (
-            <Link target="_blank" className="break-words text-lg" href={site}>
-              {site}
-            </Link>
+            <div className="p-4">
+              <div className="text-sm">Site</div>
+              {site && (
+                <Link
+                  target="_blank"
+                  className="break-words text-lg"
+                  href={site}
+                >
+                  {site}
+                </Link>
+              )}
+            </div>
           )}
-        </div>
 
-        <div className="p-4">
-          <div className="text-sm">Tags</div>
-          <div className="flex flex-row flex-wrap text-lg">
-            {tags?.map((tag, key) => (
-              <div key={key} className="mr-1 break-words ">
-                #{tag}
-              </div>
-            ))}
+          {/* Tags */}
+          <div className="p-4">
+            <div className="text-sm">Tags</div>
+            <div className="flex flex-row flex-wrap text-lg">
+              {tags?.map((tag, key) => (
+                <div key={key} className="mr-1 break-words ">
+                  #{tag}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      <div className="py-12 font-serif text-gray-600">
+      <div className="font-serif text-gray-600">
         <PortableText value={description} />
       </div>
     </div>

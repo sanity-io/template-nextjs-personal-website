@@ -54,7 +54,7 @@ export function TimelineItem({
           {startYear} - {endYear}
         </div>
         {/* Description */}
-        <div className="pt-3 font-serif text-gray-600">{description}</div>
+        <div className="pb-5 pt-3 font-serif text-gray-600">{description}</div>
       </div>
     </div>
   )
