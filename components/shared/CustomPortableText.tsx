@@ -7,7 +7,6 @@ export function CustomPortableText({ value }: { value: Block[] }) {
   const components: PortableTextComponents = {
     marks: {
       link: ({ children, value }) => {
-        console.log('value', value)
         return (
           <a
             className="underline transition hover:opacity-50"
