@@ -52,7 +52,7 @@ export interface ProjectPayload {
   }
   overview?: Block[]
   site?: string
-  slug: string
+  slug?: string
   tags?: string[]
   title?: string
 }
