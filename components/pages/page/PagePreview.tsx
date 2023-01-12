@@ -1,21 +1,27 @@
-'use client'
-
 import { usePreview } from 'lib/sanity.preview'
 import { pagesBySlugQuery } from 'lib/sanity.queries'
 import type { PagePayload } from 'types'
 
-import { Page } from './Page'
+import { Page, PageProps } from './Page'
 
 export function PagePreview({
   token,
-  slug,
+  page,
+  settings,
+  homePageTitle,
 }: {
   token: null | string
-  slug: string
-}) {
-  const about: PagePayload = usePreview(token, pagesBySlugQuery, {
-    slug: slug,
+} & PageProps) {
+  const pagePreview: PagePayload = usePreview(token, pagesBySlugQuery, {
+    slug: page.slug,
   })
 
-  return <Page data={about} />
+  return (
+    <Page
+      page={pagePreview}
+      settings={settings}
+      homePageTitle={homePageTitle}
+      preview={true}
+    />
+  )
 }

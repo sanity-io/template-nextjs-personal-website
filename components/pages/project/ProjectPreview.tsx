@@ -1,21 +1,27 @@
-'use client'
-
 import { usePreview } from 'lib/sanity.preview'
 import { projectBySlugQuery } from 'lib/sanity.queries'
 import type { ProjectPayload } from 'types'
 
-import { ProjectPage } from './ProjectPage'
+import { ProjectPage, ProjectPageProps } from './ProjectPage'
 
 export function ProjectPreview({
   token,
-  slug,
+  settings,
+  project,
+  homePageTitle,
 }: {
   token: null | string
-  slug: string
-}) {
-  const project: ProjectPayload = usePreview(token, projectBySlugQuery, {
-    slug: slug,
+} & ProjectPageProps) {
+  const projectPreview: ProjectPayload = usePreview(token, projectBySlugQuery, {
+    slug: project?.slug,
   })
 
-  return <ProjectPage data={project} />
+  return (
+    <ProjectPage
+      project={projectPreview}
+      settings={settings}
+      homePageTitle={homePageTitle}
+      preview={true}
+    />
+  )
 }
