@@ -31,6 +31,10 @@ yarn-error.log*
 # local env files
 .env*.local
 
+#Intellij
+.idea
+*.iml
+
 # vercel
 .vercel
 

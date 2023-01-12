@@ -1,11 +1,11 @@
-import 'server-only'
-
 import { apiVersion, dataset, projectId, useCdn } from 'lib/sanity.api'
 import {
   homePageQuery,
   homePageTitleQuery,
+  pagePaths,
   pagesBySlugQuery,
   projectBySlugQuery,
+  projectPaths,
   settingsQuery,
 } from 'lib/sanity.queries'
 import { createClient } from 'next-sanity'
@@ -67,4 +67,12 @@ export async function getSettings({
   token?: string
 }): Promise<SettingsPayload | undefined> {
   return await sanityClient(token)?.fetch(settingsQuery)
+}
+
+export async function getProjectPaths(): Promise<string[]> {
+  return await sanityClient()?.fetch(projectPaths)
+}
+
+export async function getPagePaths(): Promise<string[]> {
+  return await sanityClient()?.fetch(pagePaths)
 }
