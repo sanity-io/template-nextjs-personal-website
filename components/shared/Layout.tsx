@@ -2,8 +2,7 @@ import { Footer } from 'components/global/Footer'
 import { Navbar } from 'components/global/Navbar'
 import { PreviewBanner } from 'components/preview/PreviewBanner'
 import IntroTemplate from 'intro-template'
-
-import { SettingsPayload } from '../../types'
+import { SettingsPayload } from 'types'
 
 const fallbackSettings: SettingsPayload = {
   menuItems: [],

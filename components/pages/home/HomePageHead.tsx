@@ -1,6 +1,5 @@
 import { toPlainText } from '@portabletext/react'
 import { SiteMeta } from 'components/global/SiteMeta'
-
 import { HomePagePayload, SettingsPayload } from 'types'
 
 export interface HomePageHeadProps {

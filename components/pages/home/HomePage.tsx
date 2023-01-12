@@ -1,13 +1,14 @@
 import { ProjectListItem } from 'components/pages/home/ProjectListItem'
 import { Header } from 'components/shared/Header'
+import Layout from 'components/shared/Layout'
 import ScrollUp from 'components/shared/ScrollUp'
 import { resolveHref } from 'lib/sanity.links'
 import Head from 'next/head'
 import Link from 'next/link'
 import type { HomePagePayload } from 'types'
-import HomePageHead from './HomePageHead'
 import { SettingsPayload } from 'types'
-import Layout from 'components/shared/Layout'
+
+import HomePageHead from './HomePageHead'
 
 export interface HomePageProps {
   settings?: SettingsPayload

@@ -1,10 +1,10 @@
 import { CustomPortableText } from 'components/shared/CustomPortableText'
 import { Header } from 'components/shared/Header'
+import Layout from 'components/shared/Layout'
 import ScrollUp from 'components/shared/ScrollUp'
 import Head from 'next/head'
 import type { PagePayload, SettingsPayload } from 'types'
 
-import Layout from 'components/shared/Layout'
 import PageHead from './PageHead'
 
 export interface PageProps {
