@@ -1,30 +1,49 @@
 import { CustomPortableText } from 'components/shared/CustomPortableText'
 import { Header } from 'components/shared/Header'
 import ScrollUp from 'components/shared/ScrollUp'
-import type { PagePayload } from 'types'
+import Head from 'next/head'
+import type { PagePayload, SettingsPayload } from 'types'
 
-export function Page({ data }: { data: PagePayload }) {
+import Layout from 'components/shared/Layout'
+import PageHead from './PageHead'
+
+export interface PageProps {
+  page: PagePayload | undefined
+  settings: SettingsPayload | undefined
+  homePageTitle: string | undefined
+  preview?: boolean
+}
+
+export function Page({ page, settings, homePageTitle, preview }: PageProps) {
   // Default to an empty object to allow previews on non-existent documents
-  const { body, overview, title } = data || {}
+  const { body, overview, title } = page || {}
 
   return (
-    <div>
-      <div className="mb-14">
-        {/* Header */}
-        <Header title={title} description={overview} />
+    <>
+      <Head>
+        <PageHead page={page} settings={settings} title={homePageTitle} />
+      </Head>
 
-        {/* Body */}
-        {body && (
-          <CustomPortableText
-            paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
-            value={body}
-          />
-        )}
+      <Layout settings={settings} preview={preview}>
+        <div>
+          <div className="mb-14">
+            {/* Header */}
+            <Header title={title} description={overview} />
 
-        {/* Workaround: scroll to top on route change */}
-        <ScrollUp />
-      </div>
-      <div className="absolute left-0 w-screen border-t" />
-    </div>
+            {/* Body */}
+            {body && (
+              <CustomPortableText
+                paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
+                value={body}
+              />
+            )}
+
+            {/* Workaround: scroll to top on route change */}
+            <ScrollUp />
+          </div>
+          <div className="absolute left-0 w-screen border-t" />
+        </div>
+      </Layout>
+    </>
   )
 }

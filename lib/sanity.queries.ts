@@ -2,18 +2,18 @@ import { groq } from 'next-sanity'
 
 export const homePageQuery = groq`
   *[_type == "home"][0]{
-    _id, 
+    _id,
     footer,
-    overview, 
+    overview,
     showcaseProjects[]->{
       _type,
-      coverImage, 
-      overview, 
+      coverImage,
+      overview,
       "slug": slug.current,
-      tags, 
-      title, 
-    }, 
-    title, 
+      tags,
+      title,
+    },
+    title,
   }
 `
 
@@ -26,24 +26,32 @@ export const pagesBySlugQuery = groq`
     _id,
     body,
     overview,
-    slug,
     title,
+    "slug": slug.current,
   }
 `
 
 export const projectBySlugQuery = groq`
   *[_type == "project" && slug.current == $slug][0] {
     _id,
-    client, 
+    client,
     coverImage,
     description,
-    duration, 
+    duration,
     overview,
-    site, 
+    site,
     "slug": slug.current,
     tags,
     title,
   }
+`
+
+export const projectPaths = groq`
+  *[_type == "project" && slug.current != null].slug.current
+`
+
+export const pagePaths = groq`
+  *[_type == "page" && slug.current != null].slug.current
 `
 
 export const settingsQuery = groq`
