@@ -4,7 +4,7 @@ import type { HomePagePayload } from 'types'
 
 import { HomePage, HomePageProps } from './HomePage'
 
-export function HomePagePreview({
+export default function HomePagePreview({
   token,
   page,
   settings,
