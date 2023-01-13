@@ -1,6 +1,5 @@
 import { PreviewSuspense } from '@sanity/preview-kit'
 import { ProjectPage } from 'components/pages/project/ProjectPage'
-import { ProjectPreview } from 'components/pages/project/ProjectPreview'
 import { PreviewWrapper } from 'components/preview/PreviewWrapper'
 import {
   getHomePageTitle,
@@ -10,7 +9,10 @@ import {
 } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
 import { GetStaticProps } from 'next'
+import { lazy } from 'react'
 import { ProjectPayload, SettingsPayload } from 'types'
+
+const ProjectPreview = lazy(() => import('components/pages/project/ProjectPreview'))
 
 interface PageProps {
   project?: ProjectPayload

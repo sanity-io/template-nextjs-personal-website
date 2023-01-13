@@ -4,7 +4,7 @@ import type { ProjectPayload } from 'types'
 
 import { ProjectPage, ProjectPageProps } from './ProjectPage'
 
-export function ProjectPreview({
+export default function ProjectPreview({
   token,
   settings,
   project,

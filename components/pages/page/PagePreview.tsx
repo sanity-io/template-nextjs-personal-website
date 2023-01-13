@@ -4,7 +4,7 @@ import type { PagePayload } from 'types'
 
 import { Page, PageProps } from './Page'
 
-export function PagePreview({
+export default function PagePreview({
   token,
   page,
   settings,
