@@ -9,8 +9,8 @@ import {
 } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
 import { GetStaticProps } from 'next'
-import { PagePayload, SettingsPayload } from 'types'
 import { lazy } from 'react'
+import { PagePayload, SettingsPayload } from 'types'
 
 const PagePreview = lazy(() => import('components/pages/page/PagePreview'))
 
