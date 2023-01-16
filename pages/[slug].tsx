@@ -76,7 +76,6 @@ export const getStaticProps: GetStaticProps<
 
   const token = previewData.token
 
-  console.log(params.slug)
   const [settings, page, homePageTitle] = await Promise.all([
     getSettings({ token }),
     getPageBySlug({ token, slug: params.slug }),

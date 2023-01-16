@@ -17,7 +17,7 @@ export interface HomePageProps {
 }
 
 export function HomePage({ page, settings, preview }: HomePageProps) {
-  const { overview, showcaseProjects, title } = page
+  const { overview, showcaseProjects, title = 'Personal website' } = page ?? {}
 
   return (
     <>

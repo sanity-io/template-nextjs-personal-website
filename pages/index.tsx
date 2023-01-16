@@ -3,10 +3,12 @@ import { HomePage } from 'components/pages/home/HomePage'
 import { PreviewWrapper } from 'components/preview/PreviewWrapper'
 import { getHomePage, getSettings } from 'lib/sanity.client'
 import { GetStaticProps } from 'next'
-import {lazy} from 'react'
+import { lazy } from 'react'
 import { HomePagePayload, SettingsPayload } from 'types'
 
-const HomePagePreview = lazy(() => import('components/pages/home/HomePagePreview'))
+const HomePagePreview = lazy(
+  () => import('components/pages/home/HomePagePreview')
+)
 
 interface PageProps {
   page: HomePagePayload
