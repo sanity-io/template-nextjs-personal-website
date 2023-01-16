@@ -14,6 +14,9 @@ You can use this starter to kick-start a personal website or learn these technol
 >
 > The template will be migrated to the currently experimental [/app][app-dir] directory
 > when Vercel announce that it is production ready.
+> 
+> If you want to use the app directory for routing today, use the [personal website with app directory](https://github.com/sanity-io/sanity-template-nextjs-appdir-personal-website)
+> template.
 
 ## Features
 
