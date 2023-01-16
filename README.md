@@ -6,9 +6,12 @@ It comes with a native Sanity Studio that offers features like real-time collabo
 The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. 
 You can use this starter to kick-start a personal website or learn these technologies.
 
-This starter uses the `/pages` directory for Next routing. 
-
 [![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
+
+> :info: This starter uses the `/pages` directory for Next.js routing.
+>
+> The template will be migrated to the currently experimental [/app][app-dir] directory
+> when Vercel announce that it is production ready.
 
 ## Features
 
@@ -143,3 +146,4 @@ You can remove it by deleting the `IntroTemplate` component in `/components/shar
 [localhost-3000-studio]: http://localhost:3000/studio
 [vercel]: https://vercel.com
 [vercel-github]: https://github.com/vercel/next.js/discussions
+[app-dir]: (https://beta.nextjs.org/docs/routing/fundamentals#the-app-directory)
