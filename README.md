@@ -151,4 +151,4 @@ You can remove it by deleting the `IntroTemplate` component in `/components/shar
 [localhost-3000-studio]: http://localhost:3000/studio
 [vercel]: https://vercel.com
 [vercel-github]: https://github.com/vercel/next.js/discussions
-[app-dir]: (https://beta.nextjs.org/docs/routing/fundamentals#the-app-directory)
+[app-dir]: https://beta.nextjs.org/docs/routing/fundamentals#the-app-directory
