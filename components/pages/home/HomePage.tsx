@@ -3,7 +3,6 @@ import { Header } from 'components/shared/Header'
 import Layout from 'components/shared/Layout'
 import ScrollUp from 'components/shared/ScrollUp'
 import { resolveHref } from 'lib/sanity.links'
-import Head from 'next/head'
 import Link from 'next/link'
 import type { HomePagePayload } from 'types'
 import { SettingsPayload } from 'types'
@@ -21,9 +20,7 @@ export function HomePage({ page, settings, preview }: HomePageProps) {
 
   return (
     <>
-      <Head>
-        <HomePageHead page={page} settings={settings} />
-      </Head>
+      <HomePageHead page={page} settings={settings} />
 
       <Layout settings={settings} preview={preview}>
         <div className="space-y-20">
