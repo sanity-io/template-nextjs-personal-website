@@ -2,7 +2,6 @@ import { CustomPortableText } from 'components/shared/CustomPortableText'
 import { Header } from 'components/shared/Header'
 import ImageBox from 'components/shared/ImageBox'
 import ScrollUp from 'components/shared/ScrollUp'
-import Head from 'next/head'
 import Link from 'next/link'
 import type { ProjectPayload, SettingsPayload } from 'types'
 
@@ -39,9 +38,7 @@ export function ProjectPage({
 
   return (
     <>
-      <Head>
-        <ProjectPageHead project={project} title={homePageTitle} />
-      </Head>
+      <ProjectPageHead project={project} title={homePageTitle} />
 
       <Layout settings={settings} preview={preview}>
         <div>

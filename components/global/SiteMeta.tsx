@@ -1,5 +1,6 @@
 import * as demo from 'lib/demo.data'
 import { urlForImage } from 'lib/sanity.image'
+import Head from 'next/head'
 import type { Image } from 'sanity'
 
 /**
@@ -25,7 +26,7 @@ export function SiteMeta({
     image && urlForImage(image)?.width(1200).height(627).fit('crop').url()
 
   return (
-    <>
+    <Head>
       <title>{metaTitle || demo.title}</title>
       <meta name="viewport" content="width=device-width,initial-scale=1.0" />
       <link
@@ -54,6 +55,6 @@ export function SiteMeta({
         <meta key="description" name="description" content={description} />
       )}
       {imageUrl && <meta property="og:image" content={imageUrl} />}
-    </>
+    </Head>
   )
 }
