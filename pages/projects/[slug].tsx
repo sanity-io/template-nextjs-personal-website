@@ -12,7 +12,9 @@ import { GetStaticProps } from 'next'
 import { lazy } from 'react'
 import { ProjectPayload, SettingsPayload } from 'types'
 
-const ProjectPreview = lazy(() => import('components/pages/project/ProjectPreview'))
+const ProjectPreview = lazy(
+  () => import('components/pages/project/ProjectPreview')
+)
 
 interface PageProps {
   project?: ProjectPayload
