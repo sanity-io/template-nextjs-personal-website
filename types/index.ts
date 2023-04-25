@@ -1,4 +1,5 @@
-import type { Image, PortableTextBlock } from 'sanity'
+import type { PortableTextBlock } from '@portabletext/types'
+import type { Image } from 'sanity'
 
 export interface MenuItem {
   _type: string
