@@ -13,7 +13,7 @@ export function ProjectListItem(props: ProjectProps) {
   return (
     <div
       className={`flex flex-col gap-x-5 p-2 transition hover:bg-gray-50/50 xl:flex-row ${
-        odd && 'border-t border-b xl:flex-row-reverse'
+        odd && 'border-b border-t xl:flex-row-reverse'
       }`}
     >
       <div className="w-full xl:w-9/12">
