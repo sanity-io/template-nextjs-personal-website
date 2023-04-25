@@ -54,7 +54,7 @@ export function ProjectPage({
                 classesWrapper="relative aspect-[16/9]"
               />
 
-              <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-y-0 lg:divide-x">
+              <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
                 {/* Duration */}
                 {!!(startYear && endYear) && (
                   <div className="p-3 lg:p-4">
