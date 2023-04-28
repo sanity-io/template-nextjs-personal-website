@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@next/font": "13.3.1",
-    "@portabletext/react": "2.0.3",
+    "@portabletext/react": "3.0.0",
     "@sanity/demo": "1.0.2",
     "@sanity/image-url": "1.0.2",
     "@sanity/vision": "3.9.0",
