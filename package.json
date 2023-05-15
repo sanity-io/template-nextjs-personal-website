@@ -14,7 +14,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@next/font": "13.3.1",
+    "@next/font": "13.4.2",
     "@portabletext/react": "3.0.0",
     "@sanity/demo": "1.0.2",
     "@sanity/image-url": "1.0.2",
@@ -24,7 +24,7 @@
     "classnames": "2.3.2",
     "date-fns": "2.29.3",
     "intl-segmenter-polyfill": "0.4.4",
-    "next": "13.3.1",
+    "next": "13.4.2",
     "next-google-fonts": "2.2.0",
     "next-sanity": "4.2.0",
     "react": "18.2.0",
