@@ -1,14 +1,8 @@
-import { PreviewSuspense } from '@sanity/preview-kit'
 import { HomePage } from 'components/pages/home/HomePage'
-import { PreviewWrapper } from 'components/preview/PreviewWrapper'
+import HomePagePreview from 'components/pages/home/HomePagePreview'
 import { getHomePage, getSettings } from 'lib/sanity.client'
 import { GetStaticProps } from 'next'
-import { lazy } from 'react'
 import { HomePagePayload, SettingsPayload } from 'types'
-
-const HomePagePreview = lazy(
-  () => import('components/pages/home/HomePagePreview')
-)
 
 interface PageProps {
   page: HomePagePayload
@@ -26,20 +20,10 @@ interface PreviewData {
 }
 
 export default function IndexPage(props: PageProps) {
-  const { page, settings, preview, token } = props
+  const { page, settings, preview } = props
 
   if (preview) {
-    return (
-      <PreviewSuspense
-        fallback={
-          <PreviewWrapper>
-            <HomePage page={page} settings={settings} preview={preview} />
-          </PreviewWrapper>
-        }
-      >
-        <HomePagePreview token={token} />
-      </PreviewSuspense>
-    )
+    return <HomePagePreview page={page} settings={settings} />
   }
 
   return <HomePage page={page} settings={settings} />

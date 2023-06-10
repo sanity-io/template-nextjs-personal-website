@@ -1,27 +1,30 @@
-import { usePreview } from 'lib/sanity.preview'
 import { projectBySlugQuery } from 'lib/sanity.queries'
+import { useListeningQuery, useListeningQueryStatus } from 'next-sanity/preview'
 import type { ProjectPayload } from 'types'
 
 import { ProjectPage, ProjectPageProps } from './ProjectPage'
 
 export default function ProjectPreview({
-  token,
   settings,
   project,
   homePageTitle,
-}: {
-  token: null | string
-} & ProjectPageProps) {
-  const projectPreview: ProjectPayload = usePreview(token, projectBySlugQuery, {
-    slug: project?.slug,
-  })
+}: ProjectPageProps) {
+  const params = { slug: project?.slug }
+  const projectPreview = useListeningQuery<ProjectPayload>(
+    project,
+    projectBySlugQuery,
+    params
+  )
+  const loading =
+    useListeningQueryStatus(projectBySlugQuery, params) === 'loading'
 
   return (
     <ProjectPage
       project={projectPreview}
       settings={settings}
       homePageTitle={homePageTitle}
-      preview={true}
+      preview
+      loading={loading}
     />
   )
 }

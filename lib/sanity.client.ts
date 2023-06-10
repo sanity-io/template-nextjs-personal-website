@@ -21,7 +21,8 @@ import type {
  */
 const sanityClient = (token?: string) => {
   return projectId
-    ? createClient({ projectId, dataset, apiVersion, useCdn, token })
+    ? // @ts-expect-error -- update `studioUrl` to no longer be required
+      createClient({ projectId, dataset, apiVersion, useCdn, token })
     : null
 }
 
