@@ -58,7 +58,6 @@ You can use this starter to kick-start a personal website or learn these technol
 | `/schemas`                                  | Where Sanity Studio gets its content types from         |
 | `/plugins`                                  | Where the advanced Sanity Studio customization is setup |
 | `/lib/sanity.api.ts`,`/lib/sanity.image.ts` | Configuration for the Sanity Content Lake client        |
-| `/lib/sanity.preview.ts`                    | Configuration for the live Preview Mode                 |
 
 ## Configuration
 

@@ -1,27 +1,29 @@
-import { usePreview } from 'lib/sanity.preview'
 import { projectBySlugQuery } from 'lib/sanity.queries'
+import { useLiveQuery } from 'next-sanity/preview'
 import type { ProjectPayload } from 'types'
 
 import { ProjectPage, ProjectPageProps } from './ProjectPage'
 
 export default function ProjectPreview({
-  token,
   settings,
-  project,
+  project: initialProject,
   homePageTitle,
-}: {
-  token: null | string
-} & ProjectPageProps) {
-  const projectPreview: ProjectPayload = usePreview(token, projectBySlugQuery, {
-    slug: project?.slug,
-  })
+}: ProjectPageProps) {
+  const [project, loading] = useLiveQuery<ProjectPayload | null>(
+    initialProject,
+    projectBySlugQuery,
+    {
+      slug: initialProject.slug,
+    }
+  )
 
   return (
     <ProjectPage
-      project={projectPreview}
+      project={project ?? initialProject}
       settings={settings}
       homePageTitle={homePageTitle}
-      preview={true}
+      preview
+      loading={loading}
     />
   )
 }

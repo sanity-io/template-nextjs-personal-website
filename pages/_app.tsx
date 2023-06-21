@@ -2,6 +2,7 @@ import 'styles/index.css'
 
 import { AppProps } from 'next/app'
 import { IBM_Plex_Mono, Inter, PT_Serif } from 'next/font/google'
+import { lazy } from 'react'
 
 const mono = IBM_Plex_Mono({
   variable: '--font-mono',
@@ -22,7 +23,10 @@ const serif = PT_Serif({
   weight: ['400', '700'],
 })
 
+const PreviewProvider = lazy(() => import('components/preview/PreviewProvider'))
+
 export default function App({ Component, pageProps }: AppProps) {
+  const { preview, token } = pageProps
   return (
     <>
       <style jsx global>
@@ -35,7 +39,13 @@ export default function App({ Component, pageProps }: AppProps) {
         `}
       </style>
 
-      <Component {...pageProps} />
+      {preview ? (
+        <PreviewProvider token={token}>
+          <Component {...pageProps} />
+        </PreviewProvider>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </>
   )
 }
