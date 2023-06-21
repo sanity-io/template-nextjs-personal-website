@@ -24,11 +24,7 @@ export default function Layout({
   loading,
 }: LayoutProps) {
   return (
-    <div
-      className={`flex min-h-screen flex-col bg-white text-black transition-opacity ${
-        loading ? 'opacity-50' : ''
-      }`}
-    >
+    <div className={`flex min-h-screen flex-col bg-white text-black`}>
       {preview && <PreviewBanner loading={loading} />}
       {preview ? (
         <PreviewNavbar settings={settings} />
