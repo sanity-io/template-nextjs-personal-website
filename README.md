@@ -10,17 +10,13 @@ You can use this starter to kick-start a personal website or learn these technol
 
 > **Note**
 >
-> This starter uses the `/pages` directory for Next.js routing.
+> This starter uses the `pages-router`.
 >
-> The template will be migrated to the currently experimental [/app][app-dir] directory
-> when Vercel announce that it is production ready.
->
-> If you want to use the app directory for routing today, use the [personal website with app directory](https://github.com/sanity-io/sanity-template-nextjs-appdir-personal-website)
-> template.
+> For an `app-router` alternative, use [sanity-template-nextjs-app-router-personal-website](https://github.com/sanity-io/sanity-template-nextjs-app-router-personal-website)
 
 ## Features
 
-- A performant, static personal personal website with editable projects
+- A performant, static personal website with editable projects
 - A native and customizable authoring environment, accessible on `yourpersonalwebsite.com/studio`
 - Real-time and collaborative content editing with fine-grained revision history
 - Side-by-side instant content preview that works across your whole site
