@@ -1,13 +1,14 @@
 import { PreviewSuspense } from '@sanity/preview-kit'
 import { ProjectPage } from 'components/pages/project/ProjectPage'
 import { PreviewWrapper } from 'components/preview/PreviewWrapper'
-import {
-  getHomePageTitle,
-  getProjectBySlug,
-  getProjectPaths,
-  getSettings,
-} from 'lib/sanity.client'
+import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
+import {
+  homePageTitleQuery,
+  projectBySlugQuery,
+  projectPaths,
+  settingsQuery,
+} from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import { lazy } from 'react'
 import { ProjectPayload, SettingsPayload } from 'types'
@@ -17,8 +18,8 @@ const ProjectPreview = lazy(
 )
 
 interface PageProps {
-  project?: ProjectPayload
-  settings?: SettingsPayload
+  project: ProjectPayload
+  settings: SettingsPayload
   homePageTitle?: string
   preview: boolean
   token: string | null
@@ -29,7 +30,7 @@ interface Query {
 }
 
 interface PreviewData {
-  token?: string
+  token: string
 }
 
 export default function ProjectSlugRoute(props: PageProps) {
@@ -74,14 +75,15 @@ export const getStaticProps: GetStaticProps<
   Query,
   PreviewData
 > = async (ctx) => {
-  const { preview = false, previewData = {}, params = {} } = ctx
-
-  const token = previewData.token
+  const { preview = false, previewData, params = {} } = ctx
+  const client = getClient(preview ? previewData : undefined)
 
   const [settings, project, homePageTitle] = await Promise.all([
-    getSettings({ token }),
-    getProjectBySlug({ token, slug: params.slug }),
-    getHomePageTitle({ token }),
+    client.fetch<SettingsPayload | null>(settingsQuery),
+    client.fetch<ProjectPayload | null>(projectBySlugQuery, {
+      slug: params.slug,
+    }),
+    client.fetch<string | null>(homePageTitleQuery),
   ])
 
   if (!project) {
@@ -93,16 +95,17 @@ export const getStaticProps: GetStaticProps<
   return {
     props: {
       project,
-      settings,
-      homePageTitle,
+      settings: settings ?? {},
+      homePageTitle: homePageTitle ?? undefined,
       preview,
-      token: previewData.token ?? null,
+      token: previewData?.token ?? null,
     },
   }
 }
 
 export const getStaticPaths = async () => {
-  const paths = await getProjectPaths()
+  const client = getClient()
+  const paths = await client.fetch<string[]>(projectPaths)
 
   return {
     paths: paths?.map((slug) => resolveHref('project', slug)) || [],

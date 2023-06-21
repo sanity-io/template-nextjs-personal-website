@@ -3,6 +3,7 @@ import {
   dataset,
   previewSecretId,
   projectId,
+  readToken,
   useCdn,
 } from 'lib/sanity.api'
 import { resolveHref } from 'lib/sanity.links'
@@ -12,7 +13,7 @@ import { getSecret } from 'plugins/productionUrl/utils'
 
 function redirectToPreview(
   res: NextApiResponse<string | void>,
-  previewData: { token?: string },
+  previewData: { token: string },
   Location: string
 ): void {
   // Enable Preview Mode by setting the cookies
@@ -32,33 +33,22 @@ export default async function preview(
   req: NextApiRequest,
   res: NextApiResponse<string | void>
 ) {
-  const previewData: { token?: string } = {}
-  // If you want to require preview mode sessions to be started from the Studio, set the SANITY_REQUIRE_PREVIEW_SECRET
-  // environment variable to 'true'. The benefit of doing this that unauthorized users attempting to brute force into your
-  // preview mode won't make it past the secret check, and only legitimate users are able to bypass the statically generated pages and load up
-  // the serverless-powered preview mode.
-  if (
-    process.env.SANITY_REQUIRE_PREVIEW_SECRET === 'true' &&
-    !req.query.secret
-  ) {
+  if (!req.query.secret) {
     return res.status(401).send('Invalid secret')
   }
 
-  // If a secret is present in the URL, verify it and if valid we upgrade to token based preview mode, which works in Safari and Incognito mode
-  if (req.query.secret) {
-    const token = process.env.SANITY_API_READ_TOKEN
-    if (!token) {
-      throw new Error(
-        'A secret is provided but there is no `SANITY_API_READ_TOKEN` environment variable setup.'
-      )
-    }
-    const client = _client.withConfig({ useCdn: false, token })
-    const secret = await getSecret(client, previewSecretId)
-    if (req.query.secret !== secret) {
-      return res.status(401).send('Invalid secret')
-    }
-    previewData.token = token
+  const token = readToken
+  if (!token) {
+    throw new Error(
+      'A secret is provided but there is no `SANITY_API_READ_TOKEN` environment variable setup.'
+    )
   }
+  const client = _client.withConfig({ useCdn: false, token })
+  const secret = await getSecret(client, previewSecretId)
+  if (req.query.secret !== secret) {
+    return res.status(401).send('Invalid secret')
+  }
+  const previewData = { token }
 
   const href = resolveHref(
     req.query.documentType as string,

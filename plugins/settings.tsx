@@ -46,7 +46,7 @@ export const pageStructure = (
     // Desktool can understand
     const singletonItems = typeDefArray.map((typeDef) => {
       return S.listItem()
-        .title(typeDef.title)
+        .title(typeDef.title!)
         .icon(typeDef.icon)
         .child(
           S.editor()

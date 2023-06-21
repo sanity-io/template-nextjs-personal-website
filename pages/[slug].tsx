@@ -1,13 +1,14 @@
 import { PreviewSuspense } from '@sanity/preview-kit'
 import { Page } from 'components/pages/page/Page'
 import { PreviewWrapper } from 'components/preview/PreviewWrapper'
-import {
-  getHomePageTitle,
-  getPageBySlug,
-  getPagePaths,
-  getSettings,
-} from 'lib/sanity.client'
+import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
+import {
+  homePageTitleQuery,
+  pagePaths,
+  pagesBySlugQuery,
+  settingsQuery,
+} from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import { lazy } from 'react'
 import { PagePayload, SettingsPayload } from 'types'
@@ -15,8 +16,8 @@ import { PagePayload, SettingsPayload } from 'types'
 const PagePreview = lazy(() => import('components/pages/page/PagePreview'))
 
 interface PageProps {
-  page?: PagePayload
-  settings?: SettingsPayload
+  page: PagePayload
+  settings: SettingsPayload
   homePageTitle?: string
   preview: boolean
   token: string | null
@@ -27,7 +28,7 @@ interface Query {
 }
 
 interface PreviewData {
-  token?: string
+  token: string
 }
 
 export default function ProjectSlugRoute(props: PageProps) {
@@ -72,14 +73,15 @@ export const getStaticProps: GetStaticProps<
   Query,
   PreviewData
 > = async (ctx) => {
-  const { preview = false, previewData = {}, params = {} } = ctx
-
-  const token = previewData.token
+  const { preview = false, previewData, params = {} } = ctx
+  const client = getClient(preview ? previewData : undefined)
 
   const [settings, page, homePageTitle] = await Promise.all([
-    getSettings({ token }),
-    getPageBySlug({ token, slug: params.slug }),
-    getHomePageTitle({ token }),
+    client.fetch<SettingsPayload | null>(settingsQuery),
+    client.fetch<PagePayload | null>(pagesBySlugQuery, {
+      slug: params.slug,
+    }),
+    client.fetch<string | null>(homePageTitleQuery),
   ])
 
   if (!page) {
@@ -91,16 +93,17 @@ export const getStaticProps: GetStaticProps<
   return {
     props: {
       page,
-      settings,
-      homePageTitle,
+      settings: settings ?? {},
+      homePageTitle: homePageTitle ?? undefined,
       preview,
-      token: previewData.token ?? null,
+      token: previewData?.token ?? null,
     },
   }
 }
 
 export const getStaticPaths = async () => {
-  const paths = await getPagePaths()
+  const client = getClient()
+  const paths = await client.fetch<string[]>(pagePaths)
 
   return {
     paths: paths?.map((slug) => resolveHref('page', slug)) || [],

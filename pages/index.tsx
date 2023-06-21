@@ -1,7 +1,8 @@
 import { PreviewSuspense } from '@sanity/preview-kit'
 import { HomePage } from 'components/pages/home/HomePage'
 import { PreviewWrapper } from 'components/preview/PreviewWrapper'
-import { getHomePage, getSettings } from 'lib/sanity.client'
+import { getClient } from 'lib/sanity.client'
+import { homePageQuery, settingsQuery } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import { lazy } from 'react'
 import { HomePagePayload, SettingsPayload } from 'types'
@@ -22,7 +23,7 @@ interface Query {
 }
 
 interface PreviewData {
-  token?: string
+  token: string
 }
 
 export default function IndexPage(props: PageProps) {
@@ -56,20 +57,20 @@ export const getStaticProps: GetStaticProps<
   Query,
   PreviewData
 > = async (ctx) => {
-  const { preview = false, previewData = {} } = ctx
+  const { preview = false, previewData } = ctx
+  const client = getClient(preview ? previewData : undefined)
 
-  const token = previewData.token
-  const [settings, page = fallbackPage] = await Promise.all([
-    getSettings({ token }),
-    getHomePage({ token }),
+  const [settings, page] = await Promise.all([
+    client.fetch<SettingsPayload | null>(settingsQuery),
+    client.fetch<HomePagePayload | null>(homePageQuery),
   ])
 
   return {
     props: {
-      page,
-      settings,
+      page: page ?? fallbackPage,
+      settings: settings ?? {},
       preview,
-      token: previewData.token ?? null,
+      token: previewData?.token ?? null,
     },
   }
 }

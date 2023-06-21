@@ -33,7 +33,7 @@ export function ProjectPage({
     title,
   } = project || {}
 
-  const startYear = new Date(duration?.start).getFullYear()
+  const startYear = new Date(duration?.start!).getFullYear()
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (

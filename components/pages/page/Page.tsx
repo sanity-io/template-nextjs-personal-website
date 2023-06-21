@@ -7,7 +7,7 @@ import type { PagePayload, SettingsPayload } from 'types'
 import PageHead from './PageHead'
 
 export interface PageProps {
-  page: PagePayload | undefined
+  page: PagePayload
   settings: SettingsPayload | undefined
   homePageTitle: string | undefined
   preview?: boolean
