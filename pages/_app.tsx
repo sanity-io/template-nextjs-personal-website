@@ -1,7 +1,7 @@
 import 'styles/index.css'
 
-import { IBM_Plex_Mono, Inter, PT_Serif } from '@next/font/google'
 import { AppProps } from 'next/app'
+import { IBM_Plex_Mono, Inter, PT_Serif } from 'next/font/google'
 
 const mono = IBM_Plex_Mono({
   variable: '--font-mono',
