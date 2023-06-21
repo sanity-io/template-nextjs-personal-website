@@ -1,27 +1,29 @@
-import { usePreview } from 'lib/sanity.preview'
 import { pagesBySlugQuery } from 'lib/sanity.queries'
+import { useLiveQuery } from 'next-sanity/preview'
 import type { PagePayload } from 'types'
 
 import { Page, PageProps } from './Page'
 
 export default function PagePreview({
-  token,
-  page,
+  page: initialPage,
   settings,
   homePageTitle,
-}: {
-  token: null | string
-} & PageProps) {
-  const pagePreview: PagePayload = usePreview(token, pagesBySlugQuery, {
-    slug: page.slug,
-  })
+}: PageProps) {
+  const [page, loading] = useLiveQuery<PagePayload | null>(
+    initialPage,
+    pagesBySlugQuery,
+    {
+      slug: initialPage.slug,
+    }
+  )
 
   return (
     <Page
-      page={pagePreview}
+      page={page ?? initialPage}
       settings={settings}
       homePageTitle={homePageTitle}
-      preview={true}
+      preview
+      loading={loading}
     />
   )
 }

@@ -1,6 +1,5 @@
-import { PreviewSuspense } from '@sanity/preview-kit'
 import { ProjectPage } from 'components/pages/project/ProjectPage'
-import { PreviewWrapper } from 'components/preview/PreviewWrapper'
+import ProjectPreview from 'components/pages/project/ProjectPreview'
 import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
 import {
@@ -10,12 +9,7 @@ import {
   settingsQuery,
 } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
-import { lazy } from 'react'
 import { ProjectPayload, SettingsPayload } from 'types'
-
-const ProjectPreview = lazy(
-  () => import('components/pages/project/ProjectPreview')
-)
 
 interface PageProps {
   project: ProjectPayload
@@ -38,25 +32,11 @@ export default function ProjectSlugRoute(props: PageProps) {
 
   if (preview) {
     return (
-      <PreviewSuspense
-        fallback={
-          <PreviewWrapper>
-            <ProjectPage
-              homePageTitle={homePageTitle}
-              project={project}
-              settings={settings}
-              preview={preview}
-            />
-          </PreviewWrapper>
-        }
-      >
-        <ProjectPreview
-          token={token}
-          project={project}
-          settings={settings}
-          homePageTitle={homePageTitle}
-        />
-      </PreviewSuspense>
+      <ProjectPreview
+        project={project}
+        settings={settings}
+        homePageTitle={homePageTitle}
+      />
     )
   }
 
@@ -65,7 +45,6 @@ export default function ProjectSlugRoute(props: PageProps) {
       homePageTitle={homePageTitle}
       project={project}
       settings={settings}
-      preview={preview}
     />
   )
 }

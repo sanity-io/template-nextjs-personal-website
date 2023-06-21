@@ -1,17 +1,19 @@
-import { usePreview } from 'lib/sanity.preview'
 import { homePageQuery } from 'lib/sanity.queries'
+import { useLiveQuery } from 'next-sanity/preview'
 import type { HomePagePayload } from 'types'
 
 import { HomePage, HomePageProps } from './HomePage'
 
 export default function HomePagePreview({
-  token,
-  page,
+  page: initialPage,
   settings,
-}: { token: null | string } & HomePageProps) {
-  const home: HomePagePayload = usePreview(token, homePageQuery)
+}: HomePageProps) {
+  const [page, loading] = useLiveQuery<HomePagePayload | null>(
+    initialPage,
+    homePageQuery
+  )
 
-  if (!home) {
+  if (!page) {
     return (
       <div className="text-center">
         Please start editing your Home document to see the preview!
@@ -19,5 +21,5 @@ export default function HomePagePreview({
     )
   }
 
-  return <HomePage page={home} settings={settings} preview={true} />
+  return <HomePage page={page} settings={settings} preview loading={loading} />
 }

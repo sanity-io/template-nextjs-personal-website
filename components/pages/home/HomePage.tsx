@@ -10,19 +10,20 @@ import { SettingsPayload } from 'types'
 import HomePageHead from './HomePageHead'
 
 export interface HomePageProps {
-  settings?: SettingsPayload
-  page?: HomePagePayload
+  settings: SettingsPayload
+  page: HomePagePayload
   preview?: boolean
+  loading?: boolean
 }
 
-export function HomePage({ page, settings, preview }: HomePageProps) {
+export function HomePage({ page, settings, preview, loading }: HomePageProps) {
   const { overview, showcaseProjects, title = 'Personal website' } = page ?? {}
 
   return (
     <>
       <HomePageHead page={page} settings={settings} />
 
-      <Layout settings={settings} preview={preview}>
+      <Layout settings={settings} preview={preview} loading={loading}>
         <div className="space-y-20">
           {/* Header */}
           {title && <Header centered title={title} description={overview} />}

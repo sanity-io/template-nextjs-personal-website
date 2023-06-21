@@ -18,6 +18,7 @@ export function getClient(preview?: { token: string }): SanityClient {
     return client.withConfig({
       token: preview.token,
       useCdn: false,
+      ignoreBrowserTokenWarning: true,
     })
   }
   return client

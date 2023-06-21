@@ -9,10 +9,11 @@ import Layout from '../../shared/Layout'
 import ProjectPageHead from './ProjectPageHead'
 
 export interface ProjectPageProps {
-  project: ProjectPayload | undefined
+  project: ProjectPayload
   settings: SettingsPayload | undefined
   homePageTitle: string | undefined
   preview?: boolean
+  loading?: boolean
 }
 
 export function ProjectPage({
@@ -20,6 +21,7 @@ export function ProjectPage({
   settings,
   homePageTitle,
   preview,
+  loading,
 }: ProjectPageProps) {
   // Default to an empty object to allow previews on non-existent documents
   const {
@@ -40,7 +42,7 @@ export function ProjectPage({
     <>
       <ProjectPageHead project={project} title={homePageTitle} />
 
-      <Layout settings={settings} preview={preview}>
+      <Layout settings={settings} preview={preview} loading={loading}>
         <div>
           <div className="mb-20 space-y-6">
             {/* Header */}

@@ -1,6 +1,5 @@
-import { PreviewSuspense } from '@sanity/preview-kit'
 import { Page } from 'components/pages/page/Page'
-import { PreviewWrapper } from 'components/preview/PreviewWrapper'
+import PagePreview from 'components/pages/page/PagePreview'
 import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
 import {
@@ -12,8 +11,6 @@ import {
 import { GetStaticProps } from 'next'
 import { lazy } from 'react'
 import { PagePayload, SettingsPayload } from 'types'
-
-const PagePreview = lazy(() => import('components/pages/page/PagePreview'))
 
 interface PageProps {
   page: PagePayload
@@ -32,40 +29,19 @@ interface PreviewData {
 }
 
 export default function ProjectSlugRoute(props: PageProps) {
-  const { homePageTitle, settings, page, preview, token } = props
+  const { homePageTitle, settings, page, preview } = props
 
   if (preview) {
     return (
-      <PreviewSuspense
-        fallback={
-          <PreviewWrapper>
-            <Page
-              homePageTitle={homePageTitle}
-              page={page}
-              settings={settings}
-              preview={preview}
-            />
-          </PreviewWrapper>
-        }
-      >
-        <PagePreview
-          token={token}
-          page={page}
-          settings={settings}
-          homePageTitle={homePageTitle}
-        />
-      </PreviewSuspense>
+      <PagePreview
+        page={page}
+        settings={settings}
+        homePageTitle={homePageTitle}
+      />
     )
   }
 
-  return (
-    <Page
-      homePageTitle={homePageTitle}
-      page={page}
-      settings={settings}
-      preview={preview}
-    />
-  )
+  return <Page homePageTitle={homePageTitle} page={page} settings={settings} />
 }
 
 export const getStaticProps: GetStaticProps<

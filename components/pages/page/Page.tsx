@@ -11,9 +11,16 @@ export interface PageProps {
   settings: SettingsPayload | undefined
   homePageTitle: string | undefined
   preview?: boolean
+  loading?: boolean
 }
 
-export function Page({ page, settings, homePageTitle, preview }: PageProps) {
+export function Page({
+  page,
+  settings,
+  homePageTitle,
+  preview,
+  loading,
+}: PageProps) {
   // Default to an empty object to allow previews on non-existent documents
   const { body, overview, title } = page || {}
 
@@ -21,7 +28,7 @@ export function Page({ page, settings, homePageTitle, preview }: PageProps) {
     <>
       <PageHead page={page} settings={settings} title={homePageTitle} />
 
-      <Layout settings={settings} preview={preview}>
+      <Layout settings={settings} preview={preview} loading={loading}>
         <div>
           <div className="mb-14">
             {/* Header */}
