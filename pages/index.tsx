@@ -1,9 +1,9 @@
 import { HomePage } from 'components/pages/home/HomePage'
 import HomePagePreview from 'components/pages/home/HomePagePreview'
+import { readToken } from 'lib/sanity.api'
 import { getClient } from 'lib/sanity.client'
 import { homePageQuery, settingsQuery } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
-import { lazy } from 'react'
 import { HomePagePayload, SettingsPayload } from 'types'
 
 interface PageProps {
@@ -15,10 +15,6 @@ interface PageProps {
 
 interface Query {
   [key: string]: string
-}
-
-interface PreviewData {
-  token: string
 }
 
 export default function IndexPage(props: PageProps) {
@@ -37,13 +33,9 @@ const fallbackPage: HomePagePayload = {
   showcaseProjects: [],
 }
 
-export const getStaticProps: GetStaticProps<
-  PageProps,
-  Query,
-  PreviewData
-> = async (ctx) => {
-  const { preview = false, previewData } = ctx
-  const client = getClient(preview ? previewData : undefined)
+export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
+  const { draftMode = false } = ctx
+  const client = getClient(draftMode ? { token: readToken } : undefined)
 
   const [settings, page] = await Promise.all([
     client.fetch<SettingsPayload | null>(settingsQuery),
@@ -54,8 +46,8 @@ export const getStaticProps: GetStaticProps<
     props: {
       page: page ?? fallbackPage,
       settings: settings ?? {},
-      preview,
-      token: previewData?.token ?? null,
+      preview: draftMode,
+      token: draftMode ? readToken : null,
     },
   }
 }

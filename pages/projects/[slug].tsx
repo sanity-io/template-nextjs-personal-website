@@ -1,5 +1,6 @@
 import { ProjectPage } from 'components/pages/project/ProjectPage'
 import ProjectPreview from 'components/pages/project/ProjectPreview'
+import { readToken } from 'lib/sanity.api'
 import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
 import {
@@ -23,12 +24,8 @@ interface Query {
   [key: string]: string
 }
 
-interface PreviewData {
-  token: string
-}
-
 export default function ProjectSlugRoute(props: PageProps) {
-  const { homePageTitle, settings, project, preview, token } = props
+  const { homePageTitle, settings, project, preview } = props
 
   if (preview) {
     return (
@@ -49,13 +46,9 @@ export default function ProjectSlugRoute(props: PageProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps<
-  PageProps,
-  Query,
-  PreviewData
-> = async (ctx) => {
-  const { preview = false, previewData, params = {} } = ctx
-  const client = getClient(preview ? previewData : undefined)
+export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
+  const { draftMode = false, params = {} } = ctx
+  const client = getClient(draftMode ? { token: readToken } : undefined)
 
   const [settings, project, homePageTitle] = await Promise.all([
     client.fetch<SettingsPayload | null>(settingsQuery),
@@ -76,8 +69,8 @@ export const getStaticProps: GetStaticProps<
       project,
       settings: settings ?? {},
       homePageTitle: homePageTitle ?? undefined,
-      preview,
-      token: previewData?.token ?? null,
+      preview: draftMode,
+      token: draftMode ? readToken : null,
     },
   }
 }

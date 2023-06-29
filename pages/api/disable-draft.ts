@@ -4,8 +4,8 @@ export default function exit(
   _req: NextApiRequest,
   res: NextApiResponse<void>
 ): void {
-  // Exit the current user from "Preview Mode".
-  res.clearPreviewData()
+  // Exit the current user from "Draft Mode".
+  res.setDraftMode({ enable: false })
 
   // Redirect the user back to the index page.
   res.writeHead(307, { Location: '/' })

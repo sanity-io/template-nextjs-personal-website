@@ -15,7 +15,7 @@ export const projectId = assertValue(
   'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID'
 )
 
-export const readToken = process.env.SANITY_API_READ_TOKEN
+export const readToken = process.env.SANITY_API_READ_TOKEN || ''
 
 // see https://www.sanity.io/docs/api-versioning for how versioning works
 export const apiVersion =

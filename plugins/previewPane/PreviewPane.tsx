@@ -72,7 +72,7 @@ const Iframe = memo(function Iframe(props: IframeProps) {
     { lifespan: 60000 }
   )
 
-  const url = new URL('/api/preview', location.origin)
+  const url = new URL('/api/draft', location.origin)
   if (documentType) {
     url.searchParams.set('documentType', documentType)
   }

@@ -13,17 +13,11 @@ import { getSecret } from 'plugins/productionUrl/utils'
 
 function redirectToPreview(
   res: NextApiResponse<string | void>,
-  previewData: { token: string },
   Location: string
 ): void {
-  // Enable Preview Mode by setting the cookies
-  res.setPreviewData(previewData)
-  // Redirect to a preview capable route
-  // FIXME: https://github.com/sanity-io/nextjs-blog-cms-sanity-v3/issues/95
-  // res.writeHead(307, { Location })
-  res.writeHead(307, {
-    Location: Location,
-  })
+  // Enable Draft Mode by setting the cookies
+  res.setDraftMode({ enable: true })
+  res.writeHead(307, { Location })
   res.end()
 }
 
@@ -48,7 +42,6 @@ export default async function preview(
   if (req.query.secret !== secret) {
     return res.status(401).send('Invalid secret')
   }
-  const previewData = { token }
 
   const href = resolveHref(
     req.query.documentType as string,
@@ -63,5 +56,5 @@ export default async function preview(
       )
   }
 
-  return redirectToPreview(res, previewData, href)
+  return redirectToPreview(res, href)
 }

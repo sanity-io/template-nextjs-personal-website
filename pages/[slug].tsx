@@ -1,5 +1,6 @@
 import { Page } from 'components/pages/page/Page'
 import PagePreview from 'components/pages/page/PagePreview'
+import { readToken } from 'lib/sanity.api'
 import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
 import {
@@ -9,7 +10,6 @@ import {
   settingsQuery,
 } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
-import { lazy } from 'react'
 import { PagePayload, SettingsPayload } from 'types'
 
 interface PageProps {
@@ -22,10 +22,6 @@ interface PageProps {
 
 interface Query {
   [key: string]: string
-}
-
-interface PreviewData {
-  token: string
 }
 
 export default function ProjectSlugRoute(props: PageProps) {
@@ -44,13 +40,9 @@ export default function ProjectSlugRoute(props: PageProps) {
   return <Page homePageTitle={homePageTitle} page={page} settings={settings} />
 }
 
-export const getStaticProps: GetStaticProps<
-  PageProps,
-  Query,
-  PreviewData
-> = async (ctx) => {
-  const { preview = false, previewData, params = {} } = ctx
-  const client = getClient(preview ? previewData : undefined)
+export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
+  const { draftMode = false, params = {} } = ctx
+  const client = getClient(draftMode ? { token: readToken } : undefined)
 
   const [settings, page, homePageTitle] = await Promise.all([
     client.fetch<SettingsPayload | null>(settingsQuery),
@@ -71,8 +63,8 @@ export const getStaticProps: GetStaticProps<
       page,
       settings: settings ?? {},
       homePageTitle: homePageTitle ?? undefined,
-      preview,
-      token: previewData?.token ?? null,
+      preview: draftMode,
+      token: draftMode ? readToken : null,
     },
   }
 }

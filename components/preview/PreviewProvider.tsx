@@ -11,11 +11,7 @@ export default function PreviewProvider({
 }) {
   const client = useMemo(() => getClient({ token }), [token])
   return (
-    <LiveQueryProvider
-      client={client}
-      // Uncomment below to see debug reports
-      // logger={console}
-    >
+    <LiveQueryProvider client={client} logger={console}>
       {children}
     </LiveQueryProvider>
   )
