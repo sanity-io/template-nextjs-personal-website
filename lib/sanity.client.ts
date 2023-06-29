@@ -1,15 +1,13 @@
 import { apiVersion, dataset, projectId, useCdn } from 'lib/sanity.api'
 import { createClient, type SanityClient } from 'next-sanity'
 
-/**
- * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false
- */
 export function getClient(preview?: { token: string }): SanityClient {
   const client = createClient({
     projectId,
     dataset,
     apiVersion,
     useCdn,
+    perspective: 'published',
   })
   if (preview) {
     if (!preview.token) {
@@ -19,6 +17,7 @@ export function getClient(preview?: { token: string }): SanityClient {
       token: preview.token,
       useCdn: false,
       ignoreBrowserTokenWarning: true,
+      perspective: 'previewDrafts',
     })
   }
   return client
