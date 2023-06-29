@@ -18,7 +18,7 @@
     "@sanity/client": "6.1.5",
     "@sanity/demo": "1.0.2",
     "@sanity/image-url": "1.0.2",
-    "@sanity/vision": "3.13.0",
+    "@sanity/vision": "3.14.0",
     "@tailwindcss/typography": "0.5.9",
     "@vercel/og": "0.5.8",
     "classnames": "2.3.2",
@@ -30,7 +30,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-is": "18.2.0",
-    "sanity": "3.13.0",
+    "sanity": "3.14.0",
     "sanity-plugin-asset-source-unsplash": "1.1.0",
     "styled-components": "5.3.11",
     "suspend-react": "0.1.3"
