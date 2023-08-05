@@ -10,7 +10,7 @@ export default function HomePagePreview({
 }: HomePageProps) {
   const [page, loading] = useLiveQuery<HomePagePayload | null>(
     initialPage,
-    homePageQuery
+    homePageQuery,
   )
 
   if (!page) {
