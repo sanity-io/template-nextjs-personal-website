@@ -14,7 +14,7 @@ export default function PagePreview({
     pagesBySlugQuery,
     {
       slug: initialPage.slug,
-    }
+    },
   )
 
   return (

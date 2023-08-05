@@ -13,7 +13,7 @@ export default function PreviewNavbar({
     initialSettings,
     settingsQuery,
     {},
-    { isEqual: (a, b) => a?.menuItems === b?.menuItems }
+    { isEqual: (a, b) => a?.menuItems === b?.menuItems },
   )
 
   return <Navbar menuItems={settings?.menuItems} />

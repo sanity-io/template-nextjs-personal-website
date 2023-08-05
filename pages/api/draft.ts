@@ -13,7 +13,7 @@ import { getSecret } from 'plugins/productionUrl/utils'
 
 function redirectToPreview(
   res: NextApiResponse<string | void>,
-  Location: string
+  Location: string,
 ): void {
   // Enable Draft Mode by setting the cookies
   res.setDraftMode({ enable: true })
@@ -25,7 +25,7 @@ const _client = createClient({ projectId, dataset, apiVersion, useCdn })
 
 export default async function preview(
   req: NextApiRequest,
-  res: NextApiResponse<string | void>
+  res: NextApiResponse<string | void>,
 ) {
   if (!req.query.secret) {
     return res.status(401).send('Invalid secret')
@@ -34,7 +34,7 @@ export default async function preview(
   const token = readToken
   if (!token) {
     throw new Error(
-      'A secret is provided but there is no `SANITY_API_READ_TOKEN` environment variable setup.'
+      'A secret is provided but there is no `SANITY_API_READ_TOKEN` environment variable setup.',
     )
   }
   const client = _client.withConfig({ useCdn: false, token })
@@ -45,14 +45,14 @@ export default async function preview(
 
   const href = resolveHref(
     req.query.documentType as string,
-    req.query.slug as string
+    req.query.slug as string,
   )
 
   if (!href) {
     return res
       .status(400)
       .send(
-        'Unable to resolve preview URL based on the current document type and slug'
+        'Unable to resolve preview URL based on the current document type and slug',
       )
   }
 
