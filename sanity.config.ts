@@ -8,8 +8,12 @@ import { pageStructure, singletonPlugin } from 'plugins/settings'
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
-import {defineUrlResolver,Iframe, IframeOptions} from 'sanity-plugin-iframe-pane'
-import {previewUrl} from 'sanity-plugin-iframe-pane/preview-url'
+import {
+  defineUrlResolver,
+  Iframe,
+  IframeOptions,
+} from 'sanity-plugin-iframe-pane'
+import { previewUrl } from 'sanity-plugin-iframe-pane/preview-url'
 import page from 'schemas/documents/page'
 import project from 'schemas/documents/project'
 import duration from 'schemas/objects/duration'
@@ -39,7 +43,7 @@ export const iframeOptions = {
     requiresSlug: PREVIEWABLE_DOCUMENT_TYPES_REQUIRING_SLUGS,
   }),
   urlSecretId: previewSecretId,
-  reload: {button: true}
+  reload: { button: true },
 } satisfies IframeOptions
 
 export default defineConfig({
