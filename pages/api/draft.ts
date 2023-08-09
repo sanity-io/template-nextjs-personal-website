@@ -9,7 +9,7 @@ import {
 import { resolveHref } from 'lib/sanity.links'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from 'next-sanity'
-import { getSecret } from 'plugins/productionUrl/utils'
+import {isValidSecret} from 'sanity-plugin-iframe-pane/is-valid-secret'
 
 function redirectToPreview(
   res: NextApiResponse<string | void>,
@@ -21,30 +21,31 @@ function redirectToPreview(
   res.end()
 }
 
-const _client = createClient({ projectId, dataset, apiVersion, useCdn })
 
 export default async function preview(
   req: NextApiRequest,
   res: NextApiResponse<string | void>,
 ) {
-  if (!req.query.secret) {
-    return res.status(401).send('Invalid secret')
-  }
-
   const token = readToken
   if (!token) {
     throw new Error(
       'A secret is provided but there is no `SANITY_API_READ_TOKEN` environment variable setup.',
     )
   }
-  const client = _client.withConfig({ useCdn: false, token })
-  const secret = await getSecret(client, previewSecretId)
-  if (req.query.secret !== secret) {
+
+  if (!req.query.secret) {
+    return res.status(401).send('Invalid secret')
+  }
+
+  
+  const client = createClient({ projectId, dataset, apiVersion, useCdn, token })
+  const validSecret = (await isValidSecret(client, previewSecretId, Array.isArray(req.query.secret) ? req.query.secret[0] : req.query.secret))
+  if (!validSecret) {
     return res.status(401).send('Invalid secret')
   }
 
   const href = resolveHref(
-    req.query.documentType as string,
+    req.query.type as string,
     req.query.slug as string,
   )
 

@@ -2,12 +2,11 @@
  * This plugin contains all the logic for setting up the singletons
  */
 
-import { apiVersion, previewSecretId } from 'lib/sanity.api'
 import { type DocumentDefinition } from 'sanity'
 import { type StructureResolver } from 'sanity/desk'
+import {Iframe} from 'sanity-plugin-iframe-pane'
 
-import { PREVIEWABLE_DOCUMENT_TYPES } from '../sanity.config'
-import { PreviewPane } from './previewPane/PreviewPane'
+import { PREVIEWABLE_DOCUMENT_TYPES, iframeOptions } from '../sanity.config'
 
 export const singletonPlugin = (types: string[]) => {
   return {
@@ -54,20 +53,14 @@ export const pageStructure = (
             .schemaType(typeDef.name)
             .documentId(typeDef.name)
             .views([
-              // @todo: consider DRYing with `plugins/previewPane/index.tsx`
               // Default form view
               S.view.form(),
               // Preview
               ...(PREVIEWABLE_DOCUMENT_TYPES.includes(typeDef.name)
                 ? [
                     S.view
-                      .component((props) => (
-                        <PreviewPane
-                          previewSecretId={previewSecretId}
-                          apiVersion={apiVersion}
-                          {...props}
-                        />
-                      ))
+                    .component(Iframe)
+                    .options(iframeOptions)
                       .title('Preview'),
                   ]
                 : []),
