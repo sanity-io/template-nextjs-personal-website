@@ -4,7 +4,7 @@
 
 import { type DocumentDefinition } from 'sanity'
 import { type StructureResolver } from 'sanity/desk'
-import {Iframe} from 'sanity-plugin-iframe-pane'
+import { Iframe } from 'sanity-plugin-iframe-pane'
 
 import { PREVIEWABLE_DOCUMENT_TYPES, iframeOptions } from '../sanity.config'
 
@@ -59,8 +59,8 @@ export const pageStructure = (
               ...(PREVIEWABLE_DOCUMENT_TYPES.includes(typeDef.name)
                 ? [
                     S.view
-                    .component(Iframe)
-                    .options(iframeOptions)
+                      .component(Iframe)
+                      .options(iframeOptions)
                       .title('Preview'),
                   ]
                 : []),

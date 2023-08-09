@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react"
+import { useSyncExternalStore } from 'react'
 
 /* eslint-disable @next/next/no-html-link-for-pages */
 interface PreviewBannerProps {
@@ -15,7 +15,7 @@ export function PreviewBanner({ loading }: PreviewBannerProps) {
   )
 
   if (!shouldShow) return null
-  
+
   return (
     <div
       className={`${

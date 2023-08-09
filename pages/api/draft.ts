@@ -9,7 +9,7 @@ import {
 import { resolveHref } from 'lib/sanity.links'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from 'next-sanity'
-import {isValidSecret} from 'sanity-plugin-iframe-pane/is-valid-secret'
+import { isValidSecret } from 'sanity-plugin-iframe-pane/is-valid-secret'
 
 function redirectToPreview(
   res: NextApiResponse<string | void>,
@@ -20,7 +20,6 @@ function redirectToPreview(
   res.writeHead(307, { Location })
   res.end()
 }
-
 
 export default async function preview(
   req: NextApiRequest,
@@ -37,17 +36,17 @@ export default async function preview(
     return res.status(401).send('Invalid secret')
   }
 
-  
   const client = createClient({ projectId, dataset, apiVersion, useCdn, token })
-  const validSecret = (await isValidSecret(client, previewSecretId, Array.isArray(req.query.secret) ? req.query.secret[0] : req.query.secret))
+  const validSecret = await isValidSecret(
+    client,
+    previewSecretId,
+    Array.isArray(req.query.secret) ? req.query.secret[0] : req.query.secret,
+  )
   if (!validSecret) {
     return res.status(401).send('Invalid secret')
   }
 
-  const href = resolveHref(
-    req.query.type as string,
-    req.query.slug as string,
-  )
+  const href = resolveHref(req.query.type as string, req.query.slug as string)
 
   if (!href) {
     return res
