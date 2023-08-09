@@ -1,21 +1,33 @@
+import { useSyncExternalStore } from "react"
+
 /* eslint-disable @next/next/no-html-link-for-pages */
 interface PreviewBannerProps {
   loading?: boolean
 }
 
+const subscribe = () => () => {}
+
 export function PreviewBanner({ loading }: PreviewBannerProps) {
+  const shouldShow = useSyncExternalStore(
+    subscribe,
+    () => window.top === window,
+    () => false,
+  )
+
+  if (!shouldShow) return null
+  
   return (
     <div
       className={`${
         loading ? 'animate-pulse' : ''
       } bg-black p-3 text-center text-white`}
     >
-      {'Previewing draft content. '}
+      {'Previewing drafts. '}
       <a
         className="underline transition hover:opacity-50"
         href="/api/disable-draft"
       >
-        Disable draft mode
+        Back to published
       </a>
     </div>
   )
