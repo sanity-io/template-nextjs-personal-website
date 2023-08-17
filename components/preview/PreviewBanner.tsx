@@ -5,17 +5,7 @@ interface PreviewBannerProps {
   loading?: boolean
 }
 
-const subscribe = () => () => {}
-
 export function PreviewBanner({ loading }: PreviewBannerProps) {
-  const shouldShow = useSyncExternalStore(
-    subscribe,
-    () => window.top === window,
-    () => false,
-  )
-
-  if (!shouldShow) return null
-
   return (
     <div
       className={`${
