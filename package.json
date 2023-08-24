@@ -14,8 +14,8 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@portabletext/react": "3.0.4",
-    "@sanity/client": "6.4.7",
+    "@portabletext/react": "3.0.7",
+    "@sanity/client": "6.4.9",
     "@sanity/demo": "1.0.2",
     "@sanity/image-url": "1.0.2",
     "@sanity/vision": "3.15.1",
@@ -24,9 +24,9 @@
     "classnames": "2.3.2",
     "date-fns": "2.30.0",
     "intl-segmenter-polyfill": "0.4.4",
-    "next": "13.4.17",
+    "next": "13.4.19",
     "next-google-fonts": "2.2.0",
-    "next-sanity": "5.4.1",
+    "next-sanity": "5.4.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-is": "18.2.0",
@@ -36,10 +36,10 @@
     "styled-components": "5.3.11"
   },
   "devDependencies": {
-    "@types/react": "18.2.20",
+    "@types/react": "18.2.21",
     "autoprefixer": "10.4.15",
     "eslint": "8.47.0",
-    "eslint-config-next": "13.4.17",
+    "eslint-config-next": "13.4.19",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "postcss": "8.4.28",
     "prettier": "3.0.2",
