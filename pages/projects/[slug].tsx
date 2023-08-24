@@ -1,5 +1,4 @@
 import { ProjectPage } from 'components/pages/project/ProjectPage'
-import ProjectPreview from 'components/pages/project/ProjectPreview'
 import { readToken } from 'lib/sanity.api'
 import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
@@ -10,13 +9,14 @@ import {
   settingsQuery,
 } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
+import { useLiveQuery } from 'next-sanity/preview'
 import { ProjectPayload, SettingsPayload } from 'types'
 
 interface PageProps {
   project: ProjectPayload
   settings: SettingsPayload
   homePageTitle?: string
-  preview: boolean
+  draftMode: boolean
   token: string | null
 }
 
@@ -25,22 +25,19 @@ interface Query {
 }
 
 export default function ProjectSlugRoute(props: PageProps) {
-  const { homePageTitle, settings, project, preview } = props
-
-  if (preview) {
-    return (
-      <ProjectPreview
-        project={project}
-        settings={settings}
-        homePageTitle={homePageTitle}
-      />
-    )
-  }
+  const { homePageTitle, settings, draftMode, project: initialProject } = props
+  const [project, loading] = useLiveQuery<ProjectPayload | null>(
+    initialProject,
+    projectBySlugQuery,
+    { slug: initialProject.slug },
+  )
 
   return (
     <ProjectPage
+      preview={draftMode}
+      loading={loading}
       homePageTitle={homePageTitle}
-      project={project}
+      project={project ?? initialProject}
       settings={settings}
     />
   )
@@ -48,7 +45,7 @@ export default function ProjectSlugRoute(props: PageProps) {
 
 export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
   const { draftMode = false, params = {} } = ctx
-  const client = getClient(draftMode ? { token: readToken } : undefined)
+  const client = getClient(draftMode)
 
   const [settings, project, homePageTitle] = await Promise.all([
     client.fetch<SettingsPayload | null>(settingsQuery),
@@ -69,7 +66,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
       project,
       settings: settings ?? {},
       homePageTitle: homePageTitle ?? undefined,
-      preview: draftMode,
+      draftMode,
       token: draftMode ? readToken : null,
     },
   }
