@@ -1,6 +1,7 @@
 import { getClient } from 'lib/sanity.client'
 import { LiveQueryProvider } from 'next-sanity/preview'
-import { useMemo } from 'react'
+
+const client = getClient()
 
 export default function PreviewProvider({
   children,
@@ -9,9 +10,9 @@ export default function PreviewProvider({
   children: React.ReactNode
   token: string
 }) {
-  const client = useMemo(() => getClient({ token }), [token])
+  if (!token) throw new TypeError('Missing token')
   return (
-    <LiveQueryProvider client={client} logger={console}>
+    <LiveQueryProvider client={client} token={token} logger={console}>
       {children}
     </LiveQueryProvider>
   )

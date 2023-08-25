@@ -1,14 +1,7 @@
-import {
-  apiVersion,
-  dataset,
-  previewSecretId,
-  projectId,
-  readToken,
-  useCdn,
-} from 'lib/sanity.api'
+import { previewSecretId } from 'lib/sanity.api'
+import { getClient } from 'lib/sanity.client'
 import { resolveHref } from 'lib/sanity.links'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { createClient } from 'next-sanity'
 import { isValidSecret } from 'sanity-plugin-iframe-pane/is-valid-secret'
 
 function redirectToPreview(
@@ -25,20 +18,12 @@ export default async function preview(
   req: NextApiRequest,
   res: NextApiResponse<string | void>,
 ) {
-  const token = readToken
-  if (!token) {
-    throw new Error(
-      'A secret is provided but there is no `SANITY_API_READ_TOKEN` environment variable setup.',
-    )
-  }
-
   if (!req.query.secret) {
     return res.status(401).send('Invalid secret')
   }
 
-  const client = createClient({ projectId, dataset, apiVersion, useCdn, token })
   const validSecret = await isValidSecret(
-    client,
+    getClient(),
     previewSecretId,
     Array.isArray(req.query.secret) ? req.query.secret[0] : req.query.secret,
   )

@@ -26,7 +26,7 @@ const serif = PT_Serif({
 const PreviewProvider = lazy(() => import('components/preview/PreviewProvider'))
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { preview, token } = pageProps
+  const { draftMode, token } = pageProps
   return (
     <>
       <style jsx global>
@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
         `}
       </style>
 
-      {preview ? (
+      {draftMode ? (
         <PreviewProvider token={token}>
           <Component {...pageProps} />
         </PreviewProvider>
