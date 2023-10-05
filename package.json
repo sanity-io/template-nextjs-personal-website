@@ -35,7 +35,7 @@
     "styled-components": "5.3.11"
   },
   "devDependencies": {
-    "@types/react": "18.2.24",
+    "@types/react": "18.2.25",
     "autoprefixer": "10.4.16",
     "eslint": "8.50.0",
     "eslint-config-next": "13.5.4",
