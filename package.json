@@ -32,7 +32,7 @@
     "sanity": "3.18.1",
     "sanity-plugin-asset-source-unsplash": "1.1.1",
     "sanity-plugin-iframe-pane": "2.6.0",
-    "styled-components": "5.3.11"
+    "styled-components": "6.1.0"
   },
   "devDependencies": {
     "@types/react": "18.2.29",
