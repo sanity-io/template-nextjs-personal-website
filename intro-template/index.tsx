@@ -1,3 +1,6 @@
+'use client'
+
+import { studioUrl } from '@/sanity/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -17,14 +20,14 @@ export default memo(function IntroTemplate() {
     process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG
   const repoURL = `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}`
   const removeBlockURL = hasRepoEnvVars
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#user-content-how-can-i-remove-the-next-steps-block-from-my-personal-website`
-    : `https://github.com/sanity-io/template-nextjs-personal-website#user-content-how-can-i-remove-the-next-steps-block-from-my-personal-website`
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#how-can-i-remove-the-next-steps-block-from-my-app`
+    : `https://github.com/sanity-io/template-nextjs-clean#how-can-i-remove-the-next-steps-block-from-my-app`
 
   const [hasUTMtags, setHasUTMtags] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setStudioURL(`${window.location.origin}/studio`)
+      setStudioURL(`${window.location.origin}${studioUrl}`)
       setIsLocalhost(window.location.hostname === 'localhost')
       setHasUTMtags(window.location.search.includes('utm'))
     }

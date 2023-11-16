@@ -1,18 +1,10 @@
 # A Next.js Personal Website with a Native Authoring Experience<!-- omit in toc -->
 
-This starter is a statically generated personal website that uses [Next.js][nextjs] for the frontend and [Sanity][sanity-homepage] to handle its content.
-It comes with a native Sanity Studio that offers features like real-time collaboration, instant side-by-side content previews, and intuitive editing.
+This starter is a statically generated personal website that uses [Next.js][nextjs] for the frontend and [Sanity][sanity-homepage] to handle its content. It comes with a native Sanity Studio that offers features like real-time collaboration, instant side-by-side content previews, and intuitive editing.
 
-The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more.
-You can use this starter to kick-start a personal website or learn these technologies.
+The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. You can use this starter to kick-start a personal website or learn these technologies.
 
 [![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
-
-> **Note**
->
-> This starter uses the `pages-router`.
->
-> For an `app-router` alternative, use [sanity-template-nextjs-app-router-personal-website](https://github.com/sanity-io/sanity-template-nextjs-app-router-personal-website)
 
 ## Features
 
@@ -38,26 +30,27 @@ You can use this starter to kick-start a personal website or learn these technol
   - [Step 4. Deploy to production](#step-4-deploy-to-production)
 - [Questions and Answers](#questions-and-answers)
   - [It doesn't work! Where can I get help?](#it-doesnt-work-where-can-i-get-help)
-  - [How can I remove the "Next steps" block from my personal site?](#how-can-i-remove-the-next-steps-block-from-my-personal-site)
+  - [How can I remove the "Next steps" block from my personal site?](#how-can-i-remove-the-next-steps-block-from-my-personal-website)
 - [Next steps](#next-steps)
 
 ## Project Overview
 
-| [Personal Website](https://nextjs-personal-website.sanity.build)                                                          | [Studio](https://nextjs-personal-website.sanity.build/studio)                                                          |
+| [Personal Website](https://template-nextjs-personal-website.sanity.build/)                                                | [Studio](https://template-nextjs-personal-website.sanity.build/studio)                                                 |
 | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | ![Personal Website](https://user-images.githubusercontent.com/6951139/206395107-e58a796d-13a9-400a-94b6-31cb5df054ab.png) | ![Sanity Studio](https://user-images.githubusercontent.com/6951139/206395521-8a5f103d-4a0c-4da8-aff5-d2a1961fb2c0.png) |
 
 ### Important files and folders
 
-| File(s)                                     | Description                                             |
-| ------------------------------------------- | ------------------------------------------------------- |
-| `sanity.config.ts`                          | Config file for Sanity Studio                           |
-| `sanity.cli.ts`                             | Config file for Sanity CLI                              |
-| `/pages/studio/[[...index]]/page.tsx`       | Where Sanity Studio is mounted                          |
-| `/pages/api/draft.ts`                       | Serverless route for triggering Draft mode              |
-| `/schemas`                                  | Where Sanity Studio gets its content types from         |
-| `/plugins`                                  | Where the advanced Sanity Studio customization is setup |
-| `/lib/sanity.api.ts`,`/lib/sanity.image.ts` | Configuration for the Sanity Content Lake client        |
+| File(s)                                                    | Description                                             |
+| ---------------------------------------------------------- | ------------------------------------------------------- |
+| `sanity.config.ts`                                         | Config file for Sanity Studio                           |
+| `sanity.cli.ts`                                            | Config file for Sanity CLI                              |
+| `/app/studio/[[...tool]]/Studio.tsx`                       | Where Sanity Studio is mounted                          |
+| `/app/api/revalidate/route.ts`                             |  Serverless route for triggering ISR                    |
+| `/app/api/draft/route.ts`                                  | Serverless route for triggering Draft mode              |
+| `/sanity/schemas`                                          | Where Sanity Studio gets its content types from         |
+| `/sanity/plugins`                                          | Where the advanced Sanity Studio customization is setup |
+| `/sanity/loader/loadQuery.ts`,`/sanity/loader/useQuery.ts` | Configuration for the Sanity Content Lake client        |
 
 ## Configuration
 
@@ -119,8 +112,7 @@ In case of any issues or questions, you can post:
 
 ### How can I remove the "Next steps" block from my personal website?
 
-You can remove it by deleting the `IntroTemplate` component in `/components/shared/Layout.tsx` and
-the `/intro-template` directory.
+You can remove it by deleting the `IntroTemplate` component in `/app/(personal)/layout.tsx`.
 
 ## Next steps
 
@@ -129,7 +121,7 @@ the `/intro-template` directory.
 - [How to query content?][sanity-groq]
 - [What is content modelling?][sanity-content-modelling]
 
-[vercel-deploy]: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsanity-io%2Ftemplate-nextjs-personal-website&project-name=personal-website-nextjs-sanity&repository-name=personal-website-nextjs-sanity&demo-title=Personal%20Website%20with%20Built-in%20Content%20Editing&demo-description=A%20Sanity-powered%20personal%20website%20with%20built-in%20content%20editing%20and%20instant%20previews.&demo-url=https%3A%2F%2Fnextjs-personal-website.sanity.build%2F&demo-image=https%3A%2F%2Fuser-images.githubusercontent.com%2F6951139%2F206395107-e58a796d-13a9-400a-94b6-31cb5df054ab.png&integration-ids=oac_hb2LITYajhRQ0i4QznmKH7gx&external-id=nextjs;template=nextjs-personal-website-cms-sanity-v3
+[vercel-deploy]: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsanity-io%2Fsanity-template-nextjs-personal-website&project-name=nextjs-personal-website&repository-name=nextjs-personal-website&demo-title=Personal+Website+with+Built-in+Content+Editing&demo-description=A+Sanity-powered+personal+website+with+built-in+content+editing+and+instant+previews.+Uses+App+Router.&demo-url=https%3A%2F%2Ftemplate-nextjs-personal-website.sanity.build%2F&demo-image=https%3A%2F%2Fuser-images.githubusercontent.com%2F6951139%2F206395107-e58a796d-13a9-400a-94b6-31cb5df054ab.png&integration-ids=oac_hb2LITYajhRQ0i4QznmKH7gx&external-id=nextjs%3Btemplate%3Dsanity-template-nextjs-personal-website
 [integration]: https://www.sanity.io/docs/vercel-integration?utm_source=github.com&utm_medium=referral&utm_campaign=nextjs-v3vercelstarter
 [`.env.local.example`]: .env.local.example
 [nextjs]: https://github.com/vercel/next.js
@@ -146,4 +138,4 @@ the `/intro-template` directory.
 [localhost-3000-studio]: http://localhost:3000/studio
 [vercel]: https://vercel.com
 [vercel-github]: https://github.com/vercel/next.js/discussions
-[app-dir]: https://beta.nextjs.org/docs/routing/fundamentals#the-app-directory
+[personal-website-pages]: https://github.com/sanity-io/template-nextjs-personal-website

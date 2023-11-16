@@ -21,6 +21,8 @@
 .DS_Store
 *.pem
 .vscode
+.idea/
+*.iml
 
 # debug
 npm-debug.log*
@@ -30,10 +32,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-
-#Intellij
-.idea
-*.iml
 
 # vercel
 .vercel

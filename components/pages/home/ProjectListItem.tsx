@@ -1,6 +1,8 @@
-import { CustomPortableText } from 'components/shared/CustomPortableText'
-import ImageBox from 'components/shared/ImageBox'
-import type { ShowcaseProject } from 'types'
+import type { PortableTextBlock } from '@portabletext/types'
+
+import { CustomPortableText } from '@/components/shared/CustomPortableText'
+import ImageBox from '@/components/shared/ImageBox'
+import type { ShowcaseProject } from '@/types'
 
 interface ProjectProps {
   project: ShowcaseProject
@@ -40,7 +42,7 @@ function TextBox({ project }: { project: ShowcaseProject }) {
         </div>
         {/* Overview  */}
         <div className="font-serif text-gray-500">
-          <CustomPortableText value={project.overview!} />
+          <CustomPortableText value={project.overview as PortableTextBlock[]} />
         </div>
       </div>
       {/* Tags */}

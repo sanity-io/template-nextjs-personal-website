@@ -1,8 +1,9 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 import type { PortableTextBlock } from '@portabletext/types'
-import ImageBox from 'components/shared/ImageBox'
-import { TimelineSection } from 'components/shared/TimelineSection'
-import type { Image } from 'sanity'
+import { Image } from 'sanity'
+
+import ImageBox from '@/components/shared/ImageBox'
+import { TimelineSection } from '@/components/shared/TimelineSection'
 
 export function CustomPortableText({
   paragraphClasses,

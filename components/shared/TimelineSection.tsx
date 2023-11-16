@@ -1,5 +1,5 @@
-import { TimelineItem } from 'components/shared/TimelineItem'
-import type { MilestoneItem } from 'types'
+import { TimelineItem } from '@/components/shared/TimelineItem'
+import type { MilestoneItem } from '@/types'
 
 interface TimelineItem {
   title: string
