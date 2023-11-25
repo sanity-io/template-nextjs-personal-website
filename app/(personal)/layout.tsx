@@ -21,7 +21,16 @@ export async function generateMetadata(): Promise<Metadata> {
   ])
 
   const ogImage = urlForOpenGraphImage(settings?.ogImage)
+  let metadataBase;
+  try {
+    metadataBase = new URL(process.env.BASE_URL!);
+  } catch (error) {
+    console.error('BASE_URL is not a valid URL:', process.env.BASE_URL);
+    metadataBase = 'http://localhost:3000';
+  }
+
   return {
+    metadataBase,
     title: homePage?.title
       ? {
           template: `%s | ${homePage.title}`,
