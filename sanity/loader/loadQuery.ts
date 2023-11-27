@@ -23,7 +23,7 @@ const serverClient = client.withConfig({
   token,
   stega: {
     // Enable stega if it's a Vercel preview deployment, as the Vercel Toolbar has controls that shows overlays
-    enabled: process.env.VERCEL_ENV !== 'production',
+    enabled: process.env.VERCEL_ENV === 'preview',
   },
 })
 
@@ -51,6 +51,7 @@ export const loadQuery = ((query, params = {}, options = {}) => {
     cache,
     ...options,
     perspective,
+    stega: {enabled: draftMode().isEnabled}
   })
 }) satisfies typeof queryStore.loadQuery
 
