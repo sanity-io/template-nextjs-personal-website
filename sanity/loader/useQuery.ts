@@ -2,14 +2,14 @@ import {
   type QueryParams,
   type QueryResponseInitial,
   useEncodeDataAttribute,
-  type UseQueryOptions,
+  type UseQueryOptionsDefinedInitial,
 } from '@sanity/react-loader/rsc'
 
 import { studioUrl } from '@/sanity/lib/api'
-
-import { queryStore } from './createQueryStore'
 import { SettingsPayload } from '@/types'
+
 import { settingsQuery } from '../lib/queries'
+import { queryStore } from './createQueryStore'
 
 /**
  * Exports to be used in client-only or components that render both server and client
@@ -20,7 +20,7 @@ export const useQuery = <
 >(
   query: string,
   params?: QueryParams,
-  options?: UseQueryOptions<QueryResponseResult>,
+  options?: UseQueryOptionsDefinedInitial<QueryResponseResult>,
 ) => {
   const snapshot = queryStore.useQuery<QueryResponseResult, QueryResponseError>(
     query,
