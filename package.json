@@ -18,9 +18,9 @@
     "@portabletext/react": "3.0.11",
     "@sanity/demo": "1.0.2",
     "@sanity/image-url": "1.0.2",
-    "@sanity/overlays": "2.0.2",
+    "@sanity/overlays": "2.0.3",
     "@sanity/preview-url-secret": "1.2.0",
-    "@sanity/react-loader": "1.1.0",
+    "@sanity/react-loader": "1.1.1",
     "@sanity/vision": "3.20.1",
     "@tailwindcss/typography": "0.5.10",
     "classnames": "2.3.2",
@@ -35,7 +35,7 @@
     "styled-components": "6.1.1"
   },
   "devDependencies": {
-    "@types/react": "18.2.38",
+    "@types/react": "18.2.39",
     "autoprefixer": "10.4.16",
     "eslint": "8.54.0",
     "eslint-config-next": "14.0.3",
