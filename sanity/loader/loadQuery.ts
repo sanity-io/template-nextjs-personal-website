@@ -42,14 +42,19 @@ export const loadQuery = ((query, params = {}, options = {}) => {
     perspective = draftMode().isEnabled ? 'previewDrafts' : 'published',
   } = options
   // Don't cache by default
-  let cache: RequestCache = 'no-store'
+  let revalidate: NextFetchRequestConfig['revalidate'] = 0
   // If `next.tags` is set, and we're not using the CDN, then it's safe to cache
   if (!usingCdn && Array.isArray(options.next?.tags)) {
-    cache = 'force-cache'
+    revalidate = false
+  } else if (usingCdn) {
+    revalidate = 60
   }
   return queryStore.loadQuery(query, params, {
-    cache,
     ...options,
+    next: {
+      revalidate,
+      ...(options.next || {}),
+    },
     perspective,
     // @TODO add support in `@sanity/client/stega` for the below
     // stega: {enabled: draftMode().isEnabled}
