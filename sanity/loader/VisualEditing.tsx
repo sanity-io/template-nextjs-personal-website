@@ -12,8 +12,7 @@ import { useLiveMode } from './useQuery'
 const stegaClient = client.withConfig({ stega: true })
 
 // Only allow same-origin Studios to connect
-const allowStudioOrigin =
-  typeof location === 'undefined' ? 'http://localhost:3000' : location.origin
+const allowStudioOrigin = 'same-origin'
 
 export default function VisualEditing() {
   const router = useRouter()
