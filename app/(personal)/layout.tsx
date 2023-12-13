@@ -1,4 +1,4 @@
-import 'styles/index.css'
+import '@/styles/index.css'
 
 import { toPlainText } from '@portabletext/react'
 import { Metadata, Viewport } from 'next'
