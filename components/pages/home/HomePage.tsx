@@ -1,4 +1,4 @@
-import type { EncodeDataAttributeCallback } from '@sanity/react-loader/rsc'
+import type { EncodeDataAttributeCallback } from '@sanity/react-loader'
 import Link from 'next/link'
 
 import { ProjectListItem } from '@/components/pages/home/ProjectListItem'

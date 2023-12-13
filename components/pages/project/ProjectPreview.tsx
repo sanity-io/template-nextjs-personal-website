@@ -1,6 +1,6 @@
 'use client'
 
-import { type QueryResponseInitial } from '@sanity/react-loader/rsc'
+import { type QueryResponseInitial } from '@sanity/react-loader'
 
 import { projectBySlugQuery } from '@/sanity/lib/queries'
 import { useQuery } from '@/sanity/loader/useQuery'
