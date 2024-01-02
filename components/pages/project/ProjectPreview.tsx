@@ -13,6 +13,10 @@ type Props = {
   initial: QueryResponseInitial<ProjectPayload | null>
 }
 
+console.log(
+  'ProjectPreview, this should never log in production outside Draft Mode',
+)
+
 export default function ProjectPreview(props: Props) {
   const { params, initial } = props
   const { data, encodeDataAttribute } = useQuery<ProjectPayload | null>(
