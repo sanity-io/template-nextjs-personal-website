@@ -35,7 +35,7 @@
     "styled-components": "6.1.6"
   },
   "devDependencies": {
-    "@types/react": "18.2.46",
+    "@types/react": "18.2.47",
     "autoprefixer": "10.4.16",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
@@ -43,7 +43,7 @@
     "postcss": "8.4.33",
     "prettier": "3.1.1",
     "prettier-plugin-packagejson": "2.4.9",
-    "prettier-plugin-tailwindcss": "0.5.10",
+    "prettier-plugin-tailwindcss": "0.5.11",
     "tailwindcss": "3.4.1",
     "typescript": "5.3.3"
   }
