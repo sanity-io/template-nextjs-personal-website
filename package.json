@@ -15,6 +15,7 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@next/env": "14.0.4",
     "@portabletext/react": "3.0.11",
     "@sanity/client": "6.11.1",
     "@sanity/demo": "1.0.2",
@@ -32,6 +33,7 @@
     "next-sanity": "7.0.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "rxjs": "7.8.1",
     "sanity": "3.24.1",
     "sanity-plugin-asset-source-unsplash": "1.1.2",
     "server-only": "0.0.1",
