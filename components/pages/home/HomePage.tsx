@@ -23,7 +23,7 @@ export function HomePage({ data, encodeDataAttribute }: HomePageProps) {
       {showcaseProjects && showcaseProjects.length > 0 && (
         <div className="mx-auto max-w-[100rem] rounded-md border">
           {showcaseProjects.map((project, key) => {
-            const href = resolveHref(project._type, project.slug)
+            const href = resolveHref(project?._type, project?.slug)
             if (!href) {
               return null
             }
