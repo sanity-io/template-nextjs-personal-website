@@ -20,9 +20,8 @@ export function generateStaticSlugs(type: string) {
       { type },
       {
         next: {
-          tags: [type]
-        }
-      }
+          tags: [type],
+        },
+      },
     )
-
 }
