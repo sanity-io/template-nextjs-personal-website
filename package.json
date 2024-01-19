@@ -19,7 +19,7 @@
     "@sanity/demo": "1.0.2",
     "@sanity/image-url": "1.0.2",
     "@sanity/overlays": "2.3.6",
-    "@sanity/preview-url-secret": "1.5.2",
+    "@sanity/preview-url-secret": "1.5.3",
     "@sanity/react-loader": "1.7.4",
     "@sanity/vision": "3.25.0",
     "@tailwindcss/typography": "0.5.10",
