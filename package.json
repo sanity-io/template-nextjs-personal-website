@@ -18,7 +18,7 @@
     "@portabletext/react": "3.0.11",
     "@sanity/demo": "1.0.2",
     "@sanity/image-url": "1.0.2",
-    "@sanity/overlays": "2.3.9",
+    "@sanity/overlays": "2.3.10",
     "@sanity/preview-url-secret": "1.6.0",
     "@sanity/react-loader": "1.8.2",
     "@sanity/vision": "3.27.1",
@@ -35,7 +35,7 @@
     "styled-components": "6.1.8"
   },
   "devDependencies": {
-    "@types/react": "18.2.53",
+    "@types/react": "18.2.54",
     "autoprefixer": "10.4.17",
     "eslint": "8.56.0",
     "eslint-config-next": "14.1.0",
