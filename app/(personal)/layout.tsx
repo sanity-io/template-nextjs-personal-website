@@ -12,7 +12,9 @@ import IntroTemplate from '@/intro-template'
 import { urlForOpenGraphImage } from '@/sanity/lib/utils'
 import { loadHomePage, loadSettings } from '@/sanity/loader/loadQuery'
 
-const VisualEditing = dynamic(() => import('@/sanity/loader/VisualEditing'))
+const LiveVisualEditing = dynamic(
+  () => import('@/sanity/loader/LiveVisualEditing'),
+)
 
 export async function generateMetadata(): Promise<Metadata> {
   const [{ data: settings }, { data: homePage }] = await Promise.all([
@@ -60,7 +62,7 @@ export default async function IndexRoute({
         </Suspense>
         <IntroTemplate />
       </div>
-      {draftMode().isEnabled && <VisualEditing />}
+      {draftMode().isEnabled && <LiveVisualEditing />}
     </>
   )
 }
