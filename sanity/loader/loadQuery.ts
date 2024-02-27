@@ -20,10 +20,8 @@ import {
 
 const serverClient = client.withConfig({
   token,
-  stega: {
-    // Enable stega if it's a Vercel preview deployment, as the Vercel Toolbar has controls that shows overlays
-    enabled: process.env.VERCEL_ENV === 'preview',
-  },
+  // Enable stega if it's a Vercel preview deployment, as the Vercel Toolbar has controls that shows overlays
+  stega: process.env.VERCEL_ENV === 'preview',
 })
 
 /**
@@ -55,8 +53,8 @@ export const loadQuery = ((query, params = {}, options = {}) => {
       ...(options.next || {}),
     },
     perspective,
-    // @TODO add support in `@sanity/client/stega` for the below
-    // stega: {enabled: draftMode().isEnabled}
+    // Enable stega if in Draft Mode, to enable overlays when outside Sanity Studio
+    stega: draftMode().isEnabled,
   })
 }) satisfies typeof queryStore.loadQuery
 
