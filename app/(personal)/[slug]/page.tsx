@@ -1,8 +1,8 @@
-import { toPlainText } from '@portabletext/react'
-import { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next'
 import dynamic from 'next/dynamic'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { toPlainText } from 'next-sanity'
 
 import { Page } from '@/components/pages/page/Page'
 import { generateStaticSlugs } from '@/sanity/loader/generateStaticSlugs'

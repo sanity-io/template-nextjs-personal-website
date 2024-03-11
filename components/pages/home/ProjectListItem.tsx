@@ -1,4 +1,4 @@
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from 'next-sanity'
 
 import { CustomPortableText } from '@/components/shared/CustomPortableText'
 import ImageBox from '@/components/shared/ImageBox'

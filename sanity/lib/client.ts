@@ -1,4 +1,4 @@
-import { createClient } from '@sanity/client/stega'
+import { createClient } from 'next-sanity'
 
 import {
   apiVersion,
