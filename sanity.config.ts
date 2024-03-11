@@ -4,8 +4,8 @@
 
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
-import { deskTool } from 'sanity/desk'
 import { presentationTool } from 'sanity/presentation'
+import { structureTool } from 'sanity/structure'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 
 import { apiVersion, dataset, projectId, studioUrl } from '@/sanity/lib/api'
@@ -44,7 +44,7 @@ export default defineConfig({
     ],
   },
   plugins: [
-    deskTool({
+    structureTool({
       structure: pageStructure([home, settings]),
     }),
     presentationTool({

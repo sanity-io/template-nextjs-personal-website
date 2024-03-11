@@ -1,16 +1,39 @@
 'use client'
 
-import { studioUrl } from '@/sanity/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { memo, useEffect, useState } from 'react'
+import { memo, useSyncExternalStore } from 'react'
+
+import { studioUrl } from '@/sanity/lib/api'
 
 import cover from './cover.png'
 
+const subscribe = () => () => {}
+function useAfterHydration<Snapshot>(
+  getSnapshot: () => Snapshot,
+  serverSnapshot: Snapshot,
+): Snapshot {
+  return useSyncExternalStore<Snapshot>(
+    subscribe,
+    getSnapshot,
+    () => serverSnapshot,
+  )
+}
+
 export default memo(function IntroTemplate() {
-  const [studioURL, setStudioURL] = useState<string | null>(null)
-  const [isLocalHost, setIsLocalhost] = useState(false)
+  const studioURL = useAfterHydration(
+    () => `${location.origin}${studioUrl}`,
+    null,
+  )
+  const isLocalHost = useAfterHydration(
+    () => window.location.hostname === 'localhost',
+    false,
+  )
+  const hasUTMtags = useAfterHydration(
+    () => window.location.search.includes('utm'),
+    false,
+  )
   const pathname = usePathname()
 
   const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -22,16 +45,6 @@ export default memo(function IntroTemplate() {
   const removeBlockURL = hasRepoEnvVars
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#how-can-i-remove-the-next-steps-block-from-my-app`
     : `https://github.com/sanity-io/template-nextjs-clean#how-can-i-remove-the-next-steps-block-from-my-app`
-
-  const [hasUTMtags, setHasUTMtags] = useState(false)
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setStudioURL(`${window.location.origin}${studioUrl}`)
-      setIsLocalhost(window.location.hostname === 'localhost')
-      setHasUTMtags(window.location.search.includes('utm'))
-    }
-  }, [])
 
   // Only display this on the home page
   if (pathname !== '/') {
