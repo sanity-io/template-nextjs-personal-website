@@ -22,7 +22,7 @@
     "@sanity/preview-url-secret": "1.6.7",
     "@sanity/react-loader": "1.9.9",
     "@sanity/ui": "2.1.2",
-    "@sanity/vision": "3.37.1",
+    "@sanity/vision": "3.37.2",
     "@tailwindcss/typography": "0.5.12",
     "classnames": "2.5.1",
     "date-fns": "3.6.0",
@@ -31,7 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rxjs": "7.8.1",
-    "sanity": "3.37.1",
+    "sanity": "3.37.2",
     "sanity-plugin-asset-source-unsplash": "3.0.0",
     "server-only": "0.0.1",
     "styled-components": "6.1.8"
