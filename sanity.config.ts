@@ -51,9 +51,7 @@ export default defineConfig({
     presentationTool({
       locate,
       previewUrl: {
-        previewMode: {
-          enable: '/api/draft',
-        },
+        preview: '/',
       },
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton

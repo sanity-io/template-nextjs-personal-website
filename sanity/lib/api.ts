@@ -4,12 +4,12 @@
  */
 
 export const dataset = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_DATASET,
+  process.env.NEXT_PUBLIC_SANITY_DATASET || 'personal-website-dev',
   'Missing environment variable: NEXT_PUBLIC_SANITY_DATASET',
 )
 
 export const projectId = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'r0z1eifg',
   'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID',
 )
 

@@ -10,7 +10,6 @@ import {
   projectBySlugQuery,
   settingsQuery,
 } from '@/sanity/lib/queries'
-import { token } from '@/sanity/lib/token'
 import {
   HomePagePayload,
   PagePayload,
@@ -19,7 +18,6 @@ import {
 } from '@/types'
 
 const serverClient = client.withConfig({
-  token,
   // Enable stega if it's a Vercel preview deployment, as the Vercel Toolbar has controls that shows overlays
   stega: process.env.VERCEL_ENV === 'preview',
 })
