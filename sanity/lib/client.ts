@@ -27,7 +27,3 @@ export const client = createClient({
     },
   },
 })
-
-console.warn(
-  'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4',
-)
