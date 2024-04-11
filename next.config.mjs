@@ -21,6 +21,7 @@ const config = {
   },
   experimental: {
     taint: true,
+    optimizePackageImports: ['@sanity/ui', 'sanity'],
   },
 }
 
