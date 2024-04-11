@@ -1,4 +1,4 @@
-import 'tailwindcss/tailwind.css'
+import './globals.css'
 
 import { IBM_Plex_Mono, Inter, PT_Serif } from 'next/font/google'
 
