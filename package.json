@@ -15,7 +15,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@next/env": "14.2.2",
+    "@next/env": "14.2.3",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "2.11.8",
     "@sanity/image-url": "1.0.2",
@@ -26,7 +26,7 @@
     "@tailwindcss/typography": "0.5.12",
     "classnames": "2.5.1",
     "date-fns": "3.6.0",
-    "next": "14.2.2",
+    "next": "14.2.3",
     "next-sanity": "9.0.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -40,7 +40,7 @@
     "@types/react": "18.2.79",
     "autoprefixer": "10.4.19",
     "eslint": "8.57.0",
-    "eslint-config-next": "14.2.2",
+    "eslint-config-next": "14.2.3",
     "eslint-plugin-simple-import-sort": "12.1.0",
     "postcss": "8.4.38",
     "prettier": "3.2.5",
