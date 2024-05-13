@@ -1,8 +1,8 @@
-import { map, Observable } from 'rxjs'
 import {
   DocumentLocationResolver,
   DocumentLocationsState,
-} from 'sanity/presentation'
+} from '@sanity/presentation'
+import { map, Observable } from 'rxjs'
 
 import { resolveHref } from '@/sanity/lib/utils'
 
