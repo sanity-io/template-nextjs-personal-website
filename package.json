@@ -19,7 +19,6 @@
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "2.11.8",
     "@sanity/image-url": "1.0.2",
-    "@sanity/presentation": "1.15.2",
     "@sanity/preview-url-secret": "1.6.12",
     "@sanity/react-loader": "1.9.18",
     "@sanity/ui": "2.1.7",
@@ -32,7 +31,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rxjs": "7.8.1",
-    "sanity": "3.41.1",
+    "sanity": "3.40.0",
     "sanity-plugin-asset-source-unsplash": "3.0.1",
     "server-only": "0.0.1",
     "styled-components": "6.1.11"
