@@ -1,3 +1,18 @@
+# Documentation
+
+## Design: https://www.figma.com/design/hb8zoVEj43RwAwZmzif100/Mushrooms?node-id=0-1&t=qkVtzv1DSwUoMSMB-1
+
+## Sanity
+
+This project uses [single studio configuration](https://www.sanity.io/docs/configuration#4ce1bbe36d22) or no staging version, only production.
+
+All type for data is in schemas folder(sanity/schemas).
+Inside this folder are 3 subfolders:
+
+- documents. Contains main data type(in this project there are page type and mushroom and plant page)
+
+Sanity is avaliable at http://localhost:3000/studio
+
 # A Next.js Personal Website with a Native Authoring Experience<!-- omit in toc -->
 
 This starter is a statically generated personal website that uses [Next.js][nextjs] for the frontend and [Sanity][sanity-homepage] to handle its content. It comes with a native Sanity Studio that offers features like real-time collaboration and visual editing with live updates using [Presentation][presentation].

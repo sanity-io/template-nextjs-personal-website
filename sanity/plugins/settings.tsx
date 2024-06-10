@@ -1,5 +1,6 @@
 /**
  * This plugin contains all the logic for setting up the singletons
+ * Resource: https://www.sanity.io/docs/structure-tool-api
  */
 
 import { type DocumentDefinition } from 'sanity'

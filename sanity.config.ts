@@ -5,50 +5,38 @@
 
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
-import { presentationTool } from 'sanity/presentation'
+import { presentationTool } from 'sanity/presentation' // https://www.sanity.io/docs/configuring-the-presentation-tool
 import { structureTool } from 'sanity/structure'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 
 import { apiVersion, dataset, projectId, studioUrl } from '@/sanity/lib/api'
 import * as resolve from '@/sanity/plugins/resolve'
 import { pageStructure, singletonPlugin } from '@/sanity/plugins/settings'
-import page from '@/sanity/schemas/documents/page'
-import project from '@/sanity/schemas/documents/project'
-import duration from '@/sanity/schemas/objects/duration'
-import milestone from '@/sanity/schemas/objects/milestone'
-import timeline from '@/sanity/schemas/objects/timeline'
 import home from '@/sanity/schemas/singletons/home'
 import settings from '@/sanity/schemas/singletons/settings'
+
+import { schemaTypes } from './sanity/schemas'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
   'Next.js Personal Website with Sanity.io'
 
 export default defineConfig({
-  basePath: studioUrl,
-  projectId: projectId || '',
-  dataset: dataset || '',
+  basePath: studioUrl, // define url to studio
+  projectId: projectId || '', // grab this id from sanity
+  dataset: dataset || '', // uses only production dataset
   title,
   schema: {
-    // If you want more content types, you can add them to this array
-    types: [
-      // Singletons
-      home,
-      settings,
-      // Documents
-      duration,
-      page,
-      project,
-      // Objects
-      milestone,
-      timeline,
-    ],
+    // schema types for this project
+    types: schemaTypes,
   },
   plugins: [
+    // add plugins here
     structureTool({
       structure: pageStructure([home, settings]),
     }),
     presentationTool({
+      // The Presentation tool enables Visual Editing for interactive live previews
       resolve,
       previewUrl: {
         previewMode: {
