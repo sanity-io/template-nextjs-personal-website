@@ -17,9 +17,7 @@ import settings from '@/sanity/schemas/singletons/settings'
 
 import { schemaTypes } from './sanity/schemas'
 
-const title =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
-  'Next.js Personal Website with Sanity.io'
+const title = process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Sanity'
 
 export default defineConfig({
   basePath: studioUrl, // define url to studio

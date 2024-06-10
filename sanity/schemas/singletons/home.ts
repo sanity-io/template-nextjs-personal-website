@@ -1,5 +1,8 @@
-import { HomeIcon } from '@sanity/icons'
+import { HomeIcon, ImageIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
+// Convention:
+// Title: first letter is upper case
+// name: is title camelCase
 
 export default defineType({
   name: 'home',
@@ -8,6 +11,12 @@ export default defineType({
   icon: HomeIcon,
   // Uncomment below to have edits publish automatically as you type
   // liveEdit: true,
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     defineField({
       name: 'title',
@@ -15,12 +24,13 @@ export default defineType({
       title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
+      group: 'seo',
     }),
     defineField({
-      name: 'overview',
+      name: 'metaDescription',
       description:
         'Used both for the <meta> description tag for SEO, and the personal website subheader.',
-      title: 'Description',
+      title: 'Meta Description',
       type: 'array',
       of: [
         // Paragraphs
@@ -57,6 +67,28 @@ export default defineType({
         }),
       ],
       validation: (rule) => rule.max(155).required(),
+      group: 'seo',
+    }),
+    defineField({
+      name: 'HeroImage',
+      icon: ImageIcon,
+      title: 'Hero image',
+      type: 'image',
+    }),
+    defineField({
+      name: 'mainHeading',
+      title: 'Main Heading',
+      type: 'mainHeadingBlockContent',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'blockContent',
+    }),
+    defineField({
+      name: 'cta',
+      title: 'CTA',
+      type: 'cta',
     }),
     defineField({
       name: 'showcaseProjects',

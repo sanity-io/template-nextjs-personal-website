@@ -1,6 +1,13 @@
+# TODO:
+
+- add color support for h1 https://www.youtube.com/watch?v=1xCugTHlCyU&ab_channel=SanityComposableContentCloud
+- create hero type and use it for page and home page document type
+
 # Documentation
 
-## Design: https://www.figma.com/design/hb8zoVEj43RwAwZmzif100/Mushrooms?node-id=0-1&t=qkVtzv1DSwUoMSMB-1
+## Design:
+
+https://www.figma.com/design/hb8zoVEj43RwAwZmzif100/Mushrooms?node-id=0-1&t=qkVtzv1DSwUoMSMB-1
 
 ## Sanity
 
@@ -155,3 +162,17 @@ You can remove it by deleting the `IntroTemplate` component in `/app/(personal)/
 [vercel-github]: https://github.com/vercel/next.js/discussions
 [personal-website-pages]: https://github.com/sanity-io/template-nextjs-personal-website
 [presentation]: https://www.sanity.io/docs/presentation
+
+# FAQ
+
+- What is signletone document?
+  A singleton document type in Sanity Studio v3 refers to a specific type of document that only exists as a single instance within your data set. This means you can only have one document of that particular type
+- What is the document in schema?
+  A collection of schema types used to build a standalone piece of content that typically consist of multiple fields, has a revision history, can be published, drafted, and can have queryable references between them.
+- What is object in schema?
+  It's a schema definitions within the schema folder. It's a category for grouping schemas that represent individual content entities in your data model
+- What is groups in document?
+  https://www.sanity.io/docs/field-groups
+- How to add a new custom field type?
+  Create a file example:https://github.com/sanity-io/example-company-website-gatsby-sanity-combo/tree/master/studio/schemas
+  Import this type to sanity/schemas/index.ts and export in array. Then use this type in define schema
