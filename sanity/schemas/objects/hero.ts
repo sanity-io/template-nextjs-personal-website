@@ -4,17 +4,18 @@
  *  {
  *    name: 'someName',
  *    title: 'Some title',
- *    type: 'cta'
+ *    type: 'hero'
  *  }
  */
 
-import { ImageIcon } from '@sanity/icons'
-import { defineField } from 'sanity'
+import { DocumentTextIcon, ImageIcon } from '@sanity/icons'
+import { defineField, defineType } from 'sanity'
 
-const cta = {
-  title: 'Hero',
+const cta = defineType({
+  title: 'Hero section',
   name: 'hero',
   type: 'object',
+
   fields: [
     defineField({
       name: 'mainHeading',
@@ -38,6 +39,17 @@ const cta = {
       type: 'image',
     }),
   ],
-}
+  preview: {
+    select: {
+      image: 'image',
+    },
+    prepare({ image }) {
+      return {
+        title: 'Hero section',
+        media: image || DocumentTextIcon,
+      }
+    },
+  },
+})
 
 export default cta

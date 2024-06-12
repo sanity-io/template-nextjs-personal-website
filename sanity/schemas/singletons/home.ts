@@ -70,25 +70,24 @@ export default defineType({
       group: 'seo',
     }),
     defineField({
-      name: 'HeroImage',
-      icon: ImageIcon,
-      title: 'Hero image',
-      type: 'image',
-    }),
-    defineField({
-      name: 'mainHeading',
-      title: 'Main Heading',
-      type: 'mainHeadingBlockContent',
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'blockContent',
-    }),
-    defineField({
-      name: 'cta',
-      title: 'CTA',
-      type: 'cta',
+      name: 'sections',
+      title: 'Sections list',
+      description: 'Sections list of the page',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          name: 'hero',
+          type: 'hero',
+        }),
+        defineArrayMember({
+          name: 'textImage',
+          type: 'textImage',
+        }),
+        defineArrayMember({
+          name: 'textContent',
+          type: 'textContent',
+        }),
+      ],
     }),
     defineField({
       name: 'showcaseProjects',

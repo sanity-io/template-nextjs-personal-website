@@ -8,29 +8,28 @@
  *  }
  */
 
-const cta = {
+import { defineField, defineType } from 'sanity'
+
+const cta = defineType({
   title: 'CTA',
   name: 'cta',
   type: 'object',
   fields: [
-    {
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
-    },
-    {
+    }),
+    defineField({
       name: 'url',
       title: 'Url',
       type: 'string',
-    },
-    {
+    }),
+    defineField({
       name: 'variant',
       title: 'Variant',
       type: 'string',
-      initialValue: {
-        title: 'Primary',
-      },
       options: {
         list: [
           { title: 'Primary', value: 'primary' },
@@ -38,8 +37,8 @@ const cta = {
         ],
       },
       validation: (rule) => rule.required(),
-    },
+    }),
   ],
-}
+})
 
 export default cta
