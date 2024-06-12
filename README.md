@@ -2,6 +2,8 @@
 
 - add color support for h1 https://www.youtube.com/watch?v=1xCugTHlCyU&ab_channel=SanityComposableContentCloud
 - create hero type and use it for page and home page document type
+- is next-seo better than build-in meta from next
+- gallery section type https://www.sanity.io/guides/how-to-use-structured-content-for-page-building
 
 # Documentation
 
@@ -176,3 +178,18 @@ You can remove it by deleting the `IntroTemplate` component in `/app/(personal)/
 - How to add a new custom field type?
   Create a file example:https://github.com/sanity-io/example-company-website-gatsby-sanity-combo/tree/master/studio/schemas
   Import this type to sanity/schemas/index.ts and export in array. Then use this type in define schema
+
+Resources:
+
+- [Sanity preview convention](https://www.sanity.io/docs/previews-list-views)
+- [Sanity page builder](https://www.sanity.io/guides/how-to-use-structured-content-for-page-building)
+
+## documentation template
+
+/\*\*
+
+- Type guard utility to help navigating through unknown object properties.
+- @param object - Object to check.
+- @param propertyName - Property name to check.
+- @returns True if object has property with given property name.
+  \*/

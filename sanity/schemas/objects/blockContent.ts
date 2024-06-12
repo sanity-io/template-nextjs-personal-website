@@ -1,4 +1,5 @@
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import { defineType } from 'sanity'
 
 /**
  * This is the schema definition for the rich text fields used for
@@ -10,7 +11,7 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
  *    type: 'blockContent'
  *  }
  */
-const blockContent = {
+const blockContent = defineType({
   title: 'Block Content',
   name: 'blockContent',
   type: 'array',
@@ -70,6 +71,6 @@ const blockContent = {
       },
     },
   ],
-}
+})
 
 export default blockContent
