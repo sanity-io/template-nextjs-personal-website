@@ -4,6 +4,7 @@
 - create hero type and use it for page and home page document type
 - is next-seo better than build-in meta from next
 - gallery section type https://www.sanity.io/guides/how-to-use-structured-content-for-page-building
+- add cache Layer like redis
 
 # Documentation
 
