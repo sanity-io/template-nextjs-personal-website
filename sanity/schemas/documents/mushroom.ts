@@ -20,7 +20,7 @@ export default defineType({
 			type: "slug",
 			options: {
 				source: "title",
-				maxLength: 96,
+				maxLength: 160,
 				isUnique: (value, context) => context.defaultIsUnique(value, context),
 			},
 			validation: (rule) => rule.required(),
@@ -61,7 +61,7 @@ export default defineType({
 		}),
 		defineField({
 			name: "description",
-			title: "Project Description",
+			title: "Description",
 			type: "array",
 			of: [
 				defineArrayMember({
@@ -124,15 +124,12 @@ export default defineType({
 			title: "Cap form",
 			name: "capForm",
 			type: "array",
-			of: [{ type: "string" }],
-			options: {
-				list: [
-					{ title: "Building", value: "building" },
-					{ title: "Master plan", value: "masterPlan" },
-					{ title: "Infrastructure", value: "infrastructure" },
-					{ title: "Private Home", value: "privateHome" },
-				],
-			},
+			of: [
+				defineArrayMember({
+					name: "capForm",
+					type: "capForm",
+				}),
+			],
 		}),
 	],
 });
