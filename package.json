@@ -17,7 +17,7 @@
   "dependencies": {
     "@next/env": "14.2.4",
     "@sanity/demo": "2.0.0",
-    "@sanity/icons": "2.11.8",
+    "@sanity/icons": "3.3.0",
     "@sanity/image-url": "1.0.2",
     "@sanity/preview-url-secret": "1.6.17",
     "@sanity/react-loader": "1.10.3",
