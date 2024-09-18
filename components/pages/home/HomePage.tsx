@@ -1,43 +1,51 @@
-import type { EncodeDataAttributeCallback } from '@sanity/react-loader'
 import Link from 'next/link'
+import { createDataAttribute } from 'next-sanity'
 
 import { ProjectListItem } from '@/components/pages/home/ProjectListItem'
 import { Header } from '@/components/shared/Header'
+import type { HomePageQueryResult } from '@/sanity.types'
 import { resolveHref } from '@/sanity/lib/utils'
-import type { HomePagePayload } from '@/types'
 
 export interface HomePageProps {
-  data: HomePagePayload | null
-  encodeDataAttribute?: EncodeDataAttributeCallback
+  data: HomePageQueryResult | null
 }
 
-export function HomePage({ data, encodeDataAttribute }: HomePageProps) {
+export function HomePage({ data }: HomePageProps) {
   // Default to an empty object to allow previews on non-existent documents
   const { overview = [], showcaseProjects = [], title = '' } = data ?? {}
+
+  const dataAttribute = createDataAttribute({
+    id: data?._id,
+    type: data?._type,
+  })
 
   return (
     <div className="space-y-20">
       {/* Header */}
-      {title && <Header centered title={title} description={overview} />}
+      {title && (
+        <Header
+          centered
+          title={title}
+          description={overview as unknown as any}
+        />
+      )}
       {/* Showcase projects */}
       {showcaseProjects && showcaseProjects.length > 0 && (
         <div className="mx-auto max-w-[100rem] rounded-md border">
-          {showcaseProjects.map((project, key) => {
+          {showcaseProjects.map((project, i) => {
             const href = resolveHref(project?._type, project?.slug)
             if (!href) {
               return null
             }
             return (
               <Link
-                key={key}
+                key={project._key}
                 href={href}
-                data-sanity={encodeDataAttribute?.([
-                  'showcaseProjects',
-                  key,
-                  'slug',
-                ])}
+                data-sanity={dataAttribute
+                  .scope(['showcaseProjects', { _key: project._key }])
+                  .toString()}
               >
-                <ProjectListItem project={project} odd={key % 2} />
+                <ProjectListItem project={project} odd={i % 2} />
               </Link>
             )
           })}

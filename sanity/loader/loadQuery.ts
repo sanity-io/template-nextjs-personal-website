@@ -17,6 +17,7 @@ import {
   ProjectPayload,
   SettingsPayload,
 } from '@/types'
+import { sanityFetch } from '../lib/live'
 
 const serverClient = client.withConfig({
   token,

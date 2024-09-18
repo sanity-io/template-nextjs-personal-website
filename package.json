@@ -2,13 +2,16 @@
   "name": "sanity-template-template-nextjs-personal-website",
   "private": true,
   "scripts": {
+    "prebuild": "npm run typegen",
     "build": "next build",
+    "predev": "npm run typegen",
     "dev": "next",
     "format": "npx prettier --write . --ignore-path .gitignore",
     "lint": "next lint .",
     "lint:fix": "npm run format && npm run lint -- --fix",
     "start": "next start",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "typegen": "sanity schema extract && sanity typegen generate"
   },
   "prettier": {
     "semi": false,
@@ -19,10 +22,13 @@
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.4.0",
     "@sanity/image-url": "1.0.2",
-    "@sanity/preview-url-secret": "1.6.21",
-    "@sanity/react-loader": "1.10.7",
+    "@sanity/next-loader": "0.0.1-canary.6",
+    "@sanity/presentation": "1.16.6-canary.9",
+    "@sanity/preview-url-secret": "1.6.22-canary.9",
+    "@sanity/react-loader": "1.10.8-canary.9",
     "@sanity/ui": "2.8.9",
     "@sanity/vision": "3.57.4",
+    "@sanity/visual-editing": "2.1.11-canary.9",
     "@tailwindcss/typography": "0.5.15",
     "classnames": "2.5.1",
     "date-fns": "3.6.0",
@@ -48,5 +54,10 @@
     "prettier-plugin-tailwindcss": "0.6.6",
     "tailwindcss": "3.4.12",
     "typescript": "5.6.2"
+  },
+  "overrides": {
+    "@sanity/presentation": "$@sanity/presentation",
+    "@sanity/preview-url-secret": "$@sanity/preview-url-secret",
+    "@sanity/visual-editing": "$@sanity/visual-editing"
   }
 }

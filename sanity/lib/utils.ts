@@ -23,7 +23,7 @@ export function urlForOpenGraphImage(image: Image | undefined) {
 
 export function resolveHref(
   documentType?: string,
-  slug?: string,
+  slug?: string | null | undefined,
 ): string | undefined {
   switch (documentType) {
     case 'home':

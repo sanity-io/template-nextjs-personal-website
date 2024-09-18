@@ -45,16 +45,10 @@ export default defineConfig({
     ],
   },
   plugins: [
+    // @ts-expect-error - the typings should be updated to make `previewUrl` optional
+    presentationTool({ resolve }),
     structureTool({
       structure: pageStructure([home, settings]),
-    }),
-    presentationTool({
-      resolve,
-      previewUrl: {
-        previewMode: {
-          enable: '/api/draft',
-        },
-      },
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
     singletonPlugin([home.name, settings.name]),

@@ -1,22 +1,27 @@
-import { groq } from 'next-sanity'
+import { defineQuery } from 'next-sanity'
 
-export const homePageQuery = groq`
+export const homePageQuery = defineQuery(`
   *[_type == "home"][0]{
     _id,
+    _type,
     overview,
-    showcaseProjects[]->{
-      _type,
-      coverImage,
-      overview,
-      "slug": slug.current,
-      tags,
-      title,
+    showcaseProjects[]{
+      _key,
+      ...@->{
+        _type,
+        _id,
+        coverImage,
+        overview,
+        "slug": slug.current,
+        tags,
+        title,
+      }
     },
     title,
   }
-`
+`)
 
-export const pagesBySlugQuery = groq`
+export const pagesBySlugQuery = defineQuery(`
   *[_type == "page" && slug.current == $slug][0] {
     _id,
     body,
@@ -24,9 +29,9 @@ export const pagesBySlugQuery = groq`
     title,
     "slug": slug.current,
   }
-`
+`)
 
-export const projectBySlugQuery = groq`
+export const projectBySlugQuery = defineQuery(`
   *[_type == "project" && slug.current == $slug][0] {
     _id,
     client,
@@ -39,9 +44,9 @@ export const projectBySlugQuery = groq`
     tags,
     title,
   }
-`
+`)
 
-export const settingsQuery = groq`
+export const settingsQuery = defineQuery(`
   *[_type == "settings"][0]{
     footer,
     menuItems[]->{
@@ -51,4 +56,4 @@ export const settingsQuery = groq`
     },
     ogImage,
   }
-`
+`)
