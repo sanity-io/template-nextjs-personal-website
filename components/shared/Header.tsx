@@ -2,8 +2,8 @@ import { CustomPortableText } from '@/components/shared/CustomPortableText'
 
 interface HeaderProps {
   centered?: boolean
-  description?: any[]
-  title?: string
+  description?: any[] | null | undefined
+  title?: string | null | undefined
 }
 export function Header(props: HeaderProps) {
   const { title, description, centered = false } = props

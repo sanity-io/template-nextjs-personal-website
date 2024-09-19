@@ -1,9 +1,9 @@
 import { CustomPortableText } from '@/components/shared/CustomPortableText'
 import { Header } from '@/components/shared/Header'
-import type { PagePayload } from '@/types'
+import type { PagesBySlugQueryResult } from '@/sanity.types'
 
 export interface PageProps {
-  data: PagePayload | null
+  data: PagesBySlugQueryResult | null
 }
 
 export function Page({ data }: PageProps) {
@@ -20,7 +20,7 @@ export function Page({ data }: PageProps) {
         {body && (
           <CustomPortableText
             paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
-            value={body}
+            value={body as unknown as any}
           />
         )}
       </div>

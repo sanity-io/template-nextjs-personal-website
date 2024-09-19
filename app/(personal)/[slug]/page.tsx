@@ -1,13 +1,10 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import dynamic from 'next/dynamic'
-import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { toPlainText } from 'next-sanity'
+import { defineQuery, toPlainText } from 'next-sanity'
 
 import { Page } from '@/components/pages/page/Page'
-import { generateStaticSlugs } from '@/sanity/loader/generateStaticSlugs'
-import { loadPage } from '@/sanity/loader/loadQuery'
-const PagePreview = dynamic(() => import('@/components/pages/page/PagePreview'))
+import { sanityFetch } from '@/sanity/lib/live'
+import { pagesBySlugQuery } from '@/sanity/lib/queries'
 
 type Props = {
   params: { slug: string }
@@ -17,7 +14,11 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { data: page } = await loadPage(params.slug)
+  const { data: page } = await sanityFetch({
+    query: pagesBySlugQuery,
+    params,
+    stega: false,
+  })
 
   return {
     title: page?.title,
@@ -27,20 +28,24 @@ export async function generateMetadata(
   }
 }
 
-export function generateStaticParams() {
-  return generateStaticSlugs('page')
+const pageSlugsQuery = defineQuery(
+  /* groq */ `*[_type == "page" && defined(slug.current)]{"slug": slug.current}`,
+)
+export async function generateStaticParams() {
+  const { data } = await sanityFetch({
+    query: pageSlugsQuery,
+    stega: false,
+    perspective: 'published',
+  })
+  return data
 }
 
 export default async function PageSlugRoute({ params }: Props) {
-  const initial = await loadPage(params.slug)
+  const { data } = await sanityFetch({ query: pagesBySlugQuery, params })
 
-  if (draftMode().isEnabled) {
-    return <PagePreview params={params} initial={initial} />
-  }
-
-  if (!initial.data) {
+  if (!data) {
     notFound()
   }
 
-  return <Page data={initial.data} />
+  return <Page data={data} />
 }

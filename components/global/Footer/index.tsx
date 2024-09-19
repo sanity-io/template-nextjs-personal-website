@@ -1,17 +1,10 @@
-import dynamic from 'next/dynamic'
-import { draftMode } from 'next/headers'
-
-import { loadSettings } from '@/sanity/loader/loadQuery'
+import { sanityFetch } from '@/sanity/lib/live'
+import { settingsQuery } from '@/sanity/lib/queries'
 
 import FooterLayout from './FooterLayout'
-const FooterPreview = dynamic(() => import('./FooterPreview'))
 
 export async function Footer() {
-  const initial = await loadSettings()
+  const { data } = await sanityFetch({ query: settingsQuery })
 
-  if (draftMode().isEnabled) {
-    return <FooterPreview initial={initial} />
-  }
-
-  return <FooterLayout data={initial.data} />
+  return <FooterLayout data={data} />
 }

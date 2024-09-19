@@ -536,9 +536,10 @@ export type PagesBySlugQueryResult = {
   slug: string | null
 } | null
 // Variable: projectBySlugQuery
-// Query: *[_type == "project" && slug.current == $slug][0] {    _id,    client,    coverImage,    description,    duration,    overview,    site,    "slug": slug.current,    tags,    title,  }
+// Query: *[_type == "project" && slug.current == $slug][0] {    _id,    _type,    client,    coverImage,    description,    duration,    overview,    site,    "slug": slug.current,    tags,    title,  }
 export type ProjectBySlugQueryResult = {
   _id: string
+  _type: 'project'
   client: string | null
   coverImage: {
     asset?: {
@@ -659,13 +660,29 @@ export type SettingsQueryResult = {
   } | null
 } | null
 
+// Source: ./app/(personal)/[slug]/page.tsx
+// Variable: pageSlugsQuery
+// Query: *[_type == "page" && defined(slug.current)]{"slug": slug.current}
+export type PageSlugsQueryResult = Array<{
+  slug: string | null
+}>
+
+// Source: ./app/(personal)/projects/[slug]/page.tsx
+// Variable: projectSlugsQuery
+// Query: *[_type == "project" && defined(slug.current)]{"slug": slug.current}
+export type ProjectSlugsQueryResult = Array<{
+  slug: string | null
+}>
+
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '\n  *[_type == "home"][0]{\n    _id,\n    _type,\n    overview,\n    showcaseProjects[]{\n      _key,\n      ...@->{\n        _type,\n        _id,\n        coverImage,\n        overview,\n        "slug": slug.current,\n        tags,\n        title,\n      }\n    },\n    title,\n  }\n': HomePageQueryResult
     '\n  *[_type == "page" && slug.current == $slug][0] {\n    _id,\n    body,\n    overview,\n    title,\n    "slug": slug.current,\n  }\n': PagesBySlugQueryResult
-    '\n  *[_type == "project" && slug.current == $slug][0] {\n    _id,\n    client,\n    coverImage,\n    description,\n    duration,\n    overview,\n    site,\n    "slug": slug.current,\n    tags,\n    title,\n  }\n': ProjectBySlugQueryResult
+    '\n  *[_type == "project" && slug.current == $slug][0] {\n    _id,\n    _type,\n    client,\n    coverImage,\n    description,\n    duration,\n    overview,\n    site,\n    "slug": slug.current,\n    tags,\n    title,\n  }\n': ProjectBySlugQueryResult
     '\n  *[_type == "settings"][0]{\n    footer,\n    menuItems[]->{\n      _type,\n      "slug": slug.current,\n      title\n    },\n    ogImage,\n  }\n': SettingsQueryResult
+    '*[_type == "page" && defined(slug.current)]{"slug": slug.current}': PageSlugsQueryResult
+    '*[_type == "project" && defined(slug.current)]{"slug": slug.current}': ProjectSlugsQueryResult
   }
 }
