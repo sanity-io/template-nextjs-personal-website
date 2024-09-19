@@ -12,6 +12,8 @@ import { sanityFetch, SanityLive } from '@/sanity/lib/live'
 import { homePageQuery, settingsQuery } from '@/sanity/lib/queries'
 import { urlForOpenGraphImage } from '@/sanity/lib/utils'
 
+import { handleDraftModeAction } from './actions'
+
 export async function generateMetadata(): Promise<Metadata> {
   const [{ data: settings }, { data: homePage }] = await Promise.all([
     sanityFetch({ query: settingsQuery, stega: false }),
@@ -61,7 +63,7 @@ export default async function IndexRoute({
         </Suspense>
       </div>
       {draftMode().isEnabled && <VisualEditing />}
-      <SanityLive />
+      <SanityLive handleDraftModeAction={handleDraftModeAction} />
     </>
   )
 }
