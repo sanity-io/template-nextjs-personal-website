@@ -45,7 +45,6 @@ export default defineConfig({
     ],
   },
   plugins: [
-    // @ts-expect-error - the typings should be updated to make `previewUrl` optional
     presentationTool({ resolve }),
     structureTool({
       structure: pageStructure([home, settings]),

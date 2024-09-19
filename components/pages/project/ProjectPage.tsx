@@ -1,10 +1,10 @@
 import Link from 'next/link'
+import { createDataAttribute } from 'next-sanity'
 
 import { CustomPortableText } from '@/components/shared/CustomPortableText'
 import { Header } from '@/components/shared/Header'
 import ImageBox from '@/components/shared/ImageBox'
 import type { ProjectBySlugQueryResult } from '@/sanity.types'
-import { createDataAttribute } from 'next-sanity'
 
 export interface ProjectPageProps {
   data: ProjectBySlugQueryResult | null
