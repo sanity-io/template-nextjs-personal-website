@@ -22,7 +22,7 @@
     "@sanity/preview-url-secret": "1.6.21",
     "@sanity/react-loader": "1.10.7",
     "@sanity/ui": "2.8.9",
-    "@sanity/vision": "3.57.4",
+    "@sanity/vision": "3.58.0",
     "@tailwindcss/typography": "0.5.15",
     "classnames": "2.5.1",
     "date-fns": "3.6.0",
@@ -31,13 +31,13 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rxjs": "7.8.1",
-    "sanity": "3.57.4",
+    "sanity": "3.58.0",
     "sanity-plugin-asset-source-unsplash": "3.0.1",
     "server-only": "0.0.1",
     "styled-components": "6.1.13"
   },
   "devDependencies": {
-    "@types/react": "18.3.8",
+    "@types/react": "18.3.9",
     "autoprefixer": "10.4.20",
     "eslint": "8.57.1",
     "eslint-config-next": "14.2.13",
@@ -45,8 +45,8 @@
     "postcss": "8.4.47",
     "prettier": "3.3.3",
     "prettier-plugin-packagejson": "2.5.2",
-    "prettier-plugin-tailwindcss": "0.6.6",
-    "tailwindcss": "3.4.12",
+    "prettier-plugin-tailwindcss": "0.6.8",
+    "tailwindcss": "3.4.13",
     "typescript": "5.6.2"
   }
 }
