@@ -52,7 +52,7 @@ export default defineConfig({
       resolve,
       previewUrl: {
         previewMode: {
-          enable: '/api/draft',
+          enable: '/api/draft-mode/enable',
         },
       },
     }),
