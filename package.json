@@ -19,7 +19,7 @@
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.4.0",
     "@sanity/image-url": "1.0.2",
-    "@sanity/preview-url-secret": "1.6.21",
+    "@sanity/preview-url-secret": "2.0.0",
     "@sanity/react-loader": "1.10.7",
     "@sanity/ui": "2.8.9",
     "@sanity/vision": "3.61.0",
