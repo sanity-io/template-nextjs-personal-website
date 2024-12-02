@@ -94,7 +94,7 @@ export default defineType({
           },
           preview: {
             select: {
-              imageUrl: 'asset.url',
+              media: 'asset',
               title: 'caption',
             },
           },
