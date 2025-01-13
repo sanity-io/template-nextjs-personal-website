@@ -59,7 +59,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 ### Installing the template
 
-We will take a look at installing this template with the Sanity CLI, running locally, and then deploying to vercel. If you'd rather start by deploying to Vercel, please instead reference the instructions in [`vercel-installation-instructions.md`](./vercel-installation-instructions.md)
+We will take a look at installing this template with the Sanity CLI, running locally, and lastly deploying to Vercel. If you'd rather start by deploying to Vercel, please instead reference the instructions in [`vercel-installation-instructions.md`](./vercel-installation-instructions.md)
 
 #### 1. Initialize template with Sanity CLI
 
