@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next",
+    "dev": "next --turbopack",
     "format": "npx prettier --write . --ignore-path .gitignore",
     "lint": "next lint .",
     "lint:fix": "npm run format && npm run lint -- --fix",
@@ -15,7 +15,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@next/env": "14.2.23",
+    "@next/env": "15.1.6",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.5.7",
     "@sanity/image-url": "1.1.0",
@@ -25,10 +25,10 @@
     "@tailwindcss/typography": "0.5.16",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "14.2.21",
+    "next": "15.1.6",
     "next-sanity": "9.8.42",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "rxjs": "7.8.1",
     "sanity": "3.71.2",
     "sanity-plugin-asset-source-unsplash": "3.0.2",
@@ -36,10 +36,10 @@
     "styled-components": "6.1.14"
   },
   "devDependencies": {
-    "@types/react": "18.3.18",
+    "@types/react": "19.0.8",
     "autoprefixer": "10.4.20",
     "eslint": "8.57.1",
-    "eslint-config-next": "14.2.23",
+    "eslint-config-next": "15.1.6",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "postcss": "8.5.1",
     "prettier": "3.4.2",

@@ -13,13 +13,14 @@ const ProjectPreview = dynamic(
 )
 
 type Props = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  props: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const params = await props.params
   const { data: project } = await loadProject(params.slug)
   const ogImage = urlForOpenGraphImage(project?.coverImage)
 
@@ -40,10 +41,11 @@ export function generateStaticParams() {
   return generateStaticSlugs('project')
 }
 
-export default async function ProjectSlugRoute({ params }: Props) {
+export default async function ProjectSlugRoute(props: Props) {
+  const params = await props.params
   const initial = await loadProject(params.slug)
 
-  if (draftMode().isEnabled) {
+  if ((await draftMode()).isEnabled) {
     return <ProjectPreview params={params} initial={initial} />
   }
 

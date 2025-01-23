@@ -10,13 +10,14 @@ import { loadPage } from '@/sanity/loader/loadQuery'
 const PagePreview = dynamic(() => import('@/components/pages/page/PagePreview'))
 
 type Props = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  props: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const params = await props.params
   const { data: page } = await loadPage(params.slug)
 
   return {
@@ -31,10 +32,11 @@ export function generateStaticParams() {
   return generateStaticSlugs('page')
 }
 
-export default async function PageSlugRoute({ params }: Props) {
+export default async function PageSlugRoute(props: Props) {
+  const params = await props.params
   const initial = await loadPage(params.slug)
 
-  if (draftMode().isEnabled) {
+  if ((await draftMode()).isEnabled) {
     return <PagePreview params={params} initial={initial} />
   }
 

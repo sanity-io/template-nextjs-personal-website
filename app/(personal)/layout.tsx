@@ -64,7 +64,7 @@ export default async function IndexRoute({
           <IntroTemplate />
         </Suspense>
       </div>
-      {draftMode().isEnabled && <LiveVisualEditing />}
+      {(await draftMode()).isEnabled && <LiveVisualEditing />}
     </>
   )
 }
