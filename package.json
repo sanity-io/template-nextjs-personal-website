@@ -21,7 +21,7 @@
     "@sanity/image-url": "1.1.0",
     "@sanity/react-loader": "1.10.39",
     "@sanity/ui": "2.11.4",
-    "@sanity/vision": "3.71.2",
+    "@sanity/vision": "3.71.1-corel.550",
     "@tailwindcss/typography": "0.5.16",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
@@ -30,7 +30,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "rxjs": "7.8.1",
-    "sanity": "3.71.2",
+    "sanity": "3.71.1-corel.550",
     "sanity-plugin-asset-source-unsplash": "3.0.2",
     "server-only": "0.0.1",
     "styled-components": "6.1.14"
@@ -47,5 +47,8 @@
     "prettier-plugin-tailwindcss": "0.6.10",
     "tailwindcss": "3.4.17",
     "typescript": "5.7.3"
+  },
+  "overrides": {
+    "sanity": "3.71.1-corel.550"
   }
 }
