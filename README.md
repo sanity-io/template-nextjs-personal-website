@@ -4,8 +4,6 @@ This starter is a statically generated personal website that uses [Next.js][next
 
 The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. You can use this starter to kick-start a personal website or learn these technologies.
 
-[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
-
 ## Features
 
 - A performant, static personal website with editable projects
@@ -23,11 +21,16 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - [Table of Contents](#table-of-contents)
 - [Project Overview](#project-overview)
   - [Important files and folders](#important-files-and-folders)
-- [Configuration](#configuration)
-  - [Step 1. Set up the environment](#step-1-set-up-the-environment)
-  - [Step 2. Set up the project locally](#step-2-set-up-the-project-locally)
-  - [Step 3. Run Next.js locally in development mode](#step-3-run-nextjs-locally-in-development-mode)
-  - [Step 4. Deploy to production](#step-4-deploy-to-production)
+- [ Getting Started](#configuration)
+  - [Step 1. Initialize template with Sanity CLI](#initialize-template-with-sanity-cli)
+  - [Step 2. Run app locally in development mode](#run-app-locally-in-development-mode)
+  - [Step 3. Open the app and sign in to the Studio](#open-the-app-and-sign-in-to-the-studio)
+- [Adding content with Sanity](#adding-content-with-sanity)
+  - [Step 1. Publish your first document](#publish-your-first-document)
+  - [Step 2. Extending the Sanity schema](#extending-the-sanity-schema)
+- [Deploying your application and inviting editors]()
+  - [Step 1. Deploy Next.js app to Vercel](#deploy-next.js-app-to-vercel)
+  - [Step 2. Invite a collaborator](#invite-a-collaborator)
 - [Questions and Answers](#questions-and-answers)
   - [It doesn't work! Where can I get help?](#it-doesnt-work-where-can-i-get-help)
   - [How can I remove the "Next steps" block from my personal site?](#how-can-i-remove-the-next-steps-block-from-my-personal-website)
@@ -52,53 +55,67 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 | `/sanity/plugins`                                          | Where the advanced Sanity Studio customization is setup |
 | `/sanity/loader/loadQuery.ts`,`/sanity/loader/useQuery.ts` | Configuration for the Sanity Content Lake client        |
 
-## Configuration
+## Getting Started
 
-### Step 1. Set up the environment
+### Installing the template
 
-Use the Deploy Button below. It will let you deploy the starter using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-sanity-example) as well as connect it to your Sanity Content Lake using [the Sanity Vercel Integration][integration].
+We will take a look at installing this template with the Sanity CLI, running locally, and lastly deploying to Vercel. If you'd rather start by deploying to Vercel, please instead reference the instructions in [`vercel-installation-instructions.md`](./vercel-installation-instructions.md)
 
-[![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
+#### 1. Initialize template with Sanity CLI
 
-### Step 2. Set up the project locally
+Run the command in your Terminal to initialize this template on your local computer.
 
-[Clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) that was created for you on your GitHub account. Once cloned, run the following command from the project's root directory:
+See the documentation if you are [having issues with the CLI](https://www.sanity.io/help/cli-errors).
 
-```bash
-npx vercel link
+```shell
+npm create sanity@latest -- --template sanity-io/template-nextjs-personal-website
 ```
 
-Download the environment variables needed to connect Next.js and the Studio to your Sanity project:
+#### 2. Run app locally in development mode
 
-```bash
-npx vercel env pull
+Navigate to the template directory using `cd <your app name>`, and start the development servers by running the following command
+
+```shell
+npm run dev
 ```
 
-### Step 3. Run Next.js locally in development mode
+#### 3. Open the app and sign in to the Studio
 
-```bash
-npm install && npm run dev
-```
+Open the Next.js app running locally in your browser on [http://localhost:3000](http://localhost:3000).
 
-When you run this development server, the changes you make in your frontend and studio configuration will be applied live using hot reloading.
+Open the Studio by navigating to the `/studio` route [http://localhost:3000/studio](http://localhost:3000/studio). You should now see a screen prompting you to log in to the Studio. Use the same service (Google, GitHub, or email) that you used when you logged in to the CLI.
 
-Your personal website should be up and running on [http://localhost:3000][localhost-3000]! You can create and edit content on [http://localhost:3000/studio][localhost-3000-studio].
+### Adding content with Sanity
 
-### Step 4. Deploy to production
+#### 1. Publish your first document
 
-To deploy your changes to production you use `git`:
+The template comes pre-defined with a schema containing `Page` and `Project` document types.
 
-```bash
-git add .
-git commit
-git push
-```
+From the Studio, click "+ Create" and select the `Project` document type. Go ahead and create and publish the document.
 
-Alternatively, you can deploy without a `git` hosting provider using the Vercel CLI:
+Your content should now appear in your Next.js app ([http://localhost:3000](http://localhost:3000)) as well as in the Studio on the "Presentation" Tab
 
-```bash
-npx vercel --prod
-```
+#### 2. Extending the Sanity schema
+
+The schema for the `Post` document type is defined in the `studio/src/schemaTypes/post.ts` file. You can [add more document types](https://www.sanity.io/docs/schema-types) to the schema to suit your needs.
+
+### Deploying your application and inviting editors
+
+#### 1. Deploy Next.js app to Vercel
+
+Your app is still only running on your local computer. It's time to deploy and get it into the hands of other content editors.
+
+You have the freedom to deploy your Next.js app to your hosting provider of choice. With Vercel and GitHub being a popular choice, we'll cover the basics of that approach.
+
+1. Create a GitHub repository from this project. [Learn more](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github).
+2. Create a new Vercel project and connect it to your Github repository.
+3. Configure your Environment Variables.
+
+#### 2. Invite a collaborator
+
+Now that you’ve deployed your Next.js application and Sanity Studio, you can optionally invite a collaborator to your Studio. Open up [Manage](https://www.sanity.io/manage), select your project and click "Invite project members"
+
+They will be able to access the deployed Studio, where you can collaborate together on creating content.
 
 ## Questions and Answers
 
