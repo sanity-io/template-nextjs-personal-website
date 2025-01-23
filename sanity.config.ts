@@ -27,6 +27,7 @@ export default defineConfig({
   projectId: projectId || '',
   dataset: dataset || '',
   title,
+  scheduledPublishing: { enabled: false },
   schema: {
     // If you want more content types, you can add them to this array
     types: [
