@@ -6,18 +6,13 @@ import type { ShowcaseProject } from '@/types'
 
 interface ProjectProps {
   project: ShowcaseProject
-  odd: number
 }
 
 export function ProjectListItem(props: ProjectProps) {
-  const { project, odd } = props
+  const { project } = props
 
   return (
-    <div
-      className={`flex flex-col gap-x-5 p-2 transition hover:bg-gray-50/50 xl:flex-row ${
-        odd && 'border-b border-t xl:flex-row-reverse'
-      }`}
-    >
+    <>
       <div className="w-full xl:w-9/12">
         <ImageBox
           image={project.coverImage}
@@ -28,7 +23,7 @@ export function ProjectListItem(props: ProjectProps) {
       <div className="flex xl:w-1/4">
         <TextBox project={project} />
       </div>
-    </div>
+    </>
   )
 }
 

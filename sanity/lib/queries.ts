@@ -3,6 +3,7 @@ import { defineQuery } from 'next-sanity'
 export const homePageQuery = defineQuery(`
   *[_type == "home"][0]{
     _id,
+    _type,
     overview,
     showcaseProjects[]{
       _key,
@@ -32,6 +33,7 @@ export const pagesBySlugQuery = defineQuery(`
 export const projectBySlugQuery = defineQuery(`
   *[_type == "project" && slug.current == $slug][0] {
     _id,
+    _type,
     client,
     coverImage,
     description,
