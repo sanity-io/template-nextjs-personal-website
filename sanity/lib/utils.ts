@@ -8,7 +8,7 @@ const imageBuilder = createImageUrlBuilder({
   dataset: dataset || '',
 })
 
-export const urlForImage = (source: Image | undefined) => {
+export const urlForImage = (source: Image | null | undefined) => {
   // Ensure that source image contains a valid reference
   if (!source?.asset?._ref) {
     return undefined
@@ -17,13 +17,13 @@ export const urlForImage = (source: Image | undefined) => {
   return imageBuilder?.image(source).auto('format').fit('max')
 }
 
-export function urlForOpenGraphImage(image: Image | undefined) {
+export function urlForOpenGraphImage(image: Image | null | undefined) {
   return urlForImage(image)?.width(1200).height(627).fit('crop').url()
 }
 
 export function resolveHref(
   documentType?: string,
-  slug?: string,
+  slug?: string | null,
 ): string | undefined {
   switch (documentType) {
     case 'home':

@@ -420,7 +420,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol
 // Source: ./sanity/lib/queries.ts
 // Variable: homePageQuery
-// Query: *[_type == "home"][0]{    _id,    overview,    showcaseProjects[]->{      _type,      coverImage,      overview,      "slug": slug.current,      tags,      title,    },    title,  }
+// Query: *[_type == "home"][0]{    _id,    overview,    showcaseProjects[]{      _key,      ...@->{        _type,        coverImage,        overview,        "slug": slug.current,        tags,        title,      }    },    title,  }
 export type HomePageQueryResult = {
   _id: string
   overview: Array<{
@@ -442,6 +442,7 @@ export type HomePageQueryResult = {
     _key: string
   }> | null
   showcaseProjects: Array<{
+    _key: string
     _type: 'project'
     coverImage: {
       asset?: {
@@ -606,8 +607,10 @@ export type ProjectBySlugQueryResult = {
   title: string | null
 } | null
 // Variable: settingsQuery
-// Query: *[_type == "settings"][0]{    footer,    menuItems[]->{      _type,      "slug": slug.current,      title    },    ogImage,  }
+// Query: *[_type == "settings"][0]{    _id,    _type,    footer,    menuItems[]{      _key,      ...@->{        _type,        "slug": slug.current,        title      }    },    ogImage,  }
 export type SettingsQueryResult = {
+  _id: string
+  _type: 'settings'
   footer: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -628,16 +631,19 @@ export type SettingsQueryResult = {
   }> | null
   menuItems: Array<
     | {
+        _key: null
         _type: 'home'
         slug: null
         title: string | null
       }
     | {
+        _key: null
         _type: 'page'
         slug: string | null
         title: string | null
       }
     | {
+        _key: null
         _type: 'project'
         slug: string | null
         title: string | null
@@ -665,10 +671,10 @@ export type SlugsByTypeQueryResult = Array<{
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\n  *[_type == "home"][0]{\n    _id,\n    overview,\n    showcaseProjects[]->{\n      _type,\n      coverImage,\n      overview,\n      "slug": slug.current,\n      tags,\n      title,\n    },\n    title,\n  }\n': HomePageQueryResult
+    '\n  *[_type == "home"][0]{\n    _id,\n    overview,\n    showcaseProjects[]{\n      _key,\n      ...@->{\n        _type,\n        coverImage,\n        overview,\n        "slug": slug.current,\n        tags,\n        title,\n      }\n    },\n    title,\n  }\n': HomePageQueryResult
     '\n  *[_type == "page" && slug.current == $slug][0] {\n    _id,\n    body,\n    overview,\n    title,\n    "slug": slug.current,\n  }\n': PagesBySlugQueryResult
     '\n  *[_type == "project" && slug.current == $slug][0] {\n    _id,\n    client,\n    coverImage,\n    description,\n    duration,\n    overview,\n    site,\n    "slug": slug.current,\n    tags,\n    title,\n  }\n': ProjectBySlugQueryResult
-    '\n  *[_type == "settings"][0]{\n    footer,\n    menuItems[]->{\n      _type,\n      "slug": slug.current,\n      title\n    },\n    ogImage,\n  }\n': SettingsQueryResult
+    '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    ogImage,\n  }\n': SettingsQueryResult
     '\n  *[_type == $type && defined(slug.current)]{"slug": slug.current}\n': SlugsByTypeQueryResult
   }
 }

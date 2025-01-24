@@ -1,17 +1,48 @@
-import dynamic from 'next/dynamic'
-import { draftMode } from 'next/headers'
+import Link from 'next/link'
+import { createDataAttribute, stegaClean } from 'next-sanity'
 
-import { loadSettings } from '@/sanity/loader/loadQuery'
+import type { SettingsQueryResult } from '@/sanity.types'
+import { studioUrl } from '@/sanity/lib/api'
+import { resolveHref } from '@/sanity/lib/utils'
 
-import NavbarLayout from './NavbarLayout'
-const NavbarPreview = dynamic(() => import('./NavbarPreview'))
-
-export async function Navbar() {
-  const initial = await loadSettings()
-
-  if ((await draftMode()).isEnabled) {
-    return <NavbarPreview initial={initial} />
-  }
-
-  return <NavbarLayout data={initial.data} />
+interface NavbarProps {
+  data: SettingsQueryResult
+}
+export function Navbar(props: NavbarProps) {
+  const { data } = props
+  const dataAttribute = createDataAttribute({
+    baseUrl: studioUrl,
+    id: data?._id,
+    type: data?._type,
+    path: 'menuItems',
+  })
+  return (
+    <div
+      className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur md:px-16 md:py-5 lg:px-32"
+      data-sanity={dataAttribute.toString()}
+    >
+      {data?.menuItems?.map((menuItem) => {
+        const href = resolveHref(menuItem?._type, menuItem?.slug)
+        if (!href) {
+          return null
+        }
+        return (
+          <Link
+            key={menuItem._key}
+            className={`text-lg hover:text-black md:text-xl ${
+              menuItem?._type === 'home'
+                ? 'font-extrabold text-black'
+                : 'text-gray-600'
+            }`}
+            data-sanity={dataAttribute
+              .scope([{ _key: menuItem._key as unknown as string }])
+              .toString()}
+            href={href}
+          >
+            {stegaClean(menuItem.title)}
+          </Link>
+        )
+      })}
+    </div>
+  )
 }
