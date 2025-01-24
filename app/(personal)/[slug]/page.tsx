@@ -2,23 +2,29 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import dynamic from 'next/dynamic'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { toPlainText } from 'next-sanity'
+import { toPlainText, type PortableTextBlock } from 'next-sanity'
 
 import { Page } from '@/components/pages/page/Page'
-import { generateStaticSlugs } from '@/sanity/loader/generateStaticSlugs'
+import { sanityFetch } from '@/sanity/lib/live'
+import { pagesBySlugQuery, slugsByTypeQuery } from '@/sanity/lib/queries'
 import { loadPage } from '@/sanity/loader/loadQuery'
 const PagePreview = dynamic(() => import('@/components/pages/page/PagePreview'))
+import { CustomPortableText } from '@/components/shared/CustomPortableText'
+import { Header } from '@/components/shared/Header'
 
 type Props = {
   params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata(
-  props: Props,
+  { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const params = await props.params
-  const { data: page } = await loadPage(params.slug)
+  const { data: page } = await sanityFetch({
+    query: pagesBySlugQuery,
+    params,
+    stega: false,
+  })
 
   return {
     title: page?.title,
@@ -28,21 +34,44 @@ export async function generateMetadata(
   }
 }
 
-export function generateStaticParams() {
-  return generateStaticSlugs('page')
+export async function generateStaticParams() {
+  const { data } = await sanityFetch({
+    query: slugsByTypeQuery,
+    params: { type: 'page' },
+    stega: false,
+    perspective: 'published',
+  })
+  return data
 }
 
-export default async function PageSlugRoute(props: Props) {
-  const params = await props.params
-  const initial = await loadPage(params.slug)
+export default async function PageSlugRoute({ params }: Props) {
+  const { data } = await sanityFetch({ query: pagesBySlugQuery, params })
 
-  if ((await draftMode()).isEnabled) {
-    return <PagePreview params={params} initial={initial} />
+  // Default to an empty object to allow previews on non-existent documents
+  const { body, overview, title } = data ?? {}
+  let children = (
+    <>
+      {/* Header */}
+      <Header title={title} description={overview} />
+
+      {/* Body */}
+      {body && (
+        <CustomPortableText
+          paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
+          value={body as unknown as PortableTextBlock[]}
+        />
+      )}
+    </>
+  )
+  // If no data it's considered a 404
+  if (!data?._id) {
+    children = <Header title="404 Page Not Found" />
   }
 
-  if (!initial.data) {
-    notFound()
-  }
-
-  return <Page data={initial.data} />
+  return (
+    <div>
+      <div className="mb-14">{children}</div>
+      <div className="absolute left-0 w-screen border-t" />
+    </div>
+  )
 }

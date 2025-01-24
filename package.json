@@ -3,12 +3,14 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "predev": "npm run typegen",
     "dev": "next --turbopack",
     "format": "npx prettier --write . --ignore-path .gitignore",
     "lint": "next lint .",
     "lint:fix": "npm run format && npm run lint -- --fix",
     "start": "next start",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "typegen": "sanity schema extract && sanity typegen generate"
   },
   "prettier": {
     "semi": false,
@@ -16,6 +18,7 @@
   },
   "dependencies": {
     "@next/env": "15.1.6",
+    "@sanity/client": "^6.27.1",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.5.7",
     "@sanity/image-url": "1.1.0",
