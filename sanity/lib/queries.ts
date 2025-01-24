@@ -4,13 +4,16 @@ export const homePageQuery = defineQuery(`
   *[_type == "home"][0]{
     _id,
     overview,
-    showcaseProjects[]->{
-      _type,
-      coverImage,
-      overview,
-      "slug": slug.current,
-      tags,
-      title,
+    showcaseProjects[]{
+      _key,
+      ...@->{
+        _type,
+        coverImage,
+        overview,
+        "slug": slug.current,
+        tags,
+        title,
+      }
     },
     title,
   }
@@ -43,11 +46,16 @@ export const projectBySlugQuery = defineQuery(`
 
 export const settingsQuery = defineQuery(`
   *[_type == "settings"][0]{
+    _id,
+    _type,
     footer,
-    menuItems[]->{
-      _type,
-      "slug": slug.current,
-      title
+    menuItems[]{
+      _key,
+      ...@->{
+        _type,
+        "slug": slug.current,
+        title
+      }
     },
     ogImage,
   }

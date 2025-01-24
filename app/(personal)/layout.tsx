@@ -1,29 +1,27 @@
 import '@/styles/index.css'
 
 import type { Metadata, Viewport } from 'next'
-import dynamic from 'next/dynamic'
 import { draftMode } from 'next/headers'
-import { toPlainText } from 'next-sanity'
+import { type PortableTextBlock, toPlainText, VisualEditing } from 'next-sanity'
 import { Suspense } from 'react'
 
-import { Footer } from '@/components/global/Footer'
 import { Navbar } from '@/components/global/Navbar'
+import { CustomPortableText } from '@/components/shared/CustomPortableText'
 import IntroTemplate from '@/intro-template'
-import { SanityLive } from '@/sanity/lib/live'
+import { sanityFetch, SanityLive } from '@/sanity/lib/live'
+import { homePageQuery, settingsQuery } from '@/sanity/lib/queries'
 import { urlForOpenGraphImage } from '@/sanity/lib/utils'
-import { loadHomePage, loadSettings } from '@/sanity/loader/loadQuery'
-
-const LiveVisualEditing = dynamic(
-  () => import('@/sanity/loader/LiveVisualEditing'),
-)
 
 export async function generateMetadata(): Promise<Metadata> {
   const [{ data: settings }, { data: homePage }] = await Promise.all([
-    loadSettings(),
-    loadHomePage(),
+    sanityFetch({ query: settingsQuery, stega: false }),
+    sanityFetch({ query: homePageQuery, stega: false }),
   ])
 
-  const ogImage = urlForOpenGraphImage(settings?.ogImage)
+  const ogImage = urlForOpenGraphImage(
+    // @ts-expect-error - @TODO update @sanity/image-url types so it's compatible
+    settings?.ogImage,
+  )
   return {
     title: homePage?.title
       ? {
@@ -49,24 +47,26 @@ export default async function IndexRoute({
 }: {
   children: React.ReactNode
 }) {
+  const { data } = await sanityFetch({ query: settingsQuery })
   return (
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">
-        <Suspense>
-          <Navbar />
-        </Suspense>
-        <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">
-          <Suspense>{children}</Suspense>
-        </div>
-        <Suspense>
-          <Footer />
-        </Suspense>
+        <Navbar data={data} />
+        <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">{children}</div>
+        <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">
+          {data?.footer && (
+            <CustomPortableText
+              paragraphClasses="text-md md:text-xl"
+              value={data.footer as unknown as PortableTextBlock[]}
+            />
+          )}
+        </footer>
         <Suspense>
           <IntroTemplate />
         </Suspense>
       </div>
       <SanityLive />
-      {(await draftMode()).isEnabled && <LiveVisualEditing />}
+      {(await draftMode()).isEnabled && <VisualEditing />}
     </>
   )
 }

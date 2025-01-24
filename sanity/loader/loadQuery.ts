@@ -85,11 +85,3 @@ export function loadProject(slug: string) {
     { next: { tags: [`project:${slug}`] } },
   )
 }
-
-export function loadPage(slug: string) {
-  return loadQuery<PagePayload | null>(
-    pagesBySlugQuery,
-    { slug },
-    { next: { tags: [`page:${slug}`] } },
-  )
-}
