@@ -9,6 +9,7 @@ import { Suspense } from 'react'
 import { Footer } from '@/components/global/Footer'
 import { Navbar } from '@/components/global/Navbar'
 import IntroTemplate from '@/intro-template'
+import { SanityLive } from '@/sanity/lib/live'
 import { urlForOpenGraphImage } from '@/sanity/lib/utils'
 import { loadHomePage, loadSettings } from '@/sanity/loader/loadQuery'
 
@@ -64,6 +65,7 @@ export default async function IndexRoute({
           <IntroTemplate />
         </Suspense>
       </div>
+      <SanityLive />
       {(await draftMode()).isEnabled && <LiveVisualEditing />}
     </>
   )
