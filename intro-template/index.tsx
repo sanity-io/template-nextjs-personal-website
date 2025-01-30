@@ -214,7 +214,7 @@ function Box({
   element,
 }: {
   circleTitle: string
-  element: JSX.Element
+  element: React.JSX.Element
 }) {
   return (
     <li className="mt-2 grid grid-flow-col grid-rows-1 place-content-start gap-3">
