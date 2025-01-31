@@ -1,5 +1,5 @@
-import { DocumentIcon, ImageIcon } from '@sanity/icons'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import {DocumentIcon, ImageIcon} from '@sanity/icons'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export default defineType({
   type: 'document',
@@ -108,8 +108,7 @@ export default defineType({
               name: 'alt',
               type: 'string',
               title: 'Alt text',
-              description:
-                'Alternative text for screenreaders. Falls back on caption if not set',
+              description: 'Alternative text for screenreaders. Falls back on caption if not set',
             }),
           ],
         }),
@@ -120,7 +119,7 @@ export default defineType({
     select: {
       title: 'title',
     },
-    prepare({ title }) {
+    prepare({title}) {
       return {
         subtitle: 'Page',
         title,

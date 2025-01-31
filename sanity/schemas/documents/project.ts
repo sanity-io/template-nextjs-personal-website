@@ -1,5 +1,5 @@
-import { DocumentIcon, ImageIcon } from '@sanity/icons'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import {DocumentIcon, ImageIcon} from '@sanity/icons'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'project',
@@ -29,8 +29,7 @@ export default defineType({
     }),
     defineField({
       name: 'overview',
-      description:
-        'Used both for the <meta> description tag for SEO, and project subheader.',
+      description: 'Used both for the <meta> description tag for SEO, and project subheader.',
       title: 'Overview',
       type: 'array',
       of: [
@@ -86,7 +85,7 @@ export default defineType({
       name: 'tags',
       title: 'Tags',
       type: 'array',
-      of: [{ type: 'string' }],
+      of: [{type: 'string'}],
       options: {
         layout: 'tags',
       },
@@ -145,8 +144,7 @@ export default defineType({
               name: 'alt',
               type: 'string',
               title: 'Alt text',
-              description:
-                'Alternative text for screenreaders. Falls back on caption if not set',
+              description: 'Alternative text for screenreaders. Falls back on caption if not set',
             }),
           ],
         }),

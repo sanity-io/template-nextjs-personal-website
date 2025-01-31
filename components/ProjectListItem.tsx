@@ -1,23 +1,17 @@
-import type { PortableTextBlock } from 'next-sanity'
-
-import { CustomPortableText } from '@/components/shared/CustomPortableText'
-import ImageBox from '@/components/shared/ImageBox'
-import type { ShowcaseProject } from '@/types'
+import {CustomPortableText} from '@/components/CustomPortableText'
+import ImageBox from '@/components/ImageBox'
+import type {ShowcaseProject} from '@/types'
+import type {PortableTextBlock} from 'next-sanity'
 
 interface ProjectProps {
   project: ShowcaseProject
-  odd: number
 }
 
 export function ProjectListItem(props: ProjectProps) {
-  const { project, odd } = props
+  const {project} = props
 
   return (
-    <div
-      className={`flex flex-col gap-x-5 p-2 transition hover:bg-gray-50/50 xl:flex-row ${
-        odd && 'border-b border-t xl:flex-row-reverse'
-      }`}
-    >
+    <>
       <div className="w-full xl:w-9/12">
         <ImageBox
           image={project.coverImage}
@@ -28,11 +22,12 @@ export function ProjectListItem(props: ProjectProps) {
       <div className="flex xl:w-1/4">
         <TextBox project={project} />
       </div>
-    </div>
+    </>
   )
 }
 
-function TextBox({ project }: { project: ShowcaseProject }) {
+function TextBox({project}: {project: ShowcaseProject}) {
+  console.log(project)
   return (
     <div className="relative mt-2 flex w-full flex-col justify-between p-3 xl:mt-0">
       <div>
@@ -42,7 +37,12 @@ function TextBox({ project }: { project: ShowcaseProject }) {
         </div>
         {/* Overview  */}
         <div className="font-serif text-gray-500">
-          <CustomPortableText value={project.overview as PortableTextBlock[]} />
+          <CustomPortableText
+            id={project._id}
+            type={project._type}
+            path={['overview']}
+            value={project.overview as PortableTextBlock[]}
+          />
         </div>
       </div>
       {/* Tags */}

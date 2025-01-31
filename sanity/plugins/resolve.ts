@@ -3,9 +3,8 @@
  * see https://www.sanity.io/docs/presentation-resolver-api for more information.
  */
 
-import { defineDocuments, defineLocations } from 'sanity/presentation'
-
-import { resolveHref } from '@/sanity/lib/utils'
+import {resolveHref} from '@/sanity/lib/utils'
+import {defineDocuments, defineLocations} from 'sanity/presentation'
 
 export const mainDocuments = defineDocuments([
   {
@@ -26,10 +25,10 @@ export const locations = {
   home: defineLocations({
     message: 'This document is used to render the front page',
     tone: 'positive',
-    locations: [{ title: 'Home', href: resolveHref('home')! }],
+    locations: [{title: 'Home', href: resolveHref('home')!}],
   }),
   project: defineLocations({
-    select: { title: 'title', slug: 'slug.current' },
+    select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
       locations: [
         {
@@ -40,7 +39,7 @@ export const locations = {
     }),
   }),
   page: defineLocations({
-    select: { title: 'title', slug: 'slug.current' },
+    select: {title: 'title', slug: 'slug.current'},
     resolve: (doc) => ({
       locations: [
         {
