@@ -3,9 +3,8 @@
  * see https://www.sanity.io/docs/presentation-resolver-api for more information.
  */
 
-import {defineDocuments, defineLocations} from 'sanity/presentation'
-
 import {resolveHref} from '@/sanity/lib/utils'
+import {defineDocuments, defineLocations} from 'sanity/presentation'
 
 export const mainDocuments = defineDocuments([
   {

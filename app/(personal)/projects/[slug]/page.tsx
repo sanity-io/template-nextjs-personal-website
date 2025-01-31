@@ -1,16 +1,15 @@
-import type {Metadata, ResolvingMetadata} from 'next'
-import Link from 'next/link'
-import {notFound} from 'next/navigation'
-import {createDataAttribute, toPlainText} from 'next-sanity'
-
-import {CustomPortableText} from '@/components/shared/CustomPortableText'
-import {Header} from '@/components/shared/Header'
-import ImageBox from '@/components/shared/ImageBox'
+import {CustomPortableText} from '@/components/CustomPortableText'
+import {Header} from '@/components/Header'
+import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
 import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
+import type {Metadata, ResolvingMetadata} from 'next'
+import {createDataAttribute, toPlainText} from 'next-sanity'
 import {draftMode} from 'next/headers'
+import Link from 'next/link'
+import {notFound} from 'next/navigation'
 
 type Props = {
   params: Promise<{slug: string}>

@@ -1,12 +1,11 @@
-import type {Metadata, ResolvingMetadata} from 'next'
-import {notFound} from 'next/navigation'
-import {type PortableTextBlock, toPlainText} from 'next-sanity'
-
-import {CustomPortableText} from '@/components/shared/CustomPortableText'
-import {Header} from '@/components/shared/Header'
+import {CustomPortableText} from '@/components/CustomPortableText'
+import {Header} from '@/components/Header'
 import {sanityFetch} from '@/sanity/lib/live'
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
+import type {Metadata, ResolvingMetadata} from 'next'
+import {toPlainText, type PortableTextBlock} from 'next-sanity'
 import {draftMode} from 'next/headers'
+import {notFound} from 'next/navigation'
 
 type Props = {
   params: Promise<{slug: string}>

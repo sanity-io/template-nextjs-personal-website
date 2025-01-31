@@ -36,14 +36,14 @@
     "styled-components": "6.1.14"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "4.4.1",
     "@sanity/prettier-config": "^1.0.3",
     "@types/react": "19.0.8",
     "autoprefixer": "10.4.20",
     "babel-plugin-react-compiler": "beta",
-    "eslint-plugin-react-compiler": "beta",
     "eslint": "8.57.1",
     "eslint-config-next": "15.1.6",
-    "eslint-plugin-simple-import-sort": "12.1.1",
+    "eslint-plugin-react-compiler": "beta",
     "postcss": "8.5.1",
     "prettier": "3.4.2",
     "prettier-plugin-tailwindcss": "0.6.11",

@@ -1,8 +1,7 @@
-import type {PortableTextBlock} from 'next-sanity'
-
-import {CustomPortableText} from '@/components/shared/CustomPortableText'
-import ImageBox from '@/components/shared/ImageBox'
+import {CustomPortableText} from '@/components/CustomPortableText'
+import ImageBox from '@/components/ImageBox'
 import type {ShowcaseProject} from '@/types'
+import type {PortableTextBlock} from 'next-sanity'
 
 interface ProjectProps {
   project: ShowcaseProject

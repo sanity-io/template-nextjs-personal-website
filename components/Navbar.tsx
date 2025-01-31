@@ -1,10 +1,9 @@
-import Link from 'next/link'
-import {createDataAttribute, stegaClean} from 'next-sanity'
-
-import {OptimisticSortOrder} from '@/components/shared/OptimisticSortOrder'
+import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import type {SettingsQueryResult} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
 import {resolveHref} from '@/sanity/lib/utils'
+import {createDataAttribute, stegaClean} from 'next-sanity'
+import Link from 'next/link'
 
 interface NavbarProps {
   data: SettingsQueryResult

@@ -1,9 +1,7 @@
 {
   "extends": "next",
-  "plugins": ["simple-import-sort", "react-compiler"],
+  "plugins": ["react-compiler"],
   "rules": {
-    "simple-import-sort/imports": "warn",
-    "simple-import-sort/exports": "warn",
     "react-hooks/exhaustive-deps": "error",
     "react-compiler/react-compiler": "warn"
   }

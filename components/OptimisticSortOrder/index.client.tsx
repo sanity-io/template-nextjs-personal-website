@@ -1,12 +1,11 @@
 'use client'
 
+import type {AllSanitySchemaTypes} from '@/sanity.types'
 import type {SanityDocument} from '@sanity/client'
 import {type StudioPathLike} from '@sanity/client/csm'
 import {get} from '@sanity/util/paths'
 import {useOptimistic} from 'next-sanity/hooks'
 import {Children, isValidElement} from 'react'
-
-import type {AllSanitySchemaTypes} from '@/sanity.types'
 
 export interface OptimisticSortOrderProps {
   children: React.ReactNode

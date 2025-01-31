@@ -1,8 +1,7 @@
+import ImageBox from '@/components/ImageBox'
+import {TimelineSection} from '@/components/TimelineSection'
 import {PortableText, type PortableTextBlock, type PortableTextComponents} from 'next-sanity'
 import type {Image} from 'sanity'
-
-import ImageBox from '@/components/shared/ImageBox'
-import {TimelineSection} from '@/components/shared/TimelineSection'
 
 export function CustomPortableText({
   paragraphClasses,

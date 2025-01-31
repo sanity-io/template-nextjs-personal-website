@@ -1,5 +1,4 @@
 import {defineField} from 'sanity'
-
 import {DurationInput} from './DurationInput'
 
 export default defineField({

@@ -1,16 +1,14 @@
 import '@/styles/index.css'
-
-import type {Metadata, Viewport} from 'next'
-import {draftMode} from 'next/headers'
-import {type PortableTextBlock, toPlainText, VisualEditing} from 'next-sanity'
-import {Suspense} from 'react'
-
+import {CustomPortableText} from '@/components/CustomPortableText'
 import {Navbar} from '@/components/Navbar'
-import {CustomPortableText} from '@/components/shared/CustomPortableText'
 import IntroTemplate from '@/intro-template'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {homePageQuery, settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
+import type {Metadata, Viewport} from 'next'
+import {toPlainText, VisualEditing, type PortableTextBlock} from 'next-sanity'
+import {draftMode} from 'next/headers'
+import {Suspense} from 'react'
 
 export async function generateMetadata(): Promise<Metadata> {
   const [{data: settings}, {data: homePage}] = await Promise.all([
