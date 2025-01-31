@@ -1,6 +1,9 @@
 import {NextConfig} from 'next'
 
 const config: NextConfig = {
+  experimental: {
+    reactCompiler: true,
+  },
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}, {hostname: 'source.unsplash.com'}],
   },

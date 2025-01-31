@@ -44,7 +44,6 @@ export default async function PageSlugRoute({params}: Props) {
     return notFound()
   }
 
-  // Default to an empty object to allow previews on non-existent documents
   const {body, overview, title} = data ?? {}
 
   return (

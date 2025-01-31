@@ -72,7 +72,8 @@ export default defineType({
   preview: {
     prepare() {
       return {
-        title: 'Menu Items',
+        title: 'Settings',
+        subtitle: 'Menu Items, Footer Info, and Open Graph Image',
       }
     },
   },

@@ -5,7 +5,7 @@ import {draftMode} from 'next/headers'
 import {type PortableTextBlock, toPlainText, VisualEditing} from 'next-sanity'
 import {Suspense} from 'react'
 
-import {Navbar} from '@/components/global/Navbar'
+import {Navbar} from '@/components/Navbar'
 import {CustomPortableText} from '@/components/shared/CustomPortableText'
 import IntroTemplate from '@/intro-template'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
