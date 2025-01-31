@@ -19,8 +19,8 @@
     "@sanity/icons": "3.5.7",
     "@sanity/image-url": "1.1.0",
     "@sanity/ui": "2.11.7",
-    "@sanity/util": "corel",
-    "@sanity/vision": "corel",
+    "@sanity/util": "3.72.2-corel.577",
+    "@sanity/vision": "3.72.2-corel.577",
     "@tailwindcss/typography": "0.5.16",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
@@ -30,7 +30,7 @@
     "react-dom": "19.0.0",
     "react-live-transitions": "0.2.0",
     "rxjs": "7.8.1",
-    "sanity": "corel",
+    "sanity": "3.72.2-corel.577",
     "sanity-plugin-asset-source-unsplash": "3.0.3",
     "server-only": "0.0.1",
     "sonner": "1.7.3",
@@ -52,6 +52,6 @@
     "typescript": "5.7.3"
   },
   "overrides": {
-    "sanity": "corel"
+    "sanity": "3.72.2-corel.577"
   }
 }
