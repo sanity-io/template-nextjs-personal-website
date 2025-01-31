@@ -9,6 +9,9 @@ import type {Metadata, Viewport} from 'next'
 import {toPlainText, VisualEditing, type PortableTextBlock} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
+import {Toaster} from 'sonner'
+import {handleError} from './client-functions'
+import {DraftModeToast} from './DraftModeToast'
 
 export async function generateMetadata(): Promise<Metadata> {
   const [{data: settings}, {data: homePage}] = await Promise.all([
@@ -60,8 +63,14 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
           <IntroTemplate />
         </Suspense>
       </div>
-      <SanityLive />
-      {(await draftMode()).isEnabled && <VisualEditing />}
+      <Toaster />
+      <SanityLive onError={handleError} />
+      {(await draftMode()).isEnabled && (
+        <>
+          <DraftModeToast />
+          <VisualEditing />
+        </>
+      )}
     </>
   )
 }
