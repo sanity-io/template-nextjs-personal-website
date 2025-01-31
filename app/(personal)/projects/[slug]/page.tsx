@@ -10,6 +10,7 @@ import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
 import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
+import {draftMode} from 'next/headers'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -53,15 +54,19 @@ export async function generateStaticParams() {
 export default async function ProjectSlugRoute({params}: Props) {
   const {data} = await sanityFetch({query: projectBySlugQuery, params})
 
-  if (!data) {
+  // Only show the 404 page if we're in production, when in draft mode we might be about to create a project on this slug, and live reload won't work on the 404 route
+  if (!data?._id && !(await draftMode()).isEnabled) {
     notFound()
   }
 
-  const dataAttribute = createDataAttribute({
-    baseUrl: studioUrl,
-    id: data?._id,
-    type: data?._type,
-  })
+  const dataAttribute =
+    data?._id && data._type
+      ? createDataAttribute({
+          baseUrl: studioUrl,
+          id: data._id,
+          type: data._type,
+        })
+      : null
 
   // Default to an empty object to allow previews on non-existent documents
   const {client, coverImage, description, duration, overview, site, tags, title} = data ?? {}
@@ -73,12 +78,15 @@ export default async function ProjectSlugRoute({params}: Props) {
     <div>
       <div className="mb-20 space-y-6">
         {/* Header */}
-        <Header title={title} description={overview} />
+        <Header
+          title={title || data?._id ? 'Untitled' : '404 Project Not Found'}
+          description={overview}
+        />
 
         <div className="rounded-md border">
           {/* Image  */}
           <ImageBox
-            data-sanity={dataAttribute('coverImage')}
+            data-sanity={dataAttribute?.('coverImage')}
             image={coverImage as any}
             // @TODO add alt field in schema
             alt=""
@@ -91,9 +99,9 @@ export default async function ProjectSlugRoute({params}: Props) {
               <div className="p-3 lg:p-4">
                 <div className="text-xs md:text-sm">Duration</div>
                 <div className="text-md md:text-lg">
-                  <span data-sanity={dataAttribute('duration.start')}>{startYear}</span>
+                  <span data-sanity={dataAttribute?.('duration.start')}>{startYear}</span>
                   {' - '}
-                  <span data-sanity={dataAttribute('duration.end')}>{endYear}</span>
+                  <span data-sanity={dataAttribute?.('duration.end')}>{endYear}</span>
                 </div>
               </div>
             )}

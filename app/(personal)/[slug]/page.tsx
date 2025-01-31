@@ -6,6 +6,7 @@ import {CustomPortableText} from '@/components/shared/CustomPortableText'
 import {Header} from '@/components/shared/Header'
 import {sanityFetch} from '@/sanity/lib/live'
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
+import {draftMode} from 'next/headers'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -40,8 +41,9 @@ export async function generateStaticParams() {
 export default async function PageSlugRoute({params}: Props) {
   const {data} = await sanityFetch({query: pagesBySlugQuery, params})
 
-  if (!data?._id) {
-    return notFound()
+  // Only show the 404 page if we're in production, when in draft mode we might be about to create a page on this slug, and live reload won't work on the 404 route
+  if (!data?._id && !(await draftMode()).isEnabled) {
+    notFound()
   }
 
   const {body, overview, title} = data ?? {}
@@ -50,7 +52,10 @@ export default async function PageSlugRoute({params}: Props) {
     <div>
       <div className="mb-14">
         {/* Header */}
-        <Header title={title} description={overview} />
+        <Header
+          title={title || data?._id ? 'Untitled' : '404 Page Not Found'}
+          description={overview}
+        />
 
         {/* Body */}
         {body && (
