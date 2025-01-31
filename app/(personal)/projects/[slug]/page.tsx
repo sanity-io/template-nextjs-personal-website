@@ -78,6 +78,9 @@ export default async function ProjectSlugRoute({params}: Props) {
       <div className="mb-20 space-y-6">
         {/* Header */}
         <Header
+          id={data?._id || null}
+          type={data?._type || null}
+          path={['overview']}
           title={title || data?._id ? 'Untitled' : '404 Project Not Found'}
           description={overview}
         />
@@ -142,6 +145,9 @@ export default async function ProjectSlugRoute({params}: Props) {
         {/* Description */}
         {description && (
           <CustomPortableText
+            id={data?._id || null}
+            type={data?._type || null}
+            path={['description']}
             paragraphClasses="font-serif max-w-3xl text-xl text-gray-600"
             value={description as any}
           />

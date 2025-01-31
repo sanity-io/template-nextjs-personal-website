@@ -48,6 +48,9 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
         <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">
           {data?.footer && (
             <CustomPortableText
+              id={data._id}
+              type={data._type}
+              path={['footer']}
               paragraphClasses="text-md md:text-xl"
               value={data.footer as unknown as PortableTextBlock[]}
             />

@@ -52,6 +52,9 @@ export default async function PageSlugRoute({params}: Props) {
       <div className="mb-14">
         {/* Header */}
         <Header
+          id={data?._id || null}
+          type={data?._type || null}
+          path={['overview']}
           title={title || data?._id ? 'Untitled' : '404 Page Not Found'}
           description={overview}
         />
@@ -59,6 +62,9 @@ export default async function PageSlugRoute({params}: Props) {
         {/* Body */}
         {body && (
           <CustomPortableText
+            id={data?._id || null}
+            type={data?._type || null}
+            path={['body']}
             paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
             value={body as unknown as PortableTextBlock[]}
           />

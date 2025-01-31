@@ -9,7 +9,7 @@ const LazyOptimisticSortOrder = lazy(() => import('./index.client'))
  */
 
 export async function OptimisticSortOrder(
-  props: Omit<OptimisticSortOrderProps, 'id'> & {id?: string},
+  props: Omit<OptimisticSortOrderProps, 'id'> & {id?: string | null},
 ) {
   const {children, id, path} = props
 

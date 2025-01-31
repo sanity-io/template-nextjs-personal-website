@@ -1,7 +1,10 @@
 import {NextConfig} from 'next'
 
 const config: NextConfig = {
+  // Helps catch bugs
+  reactStrictMode: true,
   experimental: {
+    // Speeds up performance by automatically generating useMemo and useCallback in client components
     reactCompiler: true,
   },
   images: {

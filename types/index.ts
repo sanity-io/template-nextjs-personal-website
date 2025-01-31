@@ -8,6 +8,7 @@ export interface MenuItem {
 }
 
 export interface MilestoneItem {
+  _key: string
   description?: string
   duration?: {
     start?: string

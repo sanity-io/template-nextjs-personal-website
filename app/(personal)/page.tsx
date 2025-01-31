@@ -1,4 +1,4 @@
-import {HomePage} from '@/components/pages/home/HomePage'
+import {HomePage} from '@/components/HomePage'
 import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
 import {homePageQuery} from '@/sanity/lib/queries'

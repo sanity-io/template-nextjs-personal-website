@@ -1,12 +1,16 @@
 import {CustomPortableText} from '@/components/CustomPortableText'
+import type {PathSegment} from 'sanity'
 
 interface HeaderProps {
+  id: string | null
+  type: string | null
+  path: PathSegment[]
   centered?: boolean
   description?: null | any[]
   title?: string | null
 }
 export function Header(props: HeaderProps) {
-  const {title, description, centered = false} = props
+  const {id, type, path, title, description, centered = false} = props
   if (!description && !title) {
     return null
   }
@@ -17,7 +21,7 @@ export function Header(props: HeaderProps) {
       {/* Description */}
       {description && (
         <div className="mt-4 text-pretty font-serif text-xl text-gray-600 md:text-2xl">
-          <CustomPortableText value={description} />
+          <CustomPortableText id={id} type={type} path={path} value={description} />
         </div>
       )}
     </div>
