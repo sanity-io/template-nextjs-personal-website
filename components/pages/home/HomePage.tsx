@@ -27,7 +27,7 @@ export async function HomePage({ data }: HomePageProps) {
   const children =
     showcaseProjects &&
     showcaseProjects.length > 0 &&
-    showcaseProjects.map((project, key) => {
+    showcaseProjects.map((project) => {
       const href = resolveHref(project?._type, project?.slug)
       if (!href) {
         return null
