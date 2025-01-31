@@ -13,7 +13,6 @@ export interface HomePageProps {
 }
 
 export async function HomePage({data}: HomePageProps) {
-  const {isEnabled: isDraftModeEnabled} = await draftMode()
   // Default to an empty object to allow previews on non-existent documents
   const {overview = [], showcaseProjects = [], title = ''} = data ?? {}
 
@@ -25,26 +24,6 @@ export async function HomePage({data}: HomePageProps) {
           type: data._type,
         })
       : null
-
-  const children =
-    showcaseProjects &&
-    showcaseProjects.length > 0 &&
-    showcaseProjects.map((project) => {
-      const href = resolveHref(project?._type, project?.slug)
-      if (!href) {
-        return null
-      }
-      return (
-        <Link
-          className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
-          key={project._key}
-          href={href}
-          data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
-        >
-          <ProjectListItem project={project as any} />
-        </Link>
-      )
-    })
 
   return (
     <div className="space-y-20">
@@ -62,7 +41,24 @@ export async function HomePage({data}: HomePageProps) {
       {/* Showcase projects */}
       <div className="mx-auto max-w-[100rem] rounded-md border">
         <OptimisticSortOrder id={data?._id} path={'showcaseProjects'}>
-          {children}
+          {showcaseProjects &&
+            showcaseProjects.length > 0 &&
+            showcaseProjects.map((project) => {
+              const href = resolveHref(project?._type, project?.slug)
+              if (!href) {
+                return null
+              }
+              return (
+                <Link
+                  className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
+                  key={project._key}
+                  href={href}
+                  data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
+                >
+                  <ProjectListItem project={project as any} />
+                </Link>
+              )
+            })}
         </OptimisticSortOrder>
       </div>
     </div>

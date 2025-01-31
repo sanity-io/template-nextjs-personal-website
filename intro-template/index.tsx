@@ -64,7 +64,7 @@ export default memo(function IntroTemplate() {
                   href={
                     'https://github.com/sanity-io/template-nextjs-clean#step-2-set-up-the-project-locally'
                   }
-                  className={`mx-1 underline hover:text-blue-800`}
+                  className="mx-1 underline hover:text-blue-800"
                   target="_blank"
                   rel="noreferrer"
                 >

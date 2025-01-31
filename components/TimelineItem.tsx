@@ -7,7 +7,7 @@ export function TimelineItem({milestone}: {milestone: MilestoneItem}) {
   const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
 
   return (
-    <div className={`flex min-h-[200px] font-sans last:pb-2`}>
+    <div className="flex min-h-[200px] font-sans last:pb-2">
       <div className="flex flex-col">
         {/* Thumbnail */}
         <div

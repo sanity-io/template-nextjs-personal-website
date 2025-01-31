@@ -81,7 +81,7 @@ export default async function ProjectSlugRoute({params}: Props) {
           id={data?._id || null}
           type={data?._type || null}
           path={['overview']}
-          title={title || data?._id ? 'Untitled' : '404 Project Not Found'}
+          title={title || (data?._id ? 'Untitled' : '404 Project Not Found')}
           description={overview}
         />
 

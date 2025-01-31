@@ -55,7 +55,7 @@ export default async function PageSlugRoute({params}: Props) {
           id={data?._id || null}
           type={data?._type || null}
           path={['overview']}
-          title={title || data?._id ? 'Untitled' : '404 Page Not Found'}
+          title={title || (data?._id ? 'Untitled' : '404 Page Not Found')}
           description={overview}
         />
 

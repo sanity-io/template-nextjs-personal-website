@@ -20,6 +20,7 @@ export interface MilestoneItem {
 }
 
 export interface ShowcaseProject {
+  _id: string
   _type: string
   coverImage?: Image
   overview?: PortableTextBlock[]

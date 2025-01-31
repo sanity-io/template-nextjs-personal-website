@@ -27,6 +27,7 @@ export function ProjectListItem(props: ProjectProps) {
 }
 
 function TextBox({project}: {project: ShowcaseProject}) {
+  console.log(project)
   return (
     <div className="relative mt-2 flex w-full flex-col justify-between p-3 xl:mt-0">
       <div>
@@ -36,7 +37,12 @@ function TextBox({project}: {project: ShowcaseProject}) {
         </div>
         {/* Overview  */}
         <div className="font-serif text-gray-500">
-          <CustomPortableText value={project.overview as PortableTextBlock[]} />
+          <CustomPortableText
+            id={project._id}
+            type={project._type}
+            path={['overview']}
+            value={project.overview as PortableTextBlock[]}
+          />
         </div>
       </div>
       {/* Tags */}
