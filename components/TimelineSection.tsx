@@ -1,9 +1,9 @@
 import {TimelineItem} from '@/components/TimelineItem'
+import {studioUrl} from '@/sanity/lib/api'
 import type {MilestoneItem} from '@/types'
 import type {StudioPathLike} from '@sanity/client/csm'
 import {createDataAttribute, stegaClean, type CreateDataAttribute} from 'next-sanity'
 import {OptimisticSortOrder} from './OptimisticSortOrder'
-import {studioUrl} from '@/sanity/lib/api'
 
 interface TimelineItem {
   _key: string

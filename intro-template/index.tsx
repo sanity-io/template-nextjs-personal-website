@@ -4,7 +4,7 @@ import {studioUrl} from '@/sanity/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
-import {memo, useSyncExternalStore} from 'react'
+import {useSyncExternalStore} from 'react'
 import cover from './cover.png'
 
 const subscribe = () => () => {}
@@ -15,7 +15,7 @@ function useAfterHydration<Snapshot>(
   return useSyncExternalStore<Snapshot>(subscribe, getSnapshot, () => serverSnapshot)
 }
 
-export default memo(function IntroTemplate() {
+export default function IntroTemplate() {
   const studioURL = useAfterHydration(() => `${location.origin}${studioUrl}`, null)
   const isLocalHost = useAfterHydration(() => window.location.hostname === 'localhost', false)
   const hasUTMtags = useAfterHydration(() => window.location.search.includes('utm'), false)
@@ -171,7 +171,7 @@ export default memo(function IntroTemplate() {
       </div>
     </div>
   )
-})
+}
 
 function Box({circleTitle, element}: {circleTitle: string; element: React.JSX.Element}) {
   return (

@@ -8,7 +8,7 @@ const config: NextConfig = {
     reactCompiler: true,
   },
   images: {
-    remotePatterns: [{hostname: 'cdn.sanity.io'}, {hostname: 'source.unsplash.com'}],
+    remotePatterns: [{hostname: 'cdn.sanity.io'}],
   },
   typescript: {
     // Set this to false if you want production builds to abort if there's type errors

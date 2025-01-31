@@ -16,9 +16,6 @@ export const projectId = assertValue(
 // see https://www.sanity.io/docs/api-versioning for how versioning works
 export const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2023-06-21'
 
-// See the app/api/revalidate/route.ts for how this is used
-export const revalidateSecret = process.env.SANITY_REVALIDATE_SECRET
-
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
     throw new Error(errorMessage)
