@@ -10,15 +10,18 @@ interface NavbarProps {
 }
 export function Navbar(props: NavbarProps) {
   const {data} = props
-  const dataAttribute = createDataAttribute({
-    baseUrl: studioUrl,
-    id: data?._id!,
-    type: data?._type!,
-  })
+  const dataAttribute =
+    data?._id && data?._type
+      ? createDataAttribute({
+          baseUrl: studioUrl,
+          id: data._id,
+          type: data._type,
+        })
+      : null
   return (
     <header
       className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur md:px-16 md:py-5 lg:px-32"
-      data-sanity={dataAttribute('menuItems')}
+      data-sanity={dataAttribute?.('menuItems')}
     >
       <OptimisticSortOrder id={data?._id!} path="menuItems">
         {data?.menuItems?.map((menuItem) => {
@@ -32,7 +35,10 @@ export function Navbar(props: NavbarProps) {
               className={`text-lg hover:text-black md:text-xl ${
                 menuItem?._type === 'home' ? 'font-extrabold text-black' : 'text-gray-600'
               }`}
-              data-sanity={dataAttribute(['menuItems', {_key: menuItem._key as unknown as string}])}
+              data-sanity={dataAttribute?.([
+                'menuItems',
+                {_key: menuItem._key as unknown as string},
+              ])}
               href={href}
             >
               {stegaClean(menuItem.title)}

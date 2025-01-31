@@ -17,11 +17,14 @@ export async function HomePage({data}: HomePageProps) {
   // Default to an empty object to allow previews on non-existent documents
   const {overview = [], showcaseProjects = [], title = ''} = data ?? {}
 
-  const dataAttribute = createDataAttribute({
-    baseUrl: studioUrl,
-    id: data?._id!,
-    type: data?._type!,
-  })
+  const dataAttribute =
+    data?._id && data?._type
+      ? createDataAttribute({
+          baseUrl: studioUrl,
+          id: data._id,
+          type: data._type,
+        })
+      : null
 
   const children =
     showcaseProjects &&
@@ -36,7 +39,7 @@ export async function HomePage({data}: HomePageProps) {
           className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
           key={project._key}
           href={href}
-          data-sanity={dataAttribute(['showcaseProjects', {_key: project._key}])}
+          data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
         >
           <ProjectListItem project={project as any} />
         </Link>

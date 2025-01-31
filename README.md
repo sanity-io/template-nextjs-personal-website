@@ -11,7 +11,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - Real-time and collaborative content editing with fine-grained revision history
 - Side-by-side instant content preview that works across your whole site
 - Support for block content and the most advanced custom fields capability in the industry
-- Webhook-triggered Incremental Static Revalidation; no need to wait for a rebuild to publish new content
+- Sanity Live Revalidation; no need to wait for a rebuild to publish new content
 - Free Sanity project with unlimited admin users, free content updates, and pay-as-you-go for API overages
 - A project with starter-friendly and not too heavy-handed TypeScript and Tailwind.css
 
@@ -44,16 +44,15 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 ### Important files and folders
 
-| File(s)                                                    | Description                                             |
-| ---------------------------------------------------------- | ------------------------------------------------------- |
-| `sanity.config.ts`                                         | Config file for Sanity Studio                           |
-| `sanity.cli.ts`                                            | Config file for Sanity CLI                              |
-| `/app/studio/[[...tool]]/Studio.tsx`                       | Where Sanity Studio is mounted                          |
-| `/app/api/revalidate/route.ts`                             |  Serverless route for triggering ISR                    |
-| `/app/api/draft-mode/enable/route.ts`                      | Serverless route for triggering Draft mode              |
-| `/sanity/schemas`                                          | Where Sanity Studio gets its content types from         |
-| `/sanity/plugins`                                          | Where the advanced Sanity Studio customization is setup |
-| `/sanity/loader/loadQuery.ts`,`/sanity/loader/useQuery.ts` | Configuration for the Sanity Content Lake client        |
+| File(s)                                      | Description                                             |
+| -------------------------------------------- | ------------------------------------------------------- |
+| `sanity.config.ts`                           | Config file for Sanity Studio                           |
+| `sanity.cli.ts`                              | Config file for Sanity CLI                              |
+| `/app/studio/[[...tool]]/Studio.tsx`         | Where Sanity Studio is mounted                          |
+| `/app/api/draft-mode/enable/route.ts`        | Serverless route for triggering Draft mode              |
+| `/sanity/schemas`                            | Where Sanity Studio gets its content types from         |
+| `/sanity/plugins`                            | Where the advanced Sanity Studio customization is setup |
+| `/sanity/lib/api.ts`,`/sanity/lib/client.ts` | Configuration for the Sanity Content Lake client        |
 
 ## Getting Started
 
