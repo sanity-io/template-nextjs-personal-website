@@ -1,5 +1,5 @@
-import { CogIcon } from '@sanity/icons'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import {CogIcon} from '@sanity/icons'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'settings',
@@ -34,8 +34,7 @@ export default defineType({
     }),
     defineField({
       name: 'footer',
-      description:
-        'This is a block of text that will be displayed at the bottom of the page.',
+      description: 'This is a block of text that will be displayed at the bottom of the page.',
       title: 'Footer Info',
       type: 'array',
       of: [

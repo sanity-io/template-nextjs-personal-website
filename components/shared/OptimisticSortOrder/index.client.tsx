@@ -1,12 +1,12 @@
 'use client'
 
-import type { SanityDocument } from '@sanity/client'
-import { type StudioPathLike } from '@sanity/client/csm'
-import { get } from '@sanity/util/paths'
-import { useOptimistic } from 'next-sanity/hooks'
-import { Children, isValidElement } from 'react'
+import type {SanityDocument} from '@sanity/client'
+import {type StudioPathLike} from '@sanity/client/csm'
+import {get} from '@sanity/util/paths'
+import {useOptimistic} from 'next-sanity/hooks'
+import {Children, isValidElement} from 'react'
 
-import type { AllSanitySchemaTypes } from '@/sanity.types'
+import type {AllSanitySchemaTypes} from '@/sanity.types'
 
 export interface OptimisticSortOrderProps {
   children: React.ReactNode
@@ -28,26 +28,21 @@ export interface OptimisticSortOrderProps {
  */
 
 export default function OptimisticSortOrder(props: OptimisticSortOrderProps) {
-  const { children, id, path } = props
+  const {children, id, path} = props
   const childrenLength = Children.count(children)
 
-  const optimistic = useOptimistic<
-    null | string[],
-    SanityDocument<AllSanitySchemaTypes>
-  >(null, (state, action) => {
-    if (action.id !== id) return state
-    const value = get(action.document, path) as { _key: string }[]
-    if (!value) {
-      console.error(
-        'No value found for path',
-        path,
-        'in document',
-        action.document,
-      )
-      return state
-    }
-    return value.map(({ _key }) => _key)
-  })
+  const optimistic = useOptimistic<null | string[], SanityDocument<AllSanitySchemaTypes>>(
+    null,
+    (state, action) => {
+      if (action.id !== id) return state
+      const value = get(action.document, path) as {_key: string}[]
+      if (!value) {
+        console.error('No value found for path', path, 'in document', action.document)
+        return state
+      }
+      return value.map(({_key}) => _key)
+    },
+  )
 
   if (optimistic) {
     if (optimistic.length < childrenLength) {

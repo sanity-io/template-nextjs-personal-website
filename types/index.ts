@@ -1,5 +1,5 @@
-import type { PortableTextBlock } from 'next-sanity'
-import type { Image } from 'sanity'
+import type {PortableTextBlock} from 'next-sanity'
+import type {Image} from 'sanity'
 
 export interface MenuItem {
   _type: string

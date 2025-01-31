@@ -1,22 +1,22 @@
-import { draftMode } from 'next/headers'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
-import { createDataAttribute } from 'next-sanity'
+import {createDataAttribute} from 'next-sanity'
 
-import { ProjectListItem } from '@/components/pages/home/ProjectListItem'
-import { Header } from '@/components/shared/Header'
-import { OptimisticSortOrder } from '@/components/shared/OptimisticSortOrder'
-import type { HomePageQueryResult } from '@/sanity.types'
-import { studioUrl } from '@/sanity/lib/api'
-import { resolveHref } from '@/sanity/lib/utils'
+import {ProjectListItem} from '@/components/pages/home/ProjectListItem'
+import {Header} from '@/components/shared/Header'
+import {OptimisticSortOrder} from '@/components/shared/OptimisticSortOrder'
+import type {HomePageQueryResult} from '@/sanity.types'
+import {studioUrl} from '@/sanity/lib/api'
+import {resolveHref} from '@/sanity/lib/utils'
 
 export interface HomePageProps {
   data: HomePageQueryResult | null
 }
 
-export async function HomePage({ data }: HomePageProps) {
-  const { isEnabled: isDraftModeEnabled } = await draftMode()
+export async function HomePage({data}: HomePageProps) {
+  const {isEnabled: isDraftModeEnabled} = await draftMode()
   // Default to an empty object to allow previews on non-existent documents
-  const { overview = [], showcaseProjects = [], title = '' } = data ?? {}
+  const {overview = [], showcaseProjects = [], title = ''} = data ?? {}
 
   const dataAttribute = createDataAttribute({
     baseUrl: studioUrl,
@@ -34,13 +34,10 @@ export async function HomePage({ data }: HomePageProps) {
       }
       return (
         <Link
-          className="flex flex-col gap-x-5 p-2 transition hover:bg-gray-50/50 xl:flex-row odd:border-b odd:border-t odd:xl:flex-row-reverse"
+          className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
           key={project._key}
           href={href}
-          data-sanity={dataAttribute([
-            'showcaseProjects',
-            { _key: project._key },
-          ])}
+          data-sanity={dataAttribute(['showcaseProjects', {_key: project._key}])}
         >
           <ProjectListItem project={project as any} />
         </Link>

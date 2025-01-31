@@ -1,7 +1,7 @@
-import { draftMode } from 'next/headers'
-import { lazy, Suspense } from 'react'
+import {draftMode} from 'next/headers'
+import {lazy, Suspense} from 'react'
 
-import type { OptimisticSortOrderProps } from './index.client'
+import type {OptimisticSortOrderProps} from './index.client'
 
 const LazyOptimisticSortOrder = lazy(() => import('./index.client'))
 
@@ -10,14 +10,14 @@ const LazyOptimisticSortOrder = lazy(() => import('./index.client'))
  */
 
 export async function OptimisticSortOrder(
-  props: Omit<OptimisticSortOrderProps, 'id'> & { id?: string },
+  props: Omit<OptimisticSortOrderProps, 'id'> & {id?: string},
 ) {
-  const { children, id, path } = props
+  const {children, id, path} = props
 
   if (!id) {
     return children
   }
-  const { isEnabled } = await draftMode()
+  const {isEnabled} = await draftMode()
   if (!isEnabled) {
     return children
   }

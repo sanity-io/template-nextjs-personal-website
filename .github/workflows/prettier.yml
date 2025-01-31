@@ -41,8 +41,8 @@ jobs:
         with:
           body: I ran `npm run format` 🧑‍💻
           branch: actions/prettier-if-needed
-          commit-message: 'chore(prettier): 🤖 ✨'
+          commit-message: "chore(prettier): 🤖 ✨"
           labels: 🤖 bot
           sign-commits: true
-          title: 'chore(prettier): 🤖 ✨'
+          title: "chore(prettier): 🤖 ✨"
           token: ${{ steps.generate-token.outputs.token }}

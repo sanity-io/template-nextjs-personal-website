@@ -12,10 +12,6 @@
     "type-check": "tsc --noEmit",
     "typegen": "sanity schema extract && sanity typegen generate"
   },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
-  },
   "dependencies": {
     "@next/env": "15.1.6",
     "@sanity/client": "6.27.1",
@@ -41,6 +37,7 @@
     "styled-components": "6.1.14"
   },
   "devDependencies": {
+    "@sanity/prettier-config": "^1.0.3",
     "@types/react": "19.0.8",
     "autoprefixer": "10.4.20",
     "eslint": "8.57.1",

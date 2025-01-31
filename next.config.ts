@@ -1,11 +1,8 @@
-import { NextConfig } from 'next'
+import {NextConfig} from 'next'
 
 const config: NextConfig = {
   images: {
-    remotePatterns: [
-      { hostname: 'cdn.sanity.io' },
-      { hostname: 'source.unsplash.com' },
-    ],
+    remotePatterns: [{hostname: 'cdn.sanity.io'}, {hostname: 'source.unsplash.com'}],
   },
   typescript: {
     // Set this to false if you want production builds to abort if there's type errors

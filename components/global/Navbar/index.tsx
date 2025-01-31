@@ -1,16 +1,16 @@
 import Link from 'next/link'
-import { createDataAttribute, stegaClean } from 'next-sanity'
+import {createDataAttribute, stegaClean} from 'next-sanity'
 
-import { OptimisticSortOrder } from '@/components/shared/OptimisticSortOrder'
-import type { SettingsQueryResult } from '@/sanity.types'
-import { studioUrl } from '@/sanity/lib/api'
-import { resolveHref } from '@/sanity/lib/utils'
+import {OptimisticSortOrder} from '@/components/shared/OptimisticSortOrder'
+import type {SettingsQueryResult} from '@/sanity.types'
+import {studioUrl} from '@/sanity/lib/api'
+import {resolveHref} from '@/sanity/lib/utils'
 
 interface NavbarProps {
   data: SettingsQueryResult
 }
 export function Navbar(props: NavbarProps) {
-  const { data } = props
+  const {data} = props
   const dataAttribute = createDataAttribute({
     baseUrl: studioUrl,
     id: data?._id!,
@@ -31,14 +31,9 @@ export function Navbar(props: NavbarProps) {
             <Link
               key={menuItem._key}
               className={`text-lg hover:text-black md:text-xl ${
-                menuItem?._type === 'home'
-                  ? 'font-extrabold text-black'
-                  : 'text-gray-600'
+                menuItem?._type === 'home' ? 'font-extrabold text-black' : 'text-gray-600'
               }`}
-              data-sanity={dataAttribute([
-                'menuItems',
-                { _key: menuItem._key as unknown as string },
-              ])}
+              data-sanity={dataAttribute(['menuItems', {_key: menuItem._key as unknown as string}])}
               href={href}
             >
               {stegaClean(menuItem.title)}

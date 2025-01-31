@@ -1,17 +1,9 @@
 import ImageBox from '@/components/shared/ImageBox'
-import type { MilestoneItem } from '@/types'
+import type {MilestoneItem} from '@/types'
 
-export function TimelineItem({
-  isLast,
-  milestone,
-}: {
-  isLast: boolean
-  milestone: MilestoneItem
-}) {
-  const { description, duration, image, tags, title } = milestone
-  const startYear = duration?.start
-    ? new Date(duration.start).getFullYear()
-    : undefined
+export function TimelineItem({isLast, milestone}: {isLast: boolean; milestone: MilestoneItem}) {
+  const {description, duration, image, tags, title} = milestone
+  const startYear = duration?.start ? new Date(duration.start).getFullYear() : undefined
   const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
 
   return (
@@ -20,7 +12,7 @@ export function TimelineItem({
         {/* Thumbnail */}
         <div
           className="relative overflow-hidden rounded-md bg-black"
-          style={{ width: '65px', height: '65px' }}
+          style={{width: '65px', height: '65px'}}
         >
           <ImageBox
             image={image}
@@ -37,7 +29,7 @@ export function TimelineItem({
         {/* Title */}
         <div className="font-bold text-black">{title}</div>
         {/* Tags */}
-        <div className="text-sm text-gray-600 ">
+        <div className="text-sm text-gray-600">
           {tags?.map((tag, key) => (
             <span key={key}>
               {tag}

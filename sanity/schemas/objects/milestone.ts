@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'milestone',
@@ -31,7 +31,7 @@ export default defineType({
       type: 'array',
       description:
         'Tags to help categorize the milestone. For example: name of the university course, name of the project, the position you held within the project etc. ',
-      of: [{ type: 'string' }],
+      of: [{type: 'string'}],
       options: {
         layout: 'tags',
       },
@@ -49,7 +49,7 @@ export default defineType({
       image: 'image',
       title: 'title',
     },
-    prepare({ duration, image, title }) {
+    prepare({duration, image, title}) {
       return {
         media: image,
         subtitle: [

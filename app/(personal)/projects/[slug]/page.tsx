@@ -1,25 +1,25 @@
-import type { Metadata, ResolvingMetadata } from 'next'
+import type {Metadata, ResolvingMetadata} from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { createDataAttribute, toPlainText } from 'next-sanity'
+import {notFound} from 'next/navigation'
+import {createDataAttribute, toPlainText} from 'next-sanity'
 
-import { CustomPortableText } from '@/components/shared/CustomPortableText'
-import { Header } from '@/components/shared/Header'
+import {CustomPortableText} from '@/components/shared/CustomPortableText'
+import {Header} from '@/components/shared/Header'
 import ImageBox from '@/components/shared/ImageBox'
-import { studioUrl } from '@/sanity/lib/api'
-import { sanityFetch } from '@/sanity/lib/live'
-import { projectBySlugQuery, slugsByTypeQuery } from '@/sanity/lib/queries'
-import { urlForOpenGraphImage } from '@/sanity/lib/utils'
+import {studioUrl} from '@/sanity/lib/api'
+import {sanityFetch} from '@/sanity/lib/live'
+import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
+import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 type Props = {
-  params: Promise<{ slug: string }>
+  params: Promise<{slug: string}>
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  {params}: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { data: project } = await sanityFetch({
+  const {data: project} = await sanityFetch({
     query: projectBySlugQuery,
     params,
     stega: false,
@@ -31,9 +31,7 @@ export async function generateMetadata(
 
   return {
     title: project?.title,
-    description: project?.overview
-      ? toPlainText(project.overview)
-      : (await parent).description,
+    description: project?.overview ? toPlainText(project.overview) : (await parent).description,
     openGraph: ogImage
       ? {
           images: [ogImage, ...((await parent).openGraph?.images || [])],
@@ -43,17 +41,17 @@ export async function generateMetadata(
 }
 
 export async function generateStaticParams() {
-  const { data } = await sanityFetch({
+  const {data} = await sanityFetch({
     query: slugsByTypeQuery,
-    params: { type: 'project' },
+    params: {type: 'project'},
     stega: false,
     perspective: 'published',
   })
   return data
 }
 
-export default async function ProjectSlugRoute({ params }: Props) {
-  const { data } = await sanityFetch({ query: projectBySlugQuery, params })
+export default async function ProjectSlugRoute({params}: Props) {
+  const {data} = await sanityFetch({query: projectBySlugQuery, params})
 
   if (!data) {
     notFound()
@@ -66,16 +64,7 @@ export default async function ProjectSlugRoute({ params }: Props) {
   })
 
   // Default to an empty object to allow previews on non-existent documents
-  const {
-    client,
-    coverImage,
-    description,
-    duration,
-    overview,
-    site,
-    tags,
-    title,
-  } = data ?? {}
+  const {client, coverImage, description, duration, overview, site, tags, title} = data ?? {}
 
   const startYear = new Date(duration?.start!).getFullYear()
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
@@ -102,13 +91,9 @@ export default async function ProjectSlugRoute({ params }: Props) {
               <div className="p-3 lg:p-4">
                 <div className="text-xs md:text-sm">Duration</div>
                 <div className="text-md md:text-lg">
-                  <span data-sanity={dataAttribute('duration.start')}>
-                    {startYear}
-                  </span>
+                  <span data-sanity={dataAttribute('duration.start')}>{startYear}</span>
                   {' - '}
-                  <span data-sanity={dataAttribute('duration.end')}>
-                    {endYear}
-                  </span>
+                  <span data-sanity={dataAttribute('duration.end')}>{endYear}</span>
                 </div>
               </div>
             )}
@@ -126,11 +111,7 @@ export default async function ProjectSlugRoute({ params }: Props) {
               <div className="p-3 lg:p-4">
                 <div className="text-xs md:text-sm">Site</div>
                 {site && (
-                  <Link
-                    target="_blank"
-                    className="text-md break-words md:text-lg"
-                    href={site}
-                  >
+                  <Link target="_blank" className="text-md break-words md:text-lg" href={site}>
                     {site}
                   </Link>
                 )}
@@ -142,7 +123,7 @@ export default async function ProjectSlugRoute({ params }: Props) {
               <div className="text-xs md:text-sm">Tags</div>
               <div className="text-md flex flex-row flex-wrap md:text-lg">
                 {tags?.map((tag, key) => (
-                  <div key={key} className="mr-1 break-words ">
+                  <div key={key} className="mr-1 break-words">
                     #{tag}
                   </div>
                 ))}

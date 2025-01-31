@@ -1,12 +1,8 @@
-import {
-  PortableText,
-  type PortableTextBlock,
-  type PortableTextComponents,
-} from 'next-sanity'
-import type { Image } from 'sanity'
+import {PortableText, type PortableTextBlock, type PortableTextComponents} from 'next-sanity'
+import type {Image} from 'sanity'
 
 import ImageBox from '@/components/shared/ImageBox'
-import { TimelineSection } from '@/components/shared/TimelineSection'
+import {TimelineSection} from '@/components/shared/TimelineSection'
 
 export function CustomPortableText({
   paragraphClasses,
@@ -17,12 +13,12 @@ export function CustomPortableText({
 }) {
   const components: PortableTextComponents = {
     block: {
-      normal: ({ children }) => {
+      normal: ({children}) => {
         return <p className={paragraphClasses}>{children}</p>
       },
     },
     marks: {
-      link: ({ children, value }) => {
+      link: ({children, value}) => {
         return (
           <a
             className="underline transition hover:opacity-50"
@@ -35,28 +31,18 @@ export function CustomPortableText({
       },
     },
     types: {
-      image: ({
-        value,
-      }: {
-        value: Image & { alt?: string; caption?: string }
-      }) => {
+      image: ({value}: {value: Image & {alt?: string; caption?: string}}) => {
         return (
           <div className="my-6 space-y-2">
-            <ImageBox
-              image={value}
-              alt={value.alt}
-              classesWrapper="relative aspect-[16/9]"
-            />
+            <ImageBox image={value} alt={value.alt} classesWrapper="relative aspect-[16/9]" />
             {value?.caption && (
-              <div className="font-sans text-sm text-gray-600">
-                {value.caption}
-              </div>
+              <div className="font-sans text-sm text-gray-600">{value.caption}</div>
             )}
           </div>
         )
       },
-      timeline: ({ value }) => {
-        const { items } = value || {}
+      timeline: ({value}) => {
+        const {items} = value || {}
         return <TimelineSection timelines={items} />
       },
     },

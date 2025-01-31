@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'timeline',
@@ -41,16 +41,13 @@ export default defineType({
               items: 'milestones',
               title: 'title',
             },
-            prepare({ items, title }) {
+            prepare({items, title}) {
               const hasItems = items && items.length > 0
-              const milestoneNames =
-                hasItems && items.map((timeline) => timeline.title).join(', ')
+              const milestoneNames = hasItems && items.map((timeline) => timeline.title).join(', ')
 
               return {
                 subtitle: hasItems
-                  ? `${milestoneNames} (${items.length} item${
-                      items.length > 1 ? 's' : ''
-                    })`
+                  ? `${milestoneNames} (${items.length} item${items.length > 1 ? 's' : ''})`
                   : 'No milestones',
                 title,
               }
@@ -64,17 +61,14 @@ export default defineType({
     select: {
       items: 'items',
     },
-    prepare({ items }: { items: { title: string }[] }) {
+    prepare({items}: {items: {title: string}[]}) {
       const hasItems = items && items.length > 0
-      const timelineNames =
-        hasItems && items.map((timeline) => timeline.title).join(', ')
+      const timelineNames = hasItems && items.map((timeline) => timeline.title).join(', ')
 
       return {
         title: 'Timelines',
         subtitle: hasItems
-          ? `${timelineNames} (${items.length} item${
-              items.length > 1 ? 's' : ''
-            })`
+          ? `${timelineNames} (${items.length} item${items.length > 1 ? 's' : ''})`
           : 'No timelines',
       }
     },
