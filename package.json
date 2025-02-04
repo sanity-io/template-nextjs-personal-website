@@ -18,7 +18,7 @@
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.5.7",
     "@sanity/image-url": "1.1.0",
-    "@sanity/ui": "2.11.7",
+    "@sanity/ui": "2.11.8",
     "@sanity/util": "3.72.1",
     "@sanity/vision": "3.72.1",
     "@tailwindcss/typography": "0.5.16",
@@ -33,7 +33,7 @@
     "sanity": "3.72.1",
     "sanity-plugin-asset-source-unsplash": "3.0.3",
     "server-only": "0.0.1",
-    "sonner": "1.7.3",
+    "sonner": "1.7.4",
     "styled-components": "6.1.14"
   },
   "devDependencies": {
