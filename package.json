@@ -42,7 +42,7 @@
     "@types/react": "19.0.8",
     "autoprefixer": "10.4.20",
     "babel-plugin-react-compiler": "beta",
-    "eslint": "8.57.1",
+    "eslint": "9.19.0",
     "eslint-config-next": "15.1.6",
     "eslint-plugin-react-compiler": "beta",
     "postcss": "8.5.1",
