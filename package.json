@@ -13,7 +13,7 @@
     "typegen": "sanity schema extract && sanity typegen generate"
   },
   "dependencies": {
-    "@next/env": "15.2.2",
+    "@next/env": "15.2.3",
     "@sanity/client": "6.28.3",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.0",
@@ -24,7 +24,7 @@
     "@tailwindcss/typography": "0.5.16",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "15.2.2",
+    "next": "15.2.3",
     "next-sanity": "9.9.5",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -34,16 +34,16 @@
     "sanity-plugin-asset-source-unsplash": "3.0.3",
     "server-only": "0.0.1",
     "sonner": "2.0.1",
-    "styled-components": "6.1.15"
+    "styled-components": "6.1.16"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.4.1",
     "@sanity/prettier-config": "1.0.3",
-    "@types/react": "19.0.10",
+    "@types/react": "19.0.11",
     "autoprefixer": "10.4.21",
     "babel-plugin-react-compiler": "beta",
     "eslint": "9.22.0",
-    "eslint-config-next": "15.2.2",
+    "eslint-config-next": "15.2.3",
     "eslint-plugin-react-compiler": "beta",
     "postcss": "8.5.3",
     "prettier": "3.5.3",
