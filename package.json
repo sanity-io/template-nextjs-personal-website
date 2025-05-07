@@ -2,7 +2,7 @@
   "name": "sanity-template-template-nextjs-personal-website",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "next build && sanity manifest extract --path public/studio/static",
     "predev": "npm run typegen",
     "dev": "next --turbopack",
     "format": "npx prettier --write . --ignore-path .gitignore",
