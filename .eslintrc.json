@@ -3,6 +3,6 @@
   "plugins": ["react-compiler"],
   "rules": {
     "react-hooks/exhaustive-deps": "error",
-    "react-compiler/react-compiler": "warn"
+    "react-compiler/react-compiler": "error"
   }
 }
