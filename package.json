@@ -18,7 +18,7 @@
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.4",
     "@sanity/image-url": "1.1.0",
-    "@sanity/ui": "3.0.3",
+    "@sanity/ui": "3.0.5",
     "@sanity/util": "4.2.0",
     "@sanity/vision": "4.2.0",
     "@tailwindcss/typography": "0.5.16",
@@ -49,6 +49,6 @@
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "0.6.14",
     "tailwindcss": "3.4.17",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   }
 }
