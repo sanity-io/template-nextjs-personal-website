@@ -5,7 +5,6 @@ import type {HomePageQueryResult} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import Link from 'next/link'
 
 export interface HomePageProps {

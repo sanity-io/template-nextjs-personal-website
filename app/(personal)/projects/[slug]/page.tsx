@@ -70,7 +70,7 @@ export default async function ProjectSlugRoute({params}: Props) {
   // Default to an empty object to allow previews on non-existent documents
   const {client, coverImage, description, duration, overview, site, tags, title} = data ?? {}
 
-  const startYear = new Date(duration?.start!).getFullYear()
+  const startYear = duration?.start ? new Date(duration.start).getFullYear() : undefined
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (
