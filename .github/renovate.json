@@ -5,7 +5,7 @@
   "packageRules": [
     {
       "description": "Disable renovating eslint-plugin-react-compiler until next.js and its eslint preset includes the compiler",
-      "matchPackageNames": ["eslint-plugin-react-compiler"],
+      "matchPackageNames": ["eslint-plugin-react-compiler", "eslint-plugin-react-hooks"],
       "enabled": false
     }
   ]
