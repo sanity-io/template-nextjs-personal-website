@@ -22,4 +22,4 @@ jobs:
           node-version: lts/*
       - run: npm ci
       - run: npm run type-check
-      - run: npm run lint -- --max-warnings 0
+      - run: npm run lint -- --max-warnings 0 -f gha
