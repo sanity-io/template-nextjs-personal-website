@@ -13,7 +13,7 @@
     "typegen": "sanity schema extract && sanity typegen generate"
   },
   "dependencies": {
-    "@next/env": "15.5.2",
+    "@next/env": "15.5.3",
     "@sanity/client": "7.11.1",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.4",
@@ -24,8 +24,8 @@
     "@tailwindcss/typography": "0.5.16",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "15.5.2",
-    "next-sanity": "11.0.1",
+    "next": "15.5.3",
+    "next-sanity": "11.1.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-live-transitions": "0.2.0",
@@ -44,7 +44,7 @@
     "autoprefixer": "10.4.21",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
     "eslint": "9.35.0",
-    "eslint-config-next": "15.5.2",
+    "eslint-config-next": "15.5.3",
     "eslint-formatter-gha": "1.6.0",
     "eslint-plugin-react-compiler": "npm:eslint-plugin-react-hooks@6.0.0-rc.2",
     "eslint-plugin-react-hooks": "5.2.0",
