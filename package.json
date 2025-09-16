@@ -22,6 +22,7 @@
     "@sanity/util": "4.9.0",
     "@sanity/vision": "4.9.0",
     "@tailwindcss/typography": "0.5.16",
+    "@vercel/speed-insights": "1.2.0",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
     "next": "15.5.3",

@@ -13,6 +13,7 @@ import {Suspense} from 'react'
 import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
+import {SpeedInsights} from '@vercel/speed-insights/next'
 
 export async function generateMetadata(): Promise<Metadata> {
   const [{data: settings}, {data: homePage}] = await Promise.all([
@@ -72,6 +73,7 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
           <VisualEditing />
         </>
       )}
+      <SpeedInsights />
     </>
   )
 }
