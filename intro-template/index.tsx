@@ -3,45 +3,30 @@
 import {studioUrl} from '@/sanity/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
-import {usePathname} from 'next/navigation'
-import {useSyncExternalStore} from 'react'
+import {use} from 'react'
 import cover from './cover.png'
 
-const subscribe = () => () => {}
-function useAfterHydration<Snapshot>(
-  getSnapshot: () => Snapshot,
-  serverSnapshot: Snapshot,
-): Snapshot {
-  return useSyncExternalStore<Snapshot>(subscribe, getSnapshot, () => serverSnapshot)
-}
+const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+const hasRepoEnvVars =
+  process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER &&
+  process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER &&
+  process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG
+const repoURL = `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}`
+const removeBlockURL = hasRepoEnvVars
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#how-can-i-remove-the-next-steps-block-from-my-app`
+  : `https://github.com/sanity-io/template-nextjs-clean#how-can-i-remove-the-next-steps-block-from-my-app`
 
-export default function IntroTemplate() {
-  const studioURL = useAfterHydration(() => `${location.origin}${studioUrl}`, null)
-  const isLocalHost = useAfterHydration(() => window.location.hostname === 'localhost', false)
-  const hasUTMtags = useAfterHydration(() => window.location.search.includes('utm'), false)
-  const pathname = usePathname()
+export default function IntroTemplate(props: {
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>
+}) {
+  const searchParams = use(props.searchParams)
 
-  const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-  const hasRepoEnvVars =
-    process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER &&
-    process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER &&
-    process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG
-  const repoURL = `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}`
-  const removeBlockURL = hasRepoEnvVars
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#how-can-i-remove-the-next-steps-block-from-my-app`
-    : `https://github.com/sanity-io/template-nextjs-clean#how-can-i-remove-the-next-steps-block-from-my-app`
-
-  // Only display this on the home page
-  if (pathname !== '/') {
-    return null
-  }
-
-  if (hasUTMtags || !studioURL) {
+  if ('utm' in searchParams) {
     return null
   }
 
   return (
-    <div className="flex justify-center border-t border-gray-100 bg-gray-50/50">
+    <div className="flex justify-center mt-4 border-t border-gray-100 bg-gray-50/50 ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
       <div className="mb-4 mt-20 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
         <div className="self-center">
           <Image
@@ -81,7 +66,7 @@ export default function IntroTemplate() {
                 <div>
                   <div className="col-span-2 mb-2 mt-1 font-semibold">Create a schema</div>
 
-                  {isLocalHost ? (
+                  {process.env.NODE_ENV === 'development' ? (
                     <div className="text-xs text-gray-700">
                       Start editing your content structure in
                       <div className="bg-slate-200 w-fit px-2">
@@ -127,15 +112,15 @@ export default function IntroTemplate() {
                   </div>
                   <div className="text-xs text-gray-700">
                     Your Sanity Studio is deployed at
-                    <Link className="mx-1 underline hover:text-blue-800" href={studioURL}>
-                      {studioURL}
+                    <Link className="mx-1 underline hover:text-blue-800" href={studioUrl}>
+                      {studioUrl}
                     </Link>
                   </div>
 
                   <div className="mt-3">
                     <Link
                       className="inline-flex rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-800"
-                      href={studioURL}
+                      href={studioUrl}
                     >
                       Go to Sanity Studio
                     </Link>

@@ -12,8 +12,22 @@ export interface HomePageProps {
 }
 
 export async function HomePage({data}: HomePageProps) {
+  'use cache'
+
+  if (!data) {
+    return (
+      <div className="text-center">
+        You don&rsquo;t have a homepage yet,{' '}
+        <Link href={`${studioUrl}/structure/home`} className="underline">
+          create one now
+        </Link>
+        !
+      </div>
+    )
+  }
+
   // Default to an empty object to allow previews on non-existent documents
-  const {overview = [], showcaseProjects = [], title = ''} = data ?? {}
+  const {overview = [], showcaseProjects = [], title = ''} = data
 
   const dataAttribute =
     data?._id && data?._type

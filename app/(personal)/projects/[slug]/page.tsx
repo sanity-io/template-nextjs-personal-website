@@ -7,9 +7,11 @@ import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, toPlainText} from 'next-sanity'
-import {draftMode} from 'next/headers'
+import {cookies, draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
+import {resolvePerspectiveFromCookie} from 'next-sanity/experimental/live'
+import type {ProjectBySlugQueryResult} from '@/sanity.types'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -19,9 +21,13 @@ export async function generateMetadata(
   {params}: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const isDraftMode = (await draftMode()).isEnabled
   const {data: project} = await sanityFetch({
     query: projectBySlugQuery,
     params,
+    perspective: isDraftMode
+      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      : 'published',
     stega: false,
   })
   const ogImage = urlForOpenGraphImage(
@@ -51,12 +57,26 @@ export async function generateStaticParams() {
 }
 
 export default async function ProjectSlugRoute({params}: Props) {
-  const {data} = await sanityFetch({query: projectBySlugQuery, params})
+  const isDraftMode = (await draftMode()).isEnabled
+  const {data} = await sanityFetch({
+    query: projectBySlugQuery,
+    params,
+    perspective: isDraftMode
+      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      : 'published',
+    stega: isDraftMode,
+  })
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a project on this slug, and live reload won't work on the 404 route
-  if (!data?._id && !(await draftMode()).isEnabled) {
+  if (!data?._id && !isDraftMode) {
     notFound()
   }
+
+  return <CachedProjectSlugRoute data={data} />
+}
+
+async function CachedProjectSlugRoute({data}: {data: ProjectBySlugQueryResult}) {
+  'use cache'
 
   const dataAttribute =
     data?._id && data._type

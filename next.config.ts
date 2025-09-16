@@ -1,12 +1,20 @@
-import {NextConfig} from 'next'
+import type {NextConfig} from 'next'
 
 const config: NextConfig = {
-  // Helps catch bugs
-  reactStrictMode: true,
   experimental: {
     // Speeds up performance by automatically generating useMemo and useCallback in client components
     reactCompiler: true,
+    // Required by `next-sanity/experimental/live`
+    cacheComponents: true,
+    cacheLife: {
+      default: {
+        // Sanity Live handles on-demand revalidation, so the default 15min time based revalidation is too short
+        revalidate: 60 * 60 * 24 * 90, // 90 days
+      },
+    },
   },
+  // Helps catch bugs
+  reactStrictMode: true,
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
   },

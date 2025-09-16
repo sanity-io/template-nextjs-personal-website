@@ -1,23 +1,31 @@
 import {HomePage} from '@/components/HomePage'
-import {studioUrl} from '@/sanity/lib/api'
+import IntroTemplate from '@/intro-template'
 import {sanityFetch} from '@/sanity/lib/live'
 import {homePageQuery} from '@/sanity/lib/queries'
-import Link from 'next/link'
+import {resolvePerspectiveFromCookie} from 'next-sanity/experimental/live'
+import {cookies, draftMode} from 'next/headers'
+import {Suspense} from 'react'
 
-export default async function IndexRoute() {
-  const {data} = await sanityFetch({query: homePageQuery})
+export default async function IndexRoute({
+  searchParams,
+}: {
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>
+}) {
+  const isDraftMode = (await draftMode()).isEnabled
+  const {data} = await sanityFetch({
+    query: homePageQuery,
+    perspective: isDraftMode
+      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      : 'published',
+    stega: isDraftMode,
+  })
 
-  if (!data) {
-    return (
-      <div className="text-center">
-        You don&rsquo;t have a homepage yet,{' '}
-        <Link href={`${studioUrl}/structure/home`} className="underline">
-          create one now
-        </Link>
-        !
-      </div>
-    )
-  }
-
-  return <HomePage data={data} />
+  return (
+    <>
+      <HomePage data={data} />
+      <Suspense>
+        <IntroTemplate searchParams={searchParams} />
+      </Suspense>
+    </>
+  )
 }

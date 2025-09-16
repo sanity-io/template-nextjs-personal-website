@@ -4,8 +4,10 @@ import {sanityFetch} from '@/sanity/lib/live'
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {toPlainText, type PortableTextBlock} from 'next-sanity'
-import {draftMode} from 'next/headers'
+import {cookies, draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
+import {resolvePerspectiveFromCookie} from 'next-sanity/experimental/live'
+import type {PagesBySlugQueryResult} from '@/sanity.types'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -15,9 +17,13 @@ export async function generateMetadata(
   {params}: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const isDraftMode = (await draftMode()).isEnabled
   const {data: page} = await sanityFetch({
     query: pagesBySlugQuery,
     params,
+    perspective: isDraftMode
+      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      : 'published',
     stega: false,
   })
 
@@ -38,12 +44,26 @@ export async function generateStaticParams() {
 }
 
 export default async function PageSlugRoute({params}: Props) {
-  const {data} = await sanityFetch({query: pagesBySlugQuery, params})
+  const isDraftMode = (await draftMode()).isEnabled
+  const {data} = await sanityFetch({
+    query: pagesBySlugQuery,
+    params,
+    perspective: isDraftMode
+      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      : 'published',
+    stega: isDraftMode,
+  })
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a page on this slug, and live reload won't work on the 404 route
-  if (!data?._id && !(await draftMode()).isEnabled) {
+  if (!data?._id && !isDraftMode) {
     notFound()
   }
+
+  return <CachedPageSlugRoute data={data} />
+}
+
+async function CachedPageSlugRoute({data}: {data: PagesBySlugQueryResult}) {
+  'use cache'
 
   const {body, overview, title} = data ?? {}
 
