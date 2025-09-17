@@ -1,6 +1,7 @@
 {
   "name": "sanity-template-template-nextjs-personal-website",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build --turbopack && sanity manifest extract --path public/studio/static",
     "predev": "npm run typegen",
@@ -13,7 +14,7 @@
     "typegen": "sanity schema extract && sanity typegen generate"
   },
   "dependencies": {
-    "@next/env": "canary",
+    "@next/env": "15.6.0-canary.10",
     "@sanity/client": "7.11.1",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.4",
@@ -25,8 +26,8 @@
     "@vercel/speed-insights": "1.2.0",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "canary",
-    "next-sanity": "11.1.0",
+    "next": "15.6.0-canary.10",
+    "next-sanity": "11.2.0-canary.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-live-transitions": "0.2.0",
@@ -45,7 +46,7 @@
     "autoprefixer": "10.4.21",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
     "eslint": "9.35.0",
-    "eslint-config-next": "canary",
+    "eslint-config-next": "15.6.0-canary.10",
     "eslint-formatter-gha": "1.6.0",
     "eslint-plugin-react-compiler": "npm:eslint-plugin-react-hooks@6.0.0-rc.2",
     "eslint-plugin-react-hooks": "5.2.0",

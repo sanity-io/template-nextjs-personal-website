@@ -1,3 +1,6 @@
+// 'use cache'
+
+// import {unstable_cacheLife as cacheLife} from 'next/cache'
 import './globals.css'
 import {IBM_Plex_Mono, Inter, PT_Serif} from 'next/font/google'
 
@@ -20,6 +23,7 @@ const mono = IBM_Plex_Mono({
 })
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
+  // cacheLife('max')
   return (
     <html lang="en" className={`${mono.variable} ${sans.variable} ${serif.variable}`}>
       <body>{children}</body>

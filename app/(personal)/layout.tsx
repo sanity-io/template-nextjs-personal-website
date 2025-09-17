@@ -14,11 +14,13 @@ import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 import {SpeedInsights} from '@vercel/speed-insights/next'
+import {resolveCookiePerspective} from 'next-sanity/live/use-cache'
 
 export async function generateMetadata(): Promise<Metadata> {
+  const perspective = await resolveCookiePerspective()
   const [{data: settings}, {data: homePage}] = await Promise.all([
-    sanityFetch({query: settingsQuery, stega: false}),
-    sanityFetch({query: homePageQuery, stega: false}),
+    sanityFetch({query: settingsQuery, stega: false, perspective}),
+    sanityFetch({query: homePageQuery, stega: false, perspective}),
   ])
 
   const ogImage = urlForOpenGraphImage(
@@ -43,8 +45,9 @@ export const viewport: Viewport = {
   themeColor: '#000',
 }
 
-export default async function IndexRoute({children}: {children: React.ReactNode}) {
-  const {data} = await sanityFetch({query: settingsQuery})
+export default async function PersonalLayout({children}: {children: React.ReactNode}) {
+  const perspective = await resolveCookiePerspective()
+  const {data} = await sanityFetch({query: settingsQuery, perspective})
   return (
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">

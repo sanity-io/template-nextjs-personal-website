@@ -3,9 +3,11 @@ import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
 import {homePageQuery} from '@/sanity/lib/queries'
 import Link from 'next/link'
+import {resolveCookiePerspective} from 'next-sanity/live/use-cache'
 
 export default async function IndexRoute() {
-  const {data} = await sanityFetch({query: homePageQuery})
+  const perspective = await resolveCookiePerspective()
+  const {data} = await sanityFetch({query: homePageQuery, perspective})
 
   if (!data) {
     return (

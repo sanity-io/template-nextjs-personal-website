@@ -6,6 +6,7 @@ import type {Metadata, ResolvingMetadata} from 'next'
 import {toPlainText, type PortableTextBlock} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
+import {resolveCookiePerspective} from 'next-sanity/live/use-cache'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -15,10 +16,12 @@ export async function generateMetadata(
   {params}: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const perspective = await resolveCookiePerspective()
   const {data: page} = await sanityFetch({
     query: pagesBySlugQuery,
     params,
     stega: false,
+    perspective,
   })
 
   return {
@@ -38,7 +41,8 @@ export async function generateStaticParams() {
 }
 
 export default async function PageSlugRoute({params}: Props) {
-  const {data} = await sanityFetch({query: pagesBySlugQuery, params})
+  const perspective = await resolveCookiePerspective()
+  const {data} = await sanityFetch({query: pagesBySlugQuery, params, perspective})
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a page on this slug, and live reload won't work on the 404 route
   if (!data?._id && !(await draftMode()).isEnabled) {

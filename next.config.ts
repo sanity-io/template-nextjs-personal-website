@@ -1,4 +1,4 @@
-import {NextConfig} from 'next'
+import type {NextConfig} from 'next'
 
 const config: NextConfig = {
   // Helps catch bugs
@@ -6,7 +6,10 @@ const config: NextConfig = {
   experimental: {
     // Speeds up performance by automatically generating useMemo and useCallback in client components
     reactCompiler: true,
+    // Optimal Sanity Live experience
+    cacheComponents: true,
   },
+  transpilePackages: ['next-sanity'],
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
   },
