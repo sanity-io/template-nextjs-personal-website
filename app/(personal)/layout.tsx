@@ -11,7 +11,7 @@ import {VisualEditing} from 'next-sanity/visual-editing'
 import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 import {Toaster} from 'sonner'
-import {handleError} from './client-functions'
+import {handleError, revalidateSyncTags} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import {resolveCookiePerspective} from 'next-sanity/live/use-cache'
@@ -69,7 +69,7 @@ export default async function PersonalLayout({children}: {children: React.ReactN
         </Suspense>
       </div>
       <Toaster />
-      <SanityLive onError={handleError} />
+      <SanityLive onError={handleError} revalidateSyncTags={revalidateSyncTags} />
       {(await draftMode()).isEnabled && (
         <>
           <DraftModeToast />
