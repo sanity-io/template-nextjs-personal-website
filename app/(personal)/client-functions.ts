@@ -38,7 +38,6 @@ export async function revalidateSyncTags(tags: SyncTag[]): Promise<'refresh'> {
   if (!response.ok) {
     throw new Error('Failed to revalidate sync tags')
   }
-  const json = await response.json()
-  console.log('revalidated sync tags', tags, json)
+  console.log('revalidating sync tags', tags)
   return 'refresh'
 }
