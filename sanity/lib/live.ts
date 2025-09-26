@@ -1,3 +1,5 @@
+import 'server-only'
+
 import {defineLive} from 'next-sanity/experimental/live'
 import {client} from './client'
 import {token} from './token'
