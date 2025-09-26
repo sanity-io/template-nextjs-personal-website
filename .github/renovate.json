@@ -2,11 +2,14 @@
   "description": "Check the readme: https://github.com/sanity-io/renovate-config#readme",
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>sanity-io/renovate-config:starter-template"],
-  "baseBranches": ["main", "test-cache-components"],
+  "baseBranchPatterns": ["main", "test-cache-components"],
   "packageRules": [
     {
       "description": "Disable renovating eslint-plugin-react-compiler until next.js and its eslint preset includes the compiler",
-      "matchPackageNames": ["eslint-plugin-react-compiler", "eslint-plugin-react-hooks"],
+      "matchPackageNames": [
+        "eslint-plugin-react-compiler",
+        "eslint-plugin-react-hooks"
+      ],
       "enabled": false
     }
   ]
