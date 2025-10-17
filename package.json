@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build --turbopack && sanity manifest extract --path public/studio/static",
+    "build": "next build --turbopack --no-mangling && sanity manifest extract --path public/studio/static",
     "predev": "npm run typegen",
     "dev": "next --turbopack",
     "format": "npx prettier --write . --ignore-path .gitignore",
