@@ -14,13 +14,13 @@ import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 import {SpeedInsights} from '@vercel/speed-insights/next'
-import {resolvePerspectiveFromCookie} from 'next-sanity/experimental/live'
+import {resolvePerspectiveFromCookies} from 'next-sanity/experimental/live'
 import type {SettingsQueryResult} from '@/sanity.types'
 
 export async function generateMetadata(): Promise<Metadata> {
   const isDraftMode = (await draftMode()).isEnabled
   const perspective = (await isDraftMode)
-    ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+    ? await resolvePerspectiveFromCookies({cookies: await cookies()})
     : 'published'
   const [{data: settings}, {data: homePage}] = await Promise.all([
     sanityFetch({query: settingsQuery, perspective, stega: false}),
@@ -83,7 +83,7 @@ export default async function PersonalLayout({children}: {children: React.ReactN
  */
 async function DynamicLayout({children}: {children: React.ReactNode}) {
   const jar = await cookies()
-  const perspective = await resolvePerspectiveFromCookie({cookies: jar})
+  const perspective = await resolvePerspectiveFromCookies({cookies: jar})
   const {data} = await sanityFetch({query: settingsQuery, perspective})
   return <CachedContent data={data}>{children}</CachedContent>
 }

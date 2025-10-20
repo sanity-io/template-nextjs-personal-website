@@ -5,16 +5,8 @@ const config: NextConfig = {
   reactStrictMode: true,
   // Speeds up performance by automatically generating useMemo and useCallback in client components
   reactCompiler: true,
-  experimental: {
-    // Required by `next-sanity/experimental/live`
-    cacheComponents: true,
-    cacheLife: {
-      default: {
-        // Sanity Live handles on-demand revalidation, so the default 15min time based revalidation is too short
-        revalidate: 60 * 60 * 24 * 90, // 90 days
-      },
-    },
-  },
+  // Required by `next-sanity/experimental/live`
+  cacheComponents: true,
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
   },

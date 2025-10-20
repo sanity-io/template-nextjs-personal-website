@@ -6,7 +6,7 @@ import type {Metadata, ResolvingMetadata} from 'next'
 import {toPlainText, type PortableTextBlock} from 'next-sanity'
 import {cookies, draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
-import {resolvePerspectiveFromCookie} from 'next-sanity/experimental/live'
+import {resolvePerspectiveFromCookies} from 'next-sanity/experimental/live'
 import type {PagesBySlugQueryResult} from '@/sanity.types'
 
 type Props = {
@@ -22,7 +22,7 @@ export async function generateMetadata(
     query: pagesBySlugQuery,
     params,
     perspective: isDraftMode
-      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      ? await resolvePerspectiveFromCookies({cookies: await cookies()})
       : 'published',
     stega: false,
   })
@@ -49,7 +49,7 @@ export default async function PageSlugRoute({params}: Props) {
     query: pagesBySlugQuery,
     params,
     perspective: isDraftMode
-      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      ? await resolvePerspectiveFromCookies({cookies: await cookies()})
       : 'published',
     stega: isDraftMode,
   })

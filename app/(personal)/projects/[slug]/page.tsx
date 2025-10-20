@@ -10,7 +10,7 @@ import {createDataAttribute, toPlainText} from 'next-sanity'
 import {cookies, draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
-import {resolvePerspectiveFromCookie} from 'next-sanity/experimental/live'
+import {resolvePerspectiveFromCookies} from 'next-sanity/experimental/live'
 import type {ProjectBySlugQueryResult} from '@/sanity.types'
 
 type Props = {
@@ -26,7 +26,7 @@ export async function generateMetadata(
     query: projectBySlugQuery,
     params,
     perspective: isDraftMode
-      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      ? await resolvePerspectiveFromCookies({cookies: await cookies()})
       : 'published',
     stega: false,
   })
@@ -62,7 +62,7 @@ export default async function ProjectSlugRoute({params}: Props) {
     query: projectBySlugQuery,
     params,
     perspective: isDraftMode
-      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      ? await resolvePerspectiveFromCookies({cookies: await cookies()})
       : 'published',
     stega: isDraftMode,
   })

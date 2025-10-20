@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build --turbopack --no-mangling && sanity manifest extract --path public/studio/static",
+    "build": "next build --turbopack && sanity manifest extract --path public/studio/static",
     "predev": "npm run typegen",
     "dev": "next --turbopack",
     "format": "npx prettier --write . --ignore-path .gitignore",
@@ -12,10 +12,10 @@
     "start": "next start",
     "type-check": "tsc --noEmit",
     "typegen": "sanity schema extract && sanity typegen generate",
-    "update:canaries": "pnpm up next@canary eslint-config-next@canary @next/env@canary next-sanity@latest"
+    "update:canaries": "pnpm up next@latest eslint-config-next@latest @next/env@latest next-sanity@canary"
   },
   "dependencies": {
-    "@next/env": "16.0.0-canary.10",
+    "@next/env": "16.0.0",
     "@sanity/client": "7.12.0",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.4",
@@ -27,8 +27,8 @@
     "@vercel/speed-insights": "1.2.0",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "16.0.0-canary.10",
-    "next-sanity": "11.5.5",
+    "next": "16.0.0",
+    "next-sanity": "11.5.7-canary.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-live-transitions": "0.2.0",
@@ -46,14 +46,14 @@
     "@types/react": "19.2.2",
     "autoprefixer": "10.4.21",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "9.37.0",
+    "eslint": "9.38.0",
     "eslint-formatter-gha": "1.6.0",
     "eslint-plugin-react-hooks": "7.0.0",
     "postcss": "8.5.6",
     "prettier": "3.6.2",
-    "prettier-plugin-tailwindcss": "0.6.14",
+    "prettier-plugin-tailwindcss": "0.7.1",
     "tailwindcss": "3.4.18",
     "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@10.17.1"
+  "packageManager": "pnpm@10.18.3"
 }

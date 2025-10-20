@@ -2,7 +2,7 @@ import {HomePage} from '@/components/HomePage'
 import IntroTemplate from '@/intro-template'
 import {sanityFetch} from '@/sanity/lib/live'
 import {homePageQuery} from '@/sanity/lib/queries'
-import {resolvePerspectiveFromCookie} from 'next-sanity/experimental/live'
+import {resolvePerspectiveFromCookies} from 'next-sanity/experimental/live'
 import {cookies, draftMode} from 'next/headers'
 import {Suspense} from 'react'
 
@@ -15,7 +15,7 @@ export default async function IndexRoute({
   const {data} = await sanityFetch({
     query: homePageQuery,
     perspective: isDraftMode
-      ? await resolvePerspectiveFromCookie({cookies: await cookies()})
+      ? await resolvePerspectiveFromCookies({cookies: await cookies()})
       : 'published',
     stega: isDraftMode,
   })
