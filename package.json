@@ -15,7 +15,7 @@
     "update:canaries": "pnpm up next@latest eslint-config-next@latest @next/env@latest next-sanity@canary"
   },
   "dependencies": {
-    "@next/env": "16.0.0",
+    "@next/env": "16.0.0-canary.18",
     "@sanity/client": "7.12.0",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.4",
@@ -27,7 +27,7 @@
     "@vercel/speed-insights": "1.2.0",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "16.0.0",
+    "next": "16.0.0-canary.18",
     "next-sanity": "11.5.7-canary.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
