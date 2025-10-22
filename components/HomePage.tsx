@@ -11,9 +11,7 @@ export interface HomePageProps {
   data: HomePageQueryResult | null
 }
 
-export async function HomePage({data}: HomePageProps) {
-  'use cache'
-
+export function HomePage({data}: HomePageProps) {
   if (!data) {
     return (
       <div className="text-center">
