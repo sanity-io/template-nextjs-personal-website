@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const preset = require('@sanity/prettier-config')
 
 module.exports = {
