@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build --turbopack && sanity manifest extract --path public/studio/static",
+    "build": "next build && sanity manifest extract --path public/studio/static",
     "predev": "npm run typegen",
-    "dev": "next --turbopack",
+    "dev": "next dev",
     "format": "npx prettier --write . --ignore-path .gitignore",
     "lint": "eslint .",
     "lint:fix": "npm run format && npm run lint -- --fix",
@@ -15,7 +15,7 @@
     "update:canaries": "pnpm up next@latest eslint-config-next@latest @next/env@latest next-sanity@canary"
   },
   "dependencies": {
-    "@next/env": "16.0.0-canary.18",
+    "@next/env": "16.0.0",
     "@sanity/client": "7.12.0",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.4",
@@ -27,7 +27,7 @@
     "@vercel/speed-insights": "1.2.0",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "16.0.0-canary.18",
+    "next": "16.0.0",
     "next-sanity": "11.5.7-canary.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
