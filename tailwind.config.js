@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const {theme} = require('@sanity/demo/tailwind')
 
 /** @type {import('tailwindcss').Config} */
