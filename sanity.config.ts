@@ -22,6 +22,12 @@ import {structureTool} from 'sanity/structure'
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Personal Website with Sanity.io'
 
+let needsDraftMode = true
+if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
+  // next-sanity needs to support env var patterns, it currently only supports draft mode
+  // needsDraftMode = false
+}
+
 export default defineConfig({
   basePath: studioUrl,
   projectId: projectId || '',
@@ -48,7 +54,7 @@ export default defineConfig({
     }),
     presentationTool({
       resolve,
-      previewUrl: {previewMode: {enable: '/api/draft-mode/enable'}},
+      previewUrl: needsDraftMode ? {previewMode: {enable: '/api/draft-mode/enable'}} : '/',
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
     singletonPlugin([home.name, settings.name]),

@@ -1,0 +1,3 @@
+{
+  "path": "./{app,components,sanity}/**/*.{ts,tsx}"
+}

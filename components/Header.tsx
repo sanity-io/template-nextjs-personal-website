@@ -8,14 +8,17 @@ interface HeaderProps {
   centered?: boolean
   description?: null | any[]
   title?: string | null
+  loading?: boolean
 }
 export function Header(props: HeaderProps) {
-  const {id, type, path, title, description, centered = false} = props
+  const {id, type, path, title, description, centered = false, loading} = props
   if (!description && !title) {
     return null
   }
   return (
-    <div className={`${centered ? 'text-center' : 'w-5/6 lg:w-3/5'}`}>
+    <div
+      className={`${centered ? 'text-center' : 'w-5/6 lg:w-3/5'} ${loading ? 'animate-pulse' : ''}`}
+    >
       {/* Title */}
       {title && <div className="text-3xl font-extrabold tracking-tight md:text-5xl">{title}</div>}
       {/* Description */}
