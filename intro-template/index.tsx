@@ -5,7 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {useSyncExternalStore} from 'react'
-// @ts-expect-error - fix typings later
 import cover from './cover.png'
 
 const subscribe = () => () => {}
