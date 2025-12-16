@@ -2,6 +2,7 @@
   "name": "sanity-template-template-nextjs-personal-website",
   "private": true,
   "scripts": {
+    "analyze": "next experimental-analyze --serve",
     "build": "next build --turbopack && sanity manifest extract --path public/studio/static",
     "predev": "npm run typegen",
     "dev": "next --turbopack",
