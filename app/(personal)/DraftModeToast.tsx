@@ -19,7 +19,7 @@ export function DraftModeToast({action}: {action: () => Promise<void>}) {
         duration: Infinity,
         action: {
           label: 'Disable',
-          onClick: () => toast.promise(action(), {loading: 'Disabling draft mode…',}),
+          onClick: () => toast.promise(action(), {loading: 'Disabling draft mode…'}),
         },
       })
       return () => {
