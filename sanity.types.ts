@@ -232,7 +232,7 @@ export type Settings = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  menuItems?: Array<HomeReference | PageReference | ProjectReference>
+  menuItems?: ArrayOf<HomeReference | PageReference | ProjectReference>
   footer?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -325,6 +325,7 @@ export type SanityImageMetadata = {
   palette?: SanityImagePalette
   lqip?: string
   blurHash?: string
+  thumbHash?: string
   hasAlpha?: boolean
   isOpaque?: boolean
 }
@@ -413,6 +414,12 @@ export type AllSanitySchemaTypes =
   | Geopoint
 
 export declare const internalGroqTypeReferenceTo: unique symbol
+
+type ArrayOf<T> = Array<
+  T & {
+    _key: string
+  }
+>
 
 // Source: sanity/lib/queries.ts
 // Variable: homePageQuery

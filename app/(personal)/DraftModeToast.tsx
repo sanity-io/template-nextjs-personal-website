@@ -1,52 +1,33 @@
 'use client'
 
-import {useDraftModeEnvironment, useIsPresentationTool} from 'next-sanity/hooks'
-import {useRouter} from 'next/navigation'
-import {useEffect, useTransition} from 'react'
+import {useIsPresentationTool} from 'next-sanity/hooks'
+import {useEffect} from 'react'
 import {toast} from 'sonner'
-import {disableDraftMode} from './server-functions'
 
-export function DraftModeToast() {
+export function DraftModeToast({action}: {action: () => Promise<void>}) {
   const isPresentationTool = useIsPresentationTool()
-  const env = useDraftModeEnvironment()
-  const router = useRouter()
-  const [pending, startTransition] = useTransition()
 
   useEffect(() => {
+    /**
+     * We don't want to show the toast if we're inside the Presentation Tool iframe or a preview popup window.
+     * `useIsPresentationTool` is `null` initially, and then `false` when it's determined that we're not in Presentation Tool
+     */
     if (isPresentationTool === false) {
-      /**
-       * We delay the toast in case we're inside Presentation Tool
-       */
       const toastId = toast('Draft Mode Enabled', {
         id: 'draft-mode-toast',
-        description:
-          env === 'live'
-            ? 'Content is live, refreshing automatically'
-            : 'Refresh manually to see changes',
+        description: 'Content is live, refreshing automatically',
         duration: Infinity,
         action: {
           label: 'Disable',
-          onClick: () =>
-            startTransition(async () => {
-              await disableDraftMode()
-              startTransition(() => router.refresh())
-            }),
+          onClick: () => toast.promise(action(), {loading: 'Disabling draft mode…',}),
         },
       })
       return () => {
+        // If this component is unmounted we assume it's because draft mode is no longer enabled
         toast.dismiss(toastId)
       }
     }
-  }, [env, router, isPresentationTool])
-
-  useEffect(() => {
-    if (pending) {
-      const toastId = toast.loading('Disabling draft mode...')
-      return () => {
-        toast.dismiss(toastId)
-      }
-    }
-  }, [pending])
+  }, [isPresentationTool])
 
   return null
 }
