@@ -11,9 +11,14 @@ import {createDataAttribute, toPlainText} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
+import {Suspense} from 'react'
 
 type Props = {
   params: Promise<{slug: string}>
+}
+
+export async function generateStaticParams() {
+  return client.fetch(slugsByTypeQuery, {type: 'project'}, {perspective: 'published', stega: false})
 }
 
 export async function generateMetadata(
@@ -21,9 +26,10 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   'use cache'
+  const {slug} = await params
   const {data: project} = await sanityFetch({
     query: projectBySlugQuery,
-    params: await params,
+    params: {slug},
     stega: false,
   })
   const ogImage = urlForOpenGraphImage(
@@ -42,18 +48,28 @@ export async function generateMetadata(
   }
 }
 
-export async function generateStaticParams() {
-  return client.fetch(slugsByTypeQuery, {type: 'project'}, {perspective: 'published', stega: false})
+export default function ProjectSlugRoute({params}: Props) {
+  return (
+    <Suspense
+      fallback={
+        <Template>
+          <Header id={null} type={null} path={['overview']} title="Loading project" />
+        </Template>
+      }
+    >
+      <DynamicProjectSlugRoute params={params} />
+    </Suspense>
+  )
 }
 
-export default async function ProjectSlugRoute({params}: Props) {
-  'use cache'
-  const {data} = await sanityFetch({query: projectBySlugQuery, params: await params})
+async function DynamicProjectSlugRoute({params}: Props) {
+  const {slug} = await params
+  return <CachedProjectSlugRoute slug={slug} />
+}
 
-  // Only show the 404 page if we're in production, when in draft mode we might be about to create a project on this slug, and live reload won't work on the 404 route
-  if (!data?._id && !(await draftMode()).isEnabled) {
-    notFound()
-  }
+async function CachedProjectSlugRoute({slug}: {slug: string}) {
+  'use cache'
+  const {data} = await sanityFetch({query: projectBySlugQuery, params: {slug}})
 
   const dataAttribute =
     data?._id && data._type
@@ -71,86 +87,92 @@ export default async function ProjectSlugRoute({params}: Props) {
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (
-    <div>
-      <div className="mb-20 space-y-6">
-        {/* Header */}
-        <Header
-          id={data?._id || null}
-          type={data?._type || null}
-          path={['overview']}
-          title={title || (data?._id ? 'Untitled' : '404 Project Not Found')}
-          description={overview}
+    <Template>
+      {/* Header */}
+      <Header
+        id={data?._id || null}
+        type={data?._type || null}
+        path={['overview']}
+        title={title || (data?._id ? 'Untitled' : '404 Project Not Found')}
+        description={overview}
+      />
+
+      <div className="rounded-md border">
+        {/* Image  */}
+        <ImageBox
+          data-sanity={dataAttribute?.('coverImage')}
+          image={coverImage as any}
+          // @TODO add alt field in schema
+          alt=""
+          classesWrapper="relative aspect-[16/9]"
         />
 
-        <div className="rounded-md border">
-          {/* Image  */}
-          <ImageBox
-            data-sanity={dataAttribute?.('coverImage')}
-            image={coverImage as any}
-            // @TODO add alt field in schema
-            alt=""
-            classesWrapper="relative aspect-[16/9]"
-          />
-
-          <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-            {/* Duration */}
-            {!!(startYear && endYear) && (
-              <div className="p-3 lg:p-4">
-                <div className="text-xs md:text-sm">Duration</div>
-                <div className="text-md md:text-lg">
-                  <span data-sanity={dataAttribute?.('duration.start')}>{startYear}</span>
-                  {' - '}
-                  <span data-sanity={dataAttribute?.('duration.end')}>{endYear}</span>
-                </div>
-              </div>
-            )}
-
-            {/* Client */}
-            {client && (
-              <div className="p-3 lg:p-4">
-                <div className="text-xs md:text-sm">Client</div>
-                <div className="text-md md:text-lg">{client}</div>
-              </div>
-            )}
-
-            {/* Site */}
-            {site && (
-              <div className="p-3 lg:p-4">
-                <div className="text-xs md:text-sm">Site</div>
-                {site && (
-                  <Link target="_blank" className="text-md break-words md:text-lg" href={site}>
-                    {site}
-                  </Link>
-                )}
-              </div>
-            )}
-
-            {/* Tags */}
+        <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+          {/* Duration */}
+          {!!(startYear && endYear) && (
             <div className="p-3 lg:p-4">
-              <div className="text-xs md:text-sm">Tags</div>
-              <div className="text-md flex flex-row flex-wrap md:text-lg">
-                {tags?.map((tag, key) => (
-                  <div key={key} className="mr-1 break-words">
-                    #{tag}
-                  </div>
-                ))}
+              <div className="text-xs md:text-sm">Duration</div>
+              <div className="text-md md:text-lg">
+                <span data-sanity={dataAttribute?.('duration.start')}>{startYear}</span>
+                {' - '}
+                <span data-sanity={dataAttribute?.('duration.end')}>{endYear}</span>
               </div>
+            </div>
+          )}
+
+          {/* Client */}
+          {client && (
+            <div className="p-3 lg:p-4">
+              <div className="text-xs md:text-sm">Client</div>
+              <div className="text-md md:text-lg">{client}</div>
+            </div>
+          )}
+
+          {/* Site */}
+          {site && (
+            <div className="p-3 lg:p-4">
+              <div className="text-xs md:text-sm">Site</div>
+              {site && (
+                <Link target="_blank" className="text-md break-words md:text-lg" href={site}>
+                  {site}
+                </Link>
+              )}
+            </div>
+          )}
+
+          {/* Tags */}
+          <div className="p-3 lg:p-4">
+            <div className="text-xs md:text-sm">Tags</div>
+            <div className="text-md flex flex-row flex-wrap md:text-lg">
+              {tags?.map((tag, key) => (
+                <div key={key} className="mr-1 break-words">
+                  #{tag}
+                </div>
+              ))}
             </div>
           </div>
         </div>
-
-        {/* Description */}
-        {description && (
-          <CustomPortableText
-            id={data?._id || null}
-            type={data?._type || null}
-            path={['description']}
-            paragraphClasses="font-serif max-w-3xl text-xl text-gray-600"
-            value={description as any}
-          />
-        )}
       </div>
+
+      {/* Description */}
+      {description && (
+        <CustomPortableText
+          id={data?._id || null}
+          type={data?._type || null}
+          path={['description']}
+          paragraphClasses="font-serif max-w-3xl text-xl text-gray-600"
+          value={description as any}
+        />
+      )}
+    </Template>
+  )
+}
+
+function Template({children}: {children: React.ReactNode}) {
+  return (
+    <>
+      <div className="mb-20 space-y-6">{children}</div>
       <div className="absolute left-0 w-screen border-t" />
-    </div>
+    </>
   )
 }

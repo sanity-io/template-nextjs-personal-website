@@ -33,12 +33,12 @@ export async function generateMetadata(
   }
 }
 
-export default async function PageSlugRoute({params}: Props) {
+export default function PageSlugRoute({params}: Props) {
   return (
     <Suspense
       fallback={
         <Template>
-          <Header id={null} type={null} path={['overview']} title="Loading…" />
+          <Header id={null} type={null} path={['overview']} title="Loading page…" />
         </Template>
       }
     >

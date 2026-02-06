@@ -6,10 +6,22 @@ import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, stegaClean} from 'next-sanity'
 import Link from 'next/link'
-import { Suspense } from 'react'
+import {Suspense} from 'react'
 
 export function Navbar() {
-  return <Suspense fallback={<Template><span className="text-lg hover:text-black md:text-xl font-extrabold text-black">Loading…</span></Template>}><CachedNavbar /></Suspense>
+  return (
+    <Suspense
+      fallback={
+        <Template>
+          <span className="text-lg hover:text-black md:text-xl font-extrabold text-black">
+            Loading navbar…
+          </span>
+        </Template>
+      }
+    >
+      <CachedNavbar />
+    </Suspense>
+  )
 }
 
 async function CachedNavbar() {
@@ -24,9 +36,7 @@ async function CachedNavbar() {
         })
       : null
   return (
-    <Template
-      dataSanity={dataAttribute?.('menuItems')}
-    >
+    <Template dataSanity={dataAttribute?.('menuItems')}>
       <OptimisticSortOrder id={data?._id} path="menuItems">
         {data?.menuItems?.map((menuItem) => {
           const href = resolveHref(menuItem?._type, menuItem?.slug)
@@ -54,11 +64,19 @@ async function CachedNavbar() {
   )
 }
 
-function Template({children, dataSanity}: {children: React.ReactNode, dataSanity?: string | undefined}) {
-  return <header
-  className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur md:px-16 md:py-5 lg:px-32"
-  data-sanity={dataSanity}
->
-  {children}
-</header>
+function Template({
+  children,
+  dataSanity,
+}: {
+  children: React.ReactNode
+  dataSanity?: string | undefined
+}) {
+  return (
+    <header
+      className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur md:px-16 md:py-5 lg:px-32"
+      data-sanity={dataSanity}
+    >
+      {children}
+    </header>
+  )
 }
