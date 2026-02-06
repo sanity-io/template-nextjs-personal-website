@@ -14,13 +14,12 @@ export interface DynamicFetchOptions {
   stega: boolean
 }
 export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
-  // @TODO effect of reading cookies after checking draft mode?
-  const jar = await cookies()
   const {isEnabled: isDraftMode} = await draftMode()
   if (!isDraftMode) {
     return {perspective: 'published', stega: false}
   }
-
+  
+  const jar = await cookies()
   const perspective = await resolvePerspectiveFromCookies({cookies: jar})
   return {perspective: perspective ?? 'drafts', stega: true}
 }
