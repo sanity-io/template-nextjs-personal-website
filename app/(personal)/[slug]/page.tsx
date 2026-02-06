@@ -5,11 +5,14 @@ import {sanityFetch} from '@/sanity/lib/live'
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {toPlainText, type PortableTextBlock} from 'next-sanity'
-import {draftMode} from 'next/headers'
-import {notFound} from 'next/navigation'
+import {Suspense} from 'react'
 
 type Props = {
   params: Promise<{slug: string}>
+}
+
+export async function generateStaticParams() {
+  return client.fetch(slugsByTypeQuery, {type: 'page'})
 }
 
 export async function generateMetadata(
@@ -17,9 +20,10 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   'use cache'
+  const {slug} = await params
   const {data: page} = await sanityFetch({
     query: pagesBySlugQuery,
-    params: await params,
+    params: {slug},
     stega: false,
   })
 
@@ -29,45 +33,62 @@ export async function generateMetadata(
   }
 }
 
-export async function generateStaticParams() {
-  return client.fetch(slugsByTypeQuery, {type: 'page'})
+export default async function PageSlugRoute({params}: Props) {
+  return (
+    <Suspense
+      fallback={
+        <Template>
+          <Header id={null} type={null} path={['overview']} title="Loading…" />
+        </Template>
+      }
+    >
+      <DynamicPageSlugRoute params={params} />
+    </Suspense>
+  )
 }
 
-export default async function PageSlugRoute({params}: Props) {
-  'use cache'
-  const {data} = await sanityFetch({query: pagesBySlugQuery, params: await params})
+async function DynamicPageSlugRoute({params}: Props) {
+  const {slug} = await params
 
-  // Only show the 404 page if we're in production, when in draft mode we might be about to create a page on this slug, and live reload won't work on the 404 route
-  if (!data?._id && !(await draftMode()).isEnabled) {
-    notFound()
-  }
+  return <CachedPageSlugRoute slug={slug} />
+}
+
+async function CachedPageSlugRoute({slug}: {slug: string}) {
+  'use cache'
+  const {data} = await sanityFetch({query: pagesBySlugQuery, params: {slug}})
 
   const {body, overview, title} = data ?? {}
 
   return (
-    <div>
-      <div className="mb-14">
-        {/* Header */}
-        <Header
+    <Template>
+      {/* Header */}
+      <Header
+        id={data?._id || null}
+        type={data?._type || null}
+        path={['overview']}
+        title={title || (data?._id ? 'Untitled' : '404 Page Not Found')}
+        description={overview}
+      />
+
+      {/* Body */}
+      {body && (
+        <CustomPortableText
           id={data?._id || null}
           type={data?._type || null}
-          path={['overview']}
-          title={title || (data?._id ? 'Untitled' : '404 Page Not Found')}
-          description={overview}
+          path={['body']}
+          paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
+          value={body as unknown as PortableTextBlock[]}
         />
+      )}
+    </Template>
+  )
+}
 
-        {/* Body */}
-        {body && (
-          <CustomPortableText
-            id={data?._id || null}
-            type={data?._type || null}
-            path={['body']}
-            paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
-            value={body as unknown as PortableTextBlock[]}
-          />
-        )}
-      </div>
+function Template({children}: {children: React.ReactNode}) {
+  return (
+    <>
+      <div className="mb-14">{children}</div>
       <div className="absolute left-0 w-screen border-t" />
-    </div>
+    </>
   )
 }
