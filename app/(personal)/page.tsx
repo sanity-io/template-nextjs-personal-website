@@ -2,7 +2,7 @@ import {Header} from '@/components/Header'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {ProjectListItem} from '@/components/ProjectListItem'
 import {studioUrl} from '@/sanity/lib/api'
-import {sanityFetch} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {homePageQuery} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute} from 'next-sanity'
@@ -18,14 +18,20 @@ export default function HomePage() {
         </Template>
       }
     >
-      <CachedHomePage />
+      <DynamicHomePage />
     </Suspense>
   )
 }
 
-async function CachedHomePage() {
+async function DynamicHomePage() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+
+  return <CachedHomePage perspective={perspective} stega={stega} />
+}
+
+async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
   'use cache'
-  const {data} = await sanityFetch({query: homePageQuery})
+  const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
 
   if (!data) {
     return (

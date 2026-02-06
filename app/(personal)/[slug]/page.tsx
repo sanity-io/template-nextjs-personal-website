@@ -1,7 +1,7 @@
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import {client} from '@/sanity/lib/client'
-import {sanityFetch} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {toPlainText, type PortableTextBlock} from 'next-sanity'
@@ -49,13 +49,18 @@ export default function PageSlugRoute({params}: Props) {
 
 async function DynamicPageSlugRoute({params}: Props) {
   const {slug} = await params
+  const {perspective, stega} = await getDynamicFetchOptions()
 
-  return <CachedPageSlugRoute slug={slug} />
+  return <CachedPageSlugRoute slug={slug} perspective={perspective} stega={stega} />
 }
 
-async function CachedPageSlugRoute({slug}: {slug: string}) {
+async function CachedPageSlugRoute({
+  slug,
+  perspective,
+  stega,
+}: {slug: string} & DynamicFetchOptions) {
   'use cache'
-  const {data} = await sanityFetch({query: pagesBySlugQuery, params: {slug}})
+  const {data} = await sanityFetch({query: pagesBySlugQuery, params: {slug}, perspective, stega})
 
   const {body, overview, title} = data ?? {}
 

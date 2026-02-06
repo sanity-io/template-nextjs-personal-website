@@ -18,7 +18,7 @@ export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
   if (!isDraftMode) {
     return {perspective: 'published', stega: false}
   }
-  
+
   const jar = await cookies()
   const perspective = await resolvePerspectiveFromCookies({cookies: jar})
   return {perspective: perspective ?? 'drafts', stega: true}

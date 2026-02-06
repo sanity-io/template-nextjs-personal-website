@@ -3,7 +3,7 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
 import {client} from '@/sanity/lib/client'
-import {sanityFetch} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
@@ -28,6 +28,7 @@ export async function generateMetadata(
   const {data: project} = await sanityFetch({
     query: projectBySlugQuery,
     params: {slug},
+    perspective: 'published',
     stega: false,
   })
   const ogImage = urlForOpenGraphImage(
@@ -62,12 +63,17 @@ export default function ProjectSlugRoute({params}: Props) {
 
 async function DynamicProjectSlugRoute({params}: Props) {
   const {slug} = await params
-  return <CachedProjectSlugRoute slug={slug} />
+  const {perspective, stega} = await getDynamicFetchOptions()
+  return <CachedProjectSlugRoute slug={slug} perspective={perspective} stega={stega} />
 }
 
-async function CachedProjectSlugRoute({slug}: {slug: string}) {
+async function CachedProjectSlugRoute({
+  slug,
+  perspective,
+  stega,
+}: {slug: string} & DynamicFetchOptions) {
   'use cache'
-  const {data} = await sanityFetch({query: projectBySlugQuery, params: {slug}})
+  const {data} = await sanityFetch({query: projectBySlugQuery, params: {slug}, perspective, stega})
 
   const dataAttribute =
     data?._id && data._type

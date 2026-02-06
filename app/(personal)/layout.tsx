@@ -10,10 +10,10 @@ import type {Metadata, Viewport} from 'next'
 import {toPlainText} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
 import {draftMode} from 'next/headers'
+import {Fragment} from 'react'
 import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
-import { Fragment } from 'react'
 
 export async function generateMetadata(): Promise<Metadata> {
   'use cache'
