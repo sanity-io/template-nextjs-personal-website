@@ -1,6 +1,6 @@
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
-import {sanityFetch} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, stegaClean} from 'next-sanity'
@@ -18,14 +18,21 @@ export function Navbar() {
         </Template>
       }
     >
-      <CachedNavbar />
+      <DynamicNavbar />
     </Suspense>
   )
 }
 
-async function CachedNavbar() {
+async function DynamicNavbar() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+
+  return <CachedNavbar perspective={perspective} stega={stega} />
+}
+
+async function CachedNavbar({perspective, stega}: DynamicFetchOptions) {
   'use cache'
-  const {data} = await sanityFetch({query: settingsQuery})
+  const {data} = await sanityFetch({query: settingsQuery, perspective, stega})
+  console.log('CachedNavbar', {perspective, stega, data})
   const dataAttribute =
     data?._id && data?._type
       ? createDataAttribute({
@@ -38,7 +45,8 @@ async function CachedNavbar() {
     <Template dataSanity={dataAttribute?.('menuItems')}>
       <OptimisticSortOrder id={data?._id} path="menuItems">
         {data?.menuItems?.map((menuItem) => {
-          const href = resolveHref(menuItem?._type, menuItem?.slug)
+          if (!menuItem?._type) return null
+          const href = resolveHref(menuItem._type, menuItem?.slug)
           if (!href) {
             return null
           }
@@ -46,7 +54,7 @@ async function CachedNavbar() {
             <Link
               key={menuItem._key}
               className={`text-lg hover:text-black md:text-xl ${
-                menuItem?._type === 'home' ? 'font-extrabold text-black' : 'text-gray-600'
+                menuItem._type === 'home' ? 'font-extrabold text-black' : 'text-gray-600'
               }`}
               data-sanity={dataAttribute?.([
                 'menuItems',

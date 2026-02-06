@@ -4,7 +4,7 @@ import {studioUrl} from '@/sanity/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
-import {useSyncExternalStore} from 'react'
+import {Suspense, useSyncExternalStore} from 'react'
 import cover from './cover.png'
 
 const subscribe = () => () => {}
@@ -15,7 +15,15 @@ function useAfterHydration<Snapshot>(
   return useSyncExternalStore<Snapshot>(subscribe, getSnapshot, () => serverSnapshot)
 }
 
-export default function IntroTemplate() {
+export function IntroTemplate() {
+  return (
+    <Suspense>
+      <ClientIntroTemplate />
+    </Suspense>
+  )
+}
+
+function ClientIntroTemplate() {
   const studioURL = useAfterHydration(() => `${location.origin}${studioUrl}`, null)
   const isLocalHost = useAfterHydration(() => window.location.hostname === 'localhost', false)
   const hasUTMtags = useAfterHydration(() => window.location.search.includes('utm'), false)
