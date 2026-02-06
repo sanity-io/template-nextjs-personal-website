@@ -8,9 +8,7 @@ import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, toPlainText} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import Link from 'next/link'
-import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
 
 type Props = {

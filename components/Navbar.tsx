@@ -1,5 +1,4 @@
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
-import type {SettingsQueryResult} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
