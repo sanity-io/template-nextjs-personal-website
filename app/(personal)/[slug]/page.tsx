@@ -19,7 +19,7 @@ export async function generateMetadata(
   'use cache'
   const {data: page} = await sanityFetch({
     query: pagesBySlugQuery,
-    params: await params,
+    params,
     stega: false,
   })
 
@@ -35,7 +35,7 @@ export async function generateStaticParams() {
 
 export default async function PageSlugRoute({params}: Props) {
   'use cache'
-  const {data} = await sanityFetch({query: pagesBySlugQuery, params: await params})
+  const {data} = await sanityFetch({query: pagesBySlugQuery, params})
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a page on this slug, and live reload won't work on the 404 route
   if (!data?._id && !(await draftMode()).isEnabled) {
