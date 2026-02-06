@@ -1,4 +1,4 @@
-import {sanityFetch} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {type PortableTextBlock} from 'next-sanity'
 import {Suspense} from 'react'
@@ -7,14 +7,20 @@ import {CustomPortableText} from './CustomPortableText'
 export function Footer() {
   return (
     <Suspense fallback={<Template>&nbsp;</Template>}>
-      <CachedFooter />
+      <DynamicFooter />
     </Suspense>
   )
 }
 
-async function CachedFooter() {
+async function DynamicFooter() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+
+  return <CachedFooter perspective={perspective} stega={stega} />
+}
+
+async function CachedFooter({perspective, stega}: DynamicFetchOptions) {
   'use cache'
-  const {data} = await sanityFetch({query: settingsQuery})
+  const {data} = await sanityFetch({query: settingsQuery, perspective, stega})
   return (
     <Template>
       {data?.footer && (

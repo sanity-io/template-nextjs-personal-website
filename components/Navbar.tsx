@@ -32,7 +32,7 @@ async function DynamicNavbar() {
 async function CachedNavbar({perspective, stega}: DynamicFetchOptions) {
   'use cache'
   const {data} = await sanityFetch({query: settingsQuery, perspective, stega})
-  console.log('CachedNavbar', {perspective, stega, data})
+
   const dataAttribute =
     data?._id && data?._type
       ? createDataAttribute({
