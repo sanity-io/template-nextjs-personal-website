@@ -16,6 +16,7 @@ import {Toaster} from 'sonner'
 import {DraftModeToast} from './DraftModeToast'
 
 export async function generateMetadata(): Promise<Metadata> {
+  'use cache'
   const [{data: settings}, {data: homePage}] = await Promise.all([
     sanityFetch({query: settingsQuery, stega: false}),
     sanityFetch({query: homePageQuery, stega: false}),
@@ -44,6 +45,7 @@ export const viewport: Viewport = {
 }
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
+  'use cache'
   const {isEnabled: isDraftMode} = await draftMode()
   return (
     <>

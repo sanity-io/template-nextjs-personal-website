@@ -4,6 +4,7 @@ import {type PortableTextBlock} from 'next-sanity'
 import {CustomPortableText} from './CustomPortableText'
 
 export async function Footer() {
+  'use cache'
   const {data} = await sanityFetch({query: settingsQuery})
   return (
     <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">

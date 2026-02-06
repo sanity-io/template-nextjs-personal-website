@@ -1,5 +1,6 @@
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
+import {client} from '@/sanity/lib/client'
 import {sanityFetch} from '@/sanity/lib/live'
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
@@ -15,9 +16,10 @@ export async function generateMetadata(
   {params}: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  'use cache'
   const {data: page} = await sanityFetch({
     query: pagesBySlugQuery,
-    params,
+    params: await params,
     stega: false,
   })
 
@@ -28,17 +30,12 @@ export async function generateMetadata(
 }
 
 export async function generateStaticParams() {
-  const {data} = await sanityFetch({
-    query: slugsByTypeQuery,
-    params: {type: 'page'},
-    stega: false,
-    perspective: 'published',
-  })
-  return data
+  return client.fetch(slugsByTypeQuery, {type: 'page'})
 }
 
 export default async function PageSlugRoute({params}: Props) {
-  const {data} = await sanityFetch({query: pagesBySlugQuery, params})
+  'use cache'
+  const {data} = await sanityFetch({query: pagesBySlugQuery, params: await params})
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a page on this slug, and live reload won't work on the 404 route
   if (!data?._id && !(await draftMode()).isEnabled) {

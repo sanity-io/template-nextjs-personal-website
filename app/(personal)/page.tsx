@@ -5,6 +5,7 @@ import {homePageQuery} from '@/sanity/lib/queries'
 import Link from 'next/link'
 
 export default async function IndexRoute() {
+  'use cache'
   const {data} = await sanityFetch({query: homePageQuery})
 
   if (!data) {

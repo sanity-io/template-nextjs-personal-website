@@ -7,10 +7,8 @@ import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, stegaClean} from 'next-sanity'
 import Link from 'next/link'
 
-interface NavbarProps {
-  data: SettingsQueryResult
-}
 export async function Navbar() {
+  'use cache'
   const {data} = await sanityFetch({query: settingsQuery})
   const dataAttribute =
     data?._id && data?._type
