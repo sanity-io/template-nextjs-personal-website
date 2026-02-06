@@ -13,13 +13,14 @@ import {draftMode} from 'next/headers'
 import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
+import { Fragment } from 'react'
 
 export async function generateMetadata(): Promise<Metadata> {
   'use cache'
 
   const [{data: settings}, {data: homePage}] = await Promise.all([
-    sanityFetch({query: settingsQuery, stega: false}),
-    sanityFetch({query: homePageQuery, stega: false}),
+    sanityFetch({query: settingsQuery, stega: false, perspective: 'published'}),
+    sanityFetch({query: homePageQuery, stega: false, perspective: 'published'}),
   ])
 
   const ogImage = urlForOpenGraphImage(
@@ -47,31 +48,60 @@ export const viewport: Viewport = {
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
   return (
+    <CachedLayout
+      navbar={<Navbar key="navbar" />}
+      footer={<Footer key="footer" />}
+      live={<SanityLive key="live" includeAllDocuments={isDraftMode} onError={handleError} />}
+      visualEditing={
+        isDraftMode && (
+          <Fragment key="visual-editing">
+            <DraftModeToast
+              action={async () => {
+                'use server'
+
+                await Promise.allSettled([
+                  (await draftMode()).disable(),
+                  // Simulate a delay to show the loading state
+                  new Promise((resolve) => setTimeout(resolve, 1000)),
+                ])
+              }}
+            />
+            <VisualEditing />
+          </Fragment>
+        )
+      }
+    >
+      {children}
+    </CachedLayout>
+  )
+}
+
+async function CachedLayout({
+  children,
+  navbar,
+  footer,
+  live,
+  visualEditing,
+}: {
+  children: React.ReactNode
+  navbar: React.ReactNode
+  footer: React.ReactNode
+  live: React.ReactNode
+  visualEditing: React.ReactNode
+}) {
+  'use cache'
+
+  return (
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">
-        <Navbar />
+        {navbar}
         <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">{children}</div>
-        <Footer />
+        {footer}
         <IntroTemplate />
       </div>
       <Toaster />
-      <SanityLive includeAllDocuments={isDraftMode} onError={handleError} />
-      {isDraftMode && (
-        <>
-          <DraftModeToast
-            action={async () => {
-              'use server'
-
-              await Promise.allSettled([
-                (await draftMode()).disable(),
-                // Simulate a delay to show the loading state
-                new Promise((resolve) => setTimeout(resolve, 1000)),
-              ])
-            }}
-          />
-          <VisualEditing />
-        </>
-      )}
+      {live}
+      {visualEditing}
       <SpeedInsights />
     </>
   )
