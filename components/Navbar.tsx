@@ -1,6 +1,8 @@
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import type {SettingsQueryResult} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
+import {sanityFetch} from '@/sanity/lib/live'
+import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, stegaClean} from 'next-sanity'
 import Link from 'next/link'
@@ -8,8 +10,8 @@ import Link from 'next/link'
 interface NavbarProps {
   data: SettingsQueryResult
 }
-export function Navbar(props: NavbarProps) {
-  const {data} = props
+export async function Navbar() {
+  const {data} = await sanityFetch({query: settingsQuery})
   const dataAttribute =
     data?._id && data?._type
       ? createDataAttribute({
