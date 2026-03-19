@@ -48,47 +48,15 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
-  return (
-    <CachedLayout
-      navbar={<Navbar key="navbar" />}
-      footer={<Footer key="footer" />}
-      live={<SanityLive key="live" includeAllDocuments={isDraftMode} onError={handleError} />}
-      visualEditing={
-        isDraftMode && (
-          <Fragment key="visual-editing">
-            <DraftModeToast
-              action={async () => {
-                'use server'
-
-                await Promise.allSettled([
-                  (await draftMode()).disable(),
-                  // Simulate a delay to show the loading state
-                  new Promise((resolve) => setTimeout(resolve, 1000)),
-                ])
-              }}
-            />
-            <VisualEditing />
-          </Fragment>
-        )
-      }
-    >
-      {children}
-    </CachedLayout>
-  )
+  return <CachedLayout isDraftMode={isDraftMode}>{children}</CachedLayout>
 }
 
 async function CachedLayout({
   children,
-  navbar,
-  footer,
-  live,
-  visualEditing,
+  isDraftMode,
 }: {
   children: React.ReactNode
-  navbar: React.ReactNode
-  footer: React.ReactNode
-  live: React.ReactNode
-  visualEditing: React.ReactNode
+  isDraftMode: boolean
 }) {
   'use cache'
   cacheLife('sanity')
@@ -96,14 +64,29 @@ async function CachedLayout({
   return (
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">
-        {navbar}
+        <Navbar />
         <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">{children}</div>
-        {footer}
+        <Footer />
         <IntroTemplate />
       </div>
       <Toaster />
-      {live}
-      {visualEditing}
+      <SanityLive includeAllDocuments={isDraftMode} onError={handleError} />
+      {isDraftMode && (
+        <Fragment key="visual-editing">
+          <DraftModeToast
+            action={async () => {
+              'use server'
+
+              await Promise.allSettled([
+                (await draftMode()).disable(),
+                // Simulate a delay to show the loading state
+                new Promise((resolve) => setTimeout(resolve, 1000)),
+              ])
+            }}
+          />
+          <VisualEditing />
+        </Fragment>
+      )}
       <SpeedInsights />
     </>
   )

@@ -1,15 +1,20 @@
 import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {type PortableTextBlock} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 import {CustomPortableText} from './CustomPortableText'
 
-export function Footer() {
-  return (
-    <Suspense fallback={<Template>&nbsp;</Template>}>
-      <DynamicFooter />
-    </Suspense>
-  )
+export async function Footer() {
+  const {isEnabled} = await draftMode()
+  if (isEnabled) {
+    return (
+      <Suspense fallback={<Template>&nbsp;</Template>}>
+        <DynamicFooter />
+      </Suspense>
+    )
+  }
+  return <CachedFooter perspective="published" stega={false} />
 }
 
 async function DynamicFooter() {

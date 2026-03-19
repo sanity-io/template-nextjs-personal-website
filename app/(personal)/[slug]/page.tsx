@@ -5,6 +5,7 @@ import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/s
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {toPlainText, type PortableTextBlock} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 
 type Props = {
@@ -33,18 +34,23 @@ export async function generateMetadata(
   }
 }
 
-export default function PageSlugRoute({params}: Props) {
-  return (
-    <Suspense
-      fallback={
-        <Template>
-          <Header id={null} type={null} path={['overview']} title="Loading page…" />
-        </Template>
-      }
-    >
-      <DynamicPageSlugRoute params={params} />
-    </Suspense>
-  )
+export default async function PageSlugRoute({params}: Props) {
+  const {isEnabled} = await draftMode()
+  if (isEnabled) {
+    return (
+      <Suspense
+        fallback={
+          <Template>
+            <Header id={null} type={null} path={['overview']} title="Loading page…" />
+          </Template>
+        }
+      >
+        <DynamicPageSlugRoute params={params} />
+      </Suspense>
+    )
+  }
+  const {slug} = await params
+  return <CachedPageSlugRoute slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicPageSlugRoute({params}: Props) {

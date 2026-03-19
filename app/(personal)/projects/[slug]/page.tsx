@@ -8,6 +8,7 @@ import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, toPlainText} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
@@ -47,18 +48,23 @@ export async function generateMetadata(
   }
 }
 
-export default function ProjectSlugRoute({params}: Props) {
-  return (
-    <Suspense
-      fallback={
-        <Template>
-          <Header id={null} type={null} path={['overview']} title="Loading project" />
-        </Template>
-      }
-    >
-      <DynamicProjectSlugRoute params={params} />
-    </Suspense>
-  )
+export default async function ProjectSlugRoute({params}: Props) {
+  const {isEnabled} = await draftMode()
+  if (isEnabled) {
+    return (
+      <Suspense
+        fallback={
+          <Template>
+            <Header id={null} type={null} path={['overview']} title="Loading project" />
+          </Template>
+        }
+      >
+        <DynamicProjectSlugRoute params={params} />
+      </Suspense>
+    )
+  }
+  const {slug} = await params
+  return <CachedProjectSlugRoute slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicProjectSlugRoute({params}: Props) {

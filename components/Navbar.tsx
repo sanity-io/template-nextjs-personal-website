@@ -4,23 +4,28 @@ import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/s
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, stegaClean} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
-export function Navbar() {
-  return (
-    <Suspense
-      fallback={
-        <Template>
-          <span className="text-lg hover:text-black md:text-xl font-extrabold text-black">
-            Loading navbar…
-          </span>
-        </Template>
-      }
-    >
-      <DynamicNavbar />
-    </Suspense>
-  )
+export async function Navbar() {
+  const {isEnabled} = await draftMode()
+  if (isEnabled) {
+    return (
+      <Suspense
+        fallback={
+          <Template>
+            <span className="text-lg hover:text-black md:text-xl font-extrabold text-black">
+              Loading navbar…
+            </span>
+          </Template>
+        }
+      >
+        <DynamicNavbar />
+      </Suspense>
+    )
+  }
+  return <CachedNavbar perspective="published" stega={false} />
 }
 
 async function DynamicNavbar() {
