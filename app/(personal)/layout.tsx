@@ -48,15 +48,24 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
-  return <CachedLayout isDraftMode={isDraftMode}>{children}</CachedLayout>
+  return (
+    <CachedLayout isDraftMode={isDraftMode} navbar={<Navbar />} footer={<Footer />}>
+      {children}
+    </CachedLayout>
+  )
 }
 
 async function CachedLayout({
   children,
   isDraftMode,
+  navbar,
+  footer,
 }: {
   children: React.ReactNode
   isDraftMode: boolean
+  // Navbar and Footer may read `cookies()` when in draft mode, so they should be passed as props since this component has a 'use cache' directive
+  navbar: React.ReactNode
+  footer: React.ReactNode
 }) {
   'use cache'
   cacheLife('sanity')
@@ -64,9 +73,9 @@ async function CachedLayout({
   return (
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">
-        <Navbar />
+        {navbar}
         <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">{children}</div>
-        <Footer />
+        {footer}
         <IntroTemplate />
       </div>
       <Toaster />
