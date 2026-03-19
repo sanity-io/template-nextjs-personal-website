@@ -49,7 +49,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
   return (
-    <CachedLayout isDraftMode={isDraftMode} navbar={<Navbar />} footer={<Footer />}>
+    <CachedLayout isDraftMode={isDraftMode} navbar={<Navbar key="navbar" />} footer={<Footer key="footer" />}>
       {children}
     </CachedLayout>
   )
