@@ -22,7 +22,6 @@ export async function generateMetadata(): Promise<Metadata> {
   ])
 
   const ogImage = urlForOpenGraphImage(
-    // @ts-expect-error - @TODO update @sanity/image-url types so it's compatible
     settings?.ogImage,
   )
   return {
