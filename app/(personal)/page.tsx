@@ -6,21 +6,34 @@ import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/s
 import {homePageQuery} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const {isEnabled} = await draftMode()
+  if (isEnabled) {
+    return (
+      <Template>
+        <Suspense
+          fallback={
+            <Header id={null} type={null} path={['overview']} title="Loading home page…" centered />
+          }
+        >
+          <DynamicHomePage />
+        </Suspense>
+      </Template>
+    )
+  }
   return (
-    <div className="space-y-20">
-      <Suspense
-        fallback={
-          <Header id={null} type={null} path={['overview']} title="Loading home page…" centered />
-        }
-      >
-        <DynamicHomePage />
-      </Suspense>
-    </div>
+    <Template>
+      <CachedHomePage perspective="published" stega={false} />
+    </Template>
   )
+}
+
+function Template({children}: {children: React.ReactNode}) {
+  return <div className="space-y-20">{children}</div>
 }
 
 async function DynamicHomePage() {
