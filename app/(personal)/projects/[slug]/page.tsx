@@ -24,9 +24,7 @@ export async function generateMetadata(
     params,
     stega: false,
   })
-  const ogImage = urlForOpenGraphImage(
-    project?.coverImage,
-  )
+  const ogImage = urlForOpenGraphImage(project?.coverImage)
 
   return {
     title: project?.title,

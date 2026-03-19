@@ -21,9 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
     sanityFetch({query: homePageQuery, stega: false}),
   ])
 
-  const ogImage = urlForOpenGraphImage(
-    settings?.ogImage,
-  )
+  const ogImage = urlForOpenGraphImage(settings?.ogImage)
   return {
     title: homePage?.title
       ? {
