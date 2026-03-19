@@ -9,6 +9,7 @@ import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata, Viewport} from 'next'
 import {toPlainText} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
+import {cacheLife} from 'next/cache'
 import {draftMode} from 'next/headers'
 import {Fragment} from 'react'
 import {Toaster} from 'sonner'
@@ -90,6 +91,7 @@ async function CachedLayout({
   visualEditing: React.ReactNode
 }) {
   'use cache'
+  cacheLife('sanity')
 
   return (
     <>

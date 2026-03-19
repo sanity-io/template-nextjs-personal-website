@@ -11,15 +11,15 @@ import {Suspense} from 'react'
 
 export default function HomePage() {
   return (
-    <Suspense
-      fallback={
-        <Template>
+    <div className="space-y-20">
+      <Suspense
+        fallback={
           <Header id={null} type={null} path={['overview']} title="Loading home page…" centered />
-        </Template>
-      }
-    >
-      <DynamicHomePage />
-    </Suspense>
+        }
+      >
+        <DynamicHomePage />
+      </Suspense>
+    </div>
   )
 }
 
@@ -58,7 +58,7 @@ async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
       : null
 
   return (
-    <Template>
+    <>
       {/* Header */}
       {title && (
         <Header
@@ -93,10 +93,6 @@ async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
             })}
         </OptimisticSortOrder>
       </div>
-    </Template>
+    </>
   )
-}
-
-function Template({children}: {children: React.ReactNode}) {
-  return <div className="space-y-20">{children}</div>
 }
