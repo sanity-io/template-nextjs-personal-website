@@ -15,6 +15,14 @@ import '@sanity/client'
  * ---------------------------------------------------------------------------------
  */
 
+export declare const internalGroqTypeReferenceTo: unique symbol
+
+type ArrayOf<T> = Array<
+  T & {
+    _key: string
+  }
+>
+
 // Source: schema.json
 export type Timeline = {
   _type: 'timeline'
@@ -412,14 +420,6 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint
-
-export declare const internalGroqTypeReferenceTo: unique symbol
-
-type ArrayOf<T> = Array<
-  T & {
-    _key: string
-  }
->
 
 // Source: sanity/lib/queries.ts
 // Variable: homePageQuery

@@ -25,7 +25,6 @@ export async function generateMetadata(
     stega: false,
   })
   const ogImage = urlForOpenGraphImage(
-    // @ts-expect-error - @TODO update @sanity/image-url types so it's compatible
     project?.coverImage,
   )
 
