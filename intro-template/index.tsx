@@ -4,7 +4,7 @@ import {studioUrl} from '@/sanity/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
-import {Suspense, useSyncExternalStore} from 'react'
+import {useDeferredValue, useSyncExternalStore} from 'react'
 import cover from './cover.png'
 
 const subscribe = () => () => {}
@@ -12,20 +12,14 @@ function useAfterHydration<Snapshot>(
   getSnapshot: () => Snapshot,
   serverSnapshot: Snapshot,
 ): Snapshot {
-  return useSyncExternalStore<Snapshot>(subscribe, getSnapshot, () => serverSnapshot)
-}
-
-export function IntroTemplate() {
-  return (
-    <Suspense>
-      <ClientIntroTemplate />
-    </Suspense>
+  return useDeferredValue(
+    useSyncExternalStore<Snapshot>(subscribe, getSnapshot, () => serverSnapshot),
+    serverSnapshot,
   )
 }
 
-function ClientIntroTemplate() {
-  const studioURL = useAfterHydration(() => `${location.origin}${studioUrl}`, null)
-  const isLocalHost = useAfterHydration(() => window.location.hostname === 'localhost', false)
+export function IntroTemplate() {
+  const studioURL = useAfterHydration(() => `${location.origin}${studioUrl}`, studioUrl)
   const hasUTMtags = useAfterHydration(() => window.location.search.includes('utm'), false)
   const pathname = usePathname()
 
@@ -44,7 +38,7 @@ function ClientIntroTemplate() {
     return null
   }
 
-  if (hasUTMtags || !studioURL) {
+  if (hasUTMtags) {
     return null
   }
 
@@ -89,7 +83,7 @@ function ClientIntroTemplate() {
                 <div>
                   <div className="col-span-2 mb-2 mt-1 font-semibold">Create a schema</div>
 
-                  {isLocalHost ? (
+                  {process.env.NODE_ENV === 'development' ? (
                     <div className="text-xs text-gray-700">
                       Start editing your content structure in
                       <div className="bg-slate-200 w-fit px-2">
