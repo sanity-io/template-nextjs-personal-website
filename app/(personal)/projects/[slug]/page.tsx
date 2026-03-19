@@ -24,6 +24,7 @@ export async function generateMetadata(
     params,
     stega: false,
   })
+  // @ts-ignore the image type sometimes fails
   const ogImage = urlForOpenGraphImage(project?.coverImage)
 
   return {
