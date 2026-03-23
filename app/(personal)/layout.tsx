@@ -14,6 +14,7 @@ import {Suspense} from 'react'
 import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
+import { refresh } from 'next/cache'
 
 export async function generateMetadata(): Promise<Metadata> {
   const [{data: settings}, {data: homePage}] = await Promise.all([
@@ -64,7 +65,11 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
         </Suspense>
       </div>
       <Toaster />
-      <SanityLive onError={handleError} />
+      <SanityLive onError={handleError} action={async () => {
+        'use server'
+
+        refresh()
+      }} />
       {(await draftMode()).isEnabled && (
         <>
           <DraftModeToast
