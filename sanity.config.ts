@@ -3,6 +3,7 @@
 /**
  * This config is used to set up Sanity Studio that's mounted on the `app/studio/[[...index]]/page.tsx` route
  */
+import {debugLiveSyncTags} from '@sanity/debug-live-sync-tags'
 import {apiVersion, dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import * as resolve from '@/sanity/plugins/resolve'
 import {pageStructure, singletonPlugin} from '@/sanity/plugins/settings'
@@ -57,5 +58,6 @@ export default defineConfig({
     // Vision lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({defaultApiVersion: apiVersion}),
+    debugLiveSyncTags()
   ],
 })
