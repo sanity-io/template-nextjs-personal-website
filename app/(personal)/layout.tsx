@@ -9,6 +9,7 @@ import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata, Viewport} from 'next'
 import {toPlainText, type PortableTextBlock} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
+import {refresh, updateTag} from 'next/cache'
 import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 import {Toaster} from 'sonner'
@@ -64,7 +65,19 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
         </Suspense>
       </div>
       <Toaster />
-      <SanityLive onError={handleError} />
+      <SanityLive
+        revalidateSyncTags={async (tags) => {
+          'use server'
+          if ((await draftMode()).isEnabled) {
+            refresh()
+            return
+          }
+          for (const tag of tags) {
+            updateTag(`sanity:${tag}`)
+          }
+        }}
+        onError={handleError}
+      />
       {(await draftMode()).isEnabled && (
         <>
           <DraftModeToast
