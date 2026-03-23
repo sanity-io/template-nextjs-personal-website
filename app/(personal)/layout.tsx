@@ -65,11 +65,14 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
         </Suspense>
       </div>
       <Toaster />
-      <SanityLive onError={handleError} action={async () => {
-        'use server'
+      <SanityLive 
+        onError={handleError} 
+        // action={async () => {
+        //   'use server'
 
-        refresh()
-      }} />
+        //   refresh()
+        // }} 
+      />
       {(await draftMode()).isEnabled && (
         <>
           <DraftModeToast
