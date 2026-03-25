@@ -14,21 +14,21 @@ export default async function HomePage() {
   const {isEnabled} = await draftMode()
   if (isEnabled) {
     return (
-      <Template>
+      
         <Suspense
           fallback={
-            <Header id={null} type={null} path={['overview']} title="Loading home page…" centered />
+            <Template><Header id={null} type={null} path={['overview']} title="Loading home page…" centered /></Template>
           }
         >
           <DynamicHomePage />
         </Suspense>
-      </Template>
+      
     )
   }
   return (
-    <Template>
+    
       <CachedHomePage perspective="published" stega={false} />
-    </Template>
+    
   )
 }
 
@@ -71,7 +71,7 @@ async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
       : null
 
   return (
-    <>
+    <Template>
       {/* Header */}
       {title && (
         <Header
@@ -106,6 +106,6 @@ async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
             })}
         </OptimisticSortOrder>
       </div>
-    </>
+    </Template>
   )
 }

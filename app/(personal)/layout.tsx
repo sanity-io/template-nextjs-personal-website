@@ -79,7 +79,7 @@ async function CachedLayout({
         <IntroTemplate />
       </div>
       <Toaster />
-      <SanityLive includeAllDocuments={isDraftMode} onError={handleError} />
+      <SanityLive includeDrafts={isDraftMode} onError={handleError} />
       {isDraftMode && (
         <Fragment key="visual-editing">
           <DraftModeToast
