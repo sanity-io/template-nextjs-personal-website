@@ -22,17 +22,18 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const {slug} = await params
   const {perspective} = await getDynamicFetchOptions()
-  const {data: page} = await sanityFetch({
-    query: pagesBySlugQuery,
-    params: {slug},
-    perspective,
-    stega: false,
-  })
+  const page = await cachedMetadata({slug, perspective})
 
   return {
     title: page?.title,
     description: page?.overview ? toPlainText(page.overview) : (await parent).description,
   }
+}
+
+async function cachedMetadata({slug, perspective}: {slug: string} & Pick<DynamicFetchOptions, 'perspective'>) {
+  'use cache'
+  const {data} = await sanityFetch({query: pagesBySlugQuery, params: {slug}, perspective, stega: false})
+  return data
 }
 
 export default async function PageSlugRoute({params}: Props) {
