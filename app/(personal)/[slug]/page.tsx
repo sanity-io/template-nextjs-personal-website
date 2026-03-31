@@ -20,7 +20,6 @@ export async function generateMetadata(
   {params}: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  'use cache'
   const {slug} = await params
   const {perspective} = await getDynamicFetchOptions()
   const {data: page} = await sanityFetch({
