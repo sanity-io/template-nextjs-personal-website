@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "skills": {
+    "next-best-practices": {
+      "source": "sanity-io/next-sanity",
+      "sourceType": "github",
+      "computedHash": "f46535a3f49972384d4e73498e7d0ca77aeab3b90e7f00148a78d90cd74502fb"
+    },
+    "next-cache-components": {
+      "source": "sanity-io/next-sanity",
+      "sourceType": "github",
+      "computedHash": "76508c411bc0353708beaade7d45fbd0c84dadd4b11194f5a009b56bc6952a72"
+    },
+    "sanity-live-cache-components": {
+      "source": "sanity-io/next-sanity",
+      "sourceType": "github",
+      "computedHash": "9d65a4eac5c7295ad2a28216cb83b411f089b870b227891d8678bfab437b29b3"
+    },
+    "vercel-react-best-practices": {
+      "source": "sanity-io/next-sanity",
+      "sourceType": "github",
+      "computedHash": "5028fb241a720122b1bec1b2a3b709e47886e184f337738dc164ce08148a3b68"
+    }
+  }
+}

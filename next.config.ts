@@ -1,6 +1,9 @@
 import {NextConfig} from 'next'
+import {sanity} from 'next-sanity/live/cache-life'
 
 const config: NextConfig = {
+  cacheComponents: true,
+  cacheLife: {sanity},
   reactCompiler: true,
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
