@@ -22,9 +22,11 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   'use cache'
   const {slug} = await params
+  const {perspective} = await getDynamicFetchOptions()
   const {data: page} = await sanityFetch({
     query: pagesBySlugQuery,
     params: {slug},
+    perspective,
     stega: false,
   })
 
