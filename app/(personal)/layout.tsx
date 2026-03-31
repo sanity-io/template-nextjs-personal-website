@@ -2,7 +2,12 @@ import '@/styles/index.css'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Navbar} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
-import {sanityFetch, SanityLive} from '@/sanity/lib/live'
+import {
+  getDynamicFetchOptions,
+  sanityFetch,
+  SanityLive,
+  type DynamicFetchOptions,
+} from '@/sanity/lib/live'
 import {homePageQuery, settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import {SpeedInsights} from '@vercel/speed-insights/next'
@@ -16,9 +21,17 @@ import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 
 export async function generateMetadata(): Promise<Metadata> {
+  const {perspective} = await getDynamicFetchOptions()
+  return cachedLayoutMetadata({perspective})
+}
+
+async function cachedLayoutMetadata({
+  perspective,
+}: Pick<DynamicFetchOptions, 'perspective'>): Promise<Metadata> {
+  'use cache'
   const [{data: settings}, {data: homePage}] = await Promise.all([
-    sanityFetch({query: settingsQuery, stega: false}),
-    sanityFetch({query: homePageQuery, stega: false}),
+    sanityFetch({query: settingsQuery, stega: false, perspective}),
+    sanityFetch({query: homePageQuery, stega: false, perspective}),
   ])
 
   // @ts-ignore the image type sometimes fails
@@ -42,30 +55,32 @@ export const viewport: Viewport = {
 }
 
 export default async function IndexRoute({children}: {children: React.ReactNode}) {
-  const {data} = await sanityFetch({query: settingsQuery})
+  const {isEnabled: isDraftMode} = await draftMode()
   return (
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">
-        <Navbar data={data} />
+        {isDraftMode ? (
+          <Suspense fallback={<Navbar perspective="published" stega={false} />}>
+            <DynamicNavbar />
+          </Suspense>
+        ) : (
+          <Navbar perspective="published" stega={false} />
+        )}
         <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">{children}</div>
-        <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">
-          {data?.footer && (
-            <CustomPortableText
-              id={data._id}
-              type={data._type}
-              path={['footer']}
-              paragraphClasses="text-md md:text-xl"
-              value={data.footer as unknown as PortableTextBlock[]}
-            />
-          )}
-        </footer>
+        {isDraftMode ? (
+          <Suspense fallback={<Footer perspective="published" stega={false} />}>
+            <DynamicFooter />
+          </Suspense>
+        ) : (
+          <Footer perspective="published" stega={false} />
+        )}
         <Suspense>
           <IntroTemplate />
         </Suspense>
       </div>
       <Toaster />
-      <SanityLive onError={handleError} />
-      {(await draftMode()).isEnabled && (
+      <SanityLive includeDrafts={isDraftMode} onError={handleError} />
+      {isDraftMode && (
         <>
           <DraftModeToast
             action={async () => {
@@ -83,5 +98,36 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
       )}
       <SpeedInsights />
     </>
+  )
+}
+
+async function DynamicNavbar() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+  return <Navbar perspective={perspective} stega={stega} />
+}
+
+async function DynamicFooter() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+  return <Footer perspective={perspective} stega={stega} />
+}
+
+async function Footer({
+  perspective,
+  stega,
+}: Pick<DynamicFetchOptions, 'perspective' | 'stega'>) {
+  'use cache'
+  const {data} = await sanityFetch({query: settingsQuery, perspective, stega})
+  return (
+    <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">
+      {data?.footer && (
+        <CustomPortableText
+          id={data._id}
+          type={data._type}
+          path={['footer']}
+          paragraphClasses="text-md md:text-xl"
+          value={data.footer as unknown as PortableTextBlock[]}
+        />
+      )}
+    </footer>
   )
 }
