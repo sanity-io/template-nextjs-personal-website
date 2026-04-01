@@ -42,7 +42,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
     "@ianvs/prettier-plugin-sort-imports": "4.7.0",
-    "@sanity/prettier-config": "2.0.1",
+    "@sanity/prettier-config": "3.0.0",
     "@types/react": "19.2.2",
     "autoprefixer": "10.4.21",
     "babel-plugin-react-compiler": "1.0.0",
