@@ -55,7 +55,7 @@ export default async function ProjectSlugRoute({params}: Props) {
       <Suspense
         fallback={
           <Template>
-            <Header id={null} type={null} path={['overview']} title="Loading project" />
+            <Header id={null} type={null} path={['overview']} title="Loading project" isDraftMode={false} />
           </Template>
         }
       >
@@ -64,20 +64,21 @@ export default async function ProjectSlugRoute({params}: Props) {
     )
   }
   const {slug} = await params
-  return <CachedProjectSlugRoute slug={slug} perspective="published" stega={false} />
+  return <CachedProjectSlugRoute slug={slug} perspective="published" stega={false} isDraftMode={false} />
 }
 
 async function DynamicProjectSlugRoute({params}: Props) {
   const {slug} = await params
-  const {perspective, stega} = await getDynamicFetchOptions()
-  return <CachedProjectSlugRoute slug={slug} perspective={perspective} stega={stega} />
+  const {perspective, stega, isDraftMode} = await getDynamicFetchOptions()
+  return <CachedProjectSlugRoute slug={slug} perspective={perspective} stega={stega} isDraftMode={isDraftMode} />
 }
 
 async function CachedProjectSlugRoute({
   slug,
   perspective,
   stega,
-}: {slug: string} & DynamicFetchOptions) {
+  isDraftMode,
+}: {slug: string} & DynamicFetchOptions & {isDraftMode: boolean}) {
   'use cache'
   const {data} = await sanityFetch({query: projectBySlugQuery, params: {slug}, perspective, stega})
 
@@ -105,6 +106,7 @@ async function CachedProjectSlugRoute({
         path={['overview']}
         title={title || (data?._id ? 'Untitled' : '404 Project Not Found')}
         description={overview}
+        isDraftMode={isDraftMode}
       />
 
       <div className="rounded-md border">
@@ -172,6 +174,7 @@ async function CachedProjectSlugRoute({
           path={['description']}
           paragraphClasses="font-serif max-w-3xl text-xl text-gray-600"
           value={description as any}
+          isDraftMode={isDraftMode}
         />
       )}
     </Template>

@@ -32,7 +32,6 @@
     "next-sanity": "13.0.0-cache-components.33",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-live-transitions": "0.2.0",
     "rxjs": "7.8.2",
     "sanity": "5.18.0",
     "sanity-plugin-asset-source-unsplash": "7.0.5",

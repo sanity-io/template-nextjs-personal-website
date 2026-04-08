@@ -17,7 +17,7 @@ export default async function HomePage() {
       
         <Suspense
           fallback={
-            <Template><Header id={null} type={null} path={['overview']} title="Loading home page…" centered /></Template>
+            <Template><Header id={null} type={null} path={['overview']} title="Loading home page…" centered isDraftMode={false} /></Template>
           }
         >
           <DynamicHomePage />
@@ -26,9 +26,7 @@ export default async function HomePage() {
     )
   }
   return (
-    
-      <CachedHomePage perspective="published" stega={false} />
-    
+      <CachedHomePage perspective="published" stega={false} isDraftMode={false} />
   )
 }
 
@@ -37,12 +35,12 @@ function Template({children}: {children: React.ReactNode}) {
 }
 
 async function DynamicHomePage() {
-  const {perspective, stega} = await getDynamicFetchOptions()
+  const {perspective, stega, isDraftMode} = await getDynamicFetchOptions()
 
-  return <CachedHomePage perspective={perspective} stega={stega} />
+  return <CachedHomePage perspective={perspective} stega={stega} isDraftMode={isDraftMode} />
 }
 
-async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
+async function CachedHomePage({perspective, stega, isDraftMode}: Pick<DynamicFetchOptions, 'perspective' | 'stega' | 'isDraftMode'>) {
   'use cache'
   const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
 
@@ -81,11 +79,12 @@ async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
           centered
           title={title}
           description={overview}
+          isDraftMode={isDraftMode}
         />
       )}
       {/* Showcase projects */}
       <div className="mx-auto max-w-[100rem] rounded-md border">
-        <OptimisticSortOrder id={data?._id} path={'showcaseProjects'}>
+        <OptimisticSortOrder id={data?._id} path={'showcaseProjects'} isDraftMode={isDraftMode}>
           {showcaseProjects &&
             showcaseProjects.length > 0 &&
             showcaseProjects.map((project) => {
@@ -100,7 +99,7 @@ async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
                   href={href}
                   data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
                 >
-                  <ProjectListItem project={project as any} />
+                  <ProjectListItem project={project as any} isDraftMode={isDraftMode} />
                 </Link>
               )
             })}

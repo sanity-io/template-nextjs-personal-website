@@ -27,6 +27,7 @@ export interface OptimisticSortOrderProps {
  */
 
 export default function OptimisticSortOrder(props: OptimisticSortOrderProps) {
+  console.log('THIS SHOULD NOT BE IN BROWSER BUNDLE')
   const {children, id, path} = props
   const childrenLength = Children.count(children)
 

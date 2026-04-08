@@ -1,5 +1,6 @@
 import ImageBox from '@/components/ImageBox'
 import {TimelineSection} from '@/components/TimelineSection'
+import type { DynamicFetchOptions } from '@/sanity/lib/live'
 import type {PathSegment} from '@sanity/client/csm'
 import {PortableText, type PortableTextBlock, type PortableTextComponents} from 'next-sanity'
 import type {Image} from 'sanity'
@@ -10,13 +11,14 @@ export function CustomPortableText({
   path,
   paragraphClasses,
   value,
+  isDraftMode,
 }: {
   id: string | null
   type: string | null
   path: PathSegment[]
   paragraphClasses?: string
   value: PortableTextBlock[]
-}) {
+} & Pick<DynamicFetchOptions, 'isDraftMode'>) {
   const components: PortableTextComponents = {
     block: {
       normal: ({children}) => {
@@ -56,6 +58,7 @@ export function CustomPortableText({
             type={type}
             path={[...path, {_key}, 'items']}
             timelines={items}
+            isDraftMode={isDraftMode}
           />
         )
       },

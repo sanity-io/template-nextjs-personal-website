@@ -1,23 +1,24 @@
-import {draftMode} from 'next/headers'
 import {lazy, Suspense} from 'react'
 import type {OptimisticSortOrderProps} from './index.client'
+import type { DynamicFetchOptions } from '@/sanity/lib/live'
 
-const LazyOptimisticSortOrder = lazy(() => import('./index.client'))
+
+const LazyOptimisticSortOrder = lazy(() => import('./index.client.nopreload'))
 
 /**
  * Optimistic sort ordering is only used when editing the website from Sanity Studio, so it's only actually loaded in Draft Mode.
  */
 
-export async function OptimisticSortOrder(
-  props: Omit<OptimisticSortOrderProps, 'id'> & {id?: string | null},
+export  function OptimisticSortOrder(
+  props: Omit<OptimisticSortOrderProps, 'id'> & {id?: string | null} & Pick<DynamicFetchOptions, 'isDraftMode'>,
 ) {
-  const {children, id, path} = props
+  const {children, id, path, isDraftMode} = props
 
   if (!id) {
     return children
   }
-  const {isEnabled} = await draftMode()
-  if (!isEnabled) {
+
+  if (!isDraftMode) {
     return children
   }
 

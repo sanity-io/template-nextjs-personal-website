@@ -10,16 +10,17 @@ export const {SanityLive, sanityFetch} = defineLive({
 })
 
 export interface DynamicFetchOptions {
+  isDraftMode: boolean
   perspective: LivePerspective
   stega: boolean
 }
 export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
   const {isEnabled: isDraftMode} = await draftMode()
   if (!isDraftMode) {
-    return {perspective: 'published', stega: false}
+    return {isDraftMode, perspective: 'published', stega: false}
   }
 
   const jar = await cookies()
   const perspective = await resolvePerspectiveFromCookies({cookies: jar})
-  return {perspective: perspective ?? 'drafts', stega: true}
+  return {isDraftMode, perspective: perspective ?? 'drafts', stega: true}
 }

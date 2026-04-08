@@ -43,7 +43,7 @@ export default async function PageSlugRoute({params}: Props) {
       <Suspense
         fallback={
           <Template>
-            <Header id={null} type={null} path={['overview']} title="Loading page…" />
+            <Header id={null} type={null} path={['overview']} title="Loading page…" isDraftMode={false} />
           </Template>
         }
       >
@@ -52,20 +52,21 @@ export default async function PageSlugRoute({params}: Props) {
     )
   }
   const {slug} = await params
-  return <CachedPageSlugRoute slug={slug} perspective="published" stega={false} />
+  return <CachedPageSlugRoute slug={slug} perspective="published" stega={false} isDraftMode={false} />
 }
 
 async function DynamicPageSlugRoute({params}: Props) {
   const {slug} = await params
-  const {perspective, stega} = await getDynamicFetchOptions()
+  const {perspective, stega, isDraftMode} = await getDynamicFetchOptions()
 
-  return <CachedPageSlugRoute slug={slug} perspective={perspective} stega={stega} />
+  return <CachedPageSlugRoute slug={slug} perspective={perspective} stega={stega} isDraftMode={isDraftMode} />
 }
 
 async function CachedPageSlugRoute({
   slug,
   perspective,
   stega,
+  isDraftMode,
 }: {slug: string} & DynamicFetchOptions) {
   'use cache'
   const {data} = await sanityFetch({query: pagesBySlugQuery, params: {slug}, perspective, stega})
@@ -81,6 +82,7 @@ async function CachedPageSlugRoute({
         path={['overview']}
         title={title || (data?._id ? 'Untitled' : '404 Page Not Found')}
         description={overview}
+        isDraftMode={isDraftMode}
       />
 
       {/* Body */}
@@ -91,6 +93,7 @@ async function CachedPageSlugRoute({
           path={['body']}
           paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
           value={body as unknown as PortableTextBlock[]}
+          isDraftMode={isDraftMode}
         />
       )}
     </Template>

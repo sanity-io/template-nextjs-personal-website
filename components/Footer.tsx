@@ -14,16 +14,16 @@ export async function Footer() {
       </Suspense>
     )
   }
-  return <CachedFooter perspective="published" stega={false} />
+  return <CachedFooter perspective="published" stega={false} isDraftMode={false} />
 }
 
 async function DynamicFooter() {
-  const {perspective, stega} = await getDynamicFetchOptions()
+  const {perspective, stega, isDraftMode} = await getDynamicFetchOptions()
 
-  return <CachedFooter perspective={perspective} stega={stega} />
+  return <CachedFooter perspective={perspective} stega={stega} isDraftMode={isDraftMode} />
 }
 
-async function CachedFooter({perspective, stega}: DynamicFetchOptions) {
+async function CachedFooter({perspective, stega, isDraftMode}: Pick<DynamicFetchOptions, 'perspective' | 'stega' | 'isDraftMode'>) {
   'use cache'
   const {data} = await sanityFetch({query: settingsQuery, perspective, stega})
   return (
@@ -35,6 +35,7 @@ async function CachedFooter({perspective, stega}: DynamicFetchOptions) {
           path={['footer']}
           paragraphClasses="text-md md:text-xl"
           value={data.footer as unknown as PortableTextBlock[]}
+          isDraftMode={isDraftMode}
         />
       )}
     </Template>

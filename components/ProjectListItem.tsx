@@ -1,5 +1,6 @@
 import {CustomPortableText} from '@/components/CustomPortableText'
 import ImageBox from '@/components/ImageBox'
+import type { DynamicFetchOptions } from '@/sanity/lib/live'
 import type {ShowcaseProject} from '@/types'
 import type {PortableTextBlock} from 'next-sanity'
 
@@ -7,8 +8,8 @@ interface ProjectProps {
   project: ShowcaseProject
 }
 
-export function ProjectListItem(props: ProjectProps) {
-  const {project} = props
+export function ProjectListItem(props: ProjectProps & Pick<DynamicFetchOptions, 'isDraftMode'>) {
+  const {project, isDraftMode} = props
 
   return (
     <>
@@ -20,13 +21,13 @@ export function ProjectListItem(props: ProjectProps) {
         />
       </div>
       <div className="flex xl:w-1/4">
-        <TextBox project={project} />
+        <TextBox project={project} isDraftMode={isDraftMode} />
       </div>
     </>
   )
 }
 
-function TextBox({project}: {project: ShowcaseProject}) {
+function TextBox({project, isDraftMode}: {project: ShowcaseProject} & Pick<DynamicFetchOptions, 'isDraftMode'>) {
   return (
     <div className="relative mt-2 flex w-full flex-col justify-between p-3 xl:mt-0">
       <div>
@@ -41,6 +42,7 @@ function TextBox({project}: {project: ShowcaseProject}) {
             type={project._type}
             path={['overview']}
             value={project.overview as PortableTextBlock[]}
+            isDraftMode={isDraftMode}
           />
         </div>
       </div>

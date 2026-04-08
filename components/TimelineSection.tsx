@@ -4,6 +4,7 @@ import type {MilestoneItem} from '@/types'
 import type {StudioPathLike} from '@sanity/client/csm'
 import {createDataAttribute, stegaClean} from 'next-sanity'
 import {OptimisticSortOrder} from './OptimisticSortOrder'
+import type { DynamicFetchOptions } from '@/sanity/lib/live'
 
 interface TimelineItem {
   _key: string
@@ -16,12 +17,13 @@ export function TimelineSection({
   id,
   type,
   path,
+  isDraftMode,
 }: {
   timelines: TimelineItem[]
   id: string | null
   type: string | null
   path: StudioPathLike
-}) {
+} & Pick<DynamicFetchOptions, 'isDraftMode'>) {
   const dataAttribute =
     id && type
       ? createDataAttribute({
@@ -37,7 +39,7 @@ export function TimelineSection({
       className="flex flex-col gap-4 pt-16 text-black md:flex-row"
       data-sanity={dataAttribute?.()}
     >
-      <OptimisticSortOrder id={id} path={path}>
+      <OptimisticSortOrder id={id} path={path} isDraftMode={isDraftMode}>
         {timelines?.map((timeline) => {
           const {title, milestones, _key} = timeline
           return (
@@ -47,7 +49,7 @@ export function TimelineSection({
               data-sanity={dataAttribute?.([{_key}])}
             >
               <div className="pb-5 font-sans text-xl font-bold">{stegaClean(title)}</div>
-              <OptimisticSortOrder id={id} path={[...path, {_key}, 'milestones']}>
+              <OptimisticSortOrder id={id} path={[...path, {_key}, 'milestones']} isDraftMode={isDraftMode}>
                 {milestones?.map((experience) => (
                   <div
                     key={experience._key}
