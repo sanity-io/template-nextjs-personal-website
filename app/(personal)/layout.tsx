@@ -55,7 +55,7 @@ export default async function IndexRoute({children}: {children: React.ReactNode}
               type={data._type}
               path={['footer']}
               paragraphClasses="text-md md:text-xl"
-              value={data.footer as unknown as PortableTextBlock[]}
+              value={data.footer}
             />
           )}
         </footer>

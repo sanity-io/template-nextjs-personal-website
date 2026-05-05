@@ -66,7 +66,7 @@ export default async function PageSlugRoute({params}: Props) {
             type={data?._type || null}
             path={['body']}
             paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
-            value={body as unknown as PortableTextBlock[]}
+            value={body}
           />
         )}
       </div>

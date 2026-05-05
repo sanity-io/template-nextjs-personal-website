@@ -1,8 +1,15 @@
 import ImageBox from '@/components/ImageBox'
 import {TimelineSection} from '@/components/TimelineSection'
 import type {PathSegment} from '@sanity/client/csm'
-import {PortableText, type PortableTextBlock, type PortableTextComponents} from 'next-sanity'
-import type {Image} from 'sanity'
+import {PortableText} from 'next-sanity'
+import {type InferTypedObjectFromAllSanitySchemaTypes, type InferStrictPortableTextComponents} from '@portabletext/react'
+import type {SanityQueries} from '@sanity/client'
+import Link from 'next/link';
+
+
+type PortableTextValue = InferTypedObjectFromAllSanitySchemaTypes<
+      SanityQueries[keyof SanityQueries]
+    >
 
 export function CustomPortableText({
   id,
@@ -15,9 +22,9 @@ export function CustomPortableText({
   type: string | null
   path: PathSegment[]
   paragraphClasses?: string
-  value: PortableTextBlock[]
+  value: PortableTextValue[] | null | undefined
 }) {
-  const components: PortableTextComponents = {
+  const components = {
     block: {
       normal: ({children}) => {
         return <p className={paragraphClasses}>{children}</p>
@@ -25,19 +32,21 @@ export function CustomPortableText({
     },
     marks: {
       link: ({children, value}) => {
+        if(!value?.href) return children
+        
         return (
-          <a
+          <Link
             className="underline transition hover:opacity-50"
-            href={value?.href}
+            href={value.href}
             rel="noreferrer noopener"
           >
             {children}
-          </a>
+          </Link>
         )
       },
     },
     types: {
-      image: ({value}: {value: Image & {alt?: string; caption?: string}}) => {
+      image: ({value}) => {
         return (
           <div className="my-6 space-y-2">
             <ImageBox image={value} alt={value.alt} classesWrapper="relative aspect-[16/9]" />
@@ -60,7 +69,7 @@ export function CustomPortableText({
         )
       },
     },
-  }
+  } satisfies InferStrictPortableTextComponents<PortableTextValue>
 
   return <PortableText components={components} value={value} />
 }

@@ -1,14 +1,14 @@
 import {TimelineItem} from '@/components/TimelineItem'
+import type {Milestone} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
-import type {MilestoneItem} from '@/types'
 import type {StudioPathLike} from '@sanity/client/csm'
 import {createDataAttribute, stegaClean} from 'next-sanity'
 import {OptimisticSortOrder} from './OptimisticSortOrder'
 
 interface TimelineItem {
   _key: string
-  title: string
-  milestones: MilestoneItem[]
+  title?: string
+  milestones?: (Milestone & {_key: string})[]
 }
 
 export function TimelineSection({
@@ -17,7 +17,7 @@ export function TimelineSection({
   type,
   path,
 }: {
-  timelines: TimelineItem[]
+  timelines: TimelineItem[] | undefined
   id: string | null
   type: string | null
   path: StudioPathLike
