@@ -1,7 +1,7 @@
 import ImageBox from '@/components/ImageBox'
-import type {MilestoneItem} from '@/types'
+import type {Milestone} from '@/sanity.types'
 
-export function TimelineItem({milestone}: {milestone: MilestoneItem}) {
+export function TimelineItem({milestone}: {milestone: Milestone}) {
   const {description, duration, image, tags, title} = milestone
   const startYear = duration?.start ? new Date(duration.start).getFullYear() : undefined
   const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
