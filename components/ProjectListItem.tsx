@@ -1,15 +1,13 @@
 import {CustomPortableText} from '@/components/CustomPortableText'
 import ImageBox from '@/components/ImageBox'
-import type {ShowcaseProject} from '@/types'
+import type {Project} from '@/sanity.types'
 import type {PortableTextBlock} from 'next-sanity'
 
 interface ProjectProps {
-  project: ShowcaseProject
+  project: Project
 }
 
-export function ProjectListItem(props: ProjectProps) {
-  const {project} = props
-
+export function ProjectListItem({project}: ProjectProps) {
   return (
     <>
       <div className="w-full xl:w-9/12">
@@ -26,7 +24,7 @@ export function ProjectListItem(props: ProjectProps) {
   )
 }
 
-function TextBox({project}: {project: ShowcaseProject}) {
+function TextBox({project}: ProjectProps) {
   return (
     <div className="relative mt-2 flex w-full flex-col justify-between p-3 xl:mt-0">
       <div>

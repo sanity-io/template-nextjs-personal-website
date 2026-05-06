@@ -2,6 +2,7 @@ import ImageBox from '@/components/ImageBox'
 import {TimelineSection} from '@/components/TimelineSection'
 import type {PathSegment} from '@sanity/client/csm'
 import {PortableText, type PortableTextBlock, type PortableTextComponents} from 'next-sanity'
+import Link from 'next/link'
 import type {Image} from 'sanity'
 
 export function CustomPortableText({
@@ -25,14 +26,16 @@ export function CustomPortableText({
     },
     marks: {
       link: ({children, value}) => {
+        if (!value?.href) return children
+
         return (
-          <a
+          <Link
             className="underline transition hover:opacity-50"
-            href={value?.href}
+            href={value.href}
             rel="noreferrer noopener"
           >
             {children}
-          </a>
+          </Link>
         )
       },
     },
