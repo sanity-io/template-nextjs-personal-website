@@ -1,7 +1,6 @@
 import {CustomPortableText} from '@/components/CustomPortableText'
 import ImageBox from '@/components/ImageBox'
 import type {Project} from '@/sanity.types'
-import type {PortableTextBlock} from 'next-sanity'
 
 interface ProjectProps {
   project: Project
@@ -33,14 +32,16 @@ function TextBox({project}: ProjectProps) {
           {project.title}
         </div>
         {/* Overview  */}
-        <div className="font-serif text-gray-500">
-          <CustomPortableText
-            id={project._id}
-            type={project._type}
-            path={['overview']}
-            value={project.overview as PortableTextBlock[]}
-          />
-        </div>
+        {Array.isArray(project.overview) && (
+          <div className="font-serif text-gray-500">
+            <CustomPortableText
+              id={project._id}
+              type={project._type}
+              path={['overview']}
+              value={project.overview}
+            />
+          </div>
+        )}
       </div>
       {/* Tags */}
       <div className="mt-4 flex flex-row gap-x-2">

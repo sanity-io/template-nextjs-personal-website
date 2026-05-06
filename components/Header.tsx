@@ -19,7 +19,7 @@ export function Header(props: HeaderProps) {
       {/* Title */}
       {title && <div className="text-3xl font-extrabold tracking-tight md:text-5xl">{title}</div>}
       {/* Description */}
-      {description && (
+      {Array.isArray(description) && (
         <div className="mt-4 text-pretty font-serif text-xl text-gray-600 md:text-2xl">
           <CustomPortableText id={id} type={type} path={path} value={description} />
         </div>

@@ -4,7 +4,7 @@ import {sanityFetch} from '@/sanity/lib/live'
 import {homePageQuery} from '@/sanity/lib/queries'
 import Link from 'next/link'
 
-export default async function IndexRoute() {
+export default async function IndexPage() {
   const {data} = await sanityFetch({query: homePageQuery})
 
   if (!data) {

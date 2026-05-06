@@ -1,9 +1,13 @@
 import ImageBox from '@/components/ImageBox'
 import {TimelineSection} from '@/components/TimelineSection'
 import type {PathSegment} from '@sanity/client/csm'
-import {PortableText, type PortableTextBlock, type PortableTextComponents} from 'next-sanity'
+import {
+  PortableText,
+  type InferStrictComponents,
+  type InferValue,
+  type SanityQueries,
+} from 'next-sanity'
 import Link from 'next/link'
-import type {Image} from 'sanity'
 
 export function CustomPortableText({
   id,
@@ -16,9 +20,9 @@ export function CustomPortableText({
   type: string | null
   path: PathSegment[]
   paragraphClasses?: string
-  value: PortableTextBlock[]
+  value: InferValue<SanityQueries[keyof SanityQueries]>
 }) {
-  const components: PortableTextComponents = {
+  const components = {
     block: {
       normal: ({children}) => {
         return <p className={paragraphClasses}>{children}</p>
@@ -40,7 +44,7 @@ export function CustomPortableText({
       },
     },
     types: {
-      image: ({value}: {value: Image & {alt?: string; caption?: string}}) => {
+      image: ({value}) => {
         return (
           <div className="my-6 space-y-2">
             <ImageBox image={value} alt={value.alt} classesWrapper="relative aspect-[16/9]" />
@@ -51,7 +55,7 @@ export function CustomPortableText({
         )
       },
       timeline: ({value}) => {
-        const {items, _key} = value || {}
+        const {items, _key} = value
         return (
           <TimelineSection
             key={_key}
@@ -63,7 +67,7 @@ export function CustomPortableText({
         )
       },
     },
-  }
+  } satisfies InferStrictComponents<typeof value>
 
   return <PortableText components={components} value={value} />
 }
