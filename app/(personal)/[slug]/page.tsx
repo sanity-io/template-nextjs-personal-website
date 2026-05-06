@@ -3,21 +3,18 @@ import {Header} from '@/components/Header'
 import {sanityFetch} from '@/sanity/lib/live'
 import {pagesBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
-import {toPlainText, type PortableTextBlock} from 'next-sanity'
+import {toPlainText} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 
-type Props = {
-  params: Promise<{slug: string}>
-}
-
 export async function generateMetadata(
-  {params}: Props,
+  {params}: PageProps<'/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const {slug} = await params
   const {data: page} = await sanityFetch({
     query: pagesBySlugQuery,
-    params,
+    params: {slug},
     stega: false,
   })
 
@@ -37,8 +34,9 @@ export async function generateStaticParams() {
   return data
 }
 
-export default async function PageSlugRoute({params}: Props) {
-  const {data} = await sanityFetch({query: pagesBySlugQuery, params})
+export default async function SlugPage({params}: PageProps<'/[slug]'>) {
+  const {slug} = await params
+  const {data} = await sanityFetch({query: pagesBySlugQuery, params: {slug}})
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a page on this slug, and live reload won't work on the 404 route
   if (!data?._id && !(await draftMode()).isEnabled) {
@@ -60,13 +58,13 @@ export default async function PageSlugRoute({params}: Props) {
         />
 
         {/* Body */}
-        {body && (
+        {Array.isArray(body) && (
           <CustomPortableText
             id={data?._id || null}
             type={data?._type || null}
             path={['body']}
             paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
-            value={body as unknown as PortableTextBlock[]}
+            value={body}
           />
         )}
       </div>

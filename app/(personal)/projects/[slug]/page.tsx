@@ -11,17 +11,14 @@ import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
-type Props = {
-  params: Promise<{slug: string}>
-}
-
 export async function generateMetadata(
-  {params}: Props,
+  {params}: PageProps<'/projects/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const {slug} = await params
   const {data: project} = await sanityFetch({
     query: projectBySlugQuery,
-    params,
+    params: {slug},
     stega: false,
   })
   // @ts-ignore the image type sometimes fails
@@ -48,8 +45,9 @@ export async function generateStaticParams() {
   return data
 }
 
-export default async function ProjectSlugRoute({params}: Props) {
-  const {data} = await sanityFetch({query: projectBySlugQuery, params})
+export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
+  const {slug} = await params
+  const {data} = await sanityFetch({query: projectBySlugQuery, params: {slug}})
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a project on this slug, and live reload won't work on the 404 route
   if (!data?._id && !(await draftMode()).isEnabled) {
@@ -141,13 +139,13 @@ export default async function ProjectSlugRoute({params}: Props) {
         </div>
 
         {/* Description */}
-        {description && (
+        {Array.isArray(description) && (
           <CustomPortableText
             id={data?._id || null}
             type={data?._type || null}
             path={['description']}
             paragraphClasses="font-serif max-w-3xl text-xl text-gray-600"
-            value={description as any}
+            value={description}
           />
         )}
       </div>
