@@ -14,7 +14,7 @@
     "typegen": "sanity schema extract && sanity typegen generate"
   },
   "dependencies": {
-    "@next/env": "16.2.4",
+    "@next/env": "16.2.5",
     "@sanity/client": "7.22.0",
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "3.7.4",
@@ -26,10 +26,10 @@
     "@vercel/speed-insights": "2.0.0",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
-    "next": "16.2.4",
+    "next": "16.2.5",
     "next-sanity": "12.4.3",
-    "react": "19.2.5",
-    "react-dom": "19.2.5",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
     "react-live-transitions": "0.2.0",
     "rxjs": "7.8.2",
     "sanity": "5.24.0",
