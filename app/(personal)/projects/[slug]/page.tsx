@@ -3,7 +3,7 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
-import {projectBySlugQuery, slugsByTypeQuery} from '@/sanity/lib/queries'
+import {projectBySlugQuery, slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, toPlainText} from 'next-sanity'
@@ -14,7 +14,7 @@ import {notFound} from 'next/navigation'
 export async function generateStaticParams() {
   const {data} = await sanityFetch({
     query: slugsByTypeQuery,
-    params: {type: 'project'},
+    params: {type: 'project'} satisfies SlugsByTypeQueryParams,
     stega: false,
     perspective: 'published',
   })

@@ -1,4 +1,5 @@
 import {defineQuery} from 'next-sanity'
+import type {AllSanitySchemaTypes, Slug} from '@/sanity.types'
 
 export const homePageQuery = defineQuery(`
   *[_type == "home"][0]{
@@ -68,3 +69,15 @@ export const settingsQuery = defineQuery(`
 export const slugsByTypeQuery = defineQuery(`
   *[_type == $type && defined(slug.current)]{"slug": slug.current}
 `)
+// Infer valid `type` params from all TypeGen schema types that has a top-level `slug` field
+export type SlugsByTypeQueryParams = {
+  type: AllSanitySchemaTypes extends infer SchemaType
+    ? SchemaType extends unknown
+      ? 'slug' extends keyof SchemaType
+        ? SchemaType extends {_type: infer Type extends string; slug?: Slug}
+          ? Type
+          : never
+        : never
+      : never
+    : never
+}
