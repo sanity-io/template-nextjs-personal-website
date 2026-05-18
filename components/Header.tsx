@@ -6,7 +6,7 @@ interface HeaderProps {
   type: string | null
   path: PathSegment[]
   centered?: boolean
-  description?: null | any[]
+  description?: null | React.ComponentProps<typeof CustomPortableText>['value']
   title?: string | null
 }
 export function Header(props: HeaderProps) {

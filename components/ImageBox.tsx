@@ -1,8 +1,9 @@
 import {urlForImage} from '@/sanity/lib/utils'
+import type {SanityImageSource} from '@sanity/image-url'
 import Image from 'next/image'
 
 interface ImageBoxProps {
-  'image'?: {asset?: any}
+  'image'?: SanityImageSource | null | undefined
   'alt'?: string
   'width'?: number
   'height'?: number

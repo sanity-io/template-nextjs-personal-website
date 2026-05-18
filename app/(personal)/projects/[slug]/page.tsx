@@ -102,7 +102,7 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
           {/* Image  */}
           <ImageBox
             data-sanity={dataAttribute?.('coverImage')}
-            image={coverImage as any}
+            image={coverImage}
             // @TODO add alt field in schema
             alt=""
             classesWrapper="relative aspect-[16/9]"
