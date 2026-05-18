@@ -21,7 +21,6 @@ export async function generateMetadata(): Promise<Metadata> {
     sanityFetch({query: homePageQuery, stega: false}),
   ])
 
-  // @ts-ignore the image type sometimes fails
   const ogImage = urlForOpenGraphImage(settings?.ogImage)
   return {
     title: homePage?.title

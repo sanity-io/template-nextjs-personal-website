@@ -7,6 +7,16 @@ import {toPlainText} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 
+export async function generateStaticParams() {
+  const {data} = await sanityFetch({
+    query: slugsByTypeQuery,
+    params: {type: 'page'},
+    stega: false,
+    perspective: 'published',
+  })
+  return data
+}
+
 export async function generateMetadata(
   {params}: PageProps<'/[slug]'>,
   parent: ResolvingMetadata,
@@ -22,16 +32,6 @@ export async function generateMetadata(
     title: page?.title,
     description: page?.overview ? toPlainText(page.overview) : (await parent).description,
   }
-}
-
-export async function generateStaticParams() {
-  const {data} = await sanityFetch({
-    query: slugsByTypeQuery,
-    params: {type: 'page'},
-    stega: false,
-    perspective: 'published',
-  })
-  return data
 }
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {

@@ -1,5 +1,5 @@
 import {dataset, projectId} from '@/sanity/lib/api'
-import {createImageUrlBuilder} from '@sanity/image-url'
+import {createImageUrlBuilder, type SanityImageSource} from '@sanity/image-url'
 import type {Image} from 'sanity'
 
 const imageBuilder = createImageUrlBuilder({
@@ -7,16 +7,16 @@ const imageBuilder = createImageUrlBuilder({
   dataset: dataset || '',
 })
 
-export const urlForImage = (source: Image | null | undefined) => {
+export const urlForImage = (source: SanityImageSource | null | undefined) => {
   // Ensure that source image contains a valid reference
-  if (!source?.asset?._ref) {
+  if (typeof source === 'string' || !source || ('asset' in source && !source?.asset?._ref)) {
     return undefined
   }
 
   return imageBuilder?.image(source).auto('format').fit('max')
 }
 
-export function urlForOpenGraphImage(image: Image | null | undefined) {
+export function urlForOpenGraphImage(image: SanityImageSource | null | undefined) {
   return urlForImage(image)?.width(1200).height(627).fit('crop').url()
 }
 

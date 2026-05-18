@@ -11,6 +11,16 @@ import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
+export async function generateStaticParams() {
+  const {data} = await sanityFetch({
+    query: slugsByTypeQuery,
+    params: {type: 'project'},
+    stega: false,
+    perspective: 'published',
+  })
+  return data
+}
+
 export async function generateMetadata(
   {params}: PageProps<'/projects/[slug]'>,
   parent: ResolvingMetadata,
@@ -21,7 +31,6 @@ export async function generateMetadata(
     params: {slug},
     stega: false,
   })
-  // @ts-ignore the image type sometimes fails
   const ogImage = urlForOpenGraphImage(project?.coverImage)
 
   return {
@@ -33,16 +42,6 @@ export async function generateMetadata(
         }
       : {},
   }
-}
-
-export async function generateStaticParams() {
-  const {data} = await sanityFetch({
-    query: slugsByTypeQuery,
-    params: {type: 'project'},
-    stega: false,
-    perspective: 'published',
-  })
-  return data
 }
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
