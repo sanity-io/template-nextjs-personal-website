@@ -3,10 +3,10 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
-import {projectBySlugQuery, slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
-import {createDataAttribute, toPlainText} from 'next-sanity'
+import {createDataAttribute, defineQuery} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
@@ -21,32 +21,50 @@ export async function generateStaticParams() {
   return data
 }
 
+const projectSlugPageMetadataQuery = defineQuery(`
+  *[_type == "project" && slug.current == $slug][0] {
+    coverImage,
+    title,
+    "overview": pt::text(overview),
+  }
+`)
 export async function generateMetadata(
   {params}: PageProps<'/projects/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const {slug} = await params
-  const {data: project} = await sanityFetch({
-    query: projectBySlugQuery,
+  const {data} = await sanityFetch({
+    query: projectSlugPageMetadataQuery,
     params: {slug},
     stega: false,
   })
-  const ogImage = urlForOpenGraphImage(project?.coverImage)
 
+  const ogImage = urlForOpenGraphImage(data?.coverImage)
   return {
-    title: project?.title,
-    description: project?.overview ? toPlainText(project.overview) : (await parent).description,
-    openGraph: ogImage
-      ? {
-          images: [ogImage, ...((await parent).openGraph?.images || [])],
-        }
-      : {},
+    title: data?.title,
+    description: data?.overview || (await parent).description,
+    openGraph: ogImage ? {images: [ogImage, ...((await parent).openGraph?.images || [])]} : {},
   }
 }
 
+const projectSlugPageQuery = defineQuery(`
+  *[_type == "project" && slug.current == $slug][0] {
+    _id,
+    _type,
+    client,
+    coverImage,
+    description,
+    duration,
+    overview,
+    site,
+    "slug": slug.current,
+    tags,
+    title,
+  }
+`)
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const {slug} = await params
-  const {data} = await sanityFetch({query: projectBySlugQuery, params: {slug}})
+  const {data} = await sanityFetch({query: projectSlugPageQuery, params: {slug}})
 
   // Only show the 404 page if we're in production, when in draft mode we might be about to create a project on this slug, and live reload won't work on the 404 route
   if (!data?._id && !(await draftMode()).isEnabled) {
