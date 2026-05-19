@@ -81,7 +81,7 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
   const {isEnabled: isDraftMode} = await draftMode()
   if (isDraftMode) {
     return (
-      <Suspense>
+      <Suspense fallback={<ProjectSlugPageFallback />}>
         <DynamicProjectSlugPage params={params} />
       </Suspense>
     )
@@ -207,6 +207,17 @@ async function CachedProjectSlugPage({
             value={description}
           />
         )}
+      </div>
+      <div className="absolute left-0 w-screen border-t" />
+    </div>
+  )
+}
+
+function ProjectSlugPageFallback() {
+  return (
+    <div>
+      <div className="mb-20 space-y-6">
+        <Header id={null} type={null} path={['overview']} title="Loading page&hellip;" />
       </div>
       <div className="absolute left-0 w-screen border-t" />
     </div>

@@ -35,7 +35,7 @@ export default async function IndexPage() {
   const {isEnabled: isDraftMode} = await draftMode()
   if (isDraftMode) {
     return (
-      <Suspense>
+      <Suspense fallback={<IndexPageFallback />}>
         <DynamicIndexPage />
       </Suspense>
     )
@@ -147,6 +147,14 @@ async function CachedIndexPage({perspective, stega}: DynamicFetchOptions) {
             })}
         </OptimisticSortOrder>
       </div>
+    </div>
+  )
+}
+
+function IndexPageFallback() {
+  return (
+    <div className="space-y-20">
+      <Header id={null} type={null} path={['overview']} centered title="Loading page&hellip;" />
     </div>
   )
 }

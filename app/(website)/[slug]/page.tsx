@@ -69,7 +69,7 @@ export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
   if (isDraftMode) {
     return (
-      <Suspense>
+      <Suspense fallback={<SlugPageFallback />}>
         <DynamicSlugPage params={params} />
       </Suspense>
     )
@@ -120,6 +120,17 @@ async function CachedSlugPage({
             value={body}
           />
         )}
+      </div>
+      <div className="absolute left-0 w-screen border-t" />
+    </div>
+  )
+}
+
+function SlugPageFallback() {
+  return (
+    <div>
+      <div className="mb-14">
+        <Header id={null} type={null} path={['overview']} title="Loading page&hellip;" />
       </div>
       <div className="absolute left-0 w-screen border-t" />
     </div>

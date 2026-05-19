@@ -1,6 +1,6 @@
 import '@/styles/index.css'
 import {CustomPortableText} from '@/components/CustomPortableText'
-import {Navbar} from '@/components/Navbar'
+import {Navbar, NavbarFallback} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
 import {
   getDynamicFetchOptions,
@@ -58,7 +58,7 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">
         {isDraftMode ? (
-          <Suspense>
+          <Suspense fallback={<NavbarFallback />}>
             <DynamicNavbar />
           </Suspense>
         ) : (
@@ -72,7 +72,7 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
         ) : (
           <CachedFooter perspective="published" stega={false} />
         )}
-        <Suspense>
+        <Suspense fallback={null}>
           <IntroTemplate />
         </Suspense>
       </div>
