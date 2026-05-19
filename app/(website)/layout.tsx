@@ -15,14 +15,14 @@ import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 
-const layoutMetadataQuery = defineQuery(`{
-  "settings": *[_type == "settings"][0]{ogImage},
-  "home": *[_type == "home"][0]{
-    title,
-    "overview": pt::text(overview),
-  }
-}`)
 export async function generateMetadata(): Promise<Metadata> {
+  const layoutMetadataQuery = defineQuery(`{
+    "settings": *[_type == "settings"][0]{ogImage},
+    "home": *[_type == "home"][0]{
+      title,
+      "overview": pt::text(overview),
+    }
+  }`)
   const {
     data: {settings, home},
   } = await sanityFetch({query: layoutMetadataQuery, stega: false})

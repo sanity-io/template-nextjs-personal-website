@@ -8,27 +8,27 @@ import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, defineQuery} from 'next-sanity'
 import Link from 'next/link'
 
-const homePageQuery = defineQuery(`
-  *[_type == "home"][0]{
-    _id,
-    _type,
-    overview,
-    showcaseProjects[]{
-      _key,
-      ...@->{
-        _id,
-        _type,
-        coverImage,
-        overview,
-        "slug": slug.current,
-        tags,
-        title,
-      }
-    },
-    title,
-  }
-`)
 export default async function IndexPage() {
+  const homePageQuery = defineQuery(`
+    *[_type == "home"][0]{
+      _id,
+      _type,
+      overview,
+      showcaseProjects[]{
+        _key,
+        ...@->{
+          _id,
+          _type,
+          coverImage,
+          overview,
+          "slug": slug.current,
+          tags,
+          title,
+        }
+      },
+      title,
+    }
+  `)
   const {data} = await sanityFetch({query: homePageQuery})
 
   if (!data) {

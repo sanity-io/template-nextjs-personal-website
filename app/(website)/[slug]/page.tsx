@@ -16,17 +16,17 @@ export async function generateStaticParams() {
   return data
 }
 
-const slugPageMetadataQuery = defineQuery(`
-  *[_type == "page" && slug.current == $slug][0] {
-    title,
-    "overview": pt::text(overview),
-  }
-`)
 export async function generateMetadata(
   {params}: PageProps<'/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const {slug} = await params
+  const slugPageMetadataQuery = defineQuery(`
+    *[_type == "page" && slug.current == $slug][0] {
+      title,
+      "overview": pt::text(overview),
+    }
+  `)
   const {data} = await sanityFetch({
     query: slugPageMetadataQuery,
     params: {slug},
@@ -39,18 +39,18 @@ export async function generateMetadata(
   }
 }
 
-const slugPageQuery = defineQuery(`
-  *[_type == "page" && slug.current == $slug][0] {
-    _id,
-    _type,
-    body,
-    overview,
-    title,
-    "slug": slug.current,
-  }
-`)
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const {slug} = await params
+  const slugPageQuery = defineQuery(`
+    *[_type == "page" && slug.current == $slug][0] {
+      _id,
+      _type,
+      body,
+      overview,
+      title,
+      "slug": slug.current,
+    }
+  `)
   const {data} = await sanityFetch({query: slugPageQuery, params: {slug}})
 
   if (!data?._id) notFound()

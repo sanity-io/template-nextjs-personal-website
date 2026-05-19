@@ -20,18 +20,18 @@ export async function generateStaticParams() {
   return data
 }
 
-const projectSlugPageMetadataQuery = defineQuery(`
-  *[_type == "project" && slug.current == $slug][0] {
-    coverImage,
-    title,
-    "overview": pt::text(overview),
-  }
-`)
 export async function generateMetadata(
   {params}: PageProps<'/projects/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const {slug} = await params
+  const projectSlugPageMetadataQuery = defineQuery(`
+    *[_type == "project" && slug.current == $slug][0] {
+      coverImage,
+      title,
+      "overview": pt::text(overview),
+    }
+  `)
   const {data} = await sanityFetch({
     query: projectSlugPageMetadataQuery,
     params: {slug},
@@ -46,23 +46,23 @@ export async function generateMetadata(
   }
 }
 
-const projectSlugPageQuery = defineQuery(`
-  *[_type == "project" && slug.current == $slug][0] {
-    _id,
-    _type,
-    client,
-    coverImage,
-    description,
-    duration,
-    overview,
-    site,
-    "slug": slug.current,
-    tags,
-    title,
-  }
-`)
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const {slug} = await params
+  const projectSlugPageQuery = defineQuery(`
+    *[_type == "project" && slug.current == $slug][0] {
+      _id,
+      _type,
+      client,
+      coverImage,
+      description,
+      duration,
+      overview,
+      site,
+      "slug": slug.current,
+      tags,
+      title,
+    }
+  `)
   const {data} = await sanityFetch({query: projectSlugPageQuery, params: {slug}})
 
   if (!data?._id) notFound()
