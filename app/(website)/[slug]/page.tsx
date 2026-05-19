@@ -53,9 +53,7 @@ export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const {slug} = await params
   const {data} = await sanityFetch({query: slugPageQuery, params: {slug}})
 
-  if (!data?._id) {
-    notFound()
-  }
+  if (!data?._id) notFound()
 
   const {body, overview, title} = data ?? {}
 

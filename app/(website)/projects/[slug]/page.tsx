@@ -65,9 +65,7 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
   const {slug} = await params
   const {data} = await sanityFetch({query: projectSlugPageQuery, params: {slug}})
 
-  if (!data?._id) {
-    notFound()
-  }
+  if (!data?._id) notFound()
 
   const dataAttribute =
     data?._id && data._type
