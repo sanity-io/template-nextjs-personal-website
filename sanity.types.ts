@@ -421,7 +421,7 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint
 
-// Source: app/(personal)/[slug]/page.tsx
+// Source: app/(website)/[slug]/page.tsx
 // Variable: slugPageMetadataQuery
 // Query: *[_type == "page" && slug.current == $slug][0] {    title,    "overview": pt::text(overview),  }
 export type SlugPageMetadataQueryResult = {
@@ -429,7 +429,7 @@ export type SlugPageMetadataQueryResult = {
   overview: string
 } | null
 
-// Source: app/(personal)/[slug]/page.tsx
+// Source: app/(website)/[slug]/page.tsx
 // Variable: slugPageQuery
 // Query: *[_type == "page" && slug.current == $slug][0] {    _id,    _type,    body,    overview,    title,    "slug": slug.current,  }
 export type SlugPageQueryResult = {
@@ -486,7 +486,7 @@ export type SlugPageQueryResult = {
   slug: string | null
 } | null
 
-// Source: app/(personal)/layout.tsx
+// Source: app/(website)/layout.tsx
 // Variable: layoutMetadataQuery
 // Query: {  "settings": *[_type == "settings"][0]{ogImage},  "home": *[_type == "home"][0]{    title,    "overview": pt::text(overview),  }}
 export type LayoutMetadataQueryResult = {
@@ -505,7 +505,7 @@ export type LayoutMetadataQueryResult = {
   } | null
 }
 
-// Source: app/(personal)/page.tsx
+// Source: app/(website)/page.tsx
 // Variable: homePageQuery
 // Query: *[_type == "home"][0]{    _id,    _type,    overview,    showcaseProjects[]{      _key,      ...@->{        _id,        _type,        coverImage,        overview,        "slug": slug.current,        tags,        title,      }    },    title,  }
 export type HomePageQueryResult = {
@@ -561,7 +561,7 @@ export type HomePageQueryResult = {
   title: string | null
 } | null
 
-// Source: app/(personal)/projects/[slug]/page.tsx
+// Source: app/(website)/projects/[slug]/page.tsx
 // Variable: projectSlugPageMetadataQuery
 // Query: *[_type == "project" && slug.current == $slug][0] {    coverImage,    title,    "overview": pt::text(overview),  }
 export type ProjectSlugPageMetadataQueryResult = {
@@ -576,7 +576,7 @@ export type ProjectSlugPageMetadataQueryResult = {
   overview: string
 } | null
 
-// Source: app/(personal)/projects/[slug]/page.tsx
+// Source: app/(website)/projects/[slug]/page.tsx
 // Variable: projectSlugPageQuery
 // Query: *[_type == "project" && slug.current == $slug][0] {    _id,    _type,    client,    coverImage,    description,    duration,    overview,    site,    "slug": slug.current,    tags,    title,  }
 export type ProjectSlugPageQueryResult = {
