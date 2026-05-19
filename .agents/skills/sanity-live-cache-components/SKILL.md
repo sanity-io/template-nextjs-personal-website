@@ -153,6 +153,7 @@ In other words, always do this:
 ```tsx
 import {sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 async function CachedComponent({slug, perspective, stega}: {slug: string} & DynamicFetchOptions) {
   'use cache'
   const pageQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0]`)
@@ -165,6 +166,7 @@ Never do:
 ```tsx
 import {sanityFetch} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 async function CachedComponent({slug}: {slug: string}) {
   'use cache'
   const pageQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0]`)
@@ -182,8 +184,9 @@ Resolve them in the `'use server'` boundary, and pass them as props to a `'use c
 In other words, always do this for server action functions:
 
 ```tsx
-import {sanityFetch, type DynamicFetchOptions, getDynamicFetchOptions} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 async function fetchMore({page, perspective, stega}: {page: string} & DynamicFetchOptions) {
   'use cache'
   const pagesQuery = defineQuery(`*[_type == "page"][0...$page]`)
@@ -202,6 +205,7 @@ Never do:
 ```tsx
 import {sanityFetch} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 async function fetchMore({page}: {page: string}) {
   'use cache'
   const pagesQuery = defineQuery(`*[_type == "page"][0...$page]`)
@@ -220,8 +224,9 @@ async function renderMore({page}: {page: string}) {
 ```
 
 ```tsx
-import {sanityFetch, getDynamicFetchOptions} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 async function renderMore({page}: {page: string}) {
   'use server'
   const {perspective, stega} = await getDynamicFetchOptions()
@@ -244,11 +249,12 @@ This means you should always do:
 
 ```ts
 import {
+  getDynamicFetchOptions,
   sanityFetchMetadata,
   type DynamicFetchOptions,
-  getDynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 async function cachedMetadata({
   slug,
   perspective,
@@ -269,6 +275,7 @@ Never do:
 ```ts
 import {sanityFetchMetadata} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 async function cachedMetadata({slug}: {slug: string}) {
   'use cache'
   const pageQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0]`)
@@ -286,8 +293,9 @@ export async function generateMetadata({params}: PageProps<'/[slug]'>) {
 ```
 
 ```ts
-import {sanityFetchMetadata, getDynamicFetchOptions} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetchMetadata} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
+
 export async function generateMetadata({params}: PageProps<'/[slug]'>) {
   const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
   const pageQuery = defineQuery(`*[_type == "page" && slug.current == $slug][0]`)
@@ -306,7 +314,8 @@ Here's an example of what that looks like for a `<Footer>` component in a `layou
 ```tsx
 // src/app/(website)/layout.tsx
 'use cache'
-import {sanityFetch, SanityLive, getDynamicFetchOptions} from '@/sanity/lib/live'
+
+import {getDynamicFetchOptions, sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 
@@ -363,9 +372,10 @@ Usually that is `src/app/layout.tsx`, and is also where `<VisualEditing />` from
 ```tsx
 // src/app/layout.tsx
 'use cache'
+
 import {SanityLive} from '@/sanity/lib/live'
-import {draftMode} from 'next/headers'
 import {VisualEditing} from 'next-sanity/visual-editing'
+import {draftMode} from 'next/headers'
 
 export default async function RootLayout({children}: LayoutProps<'/'>) {
   const {isEnabled: isDraftMode} = await draftMode()
@@ -408,8 +418,8 @@ The layer examples below showcase how to handle params on a `/[slug]/page.tsx` r
 
 ```tsx
 // src/app/[slug]/page.tsx
-import {defineQuery} from 'next-sanity'
 import {sanityFetchStaticParams} from '@/sanity/lib/live'
+import {defineQuery} from 'next-sanity'
 
 export async function generateStaticParams() {
   const pageSlugsQuery = defineQuery(
@@ -501,8 +511,8 @@ Has `'use cache'` and only receives plain, serializable props:
 
 ```tsx
 // src/app/[slug]/page.tsx (continued)
-import {defineQuery} from 'next-sanity'
 import {type DynamicFetchOptions} from '@/sanity/lib/live'
+import {defineQuery} from 'next-sanity'
 
 async function CachedPage({
   slug,
@@ -525,30 +535,34 @@ async function CachedPage({
 ## 6. Non-blocking data fetching for `layout.tsx` in draft mode
 
 When using `sanityFetch` in a `layout.tsx` file then it's important to keep these constraints in mind when implementing the 3-layer pattern:
+
 - The top-level component in `layout.tsx` should not `await` any dynamic APIs or perform data fetching, it can reduce the static shell, and it slows down streaming in draft mode.
 - Data fetching, and [dynamic API calls, should be pushed closer to where it's used](https://nextjs.org/docs/app/guides/streaming#push-dynamic-access-down).
 - Shared data fetching can be extracted to a reused async `use cache` boundary function to reduce the footprint of multiple components that need the same data and to reduce latency in draft mode.
 
 In other words, do this:
+
 ```tsx
 // src/app
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
-import {getDynamicFetchOptions, type DynamicFetchOptions, sanityFetch} from '@/sanity/lib/live'
 
 export default async function WebsiteLayout({children}: LayoutProps<'/'>) {
   'use cache'
   const {isEnabled: isDraftMode} = await draftMode()
-  return <>
-    {children}
-    {isDraftMode ? (
-      <Suspense fallback={<FooterFallback />}>
-        <DynamicFooter />
-      </Suspense>
-    ) : (
-      <CachedFooter perspective="published" stega={false} />
-    )}
-  </>
+  return (
+    <>
+      {children}
+      {isDraftMode ? (
+        <Suspense fallback={<FooterFallback />}>
+          <DynamicFooter />
+        </Suspense>
+      ) : (
+        <CachedFooter perspective="published" stega={false} />
+      )}
+    </>
+  )
 }
 
 async function DynamicFooter() {

@@ -33,7 +33,11 @@ async function cachedSlugPageMetadata({
   perspective,
 }: {slug: string} & Pick<DynamicFetchOptions, 'perspective'>) {
   'use cache'
-  const {data} = await sanityFetchMetadata({query: slugPageMetadataQuery, params: {slug}, perspective})
+  const {data} = await sanityFetchMetadata({
+    query: slugPageMetadataQuery,
+    params: {slug},
+    perspective,
+  })
   return data
 }
 

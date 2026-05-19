@@ -3,11 +3,7 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
-import {
-  getDynamicFetchOptions,
-  sanityFetch,
-  type DynamicFetchOptions,
-} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, defineQuery} from 'next-sanity'
 import {draftMode} from 'next/headers'

@@ -19,8 +19,8 @@ import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 import {Toaster} from 'sonner'
 import {disableDraftMode} from './actions'
-import {DraftModeToast} from './DraftModeToast'
 import {handleError} from './client-functions'
+import {DraftModeToast} from './DraftModeToast'
 
 const layoutMetadataQuery = defineQuery(`{
   "settings": *[_type == "settings"][0]{ogImage},
@@ -30,9 +30,7 @@ const layoutMetadataQuery = defineQuery(`{
   }
 }`)
 
-async function cachedLayoutMetadata({
-  perspective,
-}: Pick<DynamicFetchOptions, 'perspective'>) {
+async function cachedLayoutMetadata({perspective}: Pick<DynamicFetchOptions, 'perspective'>) {
   'use cache'
   const {data} = await sanityFetchMetadata({query: layoutMetadataQuery, perspective})
   return data

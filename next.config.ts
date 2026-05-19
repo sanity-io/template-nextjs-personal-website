@@ -18,8 +18,8 @@ const config: NextConfig = {
     SC_DISABLE_SPEEDY: 'false',
   },
   experimental: {
-    instantNavigationDevToolsToggle: true
-  }
+    instantNavigationDevToolsToggle: true,
+  },
 }
 
 export default config
