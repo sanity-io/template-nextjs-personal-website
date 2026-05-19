@@ -39,6 +39,7 @@ export async function sanityFetchStaticParams<const QueryString extends string>(
   query: QueryString
   params?: QueryParams
 }) {
+  'use cache'
   const {data} = await sanityFetch({query, params, perspective: 'published', stega: false})
   return data
 }
@@ -53,6 +54,7 @@ export async function sanityFetchMetadata<const QueryString extends string>({
   params?: QueryParams
   perspective: LivePerspective
 }) {
+  'use cache'
   const {data} = await sanityFetch({query, params, perspective, stega: false})
   return {data}
 }

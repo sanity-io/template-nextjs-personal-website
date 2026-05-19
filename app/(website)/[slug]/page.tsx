@@ -1,5 +1,3 @@
-'use cache'
-
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import {
@@ -64,7 +62,6 @@ const slugPageQuery = defineQuery(`
 `)
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
-  'use cache'
   const {isEnabled: isDraftMode} = await draftMode()
   if (isDraftMode) {
     return (

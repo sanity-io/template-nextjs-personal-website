@@ -1,5 +1,3 @@
-'use cache'
-
 import '@/styles/index.css'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Navbar} from '@/components/Navbar'
@@ -57,7 +55,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export const viewport: Viewport = {themeColor: '#000'}
 
 export default async function PersonalLayout({children}: LayoutProps<'/'>) {
-  'use cache'
   const {isEnabled: isDraftMode} = await draftMode()
   return (
     <>
