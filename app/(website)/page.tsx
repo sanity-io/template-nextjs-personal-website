@@ -1,12 +1,20 @@
+'use cache'
+
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
-import {sanityFetch} from '@/sanity/lib/live'
+import {
+  getDynamicFetchOptions,
+  sanityFetch,
+  type DynamicFetchOptions,
+} from '@/sanity/lib/live'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
+import {Suspense} from 'react'
 
 const homePageQuery = defineQuery(`
   *[_type == "home"][0]{
@@ -28,8 +36,28 @@ const homePageQuery = defineQuery(`
     title,
   }
 `)
+
 export default async function IndexPage() {
-  const {data} = await sanityFetch({query: homePageQuery})
+  'use cache'
+  const {isEnabled: isDraftMode} = await draftMode()
+  if (isDraftMode) {
+    return (
+      <Suspense>
+        <DynamicIndexPage />
+      </Suspense>
+    )
+  }
+  return <CachedIndexPage perspective="published" stega={false} />
+}
+
+async function DynamicIndexPage() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+  return <CachedIndexPage perspective={perspective} stega={stega} />
+}
+
+async function CachedIndexPage({perspective, stega}: DynamicFetchOptions) {
+  'use cache'
+  const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
 
   if (!data) {
     return (
