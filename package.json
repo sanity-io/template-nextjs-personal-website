@@ -3,13 +3,15 @@
   "private": true,
   "scripts": {
     "analyze": "next experimental-analyze --serve",
+    "prebuild": "npm run stega-warn",
     "build": "next build --turbopack && sanity manifest extract --path public/studio/static",
-    "predev": "npm run typegen",
+    "predev": "npm run typegen && npm run stega-warn",
     "dev": "next --turbopack",
     "format": "npx prettier --write . --ignore-path .gitignore",
     "lint": "eslint .",
     "lint:fix": "npm run format && npm run lint -- --fix",
     "start": "next start",
+    "stega-warn": "echo 'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4'",
     "type-check": "next typegen && tsc --noEmit",
     "typegen": "sanity schema extract && sanity typegen generate"
   },

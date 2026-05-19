@@ -43,12 +43,12 @@ export default defineConfig({
     ],
   },
   plugins: [
-    structureTool({
-      structure: pageStructure([home, settings]),
-    }),
     presentationTool({
       resolve,
       previewUrl: {previewMode: {enable: '/api/draft-mode/enable'}},
+    }),
+    structureTool({
+      structure: pageStructure([home, settings]),
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
     singletonPlugin([home.name, settings.name]),
