@@ -3,12 +3,32 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
-import {sanityFetch} from '@/sanity/lib/live'
+import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
+import {Suspense} from 'react'
 
 export default async function IndexPage() {
+  const {isEnabled: isDraftMode} = await draftMode()
+  if (isDraftMode) {
+    return (
+      <Suspense fallback={<HomeFallback />}>
+        <DynamicHome />
+      </Suspense>
+    )
+  }
+  return <CachedHome perspective="published" stega={false} />
+}
+
+async function DynamicHome() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+  return <CachedHome perspective={perspective} stega={stega} />
+}
+
+async function CachedHome({perspective, stega}: DynamicFetchOptions) {
+  'use cache'
   const homePageQuery = defineQuery(`
     *[_type == "home"][0]{
       _id,
@@ -29,7 +49,7 @@ export default async function IndexPage() {
       title,
     }
   `)
-  const {data} = await sanityFetch({query: homePageQuery})
+  const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
 
   if (!data) {
     return (
@@ -125,6 +145,32 @@ export default async function IndexPage() {
               )
             })}
         </OptimisticSortOrder>
+      </div>
+    </div>
+  )
+}
+
+function HomeFallback() {
+  return (
+    <div className="space-y-20">
+      <div className="text-center">
+        <div className="mx-auto h-12 w-3/4 max-w-2xl animate-pulse rounded bg-gray-100 md:h-16" />
+        <div className="mx-auto mt-6 h-6 w-2/3 max-w-xl animate-pulse rounded bg-gray-100" />
+      </div>
+      <div className="mx-auto max-w-[100rem] rounded-md border">
+        <div className="flex flex-col gap-x-5 p-2 xl:flex-row">
+          <div className="w-full xl:w-9/12">
+            <div className="relative aspect-[16/9] w-full animate-pulse rounded-[3px] bg-gray-100" />
+          </div>
+          <div className="flex xl:w-1/4">
+            <div className="relative mt-2 flex w-full flex-col justify-between p-3 xl:mt-0">
+              <div>
+                <div className="mb-2 h-6 w-3/4 animate-pulse rounded bg-gray-100 md:h-8" />
+                <div className="mt-4 h-4 w-full animate-pulse rounded bg-gray-100" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
