@@ -2,20 +2,26 @@ import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
-import {sanityFetch} from '@/sanity/lib/live'
+import {
+  getDynamicFetchOptions,
+  sanityFetch,
+  sanityFetchMetadata,
+  sanityFetchStaticParams,
+  type DynamicFetchOptions,
+} from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
+import {Suspense} from 'react'
 
 export async function generateStaticParams() {
-  const {data} = await sanityFetch({
+  const {data} = await sanityFetchStaticParams({
     query: slugsByTypeQuery,
     params: {type: 'project'} satisfies SlugsByTypeQueryParams,
-    stega: false,
-    perspective: 'published',
   })
   return data
 }
@@ -24,7 +30,7 @@ export async function generateMetadata(
   {params}: PageProps<'/projects/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const {slug} = await params
+  const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
   const projectSlugPageMetadataQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       coverImage,
@@ -32,10 +38,10 @@ export async function generateMetadata(
       "overview": pt::text(overview),
     }
   `)
-  const {data} = await sanityFetch({
+  const {data} = await sanityFetchMetadata({
     query: projectSlugPageMetadataQuery,
     params: {slug},
-    stega: false,
+    perspective,
   })
 
   const ogImage = urlForOpenGraphImage(data?.coverImage)
@@ -47,7 +53,29 @@ export async function generateMetadata(
 }
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
+  const {isEnabled: isDraftMode} = await draftMode()
+  if (isDraftMode) {
+    return (
+      <Suspense fallback={<ProjectSlugPageFallback />}>
+        <DynamicProjectSlugPage params={params} />
+      </Suspense>
+    )
+  }
   const {slug} = await params
+  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
+}
+
+async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+  const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
+  return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
+}
+
+async function CachedProjectSlugPage({
+  slug,
+  perspective,
+  stega,
+}: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
+  'use cache'
   const projectSlugPageQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       _id,
@@ -63,7 +91,12 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
       title,
     }
   `)
-  const {data} = await sanityFetch({query: projectSlugPageQuery, params: {slug}})
+  const {data} = await sanityFetch({
+    query: projectSlugPageQuery,
+    params: {slug},
+    perspective,
+    stega,
+  })
 
   if (!data?._id) notFound()
 
@@ -159,6 +192,28 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
           value={description}
         />
       )}
+    </>
+  )
+}
+
+function ProjectSlugPageFallback() {
+  return (
+    <>
+      <div className="w-5/6 lg:w-3/5">
+        <div className="h-10 w-3/4 animate-pulse rounded bg-gray-100 md:h-14" />
+        <div className="mt-4 h-6 w-full animate-pulse rounded bg-gray-100" />
+      </div>
+      <div className="rounded-md border">
+        <div className="relative aspect-[16/9] w-full animate-pulse rounded-[3px] bg-gray-100" />
+        <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+          {Array.from({length: 4}).map((_, i) => (
+            <div key={i} className="p-3 lg:p-4">
+              <div className="h-3 w-16 animate-pulse rounded bg-gray-100" />
+              <div className="mt-2 h-5 w-24 animate-pulse rounded bg-gray-100" />
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   )
 }
