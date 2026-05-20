@@ -3,12 +3,36 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
-import {sanityFetch} from '@/sanity/lib/live'
+import {
+  getDynamicFetchOptions,
+  sanityFetch,
+  type DynamicFetchOptions,
+} from '@/sanity/lib/live'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
+import {Suspense} from 'react'
 
 export default async function IndexPage() {
+  const {isEnabled: isDraftMode} = await draftMode()
+  if (isDraftMode) {
+    return (
+      <Suspense fallback={<HomePageFallback />}>
+        <DynamicHomePage />
+      </Suspense>
+    )
+  }
+  return <CachedHomePage perspective="published" stega={false} />
+}
+
+async function DynamicHomePage() {
+  const {perspective, stega} = await getDynamicFetchOptions()
+  return <CachedHomePage perspective={perspective} stega={stega} />
+}
+
+async function CachedHomePage({perspective, stega}: DynamicFetchOptions) {
+  'use cache'
   const homePageQuery = defineQuery(`
     *[_type == "home"][0]{
       _id,
@@ -29,7 +53,7 @@ export default async function IndexPage() {
       title,
     }
   `)
-  const {data} = await sanityFetch({query: homePageQuery})
+  const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
 
   if (!data) {
     return (
@@ -125,6 +149,20 @@ export default async function IndexPage() {
               )
             })}
         </OptimisticSortOrder>
+      </div>
+    </div>
+  )
+}
+
+function HomePageFallback() {
+  return (
+    <div className="space-y-20">
+      <div className="mx-auto max-w-3xl space-y-4 py-10 text-center">
+        <div className="mx-auto h-10 w-1/2 animate-pulse rounded bg-gray-100" />
+        <div className="mx-auto h-4 w-3/4 animate-pulse rounded bg-gray-100" />
+      </div>
+      <div className="mx-auto max-w-[100rem] rounded-md border">
+        <div className="aspect-[16/9] w-full animate-pulse bg-gray-100" />
       </div>
     </div>
   )

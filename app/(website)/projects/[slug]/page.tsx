@@ -2,8 +2,13 @@ import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
-import {sanityFetch} from '@/sanity/lib/live'
-import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {
+  getDynamicFetchOptions,
+  sanityFetch,
+  sanityFetchMetadata,
+  sanityFetchStaticParams,
+  type DynamicFetchOptions,
+} from '@/sanity/lib/live'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
@@ -11,12 +16,10 @@ import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
 export async function generateStaticParams() {
-  const {data} = await sanityFetch({
-    query: slugsByTypeQuery,
-    params: {type: 'project'} satisfies SlugsByTypeQueryParams,
-    stega: false,
-    perspective: 'published',
-  })
+  const projectSlugsQuery = defineQuery(
+    `*[_type == "project" && defined(slug.current)] | order(_updatedAt desc) [0...100]{"slug": slug.current}`,
+  )
+  const {data} = await sanityFetchStaticParams({query: projectSlugsQuery})
   return data
 }
 
@@ -24,7 +27,7 @@ export async function generateMetadata(
   {params}: PageProps<'/projects/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const {slug} = await params
+  const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
   const projectSlugPageMetadataQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       coverImage,
@@ -32,10 +35,10 @@ export async function generateMetadata(
       "overview": pt::text(overview),
     }
   `)
-  const {data} = await sanityFetch({
+  const {data} = await sanityFetchMetadata({
     query: projectSlugPageMetadataQuery,
     params: {slug},
-    stega: false,
+    perspective,
   })
 
   const ogImage = urlForOpenGraphImage(data?.coverImage)
@@ -47,7 +50,16 @@ export async function generateMetadata(
 }
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
-  const {slug} = await params
+  const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
+  return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
+}
+
+async function CachedProjectSlugPage({
+  slug,
+  perspective,
+  stega,
+}: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
+  'use cache'
   const projectSlugPageQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       _id,
@@ -63,7 +75,12 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
       title,
     }
   `)
-  const {data} = await sanityFetch({query: projectSlugPageQuery, params: {slug}})
+  const {data} = await sanityFetch({
+    query: projectSlugPageQuery,
+    params: {slug},
+    perspective,
+    stega,
+  })
 
   if (!data?._id) notFound()
 

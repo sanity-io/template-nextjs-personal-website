@@ -422,6 +422,13 @@ export type AllSanitySchemaTypes =
   | Geopoint
 
 // Source: app/(website)/[slug]/page.tsx
+// Variable: pageSlugsQuery
+// Query: *[_type == "page" && defined(slug.current)] | order(_updatedAt desc) [0...100]{"slug": slug.current}
+export type PageSlugsQueryResult = Array<{
+  slug: string | null
+}>
+
+// Source: app/(website)/[slug]/page.tsx
 // Variable: slugPageMetadataQuery
 // Query: *[_type == "page" && slug.current == $slug][0] {      title,      "overview": pt::text(overview),    }
 export type SlugPageMetadataQueryResult = {
@@ -560,6 +567,13 @@ export type HomePageQueryResult = {
   }> | null
   title: string | null
 } | null
+
+// Source: app/(website)/projects/[slug]/page.tsx
+// Variable: projectSlugsQuery
+// Query: *[_type == "project" && defined(slug.current)] | order(_updatedAt desc) [0...100]{"slug": slug.current}
+export type ProjectSlugsQueryResult = Array<{
+  slug: string | null
+}>
 
 // Source: app/(website)/projects/[slug]/page.tsx
 // Variable: projectSlugPageMetadataQuery
@@ -706,10 +720,12 @@ export type SlugsByTypeQueryResult = Array<{
 
 declare module '@sanity/client' {
   interface SanityQueries {
+    '*[_type == "page" && defined(slug.current)] | order(_updatedAt desc) [0...100]{"slug": slug.current}': PageSlugsQueryResult
     '\n    *[_type == "page" && slug.current == $slug][0] {\n      title,\n      "overview": pt::text(overview),\n    }\n  ': SlugPageMetadataQueryResult
     '\n    *[_type == "page" && slug.current == $slug][0] {\n      _id,\n      _type,\n      body,\n      overview,\n      title,\n      "slug": slug.current,\n    }\n  ': SlugPageQueryResult
     '{\n    "settings": *[_type == "settings"][0]{ogImage},\n    "home": *[_type == "home"][0]{\n      title,\n      "overview": pt::text(overview),\n    }\n  }': LayoutMetadataQueryResult
     '\n    *[_type == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          coverImage,\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
+    '*[_type == "project" && defined(slug.current)] | order(_updatedAt desc) [0...100]{"slug": slug.current}': ProjectSlugsQueryResult
     '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
     '\n    *[_type == "project" && slug.current == $slug][0] {\n      _id,\n      _type,\n      client,\n      coverImage,\n      description,\n      duration,\n      overview,\n      site,\n      "slug": slug.current,\n      tags,\n      title,\n    }\n  ': ProjectSlugPageQueryResult
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    ogImage,\n  }\n': SettingsQueryResult
