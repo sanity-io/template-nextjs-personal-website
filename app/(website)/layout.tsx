@@ -3,11 +3,11 @@ import {CustomPortableText} from '@/components/CustomPortableText'
 import {Navbar} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
 import {
-  type DynamicFetchOptions,
   getDynamicFetchOptions,
   sanityFetch,
   sanityFetchMetadata,
   SanityLive,
+  type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'

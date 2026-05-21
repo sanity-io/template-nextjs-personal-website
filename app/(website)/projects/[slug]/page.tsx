@@ -3,11 +3,11 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
 import {
-  type DynamicFetchOptions,
   getDynamicFetchOptions,
   sanityFetch,
   sanityFetchMetadata,
   sanityFetchStaticParams,
+  type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
