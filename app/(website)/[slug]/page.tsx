@@ -1,17 +1,23 @@
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
-import {sanityFetch} from '@/sanity/lib/live'
+import {
+  type DynamicFetchOptions,
+  getDynamicFetchOptions,
+  sanityFetch,
+  sanityFetchMetadata,
+  sanityFetchStaticParams,
+} from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
+import {Suspense} from 'react'
 
 export async function generateStaticParams() {
-  const {data} = await sanityFetch({
+  const {data} = await sanityFetchStaticParams({
     query: slugsByTypeQuery,
     params: {type: 'page'} satisfies SlugsByTypeQueryParams,
-    perspective: 'published',
-    stega: false,
   })
   return data
 }
@@ -20,17 +26,17 @@ export async function generateMetadata(
   {params}: PageProps<'/[slug]'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const {slug} = await params
+  const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
   const slugPageMetadataQuery = defineQuery(`
     *[_type == "page" && slug.current == $slug][0] {
       title,
       "overview": pt::text(overview),
     }
   `)
-  const {data} = await sanityFetch({
+  const {data} = await sanityFetchMetadata({
     query: slugPageMetadataQuery,
     params: {slug},
-    stega: false,
+    perspective,
   })
 
   return {
@@ -40,7 +46,29 @@ export async function generateMetadata(
 }
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
-  const {slug} = await params
+  const {isEnabled: isDraftMode} = await draftMode()
+  if (!isDraftMode) {
+    const {slug} = await params
+    return <CachedSlugPage slug={slug} perspective="published" stega={false} />
+  }
+  return (
+    <Suspense>
+      <DynamicSlugPage params={params} />
+    </Suspense>
+  )
+}
+
+async function DynamicSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
+  const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
+  return <CachedSlugPage slug={slug} perspective={perspective} stega={stega} />
+}
+
+async function CachedSlugPage({
+  slug,
+  perspective,
+  stega,
+}: Awaited<PageProps<'/[slug]'>['params']> & DynamicFetchOptions) {
+  'use cache'
   const slugPageQuery = defineQuery(`
     *[_type == "page" && slug.current == $slug][0] {
       _id,
@@ -51,7 +79,7 @@ export default async function SlugPage({params}: PageProps<'/[slug]'>) {
       "slug": slug.current,
     }
   `)
-  const {data} = await sanityFetch({query: slugPageQuery, params: {slug}})
+  const {data} = await sanityFetch({query: slugPageQuery, params: {slug}, perspective, stega})
 
   if (!data?._id) notFound()
 
