@@ -2,13 +2,14 @@
 
 [![Deploy with Vercel](https://vercel.com/button)][vercel-deploy]
 
-This starter is a statically generated personal website that uses [Next.js][nextjs] for the frontend and [Sanity][sanity-homepage] to handle its content. It comes with a native Sanity Studio that offers features like real-time collaboration and visual editing with live updates using [Presentation][presentation].
+This starter is a personal website that uses [Next.js][nextjs] for the frontend and [Sanity][sanity-homepage] to handle its content. It runs with [Next.js Cache Components][cache-components] enabled: every page prerenders into a static shell and refreshes on content changes through Sanity Live — no rebuild required. The template comes with a native Sanity Studio that offers features like real-time collaboration and visual editing with live updates using [Presentation][presentation].
 
 The Studio connects to Sanity Content Lake, which gives you hosted content APIs with a flexible query language, on-demand image transformations, powerful patching, and more. You can use this starter to kick-start a personal website or learn these technologies.
 
 ## Features
 
-- A performant, static personal website with editable projects
+- Runs on [Next.js Cache Components][cache-components] — pages prerender into a static shell and refresh on content changes through Sanity Live
+- A performant personal website with editable projects
 - A native and customizable authoring environment, accessible on `yourpersonalwebsite.com/studio`
 - Real-time and collaborative content editing with fine-grained revision history
 - Side-by-side instant content preview that works across your whole site
@@ -23,6 +24,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - [Table of Contents](#table-of-contents)
 - [Project Overview](#project-overview)
   - [Important files and folders](#important-files-and-folders)
+  - [Cache Components](#cache-components)
 - [ Getting Started](#configuration)
   - [Step 1. Initialize template with Sanity CLI](#initialize-template-with-sanity-cli)
   - [Step 2. Run app locally in development mode](#run-app-locally-in-development-mode)
@@ -46,15 +48,39 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 ### Important files and folders
 
-| File(s)                                      | Description                                             |
-| -------------------------------------------- | ------------------------------------------------------- |
-| `sanity.config.ts`                           | Config file for Sanity Studio                           |
-| `sanity.cli.ts`                              | Config file for Sanity CLI                              |
-| `/app/studio/[[...tool]]/Studio.tsx`         | Where Sanity Studio is mounted                          |
-| `/app/api/draft-mode/enable/route.ts`        | Serverless route for triggering Draft mode              |
-| `/sanity/schemas`                            | Where Sanity Studio gets its content types from         |
-| `/sanity/plugins`                            | Where the advanced Sanity Studio customization is setup |
-| `/sanity/lib/api.ts`,`/sanity/lib/client.ts` | Configuration for the Sanity Content Lake client        |
+| File(s)                                      | Description                                                                                  |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `sanity.config.ts`                           | Config file for Sanity Studio                                                                |
+| `sanity.cli.ts`                              | Config file for Sanity CLI                                                                   |
+| `next.config.ts`                             | Enables [Cache Components][cache-components] and sets the default `cacheLife` to Sanity Live |
+| `/app/studio/[[...tool]]/Studio.tsx`         | Where Sanity Studio is mounted                                                               |
+| `/app/api/draft-mode/enable/route.ts`        | Serverless route for triggering Draft mode                                                   |
+| `/sanity/schemas`                            | Where Sanity Studio gets its content types from                                              |
+| `/sanity/plugins`                            | Where the advanced Sanity Studio customization is setup                                      |
+| `/sanity/lib/api.ts`,`/sanity/lib/client.ts` | Configuration for the Sanity Content Lake client                                             |
+| `/sanity/lib/live.ts`                        | `sanityFetch`, `sanityFetchMetadata`, `sanityFetchStaticParams`, `getDynamicFetchOptions`    |
+
+### Cache Components
+
+The template enables Next.js [Cache Components][cache-components] in [`next.config.ts`](./next.config.ts):
+
+```ts
+import {sanity} from 'next-sanity/live/cache-life'
+
+const config: NextConfig = {
+  cacheComponents: true,
+  cacheLife: {default: sanity},
+}
+```
+
+Data fetching follows the three-layer (Page → Dynamic → Cached) pattern from the [`sanity-live-cache-components`](https://github.com/sanity-io/next-sanity/tree/main/skills/sanity-live-cache-components) skill, applied in:
+
+- [`app/(website)/layout.tsx`](<./app/(website)/layout.tsx>) — `Dynamic/CachedNavbar` and `Dynamic/CachedFooter` share a `'use cache'` `fetchSettings` helper
+- [`app/(website)/page.tsx`](<./app/(website)/page.tsx>) — homepage
+- [`app/(website)/[slug]/page.tsx`](<./app/(website)/[slug]/page.tsx>) — dynamic page route
+- [`app/(website)/projects/[slug]/page.tsx`](<./app/(website)/projects/[slug]/page.tsx>) — dynamic project route
+
+Every cached leaf takes `perspective` and `stega` as plain props sourced from `getDynamicFetchOptions()`, so Visual Editing overlays and content-release previewing keep working in Draft Mode while the static shell is fully prerendered in production.
 
 ## Getting Started
 
@@ -158,3 +184,4 @@ You can remove it by deleting the `IntroTemplate` component in `/app/(website)/l
 [vercel-github]: https://github.com/vercel/next.js/discussions
 [personal-website-pages]: https://github.com/sanity-io/template-nextjs-personal-website
 [presentation]: https://www.sanity.io/docs/presentation
+[cache-components]: https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents
