@@ -1,6 +1,12 @@
 {
   "name": "sanity-template-template-nextjs-personal-website",
   "private": true,
+  "imports": {
+    "#optimistic-sort-order": {
+      "react-server": "./components/OptimisticSortOrder/index.tsx",
+      "default": "./components/OptimisticSortOrder/index.fallback.tsx"
+    }
+  },
   "scripts": {
     "analyze": "next experimental-analyze --serve",
     "prebuild": "npm run stega-warn",
