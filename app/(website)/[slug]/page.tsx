@@ -13,6 +13,7 @@ import {defineQuery} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
+import {PresentationBody, PresentationHeader} from './presentation-page'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -88,12 +89,12 @@ async function CachedSlugPage({
   return (
     <>
       {/* Header */}
-      <Header
+      <PresentationHeader
+        slug={slug}
         id={data?._id || null}
         type={data?._type || null}
-        path={['overview']}
         title={title || 'Untitled'}
-        description={overview}
+        overview={overview}
       />
 
       {/* Body */}
@@ -106,6 +107,7 @@ async function CachedSlugPage({
           value={body}
         />
       )}
+      <PresentationBody slug={slug} id={data?._id || null} type={data?._type || null} body={body} />
     </>
   )
 }
