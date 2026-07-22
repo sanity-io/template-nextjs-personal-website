@@ -32,7 +32,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - [Adding content with Sanity](#adding-content-with-sanity)
   - [Step 1. Publish your first document](#publish-your-first-document)
   - [Step 2. Extending the Sanity schema](#extending-the-sanity-schema)
-- [Deploying your application and inviting editors]()
+- [Deploying your application and inviting editors](<>)
   - [Step 1. Deploy Next.js app to Vercel](#deploy-next.js-app-to-vercel)
   - [Step 2. Invite a collaborator](#invite-a-collaborator)
 - [Questions and Answers](#questions-and-answers)
