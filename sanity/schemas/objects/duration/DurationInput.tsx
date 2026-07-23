@@ -1,4 +1,4 @@
-import {ArrowRightIcon} from '@sanity/icons'
+import {ArrowRightIcon} from '@sanity/icons/ArrowRight'
 import {Box, Flex, Text} from '@sanity/ui'
 import {useCallback, useMemo} from 'react'
 import {FieldMember, MemberField, ObjectInputProps, RenderFieldCallback} from 'sanity'
