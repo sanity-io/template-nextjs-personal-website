@@ -52,17 +52,26 @@ export async function generateMetadata(
   }
 }
 
+// TODO(runtime-prefetch): assess with the user whether URL data should resolve before click.
+// See: https://nextjs.org/docs/app/guides/runtime-prefetching
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-  }
   return (
     <Suspense>
-      <DynamicProjectSlugPage params={params} />
+      {isDraftMode ? (
+        <DynamicProjectSlugPage params={params} />
+      ) : (
+        <PublishedProjectSlugPage params={params} />
+      )}
     </Suspense>
   )
+}
+
+async function PublishedProjectSlugPage({
+  params,
+}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+  const {slug} = await params
+  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
