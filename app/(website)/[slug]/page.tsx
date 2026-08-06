@@ -13,6 +13,7 @@ import {defineQuery} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
+import Loading from './loading'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -47,15 +48,20 @@ export async function generateMetadata(
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedSlugPage slug={slug} perspective="published" stega={false} />
-  }
   return (
-    <Suspense>
-      <DynamicSlugPage params={params} />
+    <Suspense fallback={<Loading />}>
+      {isDraftMode ? (
+        <DynamicSlugPage params={params} />
+      ) : (
+        <PublishedSlugPage params={params} />
+      )}
     </Suspense>
   )
+}
+
+async function PublishedSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
+  const {slug} = await params
+  return <CachedSlugPage slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {

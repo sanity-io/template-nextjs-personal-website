@@ -17,6 +17,7 @@ import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
+import Loading from './loading'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -54,15 +55,22 @@ export async function generateMetadata(
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-  }
   return (
-    <Suspense>
-      <DynamicProjectSlugPage params={params} />
+    <Suspense fallback={<Loading />}>
+      {isDraftMode ? (
+        <DynamicProjectSlugPage params={params} />
+      ) : (
+        <PublishedProjectSlugPage params={params} />
+      )}
     </Suspense>
   )
+}
+
+async function PublishedProjectSlugPage({
+  params,
+}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+  const {slug} = await params
+  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
