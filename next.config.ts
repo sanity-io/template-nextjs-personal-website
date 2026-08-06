@@ -5,6 +5,7 @@ const config: NextConfig = {
   cacheComponents: true,
   cacheLife: {default: sanity},
   reactCompiler: true,
+  experimental: {turbopackRustReactCompiler: true},
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
   },
