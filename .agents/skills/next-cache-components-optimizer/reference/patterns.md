@@ -11,7 +11,7 @@ The most common blocking shape. Awaiting request-time data at the top of a page/
 ```tsx
 // ❌ before — top-level await of a non-static param + uncached data
 export default async function Page(props: PageProps<'/store/[slug]'>) {
-  const { slug } = await props.params
+  const {slug} = await props.params
   const product = await db.products.findBySlug(slug)
   return (
     <article>
@@ -23,7 +23,7 @@ export default async function Page(props: PageProps<'/store/[slug]'>) {
 
 ```tsx
 // ✅ after — pass the params promise down; await inside a Suspense-wrapped child
-import { Suspense } from 'react'
+import {Suspense} from 'react'
 
 export default function Page(props: PageProps<'/store/[slug]'>) {
   return (
@@ -33,8 +33,8 @@ export default function Page(props: PageProps<'/store/[slug]'>) {
   )
 }
 
-async function Product({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+async function Product({params}: {params: Promise<{slug: string}>}) {
+  const {slug} = await params
   const product = await db.products.findBySlug(slug)
   return (
     <article>
@@ -50,7 +50,7 @@ Inline variant when you don't want a separate component — unwrap the promise w
 export default function Page(props: PageProps<'/store/[category]'>) {
   return (
     <Suspense fallback={<Grid.Skeleton />}>
-      {props.params.then(({ category }) => (
+      {props.params.then(({category}) => (
         <ProductGrid category={category} />
       ))}
     </Suspense>
@@ -68,7 +68,7 @@ A layout that awaits request data blocks the layout **and every page under it**.
 
 ```tsx
 // ❌ before — whole layout (and all children) becomes dynamic
-export default async function Layout({ children }) {
+export default async function Layout({children}) {
   const cookieStore = await cookies()
   const theme = cookieStore.get('theme')?.value
   return <body data-theme={theme}>{children}</body>
@@ -77,10 +77,10 @@ export default async function Layout({ children }) {
 
 ```tsx
 // ✅ after — start the read without awaiting, pass the promise to a Suspense child
-import { Suspense } from 'react'
-import { cookies } from 'next/headers'
+import {cookies} from 'next/headers'
+import {Suspense} from 'react'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({children}: {children: React.ReactNode}) {
   const cookieStore = cookies() // not awaited → does not block the shell
   return (
     <body>
@@ -94,11 +94,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
-async function UserMenu({
-  cookiePromise,
-}: {
-  cookiePromise: ReturnType<typeof cookies>
-}) {
+async function UserMenu({cookiePromise}: {cookiePromise: ReturnType<typeof cookies>}) {
   const theme = (await cookiePromise).get('theme')?.value
   return <div data-theme={theme}>…</div>
 }
@@ -147,10 +143,10 @@ If the set of params is enumerable, prerender them so `await params` resolves in
 ```tsx
 // ✅ option A — enumerate → params resolve into the shell, no Suspense needed for params
 export function generateStaticParams() {
-  return [{ slug: 'shoes' }, { slug: 'hats' }]
+  return [{slug: 'shoes'}, {slug: 'hats'}]
 }
-export default async function Page({ params }: PageProps<'/store/[slug]'>) {
-  const { slug } = await params // known at build → shell-safe
+export default async function Page({params}: PageProps<'/store/[slug]'>) {
+  const {slug} = await params // known at build → shell-safe
   // ...
 }
 ```
@@ -181,12 +177,8 @@ export default function Page(props: PageProps<'/search'>) {
     </>
   )
 }
-async function Results({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string }>
-}) {
-  const { q } = await searchParams
+async function Results({searchParams}: {searchParams: Promise<{q?: string}>}) {
+  const {q} = await searchParams
   return <ResultList query={q} />
 }
 ```
@@ -203,7 +195,8 @@ On a **client navigation** the router already has the URL, so a `useSearchParams
 
 ```tsx
 // ✅ per-request value: gate on connection() and wrap in Suspense
-import { connection } from 'next/server'
+import {connection} from 'next/server'
+
 async function RequestId() {
   await connection()
   return <span>{crypto.randomUUID()}</span>
@@ -229,18 +222,18 @@ async function buildId() {
 // ❌ before — reading request data blocks the route's metadata
 export async function generateMetadata() {
   const c = await cookies()
-  return { title: c.get('title')?.value }
+  return {title: c.get('title')?.value}
 }
 ```
 
 ```tsx
 // ✅ option A — static
-export const metadata = { title: 'Store' }
+export const metadata = {title: 'Store'}
 
 // ✅ option B — cache the metadata (depends on external data, not runtime data)
 export async function generateMetadata() {
   'use cache'
-  return { title: await getTitle() }
+  return {title: await getTitle()}
 }
 ```
 
@@ -248,13 +241,13 @@ export async function generateMetadata() {
 // ✅ option C — metadata genuinely needs runtime data (cookies/headers):
 // keep generateMetadata dynamic, and add a dynamic-marker component to the
 // page so the rest of the page still prerenders into the shell.
-import { Suspense } from 'react'
-import { connection } from 'next/server'
-import { cookies } from 'next/headers'
+import {cookies} from 'next/headers'
+import {connection} from 'next/server'
+import {Suspense} from 'react'
 
 export async function generateMetadata() {
   const token = (await cookies()).get('token')?.value
-  return { title: token ? 'Personalized' : 'Store' }
+  return {title: token ? 'Personalized' : 'Store'}
 }
 
 async function DynamicMarker() {
@@ -301,11 +294,7 @@ A single boundary in the **root** layout passes a page-load check but leaves sib
 ```tsx
 // app/store/layout.tsx — boundary below the /store shared layout covers
 //   client navs like /store/shoes → /store/hats (the root boundary does not)
-export default function StoreLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function StoreLayout({children}: {children: React.ReactNode}) {
   return (
     <section>
       <StoreNav /> {/* shell */}
