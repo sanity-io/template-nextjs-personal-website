@@ -54,20 +54,49 @@ export async function generateMetadata(
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-  }
   return (
-    <Suspense>
-      <DynamicProjectSlugPage params={params} />
+    <Suspense fallback={<ProjectSlugPageFallback />}>
+      {isDraftMode ? (
+        <DynamicProjectSlugPage params={params} />
+      ) : (
+        <PublishedProjectSlugPage params={params} />
+      )}
     </Suspense>
   )
+}
+
+async function PublishedProjectSlugPage({
+  params,
+}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+  const {slug} = await params
+  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
+}
+
+function ProjectSlugPageFallback() {
+  return (
+    <div aria-busy className="space-y-6">
+      <div className="space-y-3">
+        <div className="h-10 w-2/3 max-w-xl animate-pulse rounded bg-gray-200" />
+        <div className="h-6 w-full max-w-3xl animate-pulse rounded bg-gray-100" />
+      </div>
+      <div className="rounded-md border">
+        <div className="aspect-[16/9] w-full animate-pulse bg-gray-100" />
+        <div className="grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+          {Array.from({length: 4}).map((_, i) => (
+            <div key={i} className="space-y-2 p-3 lg:p-4">
+              <div className="h-3 w-16 animate-pulse rounded bg-gray-200" />
+              <div className="h-5 w-24 animate-pulse rounded bg-gray-100" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 async function CachedProjectSlugPage({
