@@ -47,20 +47,37 @@ export async function generateMetadata(
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedSlugPage slug={slug} perspective="published" stega={false} />
-  }
   return (
-    <Suspense>
-      <DynamicSlugPage params={params} />
+    <Suspense fallback={<SlugPageFallback />}>
+      {isDraftMode ? (
+        <DynamicSlugPage params={params} />
+      ) : (
+        <PublishedSlugPage params={params} />
+      )}
     </Suspense>
   )
+}
+
+async function PublishedSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
+  const {slug} = await params
+  return <CachedSlugPage slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedSlugPage slug={slug} perspective={perspective} stega={stega} />
+}
+
+function SlugPageFallback() {
+  return (
+    <article aria-busy className="w-5/6 lg:w-3/5">
+      <div className="h-10 animate-pulse rounded bg-gray-200 md:h-14" />
+      <div className="mt-4 space-y-3">
+        <div className="h-5 animate-pulse rounded bg-gray-200" />
+        <div className="h-5 w-4/5 animate-pulse rounded bg-gray-200" />
+      </div>
+    </article>
+  )
 }
 
 async function CachedSlugPage({
