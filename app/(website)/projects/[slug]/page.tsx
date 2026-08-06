@@ -54,20 +54,44 @@ export async function generateMetadata(
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-  }
   return (
-    <Suspense>
-      <DynamicProjectSlugPage params={params} />
+    <Suspense fallback={<ProjectSlugPageFallback />}>
+      {isDraftMode ? (
+        <DynamicProjectSlugPage params={params} />
+      ) : (
+        <PublishedProjectSlugPage params={params} />
+      )}
     </Suspense>
   )
+}
+
+async function PublishedProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+  const {slug} = await params
+  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
+}
+
+function ProjectSlugPageFallback() {
+  return (
+    <article aria-busy>
+      <div className="mb-8 h-10 animate-pulse rounded bg-gray-200 md:h-14" />
+      <div className="rounded-md border">
+        <div className="aspect-[16/9] animate-pulse bg-gray-200" />
+        <div className="grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+          {Array.from({length: 4}).map((_, key) => (
+            <div className="space-y-2 p-3 lg:p-4" key={key}>
+              <div className="h-3 w-16 animate-pulse rounded bg-gray-200" />
+              <div className="h-5 animate-pulse rounded bg-gray-200" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
+  )
 }
 
 async function CachedProjectSlugPage({
