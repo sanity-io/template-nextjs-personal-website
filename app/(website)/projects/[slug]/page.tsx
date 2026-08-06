@@ -13,7 +13,6 @@ import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/querie
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
@@ -52,16 +51,43 @@ export async function generateMetadata(
   }
 }
 
-export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-  }
+export default function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   return (
-    <Suspense>
+    <Suspense fallback={<ProjectSlugPageFallback />}>
       <DynamicProjectSlugPage params={params} />
     </Suspense>
+  )
+}
+
+/**
+ * Mirrors the real page's heading, cover image and metadata grid so the App Shell reserves the
+ * same vertical space the streamed-in content will occupy.
+ */
+function ProjectSlugPageFallback() {
+  return (
+    <div aria-busy>
+      <div className="w-5/6 lg:w-3/5" aria-hidden>
+        <div className="text-3xl font-extrabold tracking-tight md:text-5xl">
+          <span className="inline-block h-[1em] w-2/3 animate-pulse rounded bg-gray-200 align-middle" />
+        </div>
+        <div className="mt-4 font-serif text-xl md:text-2xl">
+          <span className="inline-block h-[1em] w-full animate-pulse rounded bg-gray-200 align-middle" />
+        </div>
+      </div>
+      <div className="mt-8 rounded-md border" aria-hidden>
+        <div className="relative aspect-[16/9] w-full animate-pulse rounded-[3px] bg-gray-100" />
+        <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+          {['Duration', 'Client', 'Site', 'Tags'].map((label) => (
+            <div className="p-3 lg:p-4" key={label}>
+              <div className="text-xs md:text-sm">{label}</div>
+              <div className="text-md md:text-lg">
+                <span className="inline-block h-[1em] w-24 animate-pulse rounded bg-gray-200 align-middle" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
 

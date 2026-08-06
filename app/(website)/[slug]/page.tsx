@@ -10,7 +10,6 @@ import {
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
 
@@ -45,16 +44,35 @@ export async function generateMetadata(
   }
 }
 
-export default async function SlugPage({params}: PageProps<'/[slug]'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedSlugPage slug={slug} perspective="published" stega={false} />
-  }
+export default function SlugPage({params}: PageProps<'/[slug]'>) {
   return (
-    <Suspense>
+    <Suspense fallback={<SlugPageFallback />}>
       <DynamicSlugPage params={params} />
     </Suspense>
+  )
+}
+
+/**
+ * Mirrors the real page's heading and body proportions so the App Shell reserves the same
+ * vertical space the streamed-in content will occupy.
+ */
+function SlugPageFallback() {
+  return (
+    <div aria-busy>
+      <div className="w-5/6 lg:w-3/5" aria-hidden>
+        <div className="text-3xl font-extrabold tracking-tight md:text-5xl">
+          <span className="inline-block h-[1em] w-2/3 animate-pulse rounded bg-gray-200 align-middle" />
+        </div>
+        <div className="mt-4 font-serif text-xl md:text-2xl">
+          <span className="inline-block h-[1em] w-full animate-pulse rounded bg-gray-200 align-middle" />
+        </div>
+      </div>
+      <div className="mt-8 max-w-3xl space-y-3 font-serif text-xl" aria-hidden>
+        <span className="block h-[1em] animate-pulse rounded bg-gray-100" />
+        <span className="block h-[1em] w-11/12 animate-pulse rounded bg-gray-100" />
+        <span className="block h-[1em] w-4/5 animate-pulse rounded bg-gray-100" />
+      </div>
+    </div>
   )
 }
 
