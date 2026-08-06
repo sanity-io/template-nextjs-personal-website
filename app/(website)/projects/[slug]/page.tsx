@@ -68,9 +68,7 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
   )
 }
 
-async function PublishedProjectSlugPage({
-  params,
-}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+async function PublishedProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const {slug} = await params
   return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
 }
