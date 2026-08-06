@@ -13,7 +13,7 @@
     "start": "next start",
     "stega-warn": "echo 'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4'",
     "type-check": "next typegen && tsc --noEmit",
-    "typegen": "sanity schema extract && sanity typegen generate"
+    "typegen": "sanity schema extract --force && sanity typegen generate"
   },
   "dependencies": {
     "@next/env": "16.3.0",
