@@ -486,6 +486,70 @@ export type SlugPageQueryResult = {
   slug: string | null
 } | null
 
+// Source: app/(website)/[slug]/presentation-page.tsx
+// Variable: presentationHeaderQuery
+// Query: *[_type == "page" && slug.current == $slug][0] {    _id,    _type,    title,    overview,  }
+export type PresentationHeaderQueryResult = {
+  _id: string
+  _type: 'page'
+  title: string | null
+  overview: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal'
+    listItem?: never
+    markDefs?: null
+    level?: number
+    _type: 'block'
+    _key: string
+  }> | null
+} | null
+
+// Source: app/(website)/[slug]/presentation-page.tsx
+// Variable: presentationBodyQuery
+// Query: *[_type == "page" && slug.current == $slug][0] {    _id,    _type,    body,  }
+export type PresentationBodyQueryResult = {
+  _id: string
+  _type: 'page'
+  body: Array<
+    | ({
+        _key: string
+      } & Timeline)
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        caption?: string
+        alt?: string
+        _type: 'image'
+        _key: string
+      }
+  > | null
+} | null
+
 // Source: app/(website)/layout.tsx
 // Variable: layoutMetadataQuery
 // Query: {    "settings": *[_type == "settings"][0]{ogImage},    "home": *[_type == "home"][0]{      title,      "overview": pt::text(overview),    }  }
@@ -708,6 +772,8 @@ declare module '@sanity/client' {
   interface SanityQueries {
     '\n    *[_type == "page" && slug.current == $slug][0] {\n      title,\n      "overview": pt::text(overview),\n    }\n  ': SlugPageMetadataQueryResult
     '\n    *[_type == "page" && slug.current == $slug][0] {\n      _id,\n      _type,\n      body,\n      overview,\n      title,\n      "slug": slug.current,\n    }\n  ': SlugPageQueryResult
+    '*[_type == "page" && slug.current == $slug][0] {\n    _id,\n    _type,\n    title,\n    overview,\n  }': PresentationHeaderQueryResult
+    '*[_type == "page" && slug.current == $slug][0] {\n    _id,\n    _type,\n    body,\n  }': PresentationBodyQueryResult
     '{\n    "settings": *[_type == "settings"][0]{ogImage},\n    "home": *[_type == "home"][0]{\n      title,\n      "overview": pt::text(overview),\n    }\n  }': LayoutMetadataQueryResult
     '\n    *[_type == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          coverImage,\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
     '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
