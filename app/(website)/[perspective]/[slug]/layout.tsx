@@ -1,4 +1,4 @@
-export default function SlugLayout({children}: LayoutProps<'/[slug]'>) {
+export default function SlugLayout({children}: LayoutProps<'/[perspective]/[slug]'>) {
   return (
     <div>
       <div className="mb-14">{children}</div>

@@ -1,4 +1,6 @@
-export default function ProjectSlugLayout({children}: LayoutProps<'/projects/[slug]'>) {
+export default function ProjectSlugLayout({
+  children,
+}: LayoutProps<'/[perspective]/projects/[slug]'>) {
   return (
     <div>
       <div className="mb-20 space-y-6">{children}</div>

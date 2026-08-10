@@ -1,35 +1,62 @@
 import {type QueryParams} from 'next-sanity'
-import {defineLive, resolvePerspectiveFromCookies, type LivePerspective} from 'next-sanity/live'
-import {cookies, draftMode} from 'next/headers'
+import {defineLive, type LivePerspective} from 'next-sanity/live'
+import {draftMode} from 'next/headers'
 import {client} from './client'
 import {token} from './token'
 
-export const {SanityLive, sanityFetch} = defineLive({
+/**
+ * Live content integration primitives for Next.js.
+ *
+ * - `SanityLive` enables live updates in the app tree.
+ * - `sanityInternalFetch` is the low-level fetcher from `defineLive`.
+ */
+export const {SanityLive, sanityFetch: sanityInternalFetch} = defineLive({
   client,
   serverToken: token,
   browserToken: token,
   strict: true,
 })
 
-export interface DynamicFetchOptions {
+export interface FetchOptions {
   perspective: LivePerspective
-  stega: boolean
 }
 
 /**
- * Resolves `perspective` and `stega` outside of any `'use cache'` boundary so they can be
- * passed as plain serializable props into a cached leaf. Calls `cookies()`, so callers must
- * be wrapped in `<Suspense>` (or sit next to a `loading.tsx`).
+ * Options accepted by the draft-aware fetch wrapper.
+ *
+ * `stega` and the final `perspective` are derived from Next.js draft mode,
+ * so callers only provide a draft perspective candidate.
  */
-export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    return {perspective: 'published', stega: false}
-  }
+type WithDraftModeOptions<QueryString extends string> = Omit<
+  Parameters<typeof sanityInternalFetch<QueryString>>[0],
+  'perspective' | 'stega'
+> &
+  Partial<Pick<Parameters<typeof sanityInternalFetch<QueryString>>[0], 'perspective'>>
 
-  const jar = await cookies()
-  const perspective = await resolvePerspectiveFromCookies({cookies: jar})
-  return {perspective: perspective ?? 'drafts', stega: true}
+/**
+ * Wraps `sanityInternalFetch` so draft mode controls perspective/stega automatically.
+ *
+ * When draft mode is disabled, all reads are forced to `published`.
+ */
+function withDraftMode(fn: typeof sanityInternalFetch) {
+  return async <const QueryString extends string>(options: WithDraftModeOptions<QueryString>) => {
+    const {isEnabled: isDraftMode} = await draftMode()
+
+    return fn({
+      ...options,
+      perspective: isDraftMode ? options.perspective : 'published',
+      stega: isDraftMode,
+    } as Parameters<typeof sanityInternalFetch<QueryString>>[0])
+  }
+}
+
+/**
+ * App-level Sanity fetch helper that automatically syncs with Next.js draft mode.
+ */
+export const sanityFetch = withDraftMode(sanityInternalFetch)
+
+export function normalizePerspective(perspective: string): LivePerspective {
+  return (perspective as LivePerspective) ?? 'published'
 }
 
 /**
@@ -46,7 +73,7 @@ export async function sanityFetchStaticParams<const QueryString extends string>(
   params?: QueryParams
 }) {
   'use cache'
-  const {data} = await sanityFetch({query, params, perspective: 'published', stega: false})
+  const {data} = await sanityInternalFetch({query, params, perspective: 'published', stega: false})
   return {data}
 }
 
@@ -66,6 +93,6 @@ export async function sanityFetchMetadata<const QueryString extends string>({
   perspective: LivePerspective
 }) {
   'use cache'
-  const {data} = await sanityFetch({query, params, perspective, stega: false})
+  const {data} = await sanityInternalFetch({query, params, perspective, stega: false})
   return {data}
 }

@@ -3,11 +3,11 @@ import {CustomPortableText} from '@/components/CustomPortableText'
 import {Navbar} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
 import {
-  getDynamicFetchOptions,
+  normalizePerspective,
   sanityFetch,
   sanityFetchMetadata,
   SanityLive,
-  type DynamicFetchOptions,
+  type FetchOptions,
 } from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
@@ -21,8 +21,9 @@ import {Toaster} from 'sonner'
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const {perspective} = await getDynamicFetchOptions()
+export async function generateMetadata({params}: LayoutProps<'/[perspective]'>): Promise<Metadata> {
+  const {perspective} = await params
+
   const layoutMetadataQuery = defineQuery(`{
     "settings": *[_type == "settings"][0]{ogImage},
     "home": *[_type == "home"][0]{
@@ -30,11 +31,16 @@ export async function generateMetadata(): Promise<Metadata> {
       "overview": pt::text(overview),
     }
   }`)
+
   const {
     data: {settings, home},
-  } = await sanityFetchMetadata({query: layoutMetadataQuery, perspective})
+  } = await sanityFetchMetadata({
+    query: layoutMetadataQuery,
+    perspective: normalizePerspective(perspective),
+  })
 
   const ogImage = urlForOpenGraphImage(settings?.ogImage)
+
   return {
     title: home?.title
       ? {template: `%s | ${home.title}`, default: home.title || 'Personal website'}
@@ -46,48 +52,49 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const viewport: Viewport = {themeColor: '#000'}
 
-export default async function PersonalLayout({children}: LayoutProps<'/'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
+export default function PersonalLayout({params, children}: LayoutProps<'/[perspective]'>) {
   return (
     <>
       <div className="flex min-h-screen flex-col bg-white text-black">
-        {isDraftMode ? (
-          <Suspense fallback={<NavbarFallback />}>
-            <DynamicNavbar />
-          </Suspense>
-        ) : (
-          <CachedNavbar perspective="published" stega={false} />
-        )}
+        <Suspense fallback={<NavbarFallback />}>
+          {params.then(({perspective}) => (
+            <CachedNavbar perspective={normalizePerspective(perspective)} />
+          ))}
+        </Suspense>
         <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">{children}</div>
-        {isDraftMode ? (
-          <Suspense>
-            <DynamicFooter />
-          </Suspense>
-        ) : (
-          <CachedFooter perspective="published" stega={false} />
-        )}
+        <Suspense>
+          {params.then(({perspective}) => (
+            <CachedFooter perspective={normalizePerspective(perspective)} />
+          ))}
+        </Suspense>
         <Suspense>
           <IntroTemplate />
         </Suspense>
       </div>
       <Toaster />
-      <SanityLive onError={handleError} includeDrafts={isDraftMode} />
-      {isDraftMode && (
-        <>
-          <DraftModeToast
-            action={async () => {
-              'use server'
+      {draftMode().then(({isEnabled: isDraftMode}) => {
+        return (
+          <>
+            <SanityLive onError={handleError} includeDrafts={isDraftMode} />
+            {isDraftMode && (
+              <>
+                <DraftModeToast
+                  action={async () => {
+                    'use server'
 
-              await Promise.allSettled([
-                (await draftMode()).disable(),
-                // Simulate a delay to show the loading state
-                new Promise((resolve) => setTimeout(resolve, 1000)),
-              ])
-            }}
-          />
-          <VisualEditing />
-        </>
-      )}
+                    await Promise.allSettled([
+                      (await draftMode()).disable(),
+                      // Simulate a delay to show the loading state
+                      new Promise((resolve) => setTimeout(resolve, 1000)),
+                    ])
+                  }}
+                />
+                <VisualEditing />
+              </>
+            )}
+          </>
+        )
+      })}
       <SpeedInsights />
     </>
   )
@@ -97,20 +104,17 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
  * Shared cache leaf — both the navbar and footer derive from the same `settingsQuery`, so
  * neither has to wait independently for the same data.
  */
-async function fetchSettings({perspective, stega}: DynamicFetchOptions) {
+async function fetchSettings({perspective}: FetchOptions) {
   'use cache'
-  const {data} = await sanityFetch({query: settingsQuery, perspective, stega})
+
+  const {data} = await sanityFetch({query: settingsQuery, perspective})
   return data
 }
 
-async function DynamicNavbar() {
-  const {perspective, stega} = await getDynamicFetchOptions()
-  return <CachedNavbar perspective={perspective} stega={stega} />
-}
-
-async function CachedNavbar({perspective, stega}: DynamicFetchOptions) {
+async function CachedNavbar({perspective}: FetchOptions) {
   'use cache'
-  const data = await fetchSettings({perspective, stega})
+
+  const data = await fetchSettings({perspective})
   return <Navbar data={data} />
 }
 
@@ -131,17 +135,15 @@ function NavbarFallback() {
   )
 }
 
-async function DynamicFooter() {
-  const {perspective, stega} = await getDynamicFetchOptions()
-  return <CachedFooter perspective={perspective} stega={stega} />
-}
-
-async function CachedFooter({perspective, stega}: DynamicFetchOptions) {
+async function CachedFooter({perspective}: FetchOptions) {
   'use cache'
-  const data = await fetchSettings({perspective, stega})
+
+  const data = await fetchSettings({perspective})
+
   if (!Array.isArray(data?.footer)) {
     return null
   }
+
   return (
     <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">
       <CustomPortableText
