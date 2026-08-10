@@ -34,7 +34,13 @@ export default function SlugPage({params}: PageProps<'/[perspective]/[slug]'>) {
   )
 }
 
-async function CachedSlugPage({slug, perspective}: {slug: string; perspective: 'published' | 'drafts'}) {
+async function CachedSlugPage({
+  slug,
+  perspective,
+}: {
+  slug: string
+  perspective: 'published' | 'drafts'
+}) {
   'use cache'
   const {data} = await sanityFetch({query: slugQuery, params: {slug}, perspective})
   return <article>{/* render data */}</article>

@@ -72,29 +72,31 @@ export default function PersonalLayout({params, children}: LayoutProps<'/[perspe
         </Suspense>
       </div>
       <Toaster />
-      {draftMode().then(({isEnabled: isDraftMode}) => {
-        return (
-          <>
-            <SanityLive onError={handleError} includeDrafts={isDraftMode} />
-            {isDraftMode && (
-              <>
-                <DraftModeToast
-                  action={async () => {
-                    'use server'
+      <Suspense>
+        {draftMode().then(({isEnabled: isDraftMode}) => {
+          return (
+            <>
+              <SanityLive onError={handleError} includeDrafts={isDraftMode} />
+              {isDraftMode && (
+                <>
+                  <DraftModeToast
+                    action={async () => {
+                      'use server'
 
-                    await Promise.allSettled([
-                      (await draftMode()).disable(),
-                      // Simulate a delay to show the loading state
-                      new Promise((resolve) => setTimeout(resolve, 1000)),
-                    ])
-                  }}
-                />
-                <VisualEditing />
-              </>
-            )}
-          </>
-        )
-      })}
+                      await Promise.allSettled([
+                        (await draftMode()).disable(),
+                        // Simulate a delay to show the loading state
+                        new Promise((resolve) => setTimeout(resolve, 1000)),
+                      ])
+                    }}
+                  />
+                  <VisualEditing />
+                </>
+              )}
+            </>
+          )
+        })}
+      </Suspense>
       <SpeedInsights />
     </>
   )

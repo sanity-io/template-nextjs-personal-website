@@ -13,15 +13,10 @@ This project uses a non-async website layout and resolves dynamic bits with prom
 
 ```tsx
 // app/(website)/[perspective]/layout.tsx (excerpt)
-import {Suspense} from 'react'
-import {draftMode} from 'next/headers'
+import {normalizePerspective, sanityFetch, SanityLive, type FetchOptions} from '@/sanity/lib/live'
 import {VisualEditing} from 'next-sanity/visual-editing'
-import {
-  normalizePerspective,
-  sanityFetch,
-  SanityLive,
-  type FetchOptions,
-} from '@/sanity/lib/live'
+import {draftMode} from 'next/headers'
+import {Suspense} from 'react'
 
 export default function PersonalLayout({params, children}: LayoutProps<'/[perspective]'>) {
   return (

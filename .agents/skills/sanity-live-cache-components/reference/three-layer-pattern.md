@@ -42,8 +42,8 @@ export async function generateStaticParams() {
 Keep top-level routes non-async and pass unresolved `params` into a Suspense-wrapped resolver:
 
 ```tsx
-import {Suspense} from 'react'
 import {normalizePerspective} from '@/sanity/lib/live'
+import {Suspense} from 'react'
 
 export default function Page({params}: PageProps<'/[perspective]/[slug]'>) {
   return (
