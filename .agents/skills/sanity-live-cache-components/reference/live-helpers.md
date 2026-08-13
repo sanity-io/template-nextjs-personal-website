@@ -211,7 +211,7 @@ It's `cachedSanity` with `stega` pinned to `false` (never wanted in these contex
 Presentation Tool can open an app in a standalone preview window, so the correct content release must still be reflected in `<title>` and friends. Always resolve `perspective`:
 
 ```ts
-import {getDynamicFetchOptions, cachedSanityMetadata} from '@/sanity/lib/live'
+import {cachedSanityMetadata, getDynamicFetchOptions} from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'
 
 export async function generateMetadata({params}: PageProps<'/[slug]'>) {
