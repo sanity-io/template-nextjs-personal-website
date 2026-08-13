@@ -50,6 +50,7 @@
     "typescript/no-unnecessary-type-assertion": "error",
     "typescript/no-unnecessary-type-arguments": "error",
     "typescript/prefer-ts-expect-error": "error",
+    "typescript/no-useless-default-assignment": "off",
     "no-underscore-dangle": "off"
   }
 }
