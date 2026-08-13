@@ -10,9 +10,7 @@ import {
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import type {Metadata, ResolvingMetadata} from 'next'
 import {defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
-import {Suspense} from 'react'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -46,19 +44,6 @@ export async function generateMetadata(
 }
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedSlugPage key={slug} slug={slug} perspective="published" stega={false} />
-  }
-  return (
-    <Suspense>
-      <DynamicSlugPage params={params} />
-    </Suspense>
-  )
-}
-
-async function DynamicSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedSlugPage key={slug} slug={slug} perspective={perspective} stega={stega} />
 }

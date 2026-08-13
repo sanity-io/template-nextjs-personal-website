@@ -5,6 +5,7 @@ import {
   type LivePerspective,
   type StrictDefinedFetchType,
 } from 'next-sanity/live'
+import {cacheLife} from 'next/cache'
 import {cookies, draftMode} from 'next/headers'
 import {client} from './client'
 import {token} from './token'
@@ -22,7 +23,13 @@ export const {SanityLive, sanityFetch} = defineLive({
  */
 export const cachedSanity: StrictDefinedFetchType = async (options) => {
   'use cache'
-  return sanityFetch(options)
+  const result = await sanityFetch(options)
+  if (options.perspective && options.perspective !== 'published') {
+    // Keep draft/preview payloads out of the client router cache. Otherwise
+    // sibling `/projects/[slug]` navigations reuse the first project's RSC.
+    cacheLife({stale: 0})
+  }
+  return result
 }
 
 export interface DynamicFetchOptions {
