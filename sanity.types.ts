@@ -646,7 +646,7 @@ export type ProjectSlugPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
-// Query: *[_type == "settings"][0]{    _id,    _type,    footer,    menuItems[]{      ...@->{        _type,        "slug": slug.current,        title      },      "key": _key,    },    ogImage,  }
+// Query: *[_type == "settings"][0]{    _id,    _type,    footer,    menuItems[]{      _key,      ...@->{        _type,        "slug": slug.current,        title      }    },    ogImage,  }
 export type SettingsQueryResult = {
   _id: string
   _type: 'settings'
@@ -670,22 +670,22 @@ export type SettingsQueryResult = {
   }> | null
   menuItems: Array<
     | {
+        _key: null
         _type: 'home'
         slug: null
         title: string | null
-        key: null
       }
     | {
+        _key: null
         _type: 'page'
         slug: string | null
         title: string | null
-        key: null
       }
     | {
+        _key: null
         _type: 'project'
         slug: string | null
         title: string | null
-        key: null
       }
   > | null
   ogImage: {
@@ -712,7 +712,7 @@ declare module '@sanity/client' {
     '\n    *[_type == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          coverImage,\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
     '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
     '\n    *[_type == "project" && slug.current == $slug][0] {\n      _id,\n      _type,\n      client,\n      coverImage,\n      description,\n      duration,\n      overview,\n      site,\n      "slug": slug.current,\n      tags,\n      title,\n    }\n  ': ProjectSlugPageQueryResult
-    '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      },\n      "key": _key,\n    },\n    ogImage,\n  }\n': SettingsQueryResult
+    '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    ogImage,\n  }\n': SettingsQueryResult
     '\n  *[_type == $type && defined(slug.current)]{"slug": slug.current}\n': SlugsByTypeQueryResult
   }
 }
