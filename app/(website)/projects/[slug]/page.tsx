@@ -1,3 +1,10 @@
+import type {Metadata, ResolvingMetadata} from 'next'
+import {createDataAttribute, defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
+import Link from 'next/link'
+import {notFound} from 'next/navigation'
+import {Suspense} from 'react'
+
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
@@ -11,12 +18,6 @@ import {
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
-import type {Metadata, ResolvingMetadata} from 'next'
-import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
-import Link from 'next/link'
-import {notFound} from 'next/navigation'
-import {Suspense} from 'react'
 import Loading from './loading'
 
 export async function generateStaticParams() {

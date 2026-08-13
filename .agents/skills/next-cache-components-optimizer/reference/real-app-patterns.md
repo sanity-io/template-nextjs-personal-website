@@ -43,7 +43,7 @@ A top-level `await` in a layout blocks everything below it (the most common bloc
 
 ```tsx
 // ❌ Before: the await + redirect at the top blocks the whole settings frame
-export default async function SettingsLayout({ children }) {
+export default async function SettingsLayout({children}) {
   const session = await getSession() // your auth library's request-time read; suspends during prerender → frame can't build
   if (!session?.user) redirect(getLoginUrl())
   return <Shell>{children}</Shell>
@@ -52,9 +52,9 @@ export default async function SettingsLayout({ children }) {
 
 ```tsx
 // ✅ After: render children unconditionally; move the gate into a Suspense child
-import { Suspense } from 'react'
+import {Suspense} from 'react'
 
-export default function SettingsLayout({ children }) {
+export default function SettingsLayout({children}) {
   return (
     <Shell>
       <Suspense fallback={null}>
