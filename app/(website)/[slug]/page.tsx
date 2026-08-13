@@ -49,13 +49,38 @@ export async function generateMetadata(
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
   if (!isDraftMode) {
-    const {slug} = await params
-    return <CachedSlugPage slug={slug} perspective="published" stega={false} />
+    return (
+      <Suspense fallback={<SlugPageFallback />}>
+        <PublishedSlugPage params={params} />
+      </Suspense>
+    )
   }
   return (
-    <Suspense>
+    <Suspense fallback={<SlugPageFallback />}>
       <DynamicSlugPage params={params} />
     </Suspense>
+  )
+}
+
+async function PublishedSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
+  const {slug} = await params
+  return <CachedSlugPage slug={slug} perspective="published" stega={false} />
+}
+
+/**
+ * Mirrors the `<Header>` block so the fallback occupies the same space while the
+ * URL-specific content streams in after a navigation.
+ */
+function SlugPageFallback() {
+  return (
+    <div aria-busy className="w-5/6 lg:w-3/5">
+      <span className="block text-3xl md:text-5xl" aria-hidden>
+        <span className="inline-block h-[1em] w-48 max-w-full animate-pulse rounded bg-gray-200 align-middle md:w-72" />
+      </span>
+      <span className="mt-4 block font-serif text-xl md:text-2xl" aria-hidden>
+        <span className="inline-block h-[1em] w-full animate-pulse rounded bg-gray-100 align-middle" />
+      </span>
+    </div>
   )
 }
 
