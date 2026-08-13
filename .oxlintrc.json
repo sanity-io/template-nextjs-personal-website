@@ -28,7 +28,9 @@
     "next-env.d.ts",
     "public/",
     "node_modules/",
-    "sanity.types.ts"
+    "sanity.types.ts",
+    "test-results/",
+    "playwright-report/"
   ],
   "categories": {
     "correctness": "error",

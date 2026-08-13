@@ -1,6 +1,5 @@
 import type {Metadata, ResolvingMetadata} from 'next'
 import {defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
 
@@ -46,28 +45,15 @@ export async function generateMetadata(
   }
 }
 
-export default async function SlugPage({params}: PageProps<'/[slug]'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    return (
-      <Suspense>
-        <PublishedSlugPage params={params} />
-      </Suspense>
-    )
-  }
+export default function SlugPage({params}: PageProps<'/[slug]'>) {
   return (
     <Suspense>
-      <DynamicSlugPage params={params} />
+      <SlugPageContent params={params} />
     </Suspense>
   )
 }
 
-async function PublishedSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
-  const {slug} = await params
-  return <CachedSlugPage slug={slug} perspective="published" stega={false} />
-}
-
-async function DynamicSlugPage({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
+async function SlugPageContent({params}: Pick<PageProps<'/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedSlugPage slug={slug} perspective={perspective} stega={stega} />
 }

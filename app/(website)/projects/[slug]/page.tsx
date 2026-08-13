@@ -1,6 +1,5 @@
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {Suspense} from 'react'
@@ -53,28 +52,15 @@ export async function generateMetadata(
   }
 }
 
-export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    return (
-      <Suspense>
-        <PublishedProjectSlugPage params={params} />
-      </Suspense>
-    )
-  }
+export default function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   return (
     <Suspense>
-      <DynamicProjectSlugPage params={params} />
+      <ProjectSlugPageContent params={params} />
     </Suspense>
   )
 }
 
-async function PublishedProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
-  const {slug} = await params
-  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-}
-
-async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+async function ProjectSlugPageContent({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
@@ -124,7 +110,7 @@ async function CachedProjectSlugPage({
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (
-    <>
+    <div className="space-y-6" data-testid="project-content">
       {/* Header */}
       <Header
         id={data?._id || null}
@@ -201,6 +187,6 @@ async function CachedProjectSlugPage({
           value={description}
         />
       )}
-    </>
+    </div>
   )
 }
