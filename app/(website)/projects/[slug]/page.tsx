@@ -115,7 +115,7 @@ async function CachedProjectSlugPage({
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (
-    <>
+    <div className="space-y-6" data-testid="project-content">
       {/* Header */}
       <Header
         id={data?._id || null}
@@ -192,6 +192,6 @@ async function CachedProjectSlugPage({
           value={description}
         />
       )}
-    </>
+    </div>
   )
 }

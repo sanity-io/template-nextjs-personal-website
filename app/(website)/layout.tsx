@@ -123,6 +123,7 @@ function NavbarFallback() {
     <header
       aria-busy
       className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur md:px-16 md:py-5 lg:px-32"
+      data-testid="site-header"
     >
       <span className="text-lg md:text-xl" aria-hidden>
         <span className="inline-block h-[1em] w-24 animate-pulse rounded bg-gray-200 align-middle md:w-32" />
@@ -143,7 +144,10 @@ async function CachedFooter({perspective, stega}: DynamicFetchOptions) {
     return null
   }
   return (
-    <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">
+    <footer
+      className="bottom-0 w-full bg-white py-12 text-center md:py-20"
+      data-testid="site-footer"
+    >
       <CustomPortableText
         id={data._id}
         type={data._type}

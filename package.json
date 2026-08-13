@@ -12,6 +12,7 @@
     "lint:fix": "npm run format && npm run lint -- --fix",
     "start": "next start",
     "stega-warn": "echo 'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4'",
+    "test:e2e": "playwright test",
     "type-check": "next typegen && tsc --noEmit",
     "typegen": "sanity schema extract --force && sanity typegen generate"
   },
@@ -42,6 +43,8 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",
+    "@next/playwright": "16.3.0",
+    "@playwright/test": "1.62.1",
     "@sanity/prettier-config": "3.0.0",
     "@types/node": "25.9.5",
     "@types/react": "19.2.18",
