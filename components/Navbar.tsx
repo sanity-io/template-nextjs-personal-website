@@ -43,6 +43,10 @@ export function Navbar(props: NavbarProps) {
               ])}
               data-testid={`nav-link${href === '/' ? '-home' : href.replaceAll('/', '-')}`}
               href={href}
+              // Menu items point at `[slug]` routes, whose content is keyed by `params` and so
+              // can't live in the App Shell that Partial Prefetching shares across links. Opt
+              // into runtime prefetching so the destination resolves before the click.
+              prefetch
             >
               {stegaClean(menuItem.title)}
             </AppLink>

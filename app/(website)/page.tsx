@@ -105,6 +105,10 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                   className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
                   key={project._key}
                   href={href}
+                  // Project pages are keyed by `params`, which Partial Prefetching keeps out of
+                  // the shared App Shell. Runtime prefetching resolves the destination project
+                  // ahead of the click so the navigation still commits its title immediately.
+                  prefetch
                   data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
                 >
                   <div className="w-full xl:w-9/12">
