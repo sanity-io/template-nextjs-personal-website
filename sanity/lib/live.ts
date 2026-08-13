@@ -1,3 +1,5 @@
+import {appendFileSync} from 'node:fs'
+
 import {type QueryParams} from 'next-sanity'
 import {defineLive, resolvePerspectiveFromCookies, type LivePerspective} from 'next-sanity/live'
 import {cookies, draftMode} from 'next/headers'
@@ -24,12 +26,36 @@ export interface DynamicFetchOptions {
  */
 export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
   const {isEnabled: isDraftMode} = await draftMode()
+  // #region agent log
+  appendFileSync(
+    '/opt/cursor/logs/debug.log',
+    JSON.stringify({
+      hypothesisId: 'H4',
+      location: 'sanity/lib/live.ts:getDynamicFetchOptions',
+      message: 'Resolved draft mode state',
+      data: {isDraftMode},
+      timestamp: Date.now(),
+    }) + '\n',
+  )
+  // #endregion
   if (!isDraftMode) {
     return {perspective: 'published', stega: false}
   }
 
   const jar = await cookies()
   const perspective = await resolvePerspectiveFromCookies({cookies: jar})
+  // #region agent log
+  appendFileSync(
+    '/opt/cursor/logs/debug.log',
+    JSON.stringify({
+      hypothesisId: 'H4',
+      location: 'sanity/lib/live.ts:getDynamicFetchOptions',
+      message: 'Resolved draft preview perspective',
+      data: {perspective: perspective ?? 'drafts'},
+      timestamp: Date.now(),
+    }) + '\n',
+  )
+  // #endregion
   return {perspective: perspective ?? 'drafts', stega: true}
 }
 

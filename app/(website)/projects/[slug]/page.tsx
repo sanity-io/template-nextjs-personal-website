@@ -1,3 +1,5 @@
+import {appendFileSync} from 'node:fs'
+
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
 import {draftMode} from 'next/headers'
@@ -18,6 +20,7 @@ import {
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
+
 import Loading from './loading'
 
 export async function generateStaticParams() {
@@ -56,6 +59,18 @@ export async function generateMetadata(
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const {isEnabled: isDraftMode} = await draftMode()
+  // #region agent log
+  appendFileSync(
+    '/opt/cursor/logs/debug.log',
+    JSON.stringify({
+      hypothesisId: 'H1',
+      location: 'app/(website)/projects/[slug]/page.tsx:ProjectSlugPage',
+      message: 'Project route selected render branch',
+      data: {isDraftMode},
+      timestamp: Date.now(),
+    }) + '\n',
+  )
+  // #endregion
   return (
     <Suspense fallback={<Loading />}>
       {isDraftMode ? (
@@ -67,15 +82,25 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
   )
 }
 
-async function PublishedProjectSlugPage({
-  params,
-}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
+async function PublishedProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const {slug} = await params
   return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
 }
 
 async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
+  // #region agent log
+  appendFileSync(
+    '/opt/cursor/logs/debug.log',
+    JSON.stringify({
+      hypothesisId: 'H1',
+      location: 'app/(website)/projects/[slug]/page.tsx:DynamicProjectSlugPage',
+      message: 'Resolved dynamic project inputs',
+      data: {slug, perspective, stega},
+      timestamp: Date.now(),
+    }) + '\n',
+  )
+  // #endregion
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
 
@@ -85,6 +110,18 @@ async function CachedProjectSlugPage({
   stega,
 }: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
   'use cache'
+  // #region agent log
+  appendFileSync(
+    '/opt/cursor/logs/debug.log',
+    JSON.stringify({
+      hypothesisId: 'H2',
+      location: 'app/(website)/projects/[slug]/page.tsx:CachedProjectSlugPage',
+      message: 'Entered cached project renderer',
+      data: {slug, perspective, stega},
+      timestamp: Date.now(),
+    }) + '\n',
+  )
+  // #endregion
   const projectSlugPageQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       _id,
@@ -106,6 +143,18 @@ async function CachedProjectSlugPage({
     perspective,
     stega,
   })
+  // #region agent log
+  appendFileSync(
+    '/opt/cursor/logs/debug.log',
+    JSON.stringify({
+      hypothesisId: 'H3',
+      location: 'app/(website)/projects/[slug]/page.tsx:CachedProjectSlugPage',
+      message: 'Sanity project fetch completed',
+      data: {requestedSlug: slug, returnedSlug: data?.slug ?? null},
+      timestamp: Date.now(),
+    }) + '\n',
+  )
+  // #endregion
 
   if (!data?._id) notFound()
 
