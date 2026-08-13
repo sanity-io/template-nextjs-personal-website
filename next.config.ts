@@ -6,7 +6,12 @@ const config: NextConfig = {
   partialPrefetching: true,
   cacheLife: {default: sanity},
   reactCompiler: true,
-  experimental: {turbopackRustReactCompiler: true},
+  experimental: {
+    turbopackRustReactCompiler: true,
+    // Opt-in for local/CI production builds measured by `instant()`. Never set
+    // EXPOSE_TESTING_API in real production.
+    exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === '1',
+  },
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
   },
