@@ -1,9 +1,9 @@
+import {AppLink} from '@/components/AppLink'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import type {SettingsQueryResult} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, stegaClean} from 'next-sanity'
-import Link from 'next/link'
 
 interface NavbarProps {
   data: SettingsQueryResult
@@ -31,7 +31,7 @@ export function Navbar(props: NavbarProps) {
             return null
           }
           return (
-            <Link
+            <AppLink
               key={menuItem._key}
               className={`text-lg hover:text-black md:text-xl ${
                 menuItem?._type === 'home' ? 'font-extrabold text-black' : 'text-gray-600'
@@ -44,7 +44,7 @@ export function Navbar(props: NavbarProps) {
               href={href}
             >
               {stegaClean(menuItem.title)}
-            </Link>
+            </AppLink>
           )
         })}
       </OptimisticSortOrder>

@@ -1,3 +1,4 @@
+import {AppLink} from '@/components/AppLink'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
@@ -99,7 +100,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                 return null
               }
               return (
-                <Link
+                <AppLink
                   className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
                   key={project._key}
                   href={href}
@@ -141,7 +142,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </AppLink>
               )
             })}
         </OptimisticSortOrder>
