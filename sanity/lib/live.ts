@@ -1,11 +1,5 @@
 import {type QueryParams} from 'next-sanity'
-import {
-  defineLive,
-  resolvePerspectiveFromCookies,
-  type LivePerspective,
-  type StrictDefinedFetchType,
-} from 'next-sanity/live'
-import {cacheLife} from 'next/cache'
+import {defineLive, resolvePerspectiveFromCookies, type LivePerspective} from 'next-sanity/live'
 import {cookies, draftMode} from 'next/headers'
 
 import {client} from './client'
@@ -17,21 +11,6 @@ export const {SanityLive, sanityFetch} = defineLive({
   browserToken: token,
   strict: true,
 })
-
-/**
- * Shared `'use cache'` boundary for Sanity reads. Page components should call this
- * instead of declaring `'use cache'` on the rendered tree.
- */
-export const cachedSanity: StrictDefinedFetchType = async (options) => {
-  'use cache'
-  const result = await sanityFetch(options)
-  if (options.perspective && options.perspective !== 'published') {
-    // Keep draft/preview payloads out of the client router cache. Otherwise
-    // sibling `/projects/[slug]` navigations reuse the first project's RSC.
-    cacheLife({stale: 0})
-  }
-  return result
-}
 
 export interface DynamicFetchOptions {
   perspective: LivePerspective

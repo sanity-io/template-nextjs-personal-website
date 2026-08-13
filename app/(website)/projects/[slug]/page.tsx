@@ -8,8 +8,8 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
 import {
-  cachedSanity,
   getDynamicFetchOptions,
+  sanityFetch,
   sanityFetchMetadata,
   sanityFetchStaticParams,
   type DynamicFetchOptions,
@@ -61,6 +61,7 @@ async function CachedProjectSlugPage({
   perspective,
   stega,
 }: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
+  'use cache'
   const projectSlugPageQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       _id,
@@ -76,7 +77,7 @@ async function CachedProjectSlugPage({
       title,
     }
   `)
-  const {data} = await cachedSanity({
+  const {data} = await sanityFetch({
     query: projectSlugPageQuery,
     params: {slug},
     perspective,

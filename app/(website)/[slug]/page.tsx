@@ -5,8 +5,8 @@ import {notFound} from 'next/navigation'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import {
-  cachedSanity,
   getDynamicFetchOptions,
+  sanityFetch,
   sanityFetchMetadata,
   sanityFetchStaticParams,
   type DynamicFetchOptions,
@@ -54,6 +54,7 @@ async function CachedSlugPage({
   perspective,
   stega,
 }: Awaited<PageProps<'/[slug]'>['params']> & DynamicFetchOptions) {
+  'use cache'
   const slugPageQuery = defineQuery(`
     *[_type == "page" && slug.current == $slug][0] {
       _id,
@@ -64,7 +65,7 @@ async function CachedSlugPage({
       "slug": slug.current,
     }
   `)
-  const {data} = await cachedSanity({query: slugPageQuery, params: {slug}, perspective, stega})
+  const {data} = await sanityFetch({query: slugPageQuery, params: {slug}, perspective, stega})
 
   if (!data?._id) notFound()
 
