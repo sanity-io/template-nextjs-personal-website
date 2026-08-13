@@ -1,5 +1,6 @@
-import {CustomPortableText} from '@/components/CustomPortableText'
 import type {PathSegment} from 'sanity'
+
+import {CustomPortableText} from '@/components/CustomPortableText'
 
 interface HeaderProps {
   id: string | null

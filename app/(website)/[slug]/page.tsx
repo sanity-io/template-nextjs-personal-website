@@ -1,3 +1,7 @@
+import type {Metadata, ResolvingMetadata} from 'next'
+import {defineQuery} from 'next-sanity'
+import {notFound} from 'next/navigation'
+
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import {
@@ -8,9 +12,6 @@ import {
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
-import type {Metadata, ResolvingMetadata} from 'next'
-import {defineQuery} from 'next-sanity'
-import {notFound} from 'next/navigation'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
