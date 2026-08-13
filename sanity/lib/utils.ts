@@ -1,6 +1,7 @@
-import {dataset, projectId} from '@/sanity/lib/api'
 import type {Path, StudioPathLike} from '@sanity/client/csm'
 import {createImageUrlBuilder, type SanityImageSource} from '@sanity/image-url'
+
+import {dataset, projectId} from '@/sanity/lib/api'
 
 const imageBuilder = createImageUrlBuilder({
   projectId: projectId || '',

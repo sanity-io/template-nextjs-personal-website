@@ -7,7 +7,7 @@
     "build": "next build --turbopack && sanity manifest extract --path public/studio/static",
     "predev": "npm run typegen && npm run stega-warn",
     "dev": "next --turbopack",
-    "format": "npx prettier --write . --ignore-path .gitignore",
+    "format": "oxfmt",
     "lint": "next typegen && oxlint",
     "lint:fix": "npm run format && next typegen && oxlint --fix",
     "start": "next start",
@@ -41,17 +41,14 @@
     "styled-components": "6.5.2"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "4.7.1",
-    "@sanity/prettier-config": "3.0.0",
     "@types/node": "25.9.5",
     "@types/react": "19.2.18",
     "autoprefixer": "10.5.4",
     "babel-plugin-react-compiler": "1.0.0",
+    "oxfmt": "0.63.0",
     "oxlint": "1.78.0",
     "oxlint-tsgolint": "7.0.2001",
     "postcss": "8.5.26",
-    "prettier": "3.9.6",
-    "prettier-plugin-tailwindcss": "0.8.1",
     "tailwindcss": "3.4.19",
     "typescript": "^7.0.2"
   }

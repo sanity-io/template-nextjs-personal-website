@@ -1,4 +1,12 @@
 import '@/styles/index.css'
+import {SpeedInsights} from '@vercel/speed-insights/next'
+import type {Metadata, Viewport} from 'next'
+import {defineQuery} from 'next-sanity'
+import {VisualEditing} from 'next-sanity/visual-editing'
+import {draftMode} from 'next/headers'
+import {Suspense} from 'react'
+import {Toaster} from 'sonner'
+
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Navbar} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
@@ -11,13 +19,7 @@ import {
 } from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
-import {SpeedInsights} from '@vercel/speed-insights/next'
-import type {Metadata, Viewport} from 'next'
-import {defineQuery} from 'next-sanity'
-import {VisualEditing} from 'next-sanity/visual-editing'
-import {draftMode} from 'next/headers'
-import {Suspense} from 'react'
-import {Toaster} from 'sonner'
+
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 

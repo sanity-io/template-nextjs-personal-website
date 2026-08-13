@@ -1,5 +1,5 @@
 ---
-name: Prettier
+name: Oxfmt
 
 on:
   push:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   run:
-    name: Can the code be prettier? 🤔
+    name: Can the code be formatted? 🤔
     runs-on: ubuntu-latest
     # workflow_dispatch always lets you select the branch ref, even though in this case we only ever want to run the action on `main` this we need an if check
     if: ${{ github.ref_name == 'main' }}
@@ -25,10 +25,6 @@ jobs:
         with:
           node-version: lts/*
       - run: npm ci --ignore-scripts --only-dev
-      - uses: actions/cache@v6
-        with:
-          path: node_modules/.cache/prettier/.prettier-cache
-          key: prettier-${{ hashFiles('package-lock.json') }}-${{ hashFiles('.gitignore') }}
       - run: npm run format
       - run: git restore .github/workflows
       - uses: actions/create-github-app-token@v3
@@ -39,9 +35,9 @@ jobs:
       - uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
           body: I ran `npm run format` 🧑‍💻
-          branch: actions/prettier-if-needed
-          commit-message: "chore(prettier): 🤖 ✨"
+          branch: actions/oxfmt-if-needed
+          commit-message: "chore(oxfmt): 🤖 ✨"
           labels: 🤖 bot
           sign-commits: true
-          title: "chore(prettier): 🤖 ✨"
+          title: "chore(oxfmt): 🤖 ✨"
           token: ${{ steps.generate-token.outputs.token }}
