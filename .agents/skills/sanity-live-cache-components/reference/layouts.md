@@ -1,155 +1,72 @@
 # Non-blocking layout patterns
 
-When Sanity content is fetched inside a `layout.tsx`, the goal is to keep `children` streaming and keep the static shell as large as possible.
-
-## Contents
-
-- [Rules](#rules)
-- [Pattern: cached components per draft/published branch](#pattern-cached-components-per-draftpublished-branch)
-- [Anti-pattern: wrapping `children` in a single cached layout](#anti-pattern-wrapping-children-in-a-single-cached-layout)
-- [Simpler example: a single `<Footer>`](#simpler-example-a-single-footer)
+This project uses a non-async website layout and resolves dynamic bits with promises inside JSX.
 
 ## Rules
 
-- The top-level `layout.tsx` component must not `await` dynamic APIs (other than `draftMode()`) or fetch data. `draftMode()` is the lone exception because Next.js bypasses caching when it's enabled and a `draftMode()`-only top-level component still prerenders into the static shell. Anything else (`cookies()`, `headers()`, `await params`, `await searchParams`, data fetching) reduces the static shell or slows draft-mode streaming.
-- Push [dynamic API calls](https://nextjs.org/docs/app/guides/streaming#push-dynamic-access-down) down to the leaf that needs them.
-- Two components fetching the same query don't need a shared helper to avoid duplicate requests: `cachedSanity` keys its cache on the fetch options, so identical calls resolve from one cache entry.
+- Keep `app/(website)/[perspective]/layout.tsx` synchronous.
+- Resolve route params inside `<Suspense>` via `params.then(...)`.
+- Put `'use cache'` on data-fetching leaf components.
+- Render `<SanityLive>` and `<VisualEditing>` once using `draftMode().then(...)`.
 
-## Pattern: cached components per draft/published branch
+## Canonical pattern
 
 ```tsx
-// src/app/(website)/layout.tsx
-import {cachedSanity, getDynamicFetchOptions, type DynamicFetchOptions} from '@/sanity/lib/live'
-import {defineQuery} from 'next-sanity'
+// app/(website)/[perspective]/layout.tsx (excerpt)
+import {normalizePerspective, sanityFetch, SanityLive, type FetchOptions} from '@/sanity/lib/live'
+import {VisualEditing} from 'next-sanity/visual-editing'
 import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 
-const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
-
-export default async function WebsiteLayout({children}: LayoutProps<'/'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
+export default function PersonalLayout({params, children}: LayoutProps<'/[perspective]'>) {
   return (
     <>
-      {isDraftMode ? (
-        <Suspense fallback={<NavbarFallback />}>
-          <DynamicNavbar />
-        </Suspense>
-      ) : (
-        <CachedNavbar perspective="published" stega={false} />
-      )}
+      <Suspense fallback={<NavbarFallback />}>
+        {params.then(({perspective}) => (
+          <CachedNavbar perspective={normalizePerspective(perspective)} />
+        ))}
+      </Suspense>
+
       {children}
-      {isDraftMode ? (
-        <Suspense>
-          <DynamicFooter />
-        </Suspense>
-      ) : (
-        <CachedFooter perspective="published" stega={false} />
-      )}
+
+      <Suspense>
+        {params.then(({perspective}) => (
+          <CachedFooter perspective={normalizePerspective(perspective)} />
+        ))}
+      </Suspense>
+
+      {draftMode().then(({isEnabled: isDraftMode}) => (
+        <>
+          <SanityLive includeDrafts={isDraftMode} />
+          {isDraftMode && <VisualEditing />}
+        </>
+      ))}
     </>
   )
 }
 
-async function DynamicNavbar() {
-  const {perspective, stega} = await getDynamicFetchOptions()
-  return <CachedNavbar perspective={perspective} stega={stega} />
-}
-async function CachedNavbar({perspective, stega}: DynamicFetchOptions) {
-  // Same options as CachedFooter → same cache entry, fetched once
-  const {data} = await cachedSanity({query: settingsQuery, perspective, stega})
+async function CachedNavbar({perspective}: FetchOptions) {
+  'use cache'
+  const {data} = await sanityFetch({query: settingsQuery, perspective})
   return <Navbar data={data} />
 }
 
-async function DynamicFooter() {
-  const {perspective, stega} = await getDynamicFetchOptions()
-  return <CachedFooter perspective={perspective} stega={stega} />
-}
-async function CachedFooter({perspective, stega}: DynamicFetchOptions) {
-  const {data} = await cachedSanity({query: settingsQuery, perspective, stega})
+async function CachedFooter({perspective}: FetchOptions) {
+  'use cache'
+  const {data} = await sanityFetch({query: settingsQuery, perspective})
   return <Footer data={data} />
 }
 ```
 
-## Anti-pattern: wrapping `children` in a single cached layout
+## Why this pattern
 
-This blocks `children` on the layout's data fetch and prevents the page itself from streaming in independently.
+- `children` can stream independently from navbar/footer data.
+- Perspective comes from `[perspective]` route params (rewritten by `proxy.ts`).
+- Live invalidation works through `sanityFetch` + `<SanityLive>`.
 
-```tsx
-// src/app/(website)/layout.tsx
-export default async function WebsiteLayout({children}: LayoutProps<'/'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (isDraftMode) {
-    return (
-      <Suspense>
-        <DynamicWebsiteLayout>{children}</DynamicWebsiteLayout>
-      </Suspense>
-    )
-  }
-  return (
-    <CachedWebsiteLayout perspective="published" stega={false}>
-      {children}
-    </CachedWebsiteLayout>
-  )
-}
-async function CachedWebsiteLayout({
-  children,
-  perspective,
-  stega,
-}: {children: ReactNode} & DynamicFetchOptions) {
-  const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
-  const {data} = await cachedSanity({query: settingsQuery, perspective, stega})
+## Anti-patterns
 
-  return (
-    <>
-      <Navbar data={data} />
-      {children}
-      <Footer data={data} />
-    </>
-  )
-}
-```
-
-## Simpler example: a single `<Footer>`
-
-Useful as a sanity check when adapting the pattern to a layout with only one data-driven section:
-
-```tsx
-// src/app/(website)/layout.tsx
-import {cachedSanity, getDynamicFetchOptions, type DynamicFetchOptions} from '@/sanity/lib/live'
-import {defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
-import {Suspense} from 'react'
-
-export default async function WebsiteLayout({children}: LayoutProps<'/'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  return (
-    <>
-      {children}
-      {isDraftMode ? (
-        <Suspense fallback={<FooterFallback />}>
-          <DynamicFooter />
-        </Suspense>
-      ) : (
-        <Footer perspective="published" stega={false} />
-      )}
-    </>
-  )
-}
-async function DynamicFooter() {
-  const {perspective, stega} = await getDynamicFetchOptions()
-  return <Footer perspective={perspective} stega={stega} />
-}
-async function Footer({perspective, stega}: DynamicFetchOptions) {
-  const footerQuery = defineQuery(`*[_type == "footer"][0]`)
-  const {data} = await cachedSanity({query: footerQuery, perspective, stega})
-  return <footer>{/* use `data` to render stuff */}</footer>
-}
-function FooterFallback() {
-  return (
-    <footer>
-      <p>Loading footer...</p>
-    </footer>
-  )
-}
-```
-
-The non-draft `<Footer perspective="published" stega={false} />` is part of the static shell, so the whole layout is cached and revalidates only when content used by the fetch changes. In draft mode the layout still renders immediately from its static shell while `<DynamicFooter>` streams in.
+- Making the layout `async` just to `await draftMode()`.
+- Reading cookies directly in layout files for perspective.
+- Wrapping all `children` inside one cached data-fetching component.
+- Rendering multiple `<SanityLive>` or `<VisualEditing>` instances.

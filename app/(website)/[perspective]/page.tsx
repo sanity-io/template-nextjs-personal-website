@@ -3,32 +3,25 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
-import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
+import {normalizePerspective, sanityFetch, type FetchOptions} from '@/sanity/lib/live'
 import {resolveHref} from '@/sanity/lib/utils'
 import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
-export default async function IndexPage() {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    return <CachedHome perspective="published" stega={false} />
-  }
+export default function IndexPage({params}: PageProps<'/[perspective]'>) {
   return (
     <Suspense>
-      <DynamicHome />
+      {params.then(({perspective}) => (
+        <CachedHome perspective={normalizePerspective(perspective)} />
+      ))}
     </Suspense>
   )
 }
 
-async function DynamicHome() {
-  const {perspective, stega} = await getDynamicFetchOptions()
-  return <CachedHome perspective={perspective} stega={stega} />
-}
-
-async function CachedHome({perspective, stega}: DynamicFetchOptions) {
+async function CachedHome({perspective}: FetchOptions) {
   'use cache'
+
   const homePageQuery = defineQuery(`
     *[_type == "home"][0]{
       _id,
@@ -49,7 +42,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
       title,
     }
   `)
-  const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
+  const {data} = await sanityFetch({query: homePageQuery, perspective})
 
   if (!data) {
     return (
