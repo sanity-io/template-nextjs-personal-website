@@ -1,6 +1,7 @@
 import {type QueryParams} from 'next-sanity'
 import {defineLive, resolvePerspectiveFromCookies, type LivePerspective} from 'next-sanity/live'
 import {cookies, draftMode} from 'next/headers'
+
 import {client} from './client'
 import {token} from './token'
 
