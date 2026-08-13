@@ -2,7 +2,7 @@ import {expect, test} from '@playwright/test'
 import {createClient} from '@sanity/client'
 import {createPreviewSecret} from '@sanity/preview-url-secret/create-secret'
 
-import {openProject, projectUrlPattern, readShowcaseProjects, visibleTitle} from './showcase'
+import {projectUrlPattern, readShowcaseProjects, visibleTitle} from './showcase'
 
 test.describe('draft-mode project navigation', () => {
   test.skip(
@@ -26,15 +26,33 @@ test.describe('draft-mode project navigation', () => {
     const {secret} = await createPreviewSecret(client, 'draft-nav-e2e', '/studio')
     const enableUrl = new URL('/api/draft-mode/enable', baseURL)
     enableUrl.searchParams.set('sanity-preview-secret', secret)
-    enableUrl.searchParams.set('sanity-preview-pathname', projects[0].href)
+    // Enable draft on the home page and then navigate into projects client-side. Starting
+    // from "/" (not a project) is what exposes the sticky-navigation bug: the showcase links
+    // prefetch a sibling project, and every subsequent /projects/[slug] navigation would
+    // otherwise reuse that one prefetched RSC.
+    enableUrl.searchParams.set('sanity-preview-pathname', '/')
     enableUrl.searchParams.set('sanity-preview-perspective', 'drafts')
 
     await page.goto(enableUrl.toString(), {waitUntil: 'domcontentloaded'})
-    await expect(visibleTitle(page, projects[0].title)).toBeVisible({timeout: 20000})
     await expect(page.getByText('Draft Mode Enabled')).toBeVisible({timeout: 20000})
 
+    // Let the showcase links prefetch before navigating; the bug is that a prefetched
+    // sibling's RSC gets reused for the whole /projects/[slug] segment.
+    const homeLink = page.getByTestId('nav-link-home')
     for (const project of projects) {
-      await openProject(page, project)
+      const card = page.locator(`a[href="${project.href}"]`).first()
+      await expect(card).toBeVisible({timeout: 20000})
+    }
+    await page.waitForTimeout(1500)
+
+    for (const project of projects) {
+      if (new URL(page.url()).pathname !== '/') {
+        await homeLink.click()
+        await page.waitForURL((url) => new URL(url).pathname === '/', {timeout: 10000})
+        await page.waitForTimeout(500)
+      }
+      // Click the showcase card directly from "/" (a client-side navigation).
+      await page.locator(`a[href="${project.href}"]`).first().click()
       await expect(page).toHaveURL(projectUrlPattern(project.href))
       await expect(visibleTitle(page, project.title)).toBeVisible({timeout: 10000})
       for (const other of projects) {

@@ -33,20 +33,3 @@ export async function readShowcaseProjects(page: Page): Promise<ShowcaseProject[
 export function projectUrlPattern(href: string) {
   return new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?|$)`)
 }
-
-export async function openProject(page: Page, project: ShowcaseProject) {
-  const nav = page.getByTestId(`nav-link-projects-${project.slug}`)
-  if (await nav.isVisible()) {
-    await nav.click()
-    return
-  }
-  const home = page.getByTestId('nav-link-home')
-  if (await home.isVisible()) {
-    await home.click()
-  } else {
-    await page.goto('/')
-  }
-  const showcase = page.locator(`a[href="${project.href}"]`).first()
-  await expect(showcase).toBeVisible({timeout: 20000})
-  await showcase.click()
-}

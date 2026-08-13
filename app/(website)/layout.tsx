@@ -8,6 +8,7 @@ import {Suspense} from 'react'
 import {Toaster} from 'sonner'
 
 import {CustomPortableText} from '@/components/CustomPortableText'
+import {DraftModeProvider} from '@/components/DraftModeContext'
 import {Navbar} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
 import {
@@ -51,7 +52,7 @@ export const viewport: Viewport = {themeColor: '#000'}
 export default async function PersonalLayout({children}: LayoutProps<'/'>) {
   const {isEnabled: isDraftMode} = await draftMode()
   return (
-    <>
+    <DraftModeProvider isDraftMode={isDraftMode}>
       <div className="flex min-h-screen flex-col bg-white text-black">
         {isDraftMode ? (
           <Suspense fallback={<NavbarFallback />}>
@@ -90,7 +91,7 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
         </>
       )}
       <SpeedInsights />
-    </>
+    </DraftModeProvider>
   )
 }
 
