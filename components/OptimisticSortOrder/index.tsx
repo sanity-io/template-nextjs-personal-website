@@ -1,5 +1,6 @@
 import {draftMode} from 'next/headers'
 import {lazy, Suspense} from 'react'
+
 import type {OptimisticSortOrderProps} from './index.client'
 
 const LazyOptimisticSortOrder = lazy(() => import('./index.client'))

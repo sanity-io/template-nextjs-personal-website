@@ -1,10 +1,12 @@
 'use client'
 
-import {studioUrl} from '@/sanity/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {useDeferredValue, useSyncExternalStore} from 'react'
+
+import {studioUrl} from '@/sanity/lib/api'
+
 import cover from './cover.png'
 
 const subscribe = () => () => {}

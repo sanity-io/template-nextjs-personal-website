@@ -1,5 +1,14 @@
 import '@/styles/index.css'
+import {SpeedInsights} from '@vercel/speed-insights/next'
+import type {Metadata, Viewport} from 'next'
+import {defineQuery} from 'next-sanity'
+import {VisualEditing} from 'next-sanity/visual-editing'
+import {draftMode} from 'next/headers'
+import {Suspense} from 'react'
+import {Toaster} from 'sonner'
+
 import {CustomPortableText} from '@/components/CustomPortableText'
+import {DraftModeProvider} from '@/components/DraftModeContext'
 import {Navbar} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
 import {
@@ -11,13 +20,7 @@ import {
 } from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
-import {SpeedInsights} from '@vercel/speed-insights/next'
-import type {Metadata, Viewport} from 'next'
-import {defineQuery} from 'next-sanity'
-import {VisualEditing} from 'next-sanity/visual-editing'
-import {draftMode} from 'next/headers'
-import {Suspense} from 'react'
-import {Toaster} from 'sonner'
+
 import {handleError} from './client-functions'
 import {DraftModeToast} from './DraftModeToast'
 
@@ -49,7 +52,7 @@ export const viewport: Viewport = {themeColor: '#000'}
 export default async function PersonalLayout({children}: LayoutProps<'/'>) {
   const {isEnabled: isDraftMode} = await draftMode()
   return (
-    <>
+    <DraftModeProvider isDraftMode={isDraftMode}>
       <div className="flex min-h-screen flex-col bg-white text-black">
         {isDraftMode ? (
           <Suspense fallback={<NavbarFallback />}>
@@ -78,18 +81,17 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
             action={async () => {
               'use server'
 
-              await Promise.allSettled([
-                (await draftMode()).disable(),
-                // Simulate a delay to show the loading state
-                new Promise((resolve) => setTimeout(resolve, 1000)),
-              ])
+              const draft = await draftMode()
+              draft.disable()
+              // Simulate a delay to show the loading state
+              await new Promise((resolve) => setTimeout(resolve, 1000))
             }}
           />
           <VisualEditing />
         </>
       )}
       <SpeedInsights />
-    </>
+    </DraftModeProvider>
   )
 }
 
@@ -123,6 +125,7 @@ function NavbarFallback() {
     <header
       aria-busy
       className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur md:px-16 md:py-5 lg:px-32"
+      data-testid="site-header"
     >
       <span className="text-lg md:text-xl" aria-hidden>
         <span className="inline-block h-[1em] w-24 animate-pulse rounded bg-gray-200 align-middle md:w-32" />
@@ -143,7 +146,10 @@ async function CachedFooter({perspective, stega}: DynamicFetchOptions) {
     return null
   }
   return (
-    <footer className="bottom-0 w-full bg-white py-12 text-center md:py-20">
+    <footer
+      className="bottom-0 w-full bg-white py-12 text-center md:py-20"
+      data-testid="site-footer"
+    >
       <CustomPortableText
         id={data._id}
         type={data._type}

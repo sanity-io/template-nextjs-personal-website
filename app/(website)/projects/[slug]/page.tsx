@@ -1,3 +1,8 @@
+import type {Metadata, ResolvingMetadata} from 'next'
+import {createDataAttribute, defineQuery} from 'next-sanity'
+import Link from 'next/link'
+import {notFound} from 'next/navigation'
+
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
@@ -11,12 +16,6 @@ import {
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
-import type {Metadata, ResolvingMetadata} from 'next'
-import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
-import Link from 'next/link'
-import {notFound} from 'next/navigation'
-import {Suspense} from 'react'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -53,50 +52,8 @@ export async function generateMetadata(
 }
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  return (
-    <Suspense fallback={<ProjectSlugPageFallback />}>
-      {isDraftMode ? (
-        <DynamicProjectSlugPage params={params} />
-      ) : (
-        <PublishedProjectSlugPage params={params} />
-      )}
-    </Suspense>
-  )
-}
-
-async function PublishedProjectSlugPage({
-  params,
-}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
-  const {slug} = await params
-  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-}
-
-async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
-}
-
-function ProjectSlugPageFallback() {
-  return (
-    <div aria-busy className="space-y-6">
-      <div className="space-y-3">
-        <div className="h-10 w-2/3 max-w-xl animate-pulse rounded bg-gray-200" />
-        <div className="h-6 w-full max-w-3xl animate-pulse rounded bg-gray-100" />
-      </div>
-      <div className="rounded-md border">
-        <div className="aspect-[16/9] w-full animate-pulse bg-gray-100" />
-        <div className="grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-          {Array.from({length: 4}).map((_, i) => (
-            <div key={i} className="space-y-2 p-3 lg:p-4">
-              <div className="h-3 w-16 animate-pulse rounded bg-gray-200" />
-              <div className="h-5 w-24 animate-pulse rounded bg-gray-100" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
 }
 
 async function CachedProjectSlugPage({
@@ -144,7 +101,7 @@ async function CachedProjectSlugPage({
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (
-    <>
+    <div className="space-y-6" data-testid="project-content">
       {/* Header */}
       <Header
         id={data?._id || null}
@@ -221,6 +178,6 @@ async function CachedProjectSlugPage({
           value={description}
         />
       )}
-    </>
+    </div>
   )
 }
