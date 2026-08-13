@@ -67,7 +67,7 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
       location: 'app/(website)/projects/[slug]/page.tsx:ProjectSlugPage',
       message: 'Project route selected render branch',
       data: {isDraftMode},
-      timestamp: Date.now(),
+      timestamp: 0,
     }) + '\n',
   )
   // #endregion
@@ -97,7 +97,7 @@ async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]
       location: 'app/(website)/projects/[slug]/page.tsx:DynamicProjectSlugPage',
       message: 'Resolved dynamic project inputs',
       data: {slug, perspective, stega},
-      timestamp: Date.now(),
+      timestamp: 0,
     }) + '\n',
   )
   // #endregion
@@ -118,7 +118,7 @@ async function CachedProjectSlugPage({
       location: 'app/(website)/projects/[slug]/page.tsx:CachedProjectSlugPage',
       message: 'Entered cached project renderer',
       data: {slug, perspective, stega},
-      timestamp: Date.now(),
+      timestamp: 0,
     }) + '\n',
   )
   // #endregion
@@ -151,7 +151,7 @@ async function CachedProjectSlugPage({
       location: 'app/(website)/projects/[slug]/page.tsx:CachedProjectSlugPage',
       message: 'Sanity project fetch completed',
       data: {requestedSlug: slug, returnedSlug: data?.slug ?? null},
-      timestamp: Date.now(),
+      timestamp: 0,
     }) + '\n',
   )
   // #endregion

@@ -34,7 +34,7 @@ export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
       location: 'sanity/lib/live.ts:getDynamicFetchOptions',
       message: 'Resolved draft mode state',
       data: {isDraftMode},
-      timestamp: Date.now(),
+      timestamp: 0,
     }) + '\n',
   )
   // #endregion
@@ -52,7 +52,7 @@ export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
       location: 'sanity/lib/live.ts:getDynamicFetchOptions',
       message: 'Resolved draft preview perspective',
       data: {perspective: perspective ?? 'drafts'},
-      timestamp: Date.now(),
+      timestamp: 0,
     }) + '\n',
   )
   // #endregion
