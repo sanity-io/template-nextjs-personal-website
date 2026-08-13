@@ -1,5 +1,6 @@
-import type {AllSanitySchemaTypes, Slug} from '@/sanity.types'
 import {defineQuery} from 'next-sanity'
+
+import type {AllSanitySchemaTypes, Slug} from '@/sanity.types'
 
 export const settingsQuery = defineQuery(`
   *[_type == "settings"][0]{
