@@ -21,7 +21,7 @@
     "@sanity/demo": "2.0.0",
     "@sanity/icons": "5.2.1",
     "@sanity/image-url": "2.1.1",
-    "@sanity/ui": "3.5.3",
+    "@sanity/ui": "4.0.3",
     "@sanity/util": "6.9.2",
     "@sanity/vision": "6.9.2",
     "@tailwindcss/typography": "0.5.20",

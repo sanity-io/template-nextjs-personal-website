@@ -3,6 +3,7 @@
 /**
  * This config is used to set up Sanity Studio that's mounted on the `app/studio/[[...index]]/page.tsx` route
  */
+import '@sanity/ui/styles.css'
 import {apiVersion, dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import * as resolve from '@/sanity/plugins/resolve'
 import {pageStructure, singletonPlugin} from '@/sanity/plugins/settings'
