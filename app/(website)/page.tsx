@@ -1,3 +1,8 @@
+import {createDataAttribute, defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
+import Link from 'next/link'
+import {Suspense} from 'react'
+
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
@@ -5,10 +10,6 @@ import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
 import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {resolveHref} from '@/sanity/lib/utils'
-import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
-import Link from 'next/link'
-import {Suspense} from 'react'
 
 export default async function IndexPage() {
   const {isEnabled: isDraftMode} = await draftMode()

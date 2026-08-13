@@ -1,5 +1,3 @@
-import ImageBox from '@/components/ImageBox'
-import {TimelineSection} from '@/components/TimelineSection'
 import type {PathSegment} from '@sanity/client/csm'
 import {
   PortableText,
@@ -8,6 +6,9 @@ import {
   type SanityQueries,
 } from 'next-sanity'
 import Link from 'next/link'
+
+import ImageBox from '@/components/ImageBox'
+import {TimelineSection} from '@/components/TimelineSection'
 
 export function CustomPortableText({
   id,

@@ -10,15 +10,7 @@
   "bracketSpacing": false,
   "sortPackageJson": true,
   "sortTailwindcss": true,
-  "sortImports": {
-    "newlinesBetween": false,
-    "groups": [
-      "builtin",
-      ["external", "internal", "subpath"],
-      ["parent", "sibling", "index"],
-      "unknown"
-    ]
-  },
+  "sortImports": true,
   "overrides": [
     {
       "files": ["*.json5"],
