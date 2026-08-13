@@ -20,6 +20,9 @@ function isModifiedClick(event: MouseEvent<HTMLAnchorElement>) {
  * Presentation overlays call `preventDefault` on the bubble phase for hovered
  * `data-sanity` nodes inside the preview iframe, which swallows Next.js `<Link>`
  * navigation. Push the route during capture so project/menu clicks still navigate.
+ *
+ * @TODO Remove this capture-phase `router.push` workaround once
+ * `@sanity/visual-editing` stops calling `preventDefault` on those overlay clicks.
  */
 export function AppLink({onClickCapture, ...props}: ComponentProps<typeof Link>) {
   const router = useRouter()
