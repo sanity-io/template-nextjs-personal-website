@@ -10,4 +10,4 @@
 - WALLS:
   - `npm run build` needs `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_READ_TOKEN` (`generateStaticParams` fetches slugs from Sanity).
   - Chromium must be installed once: `npx playwright install chromium`.
-  - GitHub CI (`.github/workflows/ci.yml`) runs type-check, lint, `EXPOSE_TESTING_API=1 npm run build`, and `npm run test:e2e`. Required Actions secrets: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_READ_TOKEN`. Optional: `SANITY_API_WRITE_TOKEN` (draft-mode e2e). Never set `EXPOSE_TESTING_API` on Vercel.
+  - GitHub CI (`.github/workflows/ci.yml`) runs type-check, lint, `EXPOSE_TESTING_API=1 npm run build`, and `npm run test:e2e`. Actions variables: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`. Secret: `SANITY_API_READ_TOKEN`. Optional secret: `SANITY_API_WRITE_TOKEN` (draft-mode e2e). Never set `EXPOSE_TESTING_API` on Vercel.

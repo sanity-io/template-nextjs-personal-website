@@ -1,16 +1,6 @@
 name: CI
 
-# GitHub Actions credentials used by `npm run build` and `npm run test:e2e`.
-# Add these on the repo (Settings → Secrets and variables → Actions).
 # Do not set EXPOSE_TESTING_API on Vercel — it is CI-only, below.
-#
-# Required secrets:
-#   NEXT_PUBLIC_SANITY_PROJECT_ID
-#   NEXT_PUBLIC_SANITY_DATASET
-#   SANITY_API_READ_TOKEN
-# Optional secret (draft-mode e2e; skipped when absent):
-#   SANITY_API_WRITE_TOKEN
-# Public IDs may instead live in Actions variables; if unset, the same-named secret is used.
 
 on:
   merge_group:
@@ -49,7 +39,7 @@ jobs:
           missing=
           for name in NEXT_PUBLIC_SANITY_PROJECT_ID NEXT_PUBLIC_SANITY_DATASET SANITY_API_READ_TOKEN; do
             if [ -z "${!name}" ]; then
-              echo "::error::Missing GitHub Actions secret/variable $name (see comment at top of .github/workflows/ci.yml)"
+              echo "::error::Missing GitHub Actions secret/variable $name"
               missing=1
             fi
           done
