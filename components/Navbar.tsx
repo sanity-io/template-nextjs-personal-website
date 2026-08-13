@@ -43,6 +43,11 @@ export function Navbar(props: NavbarProps) {
               ])}
               data-testid={`nav-link${href === '/' ? '-home' : href.replaceAll('/', '-')}`}
               href={href}
+              // The destination's title lives in its own cached, URL-keyed shell region
+              // (params read inside Suspense), so the default App Shell prefetch can't include
+              // it. `prefetch={true}` resolves it ahead of the click via runtime prefetching.
+              // See: https://nextjs.org/docs/app/guides/adopting-partial-prefetching
+              prefetch
             >
               {stegaClean(menuItem.title)}
             </AppLink>

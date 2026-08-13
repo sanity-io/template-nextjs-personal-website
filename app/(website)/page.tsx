@@ -106,6 +106,11 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                   key={project._key}
                   href={href}
                   data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
+                  // The project's title lives in its own cached, URL-keyed shell region (params
+                  // read inside Suspense), so the default App Shell prefetch can't include it.
+                  // `prefetch={true}` resolves it ahead of the click via runtime prefetching.
+                  // See: https://nextjs.org/docs/app/guides/adopting-partial-prefetching
+                  prefetch
                 >
                   <div className="w-full xl:w-9/12">
                     <ImageBox
