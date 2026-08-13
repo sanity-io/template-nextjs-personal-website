@@ -6,6 +6,7 @@ const config: NextConfig = {
   partialPrefetching: true,
   cacheLife: {default: sanity},
   reactCompiler: true,
+  experimental: {turbopackRustReactCompiler: true},
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
   },

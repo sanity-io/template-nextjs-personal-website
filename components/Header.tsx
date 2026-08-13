@@ -1,5 +1,6 @@
-import {CustomPortableText} from '@/components/CustomPortableText'
 import type {PathSegment} from 'sanity'
+
+import {CustomPortableText} from '@/components/CustomPortableText'
 
 interface HeaderProps {
   id: string | null
@@ -15,7 +16,7 @@ export function Header(props: HeaderProps) {
     return null
   }
   return (
-    <div className={`${centered ? 'text-center' : 'w-5/6 lg:w-3/5'}`}>
+    <div className={centered ? 'text-center' : 'w-5/6 lg:w-3/5'}>
       {/* Title */}
       {title && <div className="text-3xl font-extrabold tracking-tight md:text-5xl">{title}</div>}
       {/* Description */}
