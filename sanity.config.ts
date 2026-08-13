@@ -1,5 +1,6 @@
 'use client'
 
+import '@sanity/ui/styles.css'
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {unsplashImageAsset} from 'sanity-plugin-asset-source-unsplash'

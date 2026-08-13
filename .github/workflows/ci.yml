@@ -33,7 +33,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run type-check
-      - run: npm run lint -- --max-warnings 0 -f gha
+      - run: npm run lint
       - name: Require Sanity credentials for e2e
         run: |
           missing=
