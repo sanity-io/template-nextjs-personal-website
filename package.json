@@ -8,11 +8,12 @@
     "predev": "npm run typegen && npm run stega-warn",
     "dev": "next --turbopack",
     "format": "oxfmt",
-    "lint": "eslint .",
-    "lint:fix": "npm run format && npm run lint -- --fix",
+    "lint": "oxlint",
+    "lint:fix": "npm run format && oxlint --fix",
+    "prepare": "next typegen",
     "start": "next start",
     "stega-warn": "echo 'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4'",
-    "type-check": "next typegen && tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "typegen": "sanity schema extract --force && sanity typegen generate"
   },
   "dependencies": {
@@ -45,10 +46,9 @@
     "@types/react": "19.2.18",
     "autoprefixer": "10.5.4",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "9.39.5",
-    "eslint-formatter-gha": "2.0.1",
-    "eslint-plugin-react-hooks": "7.0.1",
     "oxfmt": "0.63.0",
+    "oxlint": "1.78.0",
+    "oxlint-tsgolint": "7.0.2001",
     "postcss": "8.5.26",
     "tailwindcss": "3.4.19",
     "typescript": "^7.0.2"
