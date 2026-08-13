@@ -1,5 +1,3 @@
-import ImageBox from '@/components/ImageBox'
-import {TimelineSection} from '@/components/TimelineSection'
 import type {PathSegment} from '@sanity/client/csm'
 import {
   PortableText,
@@ -8,6 +6,9 @@ import {
   type SanityQueries,
 } from 'next-sanity'
 import Link from 'next/link'
+
+import ImageBox from '@/components/ImageBox'
+import {TimelineSection} from '@/components/TimelineSection'
 
 export function CustomPortableText({
   id,
@@ -29,13 +30,13 @@ export function CustomPortableText({
       },
     },
     marks: {
-      link: ({children, value}) => {
-        if (!value?.href) return children
+      link: ({children, value: mark}) => {
+        if (!mark?.href) return children
 
         return (
           <Link
             className="underline transition hover:opacity-50"
-            href={value.href}
+            href={mark.href}
             rel="noreferrer noopener"
           >
             {children}
@@ -44,18 +45,18 @@ export function CustomPortableText({
       },
     },
     types: {
-      image: ({value}) => {
+      image: ({value: image}) => {
         return (
           <div className="my-6 space-y-2">
-            <ImageBox image={value} alt={value.alt} classesWrapper="relative aspect-[16/9]" />
-            {value?.caption && (
-              <div className="font-sans text-sm text-gray-600">{value.caption}</div>
+            <ImageBox image={image} alt={image.alt} classesWrapper="relative aspect-[16/9]" />
+            {image?.caption && (
+              <div className="font-sans text-sm text-gray-600">{image.caption}</div>
             )}
           </div>
         )
       },
-      timeline: ({value}) => {
-        const {items, _key} = value
+      timeline: ({value: timeline}) => {
+        const {items, _key} = timeline
         return (
           <TimelineSection
             key={_key}
