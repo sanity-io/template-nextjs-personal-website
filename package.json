@@ -8,7 +8,6 @@
     "predev": "npm run typegen && npm run stega-warn",
     "dev": "next --turbopack",
     "format": "oxfmt",
-    "format:check": "oxfmt --check",
     "lint": "eslint .",
     "lint:fix": "npm run format && npm run lint -- --fix",
     "start": "next start",
