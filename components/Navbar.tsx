@@ -43,6 +43,11 @@ export function Navbar(props: NavbarProps) {
               ])}
               data-testid={`nav-link${href === '/' ? '-home' : href.replaceAll('/', '-')}`}
               href={href}
+              // Dynamic `[slug]`/`projects/[slug]` destinations read URL data, so their title
+              // isn't in the shared App Shell. Runtime-prefetch it so navigation stays instant
+              // under Partial Prefetching. See:
+              // https://nextjs.org/docs/app/guides/runtime-prefetching
+              prefetch={href === '/' ? undefined : true}
             >
               {stegaClean(menuItem.title)}
             </AppLink>

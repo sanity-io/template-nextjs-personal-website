@@ -105,6 +105,10 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                   className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
                   key={project._key}
                   href={href}
+                  // Runtime-prefetch the project's per-slug content so its title commits on
+                  // navigation under Partial Prefetching. See:
+                  // https://nextjs.org/docs/app/guides/runtime-prefetching
+                  prefetch={true}
                   data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
                 >
                   <div className="w-full xl:w-9/12">
