@@ -1,3 +1,9 @@
+import {createDataAttribute, defineQuery} from 'next-sanity'
+import {draftMode} from 'next/headers'
+import Link from 'next/link'
+import {Suspense} from 'react'
+
+import {AppLink} from '@/components/AppLink'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
@@ -5,10 +11,6 @@ import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
 import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
 import {resolveHref} from '@/sanity/lib/utils'
-import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
-import Link from 'next/link'
-import {Suspense} from 'react'
 
 export default async function IndexPage() {
   const {isEnabled: isDraftMode} = await draftMode()
@@ -99,7 +101,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                 return null
               }
               return (
-                <Link
+                <AppLink
                   className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
                   key={project._key}
                   href={href}
@@ -141,7 +143,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </AppLink>
               )
             })}
         </OptimisticSortOrder>

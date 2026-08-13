@@ -1,8 +1,12 @@
 'use client'
 
-/**
- * This config is used to set up Sanity Studio that's mounted on the `app/studio/[[...index]]/page.tsx` route
- */
+import '@sanity/ui/styles.css'
+import {visionTool} from '@sanity/vision'
+import {defineConfig} from 'sanity'
+import {unsplashImageAsset} from 'sanity-plugin-asset-source-unsplash'
+import {presentationTool} from 'sanity/presentation'
+import {structureTool} from 'sanity/structure'
+
 import {apiVersion, dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import * as resolve from '@/sanity/plugins/resolve'
 import {pageStructure, singletonPlugin} from '@/sanity/plugins/settings'
@@ -13,12 +17,10 @@ import milestone from '@/sanity/schemas/objects/milestone'
 import timeline from '@/sanity/schemas/objects/timeline'
 import home from '@/sanity/schemas/singletons/home'
 import settings from '@/sanity/schemas/singletons/settings'
-import {visionTool} from '@sanity/vision'
-import {defineConfig} from 'sanity'
-import {unsplashImageAsset} from 'sanity-plugin-asset-source-unsplash'
-import {presentationTool} from 'sanity/presentation'
-import {structureTool} from 'sanity/structure'
 
+/**
+ * This config is used to set up Sanity Studio that's mounted on the `app/studio/[[...index]]/page.tsx` route
+ */
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Personal Website with Sanity.io'
 
