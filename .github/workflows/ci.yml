@@ -1,5 +1,17 @@
 name: CI
 
+# GitHub Actions credentials used by `npm run build` and `npm run test:e2e`.
+# Add these on the repo (Settings → Secrets and variables → Actions).
+# Do not set EXPOSE_TESTING_API on Vercel — it is CI-only, below.
+#
+# Required secrets:
+#   NEXT_PUBLIC_SANITY_PROJECT_ID
+#   NEXT_PUBLIC_SANITY_DATASET
+#   SANITY_API_READ_TOKEN
+# Optional secret (draft-mode e2e; skipped when absent):
+#   SANITY_API_WRITE_TOKEN
+# Public IDs may instead live in Actions variables; if unset, the same-named secret is used.
+
 on:
   merge_group:
   pull_request:
@@ -11,14 +23,52 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID || secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET || secrets.NEXT_PUBLIC_SANITY_DATASET }}
+      SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+      SANITY_API_WRITE_TOKEN: ${{ secrets.SANITY_API_WRITE_TOKEN }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: lts/*
+          cache: npm
       - run: npm ci
       - run: npm run type-check
       - run: npm run lint -- --max-warnings 0 -f gha
+      - name: Require Sanity credentials for e2e
+        run: |
+          missing=
+          for name in NEXT_PUBLIC_SANITY_PROJECT_ID NEXT_PUBLIC_SANITY_DATASET SANITY_API_READ_TOKEN; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing GitHub Actions secret/variable $name (see comment at top of .github/workflows/ci.yml)"
+              missing=1
+            fi
+          done
+          if [ -n "$missing" ]; then
+            exit 1
+          fi
+          if [ -z "$SANITY_API_WRITE_TOKEN" ]; then
+            echo "::notice::SANITY_API_WRITE_TOKEN is not set; the draft-mode Playwright test will skip."
+          fi
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+        env:
+          EXPOSE_TESTING_API: "1"
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
