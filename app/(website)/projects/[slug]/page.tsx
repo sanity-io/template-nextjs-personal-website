@@ -3,8 +3,8 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {studioUrl} from '@/sanity/lib/api'
 import {
+  cachedSanity,
   getDynamicFetchOptions,
-  sanityFetch,
   sanityFetchMetadata,
   sanityFetchStaticParams,
   type DynamicFetchOptions,
@@ -56,7 +56,7 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
   const {isEnabled: isDraftMode} = await draftMode()
   if (!isDraftMode) {
     const {slug} = await params
-    return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
+    return <CachedProjectSlugPage key={slug} slug={slug} perspective="published" stega={false} />
   }
   return (
     <Suspense>
@@ -67,7 +67,7 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
 
 async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
-  return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
+  return <CachedProjectSlugPage key={slug} slug={slug} perspective={perspective} stega={stega} />
 }
 
 async function CachedProjectSlugPage({
@@ -75,7 +75,6 @@ async function CachedProjectSlugPage({
   perspective,
   stega,
 }: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
-  'use cache'
   const projectSlugPageQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       _id,
@@ -91,7 +90,7 @@ async function CachedProjectSlugPage({
       title,
     }
   `)
-  const {data} = await sanityFetch({
+  const {data} = await cachedSanity({
     query: projectSlugPageQuery,
     params: {slug},
     perspective,
