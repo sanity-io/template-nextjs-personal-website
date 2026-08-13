@@ -35,8 +35,8 @@ export default function Loading() {
 // src/app/[slug]/page.tsx
 import {
   cachedSanity,
-  getDynamicFetchOptions,
   cachedSanityStaticParams,
+  getDynamicFetchOptions,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {defineQuery} from 'next-sanity'

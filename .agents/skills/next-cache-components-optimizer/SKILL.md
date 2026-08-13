@@ -149,7 +149,7 @@ If the project does not meet these, upgrade first (`npx @next/codemod upgrade`
 automates most of it), then enable Cache Components in `next.config.ts`:
 
 ```ts
-export default { cacheComponents: true }
+export default {cacheComponents: true}
 ```
 
 Enabling the flag surfaces the blocking routes to resolve first; the

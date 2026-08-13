@@ -1,0 +1,59 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "options": {
+    "typeAware": true,
+    "typeCheck": true,
+    "denyWarnings": true,
+    "reportUnusedDisableDirectives": "error"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "react",
+    "oxc",
+    "import",
+    "jsx-a11y",
+    "promise",
+    "nextjs"
+  ],
+  "ignorePatterns": [
+    ".next/",
+    "out/",
+    "build/",
+    "next-env.d.ts",
+    "public/",
+    "node_modules/",
+    "sanity.types.ts",
+    "test-results/",
+    "playwright-report/"
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "rules": {
+    "react-in-jsx-scope": "off",
+    "react/exhaustive-deps": "error",
+    "react/rules-of-hooks": "error",
+    "react/jsx-key": "error",
+    "react/react-compiler": "error",
+    "react/prefer-function-component": ["error", {"allowErrorBoundary": true}],
+    "react/no-unstable-nested-components": ["error", {"allowAsProps": true}],
+    "unicorn/no-abusive-eslint-disable": "error",
+    "unicorn/consistent-function-scoping": "off",
+    "import/no-unassigned-import": ["error", {"allow": ["**/*.css", "server-only"]}],
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-deprecated": "error",
+    "typescript/no-unnecessary-type-assertion": "error",
+    "typescript/no-unnecessary-type-arguments": "error",
+    "typescript/prefer-ts-expect-error": "error",
+    "typescript/no-useless-default-assignment": "off",
+    "typescript/no-unsafe-type-assertion": "off",
+    "no-underscore-dangle": "off"
+  }
+}
