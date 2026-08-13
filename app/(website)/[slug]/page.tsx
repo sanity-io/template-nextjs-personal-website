@@ -46,7 +46,7 @@ export async function generateMetadata(
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
-  return <CachedSlugPage key={slug} slug={slug} perspective={perspective} stega={stega} />
+  return <CachedSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
 
 async function CachedSlugPage({
