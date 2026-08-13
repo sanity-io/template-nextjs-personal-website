@@ -1,6 +1,6 @@
 import {dataset, projectId} from '@/sanity/lib/api'
+import type {Path, StudioPathLike} from '@sanity/client/csm'
 import {createImageUrlBuilder, type SanityImageSource} from '@sanity/image-url'
-import type {Image} from 'sanity'
 
 const imageBuilder = createImageUrlBuilder({
   projectId: projectId || '',
@@ -14,6 +14,10 @@ export const urlForImage = (source: SanityImageSource | null | undefined) => {
   }
 
   return imageBuilder?.image(source).auto('format').fit('max')
+}
+
+export function toPath(path: StudioPathLike): Path {
+  return Array.isArray(path) ? path : [path]
 }
 
 export function urlForOpenGraphImage(image: SanityImageSource | null | undefined) {

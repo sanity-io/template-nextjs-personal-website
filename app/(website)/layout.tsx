@@ -78,11 +78,10 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
             action={async () => {
               'use server'
 
-              await Promise.allSettled([
-                (await draftMode()).disable(),
-                // Simulate a delay to show the loading state
-                new Promise((resolve) => setTimeout(resolve, 1000)),
-              ])
+              const draft = await draftMode()
+              draft.disable()
+              // Simulate a delay to show the loading state
+              await new Promise((resolve) => setTimeout(resolve, 1000))
             }}
           />
           <VisualEditing />

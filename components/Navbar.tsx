@@ -26,19 +26,16 @@ export function Navbar(props: NavbarProps) {
       <OptimisticSortOrder id={data?._id} path="menuItems">
         {data?.menuItems?.map((menuItem) => {
           const href = resolveHref(menuItem?._type, menuItem?.slug)
-          if (!href) {
+          if (!href || !menuItem.key) {
             return null
           }
           return (
             <Link
-              key={menuItem._key}
+              key={menuItem.key}
               className={`text-lg hover:text-black md:text-xl ${
                 menuItem?._type === 'home' ? 'font-extrabold text-black' : 'text-gray-600'
               }`}
-              data-sanity={dataAttribute?.([
-                'menuItems',
-                {_key: menuItem._key as unknown as string},
-              ])}
+              data-sanity={dataAttribute?.(['menuItems', {_key: menuItem.key}])}
               href={href}
             >
               {stegaClean(menuItem.title)}

@@ -63,8 +63,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
     )
   }
 
-  // Default to an empty object to allow previews on non-existent documents
-  const {overview = [], showcaseProjects = [], title = ''} = data ?? {}
+  const {overview, showcaseProjects, title} = data
 
   const dataAttribute =
     data?._id && data?._type

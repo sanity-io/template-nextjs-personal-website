@@ -7,12 +7,12 @@ export const settingsQuery = defineQuery(`
     _type,
     footer,
     menuItems[]{
-      _key,
       ...@->{
         _type,
         "slug": slug.current,
         title
-      }
+      },
+      "key": _key,
     },
     ogImage,
   }

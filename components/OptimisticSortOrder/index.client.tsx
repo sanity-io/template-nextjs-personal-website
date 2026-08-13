@@ -7,6 +7,19 @@ import {get} from '@sanity/util/paths'
 import {useOptimistic} from 'next-sanity/hooks'
 import {Children, isValidElement} from 'react'
 
+function isKeyedArray(value: unknown): value is {_key: string}[] {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        typeof item === 'object' &&
+        item !== null &&
+        '_key' in item &&
+        typeof item._key === 'string',
+    )
+  )
+}
+
 export interface OptimisticSortOrderProps {
   children: React.ReactNode
   /**
@@ -34,8 +47,8 @@ export default function OptimisticSortOrder(props: OptimisticSortOrderProps) {
     null,
     (state, action) => {
       if (action.id !== id) return state
-      const value = get(action.document, path) as {_key: string}[]
-      if (!value) {
+      const value = get(action.document, path)
+      if (!isKeyedArray(value)) {
         console.error('No value found for path', path, 'in document', action.document)
         return state
       }
