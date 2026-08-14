@@ -105,6 +105,11 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                   className="flex flex-col gap-x-5 p-2 transition odd:border-b odd:border-t hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
                   key={project._key}
                   href={href}
+                  // `/projects/[slug]` reads URL data, which the shared App Shell can't
+                  // carry. Runtime prefetching resolves the cached project per link so
+                  // navigation stays instant. See:
+                  // https://nextjs.org/docs/app/guides/runtime-prefetching
+                  prefetch={true}
                   data-sanity={dataAttribute?.(['showcaseProjects', {_key: project._key}])}
                 >
                   <div className="w-full xl:w-9/12">
