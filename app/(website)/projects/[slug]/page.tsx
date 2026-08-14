@@ -18,6 +18,8 @@ import {
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
+import ProjectSlugLoading from './loading'
+
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
     query: slugsByTypeQuery,
@@ -54,7 +56,7 @@ export async function generateMetadata(
 
 export default function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   return (
-    <Suspense>
+    <Suspense fallback={<ProjectSlugLoading />}>
       <ProjectSlugPageContent params={params} />
     </Suspense>
   )

@@ -14,6 +14,8 @@ import {
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 
+import SlugLoading from './loading'
+
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
     query: slugsByTypeQuery,
@@ -47,7 +49,7 @@ export async function generateMetadata(
 
 export default function SlugPage({params}: PageProps<'/[slug]'>) {
   return (
-    <Suspense>
+    <Suspense fallback={<SlugLoading />}>
       <SlugPageContent params={params} />
     </Suspense>
   )
