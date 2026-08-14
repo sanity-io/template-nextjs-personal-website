@@ -1,4 +1,4 @@
-import {appendFileSync} from 'node:fs'
+import {appendFileSync, existsSync} from 'node:fs'
 
 import {type QueryParams} from 'next-sanity'
 import {defineLive, resolvePerspectiveFromCookies, type LivePerspective} from 'next-sanity/live'
@@ -6,6 +6,11 @@ import {cookies, draftMode} from 'next/headers'
 
 import {client} from './client'
 import {token} from './token'
+
+function writeAgentLog(entry: Record<string, unknown>) {
+  if (!existsSync('/opt/cursor/logs')) return
+  appendFileSync('/opt/cursor/logs/debug.log', JSON.stringify(entry) + '\n')
+}
 
 export const {SanityLive, sanityFetch} = defineLive({
   client,
@@ -27,16 +32,13 @@ export interface DynamicFetchOptions {
 export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
   const {isEnabled: isDraftMode} = await draftMode()
   // #region agent log
-  appendFileSync(
-    '/opt/cursor/logs/debug.log',
-    JSON.stringify({
-      hypothesisId: 'H4',
-      location: 'sanity/lib/live.ts:getDynamicFetchOptions',
-      message: 'Resolved draft mode state',
-      data: {isDraftMode},
-      timestamp: 0,
-    }) + '\n',
-  )
+  writeAgentLog({
+    hypothesisId: 'H4',
+    location: 'sanity/lib/live.ts:getDynamicFetchOptions',
+    message: 'Resolved draft mode state',
+    data: {isDraftMode},
+    timestamp: 0,
+  })
   // #endregion
   if (!isDraftMode) {
     return {perspective: 'published', stega: false}
@@ -45,16 +47,13 @@ export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
   const jar = await cookies()
   const perspective = await resolvePerspectiveFromCookies({cookies: jar})
   // #region agent log
-  appendFileSync(
-    '/opt/cursor/logs/debug.log',
-    JSON.stringify({
-      hypothesisId: 'H4',
-      location: 'sanity/lib/live.ts:getDynamicFetchOptions',
-      message: 'Resolved draft preview perspective',
-      data: {perspective: perspective ?? 'drafts'},
-      timestamp: 0,
-    }) + '\n',
-  )
+  writeAgentLog({
+    hypothesisId: 'H4',
+    location: 'sanity/lib/live.ts:getDynamicFetchOptions',
+    message: 'Resolved draft preview perspective',
+    data: {perspective: perspective ?? 'drafts'},
+    timestamp: 0,
+  })
   // #endregion
   return {perspective: perspective ?? 'drafts', stega: true}
 }
