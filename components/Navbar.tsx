@@ -34,6 +34,11 @@ export function Navbar(props: NavbarProps) {
           return (
             <AppLink
               key={menuItem._key}
+              // `/[slug]` and `/projects/[slug]` read URL data, which the shared App Shell
+              // can't carry. Runtime prefetching resolves their cached content per link so
+              // navigation stays instant. See:
+              // https://nextjs.org/docs/app/guides/runtime-prefetching
+              prefetch={menuItem?._type === 'home' ? undefined : true}
               className={`text-lg hover:text-black md:text-xl ${
                 menuItem?._type === 'home' ? 'font-extrabold text-black' : 'text-gray-600'
               }`}
@@ -43,10 +48,6 @@ export function Navbar(props: NavbarProps) {
               ])}
               data-testid={`nav-link${href === '/' ? '-home' : href.replaceAll('/', '-')}`}
               href={href}
-              // Slug routes read URL data, so the shared App Shell can't carry their
-              // content; runtime-prefetch resolves it (cached in Sanity-backed `use cache`
-              // leaves) before the click. Home is fully static and needs no opt-in.
-              prefetch={href === '/' ? undefined : true}
             >
               {stegaClean(menuItem.title)}
             </AppLink>
