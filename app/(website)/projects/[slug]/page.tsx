@@ -1,8 +1,5 @@
-import {appendFileSync, existsSync} from 'node:fs'
-
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
@@ -19,11 +16,6 @@ import {
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
-
-function writeAgentLog(entry: Record<string, unknown>) {
-  if (!existsSync('/opt/cursor/logs')) return
-  appendFileSync('/opt/cursor/logs/debug.log', JSON.stringify(entry) + '\n')
-}
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -60,29 +52,7 @@ export async function generateMetadata(
 }
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
-  const [{slug}, {perspective, stega}, {isEnabled: isDraftMode}] = await Promise.all([
-    params,
-    getDynamicFetchOptions(),
-    draftMode(),
-  ])
-  // #region agent log
-  writeAgentLog({
-    hypothesisId: 'H1',
-    location: 'app/(website)/projects/[slug]/page.tsx:ProjectSlugPage',
-    message: 'Project route selected render branch',
-    data: {isDraftMode},
-    timestamp: 0,
-  })
-  // #endregion
-  // #region agent log
-  writeAgentLog({
-    hypothesisId: 'H1',
-    location: 'app/(website)/projects/[slug]/page.tsx:DynamicProjectSlugPage',
-    message: 'Resolved dynamic project inputs',
-    data: {slug, perspective, stega},
-    timestamp: 0,
-  })
-  // #endregion
+  const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
 
@@ -92,15 +62,6 @@ async function CachedProjectSlugPage({
   stega,
 }: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
   'use cache'
-  // #region agent log
-  writeAgentLog({
-    hypothesisId: 'H2',
-    location: 'app/(website)/projects/[slug]/page.tsx:CachedProjectSlugPage',
-    message: 'Entered cached project renderer',
-    data: {slug, perspective, stega},
-    timestamp: 0,
-  })
-  // #endregion
   const projectSlugPageQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       _id,
@@ -122,15 +83,6 @@ async function CachedProjectSlugPage({
     perspective,
     stega,
   })
-  // #region agent log
-  writeAgentLog({
-    hypothesisId: 'H3',
-    location: 'app/(website)/projects/[slug]/page.tsx:CachedProjectSlugPage',
-    message: 'Sanity project fetch completed',
-    data: {requestedSlug: slug, returnedSlug: data?.slug ?? null},
-    timestamp: 0,
-  })
-  // #endregion
 
   if (!data?._id) notFound()
 
