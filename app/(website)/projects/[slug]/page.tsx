@@ -1,9 +1,7 @@
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
-import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
-import {Suspense} from 'react'
 
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
@@ -54,51 +52,6 @@ export async function generateMetadata(
 }
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
-  const {isEnabled: isDraftMode} = await draftMode()
-  if (!isDraftMode) {
-    return (
-      <Suspense fallback={<ProjectSlugPageFallback />}>
-        <PublishedProjectSlugPage params={params} />
-      </Suspense>
-    )
-  }
-  return (
-    <Suspense fallback={<ProjectSlugPageFallback />}>
-      <DynamicProjectSlugPage params={params} />
-    </Suspense>
-  )
-}
-
-async function PublishedProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
-  const {slug} = await params
-  return <CachedProjectSlugPage slug={slug} perspective="published" stega={false} />
-}
-
-/**
- * Mirrors the `<Header>` and cover image blocks so the fallback occupies the same
- * space while the URL-specific content streams in after a navigation.
- */
-function ProjectSlugPageFallback() {
-  return (
-    <>
-      <div aria-busy className="w-5/6 lg:w-3/5">
-        <span className="block text-3xl md:text-5xl" aria-hidden>
-          <span className="inline-block h-[1em] w-48 max-w-full animate-pulse rounded bg-gray-200 align-middle md:w-72" />
-        </span>
-        <span className="mt-4 block font-serif text-xl md:text-2xl" aria-hidden>
-          <span className="inline-block h-[1em] w-full animate-pulse rounded bg-gray-100 align-middle" />
-        </span>
-      </div>
-      <div className="rounded-md border" aria-hidden>
-        <div className="w-full overflow-hidden rounded-[3px] bg-gray-50">
-          <div className="relative aspect-[16/9] animate-pulse" />
-        </div>
-      </div>
-    </>
-  )
-}
-
-async function DynamicProjectSlugPage({params}: Pick<PageProps<'/projects/[slug]'>, 'params'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
@@ -148,7 +101,7 @@ async function CachedProjectSlugPage({
   const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (
-    <>
+    <div className="space-y-6" data-testid="project-content">
       {/* Header */}
       <Header
         id={data?._id || null}
@@ -225,6 +178,6 @@ async function CachedProjectSlugPage({
           value={description}
         />
       )}
-    </>
+    </div>
   )
 }
