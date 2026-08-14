@@ -43,6 +43,10 @@ export function Navbar(props: NavbarProps) {
               ])}
               data-testid={`nav-link${href === '/' ? '-home' : href.replaceAll('/', '-')}`}
               href={href}
+              // Slug routes read URL data, so the shared App Shell can't carry their
+              // content; runtime-prefetch resolves it (cached in Sanity-backed `use cache`
+              // leaves) before the click. Home is fully static and needs no opt-in.
+              prefetch={href === '/' ? undefined : true}
             >
               {stegaClean(menuItem.title)}
             </AppLink>
