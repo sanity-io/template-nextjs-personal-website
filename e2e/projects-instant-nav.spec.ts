@@ -9,7 +9,7 @@ const VIEWPORTS = [
 ] as const
 
 test.describe('instant nav to a project page', () => {
-  test('project shell commits under instant()', async ({page}) => {
+  test('project header and footer commit under instant()', async ({page}) => {
     const projects = await readShowcaseProjects(page)
     expect(projects.length, 'homepage showcase needs a project link').toBeGreaterThanOrEqual(1)
     const destination = projects.length > 1 ? projects[1] : projects[0]
@@ -35,9 +35,8 @@ test.describe('instant nav to a project page', () => {
         await page.setViewportSize(viewport)
         await expect(page.getByTestId('site-header')).toBeVisible()
         await expect(page.getByTestId('site-footer')).toBeVisible()
+        await expect(visibleTitle(page, destination.title)).toBeVisible()
       }
     })
-
-    await expect(visibleTitle(page, destination.title)).toBeVisible()
   })
 })
