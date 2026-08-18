@@ -41,7 +41,6 @@
     "react/exhaustive-deps": "error",
     "react/rules-of-hooks": "error",
     "react/jsx-key": "error",
-    "react/react-compiler": "error",
     "react/prefer-function-component": ["error", {"allowErrorBoundary": true}],
     "react/no-unstable-nested-components": ["error", {"allowAsProps": true}],
     "unicorn/no-abusive-eslint-disable": "error",
