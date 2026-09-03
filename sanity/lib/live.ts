@@ -12,6 +12,13 @@ export const {SanityLive, sanityFetch} = defineLive({
   strict: true,
 })
 
+/**
+ * `<SanityLive waitFor>` value. Only set `SANITY_LIVE_WAIT_FOR_FUNCTION=true` once the Sanity
+ * Function in `functions/invalidate-sync-tags` is deployed, see "Sanity Functions" in the README.
+ */
+export const liveWaitFor: 'function' | undefined =
+  process.env.SANITY_LIVE_WAIT_FOR_FUNCTION === 'true' ? 'function' : undefined
+
 export interface DynamicFetchOptions {
   perspective: LivePerspective
   stega: boolean

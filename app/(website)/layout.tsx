@@ -13,6 +13,7 @@ import {Navbar} from '@/components/Navbar'
 import IntroTemplate from '@/intro-template'
 import {
   getDynamicFetchOptions,
+  liveWaitFor,
   sanityFetch,
   sanityFetchMetadata,
   SanityLive,
@@ -74,7 +75,7 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
         </Suspense>
       </div>
       <Toaster />
-      <SanityLive onError={handleError} includeDrafts={isDraftMode} />
+      <SanityLive onError={handleError} includeDrafts={isDraftMode} waitFor={liveWaitFor} />
       {isDraftMode && (
         <>
           <DraftModeToast
