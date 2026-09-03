@@ -13,14 +13,8 @@ export const {SanityLive, sanityFetch} = defineLive({
 })
 
 /**
- * Opt-in `waitFor` prop for `<SanityLive>`, enabled with `SANITY_LIVE_WAIT_FOR_FUNCTION=true`.
- *
- * When set, Sanity holds live events back until the sync tag invalidate function in
- * `functions/invalidate-sync-tags` has called `/api/revalidate` and reported back, so the
- * `router.refresh()` triggered in the browser always renders from an already-invalidated cache
- * instead of racing the revalidation. Leave it unset until that function is deployed with
- * `npx sanity blueprints deploy`, otherwise live updates never arrive. Has no effect in Draft
- * Mode, where `includeDrafts` takes precedence and the browser refreshes on every event.
+ * `<SanityLive waitFor>` value. Only set `SANITY_LIVE_WAIT_FOR_FUNCTION=true` once the Sanity
+ * Function in `functions/invalidate-sync-tags` is deployed, see "Sanity Functions" in the README.
  */
 export const liveWaitFor: 'function' | undefined =
   process.env.SANITY_LIVE_WAIT_FOR_FUNCTION === 'true' ? 'function' : undefined

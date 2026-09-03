@@ -5,46 +5,38 @@ import {revalidateTag} from 'next/cache'
 import {type NextRequest} from 'next/server'
 
 /**
- * Called by the sync tag invalidate Sanity Function in `functions/invalidate-sync-tags` with the
- * sync tags that changed, before Sanity releases the matching live event to browsers connected
- * with `<SanityLive waitFor="function">`.
- *
- * Expects `Authorization: Bearer <SANITY_REVALIDATE_SECRET>` and a JSON body of
- * `{"syncTags": ["s1:...", ...]}`. The tags are prefixed with `sanity:` to match the cache tags
- * that `sanityFetch` assigns, and expired immediately (`{expire: 0}`) rather than with a
- * stale-while-revalidate profile: the function's `done()` call is what triggers the browser's
- * `router.refresh()`, so that request must render fresh content instead of serving stale.
+ * Called by the Sanity Function in `functions/invalidate-sync-tags` before Sanity releases a live
+ * event to `<SanityLive waitFor="function">` clients. Expires the cache tags immediately instead
+ * of stale-while-revalidate, since the `router.refresh()` that follows must render fresh content.
  */
 export async function POST(request: NextRequest) {
   const secret = process.env.SANITY_REVALIDATE_SECRET
   if (!secret) {
-    return Response.json(
-      {message: 'SANITY_REVALIDATE_SECRET is not configured for this deployment'},
-      {status: 503},
-    )
+    return Response.json({message: 'SANITY_REVALIDATE_SECRET is not configured'}, {status: 503})
   }
   if (!isAuthorized(request.headers.get('authorization'), secret)) {
     return Response.json({message: 'Invalid or missing bearer token'}, {status: 401})
   }
 
-  let syncTags: unknown
+  let body: {syncTags?: unknown}
   try {
-    ;({syncTags} = (await request.json()) as {syncTags?: unknown})
+    body = await request.json()
   } catch {
     return Response.json({message: 'Request body must be JSON'}, {status: 400})
   }
-  if (!Array.isArray(syncTags) || !syncTags.every((tag) => typeof tag === 'string')) {
-    return Response.json({message: '`syncTags` must be an array of strings'}, {status: 400})
+  const {syncTags} = body
+  if (
+    !Array.isArray(syncTags) ||
+    syncTags.length === 0 ||
+    !syncTags.every((tag) => typeof tag === 'string')
+  ) {
+    return Response.json(
+      {message: '`syncTags` must be a non-empty array of strings'},
+      {status: 400},
+    )
   }
 
-  let tags: string[]
-  try {
-    ;({tags} = parseTags(syncTags.map((tag) => `sanity:${tag}`)))
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Invalid sync tags'
-    return Response.json({message}, {status: 400})
-  }
-
+  const {tags} = parseTags(syncTags.map((tag) => `sanity:${tag}`))
   for (const tag of tags) {
     revalidateTag(tag, {expire: 0})
   }
