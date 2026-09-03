@@ -9,7 +9,7 @@
   "quoteProps": "consistent",
   "bracketSpacing": false,
   "sortPackageJson": true,
-  "sortTailwindcss": true,
+  "sortTailwindcss": {"stylesheet": "./app/globals.css"},
   "sortImports": true,
   "overrides": [
     {

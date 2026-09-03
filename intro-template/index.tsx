@@ -46,7 +46,7 @@ export default function IntroTemplate() {
 
   return (
     <div className="flex justify-center border-t border-gray-100 bg-gray-50/50">
-      <div className="mb-4 mt-20 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
+      <div className="mb-4 mt-20 grid max-w-(--breakpoint-2xl) grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
         <div className="self-center">
           <Image
             alt="An illustration of a browser window, a terminal window, the Sanity.io logo and the NextJS logo"
