@@ -98,37 +98,50 @@ The template ships an opt-in alternative built on [`<SanityLive waitFor="functio
 
 The function is declared in [`sanity.blueprint.ts`](./sanity.blueprint.ts) and scoped to the dataset from `NEXT_PUBLIC_SANITY_DATASET`, since a dataset can only have one sync tag invalidate function. The `sanity` CLI prints a notice that the blueprint is co-located with a Studio; that's expected here (the Studio is embedded in the Next.js app) and the [layout rule][blueprints-layout] that matters, keeping `sanity.blueprint.ts` next to the lockfile, is satisfied.
 
+The deployed function needs two values: `REVALIDATE_URL` (`https://<your-site>/api/revalidate`) and `SANITY_REVALIDATE_SECRET`. `sanity.blueprint.ts` reads both from the environment that runs `blueprints deploy` and bakes them into the function, so the only rule to keep is that `SANITY_REVALIDATE_SECRET` is the same value on the Next.js deployment and wherever the blueprint is deployed from.
+
 To turn it on:
 
 1. Deploy the Next.js app with `SANITY_REVALIDATE_SECRET` set to a random string, for example the output of `openssl rand -hex 32`. Keep `SANITY_LIVE_WAIT_FOR_FUNCTION` unset for now.
-2. Create a Blueprint stack for your project and deploy the function (requires an admin role, or a role with the `sanity.project.blueprints.deploy` permission):
+2. Create a Blueprint stack for your project (requires an admin role, or a role with the `sanity.project.blueprints.deploy` permission). A stack is just a named deployment target; naming it after the dataset keeps one stack per environment:
 
    ```shell
-   npx sanity blueprints init . --project-id <project-id> --stack-name production
-   npx sanity blueprints deploy
+   npx sanity blueprints init . --project-id <project-id> --stack-name <dataset>
    ```
 
    `blueprints init` picks up the existing `sanity.blueprint.ts` and writes the stack binding to `.sanity/blueprint.config.json`, which this template gitignores so every clone binds to its own stack. Pass `--stack-id <ST-…>` instead of `--stack-name` to bind to a stack that already exists.
 
-3. Tell the deployed function where the app lives and share the secret with it:
+3. Deploy the function, either from GitHub Actions or from your machine.
+
+   **GitHub Actions** ([`.github/workflows/blueprints.yml`](./.github/workflows/blueprints.yml)) uses the official [Blueprints GitHub Actions][blueprints-action] to post a plan on pull requests and deploy on pushes to `main`. It stays skipped until the `SANITY_BLUEPRINT_STACK_ID` repository variable exists. Configure the repository with:
+
+   | Kind     | Name                            | Value                                                       |
+   | -------- | ------------------------------- | ----------------------------------------------------------- |
+   | variable | `SANITY_BLUEPRINT_STACK_ID`     | the `ST-…` id from `npx sanity blueprints info`             |
+   | variable | `NEXT_PUBLIC_SANITY_PROJECT_ID` | same project as the stack (already used by CI)              |
+   | variable | `NEXT_PUBLIC_SANITY_DATASET`    | the dataset the site reads from (already used by CI)        |
+   | variable | `REVALIDATE_URL`                | `https://<your-site>/api/revalidate`                        |
+   | secret   | `SANITY_DEPLOY_TOKEN`           | output of `npx sanity blueprints mint-deploy-token --print` |
+   | secret   | `SANITY_REVALIDATE_SECRET`      | the same random string as on the Next.js deployment         |
+
+   **Locally**, put `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET` in `.env.local` (see [`.env.local.example`](./.env.local.example)) and run:
 
    ```shell
-   npx sanity functions env add invalidate-sync-tags REVALIDATE_URL https://<your-site>/api/revalidate
-   npx sanity functions env add invalidate-sync-tags SANITY_REVALIDATE_SECRET <the same random string>
+   npx sanity blueprints deploy
    ```
+
+   Either way, `npx sanity functions env list invalidate-sync-tags` should then list both names. If you'd rather not keep the secret where the blueprint is deployed from, leave the values unset there and add them once with `npx sanity functions env add invalidate-sync-tags <NAME> <value>`; blueprint `env` is additive, so later deploys keep them.
 
 4. Set `SANITY_LIVE_WAIT_FOR_FUNCTION=true` on the Next.js deployment and redeploy. `<SanityLive>` now connects with `waitFor="function"`.
 
    Only enable this once the function is deployed and configured: with `waitFor="function"` Sanity holds live events until a function calls `done()`, so without one published changes never reach the browser. Local development should leave the variable unset, since the function can't reach `localhost`. Draft Mode is unaffected either way: `includeDrafts` takes precedence and the browser refreshes on every event.
 
-Test the function locally against a running app without deploying anything:
+Test the function locally against a running app without deploying anything (`.env.local` values are picked up too, the inline ones below just point at the local server):
 
 ```shell
 REVALIDATE_URL=http://localhost:3000/api/revalidate SANITY_REVALIDATE_SECRET=<secret> \
   npx sanity functions test invalidate-sync-tags --data '{"syncTags": ["s1:example"]}'
 ```
-
-Deploy from CI instead of your machine with [`.github/workflows/blueprints.yml`](./.github/workflows/blueprints.yml). It uses the official [Blueprints GitHub Actions][blueprints-action] to post a plan on pull requests and deploy on pushes to `main`, and only runs once the `SANITY_BLUEPRINT_STACK_ID` repository variable is set (find the `ST-…` id with `npx sanity blueprints info`). It also needs the `NEXT_PUBLIC_SANITY_PROJECT_ID` and `NEXT_PUBLIC_SANITY_DATASET` variables the CI workflow already uses, and a `SANITY_DEPLOY_TOKEN` secret minted with `npx sanity blueprints mint-deploy-token --print`.
 
 ## Getting Started
 
