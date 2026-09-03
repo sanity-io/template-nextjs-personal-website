@@ -90,7 +90,7 @@ Every cached leaf takes `perspective` and `stega` as plain props sourced from `g
 
 By default every open browser tab reacts to a Sanity Live event by calling a Server Action that expires the cache and refreshes the page, racing the revalidation. This template can instead have Sanity run a [Function][sync-tag-function] that expires the Next.js cache first and only then release the event, so `<SanityLive waitFor="function">` clients render fresh content on the first refresh and the cache is expired once, not once per tab.
 
-It's opt-in and takes about ten minutes to set up. The pieces are already in the repo: [`functions/invalidate-sync-tags`](./functions/invalidate-sync-tags/index.ts) (the Function), [`sanity.blueprint.ts`](./sanity.blueprint.ts) (deploys it), [`app/api/revalidate/route.ts`](./app/api/revalidate/route.ts) (what it calls) and [`.github/workflows/blueprints.yml`](./.github/workflows/blueprints.yml) (deploys it from CI).
+It's opt-in and takes about ten minutes to set up. The pieces are already in the repo: [`functions/invalidate-sync-tags`](./functions/invalidate-sync-tags/index.ts) (the Function), [`sanity.blueprint.ts`](./sanity.blueprint.ts) (deploys it), [`app/api/revalidate/route.ts`](./app/api/revalidate/route.ts) (what it calls) and [`.github/workflows/blueprints.yml`](./.github/workflows/blueprints.yml) (deploys it from CI with the official [Blueprints GitHub Actions][blueprints-action]).
 
 #### Setup
 
