@@ -39,7 +39,7 @@ export function TimelineItem({milestone}: {milestone: Milestone}) {
           {startYear} - {endYear}
         </div>
         {/* Description */}
-        <div className="pb-5 pt-3 font-serif text-gray-600">{description}</div>
+        <div className="pt-3 pb-5 font-serif text-gray-600">{description}</div>
       </div>
     </div>
   )
