@@ -1,4 +1,4 @@
-const {theme} = require('@sanity/demo/tailwind')
+const {theme} = require('./tailwind-theme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
