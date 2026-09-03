@@ -102,7 +102,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
               }
               return (
                 <AppLink
-                  className="flex flex-col gap-x-5 p-2 transition odd:border-t odd:border-b hover:bg-gray-50/50 xl:flex-row odd:xl:flex-row-reverse"
+                  className="flex flex-col gap-x-5 p-2 transition odd:border-t odd:border-b hover:bg-gray-50/50 xl:flex-row xl:odd:flex-row-reverse"
                   key={project._key}
                   href={href}
                   // `/projects/[slug]` reads URL data, which the shared App Shell can't
@@ -116,7 +116,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                     <ImageBox
                       image={project.coverImage}
                       alt={`Cover image from ${project.title}`}
-                      classesWrapper="relative aspect-[16/9]"
+                      classesWrapper="relative aspect-video"
                     />
                   </div>
                   <div className="flex xl:w-1/4">
