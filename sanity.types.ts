@@ -440,8 +440,9 @@ export type AllSanitySchemaTypes =
 
 // Source: app/(website)/[slug]/page.tsx
 // Variable: slugPageMetadataQuery
-// Query: *[_type == "page" && slug.current == $slug][0] {      title,      "overview": pt::text(overview),    }
+// Query: *[_type == "page" && slug.current == $slug][0] {      ogImage,      title,      "overview": pt::text(overview),    }
 export type SlugPageMetadataQueryResult = {
+  ogImage: OgImage | null
   title: string | null
   overview: string
 } | null
@@ -576,7 +577,7 @@ export type HomePageQueryResult = {
 
 // Source: app/(website)/projects/[slug]/page.tsx
 // Variable: projectSlugPageMetadataQuery
-// Query: *[_type == "project" && slug.current == $slug][0] {      coverImage,      title,      "overview": pt::text(overview),    }
+// Query: *[_type == "project" && slug.current == $slug][0] {      coverImage,      ogImage,      title,      "overview": pt::text(overview),    }
 export type ProjectSlugPageMetadataQueryResult = {
   coverImage: {
     asset?: SanityImageAssetReference
@@ -587,6 +588,7 @@ export type ProjectSlugPageMetadataQueryResult = {
     imagePrompt?: string
     _type: 'image'
   } | null
+  ogImage: OgImage | null
   title: string | null
   overview: string
 } | null
@@ -723,11 +725,11 @@ export type SlugsByTypeQueryResult = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n    *[_type == "page" && slug.current == $slug][0] {\n      title,\n      "overview": pt::text(overview),\n    }\n  ': SlugPageMetadataQueryResult
+    '\n    *[_type == "page" && slug.current == $slug][0] {\n      ogImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': SlugPageMetadataQueryResult
     '\n    *[_type == "page" && slug.current == $slug][0] {\n      _id,\n      _type,\n      body,\n      overview,\n      title,\n      "slug": slug.current,\n    }\n  ': SlugPageQueryResult
     '{\n    "settings": *[_type == "settings"][0]{ogImage},\n    "home": *[_type == "home"][0]{\n      title,\n      "overview": pt::text(overview),\n    }\n  }': LayoutMetadataQueryResult
     '\n    *[_type == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          coverImage,\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
-    '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
+    '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      ogImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
     '\n    *[_type == "project" && slug.current == $slug][0] {\n      _id,\n      _type,\n      client,\n      coverImage,\n      description,\n      duration,\n      overview,\n      site,\n      "slug": slug.current,\n      tags,\n      title,\n    }\n  ': ProjectSlugPageQueryResult
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    ogImage,\n  }\n': SettingsQueryResult
     '*[_type == "redirect" && from == $from][0].to': RedirectQueryResult
