@@ -30,7 +30,14 @@ test.describe('slug redirects', () => {
       from: `/projects/e2e-redirect-${random}`,
       to: destination.href,
     }
-    await client.createOrReplace(redirect)
+    try {
+      await client.create(redirect)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      // A read+write token can create the fixture; a contributor token cannot.
+      test.skip(message.includes('Insufficient permissions'), `${message} (SANITY_API_WRITE_TOKEN)`)
+      throw error
+    }
     try {
       await page.goto(redirect.from)
       await expect(page).toHaveURL(projectUrlPattern(redirect.to), {timeout: 20000})
