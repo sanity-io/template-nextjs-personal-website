@@ -12,6 +12,7 @@ import {
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -35,6 +36,7 @@ export async function generateMetadata(
   const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
   const slugPageMetadataQuery = defineQuery(`
     *[_type == "page" && slug.current == $slug][0] {
+      ogImage,
       title,
       "overview": pt::text(overview),
     }
@@ -45,9 +47,20 @@ export async function generateMetadata(
     perspective,
   })
 
+  const image = urlForOpenGraphImage(data?.ogImage)
+  const parentMetadata = await parent
   return {
     title: data?.title,
-    description: data?.overview || (await parent).description,
+    description: data?.overview || parentMetadata.description,
+    // An `openGraph` object replaces the parent's wholesale, so only emit one when there is an image to add.
+    ...(image
+      ? {
+          openGraph: {
+            ...parentMetadata.openGraph,
+            images: [image, ...(parentMetadata.openGraph?.images ?? [])],
+          },
+        }
+      : {}),
   }
 }
 

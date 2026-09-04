@@ -40,6 +40,7 @@ export async function generateMetadata(
   const projectSlugPageMetadataQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       coverImage,
+      ogImage,
       title,
       "overview": pt::text(overview),
     }
@@ -50,11 +51,20 @@ export async function generateMetadata(
     perspective,
   })
 
-  const ogImage = urlForOpenGraphImage(data?.coverImage)
+  const image = urlForOpenGraphImage(data?.ogImage) ?? urlForOpenGraphImage(data?.coverImage)
+  const parentMetadata = await parent
   return {
     title: data?.title,
-    description: data?.overview || (await parent).description,
-    openGraph: ogImage ? {images: [ogImage, ...((await parent).openGraph?.images || [])]} : {},
+    description: data?.overview || parentMetadata.description,
+    // An `openGraph` object replaces the parent's wholesale, so only emit one when there is an image to add.
+    ...(image
+      ? {
+          openGraph: {
+            ...parentMetadata.openGraph,
+            images: [image, ...(parentMetadata.openGraph?.images ?? [])],
+          },
+        }
+      : {}),
   }
 }
 
