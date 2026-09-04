@@ -19,6 +19,8 @@ export const settingsQuery = defineQuery(`
   }
 `)
 
+export const redirectQuery = defineQuery(`*[_type == "redirect" && from == $from][0].to`)
+
 export const slugsByTypeQuery = defineQuery(`
   *[_type == $type && defined(slug.current)]{"slug": slug.current}
 `)
