@@ -1,4 +1,3 @@
-import '@/styles/index.css'
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata, Viewport} from 'next'
 import {defineQuery} from 'next-sanity'
