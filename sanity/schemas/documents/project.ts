@@ -83,7 +83,7 @@ export default defineType({
         }),
         imagePromptField,
       ],
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().assetRequired(),
     }),
     defineField({
       name: 'ogImage',

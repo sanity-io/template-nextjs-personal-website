@@ -99,7 +99,7 @@ export type Project = {
     _key: string
   }>
   coverImage?: {
-    asset?: SanityImageAssetReference
+    asset: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
@@ -546,7 +546,7 @@ export type HomePageQueryResult = {
     _id: string
     _type: 'project'
     coverImage: {
-      asset?: SanityImageAssetReference
+      asset: SanityImageAssetReference
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -580,7 +580,7 @@ export type HomePageQueryResult = {
 // Query: *[_type == "project" && slug.current == $slug][0] {      coverImage,      ogImage,      title,      "overview": pt::text(overview),    }
 export type ProjectSlugPageMetadataQueryResult = {
   coverImage: {
-    asset?: SanityImageAssetReference
+    asset: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
@@ -601,7 +601,7 @@ export type ProjectSlugPageQueryResult = {
   _type: 'project'
   client: string | null
   coverImage: {
-    asset?: SanityImageAssetReference
+    asset: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
