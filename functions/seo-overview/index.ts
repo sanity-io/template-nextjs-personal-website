@@ -1,8 +1,7 @@
-import {ClientError} from '@sanity/client'
 import {documentEventHandler} from '@sanity/functions'
 
 import {portableTextToString} from '../../sanity/lib/portable-text'
-import {agentClient, datasetClient, dryRun, schemaId} from '../lib/agent'
+import {agentClient, datasetClient, dryRun, isRevisionConflict, schemaId} from '../lib/agent'
 import type {SeoOverviewPayload, SlugDocumentType} from '../lib/events'
 import {SETTLE_MS, settled} from '../lib/settle'
 
@@ -61,13 +60,11 @@ export const handler = documentEventHandler<SeoOverviewPayload>(async ({context,
       .set({overview: result.overview})
       .commit({dryRun: dry})
   } catch (error) {
-    if (error instanceof ClientError && error.statusCode === 409) {
-      console.log(
-        `seo-overview ${_id}: skipped, the document changed before the overview was written`,
-      )
-      return
-    }
-    throw error
+    if (!isRevisionConflict(error)) throw error
+    console.log(
+      `seo-overview ${_id}: skipped, the document changed before the overview was written`,
+    )
+    return
   }
   console.log(
     `seo-overview ${_id}: set a ${text.length}-character overview${dry ? ' (dry run)' : ''}`,

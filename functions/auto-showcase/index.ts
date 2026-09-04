@@ -1,7 +1,7 @@
-import {isHttpError, type SanityClient} from '@sanity/client'
+import type {SanityClient} from '@sanity/client'
 import {documentEventHandler} from '@sanity/functions'
 
-import {datasetClient, dryRun} from '../lib/agent'
+import {datasetClient, dryRun, isRevisionConflict} from '../lib/agent'
 import type {AutoShowcasePayload} from '../lib/events'
 import {homesMissingProject, homeVariantsQuery, showcaseReference, type HomeVariant} from './plan'
 
@@ -11,7 +11,7 @@ export const handler = documentEventHandler<AutoShowcasePayload>(async ({context
   try {
     await appendToHomes(client, event.data._id, options)
   } catch (error) {
-    if (!(isHttpError(error) && error.statusCode === 409)) throw error
+    if (!isRevisionConflict(error)) throw error
     console.log('auto-showcase: a home document changed meanwhile, retrying once')
     await appendToHomes(client, event.data._id, options)
   }
