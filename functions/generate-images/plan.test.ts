@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest'
 
 import type {ImageJob} from '../lib/events'
+import {imageInstructionParams} from './instruction'
 import {
   planImageJobs,
   siteContext,
@@ -81,5 +82,20 @@ describe('siteContext', () => {
 
   it('leaves a singleton null when neither variant exists', () => {
     expect(siteContext([], true)).toEqual({settings: null, home: null})
+  })
+
+  it('describes the Settings Open Graph image through the matching home variant', () => {
+    const settingsDoc = {_type: 'settings' as const, title: null, overview: null}
+    expect(imageInstructionParams(og, settingsDoc, siteContext(all, true))).toEqual({
+      prompt: og.prompt,
+      title: 'Home (draft)',
+      overview: 'Draft overview',
+      style: 'draft style',
+    })
+    expect(imageInstructionParams(og, settingsDoc, siteContext(all, false))).toMatchObject({
+      title: 'Home',
+      overview: 'Published overview',
+      style: 'published style',
+    })
   })
 })
