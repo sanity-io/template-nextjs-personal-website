@@ -46,7 +46,7 @@ export default function IntroTemplate() {
 
   return (
     <div className="flex justify-center border-t border-gray-100 bg-gray-50/50">
-      <div className="mb-4 mt-20 grid max-w-screen-2xl grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
+      <div className="mt-20 mb-4 grid max-w-(--breakpoint-2xl) grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
         <div className="self-center">
           <Image
             alt="An illustration of a browser window, a terminal window, the Sanity.io logo and the NextJS logo"
@@ -83,7 +83,7 @@ export default function IntroTemplate() {
               circleTitle="1"
               element={
                 <div>
-                  <div className="col-span-2 mb-2 mt-1 font-semibold">Create a schema</div>
+                  <div className="col-span-2 mt-1 mb-2 font-semibold">Create a schema</div>
 
                   {process.env.NODE_ENV === 'development' ? (
                     <div className="text-xs text-gray-700">
@@ -126,7 +126,7 @@ export default function IntroTemplate() {
               circleTitle="2"
               element={
                 <div>
-                  <div className="col-span-2 mb-2 mt-1 font-semibold">
+                  <div className="col-span-2 mt-1 mb-2 font-semibold">
                     Create content with Sanity Studio
                   </div>
                   <div className="text-xs text-gray-700">
@@ -152,7 +152,7 @@ export default function IntroTemplate() {
               circleTitle="3"
               element={
                 <div>
-                  <div className="col-span-2 mb-3 mt-1 font-semibold">Learn more and get help</div>
+                  <div className="col-span-2 mt-1 mb-3 font-semibold">Learn more and get help</div>
                   <ul>
                     <li className="mb-2">
                       <BlueLink href="https://www.sanity.io/docs" text="Documentation for Sanity" />
@@ -181,7 +181,7 @@ function Box({circleTitle, element}: {circleTitle: string; element: React.JSX.El
   return (
     <li className="mt-2 grid grid-flow-col grid-rows-1 place-content-start gap-3">
       <div className="row-span-3 select-none">
-        <div className="relative flex h-5 w-5 select-none items-center justify-center rounded-full bg-gray-200 p-3 text-center">
+        <div className="relative flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 p-3 text-center select-none">
           {circleTitle}
         </div>
       </div>

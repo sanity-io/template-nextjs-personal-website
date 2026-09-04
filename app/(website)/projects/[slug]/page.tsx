@@ -125,10 +125,10 @@ async function CachedProjectSlugPage({
           image={coverImage}
           // @TODO add alt field in schema
           alt=""
-          classesWrapper="relative aspect-[16/9]"
+          classesWrapper="relative aspect-video"
         />
 
-        <div className="divide-inherit grid grid-cols-1 divide-y lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+        <div className="grid grid-cols-1 divide-y divide-inherit lg:grid-cols-4 lg:divide-x lg:divide-y-0">
           {/* Duration */}
           {!!(startYear && endYear) && (
             <div className="p-3 lg:p-4">
@@ -154,7 +154,7 @@ async function CachedProjectSlugPage({
             <div className="p-3 lg:p-4">
               <div className="text-xs md:text-sm">Site</div>
               {site && (
-                <Link target="_blank" className="text-md break-words md:text-lg" href={site}>
+                <Link target="_blank" className="text-md wrap-break-word md:text-lg" href={site}>
                   {site}
                 </Link>
               )}
@@ -166,7 +166,7 @@ async function CachedProjectSlugPage({
             <div className="text-xs md:text-sm">Tags</div>
             <div className="text-md flex flex-row flex-wrap md:text-lg">
               {tags?.map((tag, key) => (
-                <div key={key} className="mr-1 break-words">
+                <div key={key} className="mr-1 wrap-break-word">
                   #{tag}
                 </div>
               ))}

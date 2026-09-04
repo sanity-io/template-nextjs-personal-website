@@ -46,15 +46,15 @@
     "@next/playwright": "16.3.4",
     "@playwright/test": "1.62.1",
     "@sanity/blueprints": "0.24.0",
+    "@tailwindcss/postcss": "4.3.3",
     "@types/node": "25.9.5",
     "@types/react": "19.2.18",
-    "autoprefixer": "10.5.4",
     "babel-plugin-react-compiler": "1.0.0",
     "oxfmt": "0.66.0",
     "oxlint": "1.81.0",
     "oxlint-tsgolint": "7.0.2001",
     "postcss": "8.5.26",
-    "tailwindcss": "3.4.19",
+    "tailwindcss": "4.3.3",
     "typescript": "^7.0.2"
   }
 }

@@ -61,7 +61,7 @@ export default async function PersonalLayout({children}: LayoutProps<'/'>) {
         ) : (
           <CachedNavbar perspective="published" stega={false} />
         )}
-        <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">{children}</div>
+        <div className="mt-20 grow px-4 md:px-16 lg:px-32">{children}</div>
         {isDraftMode ? (
           <Suspense>
             <DynamicFooter />
@@ -124,7 +124,7 @@ function NavbarFallback() {
   return (
     <header
       aria-busy
-      className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur md:px-16 md:py-5 lg:px-32"
+      className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 bg-white/80 px-4 py-4 backdrop-blur-sm md:px-16 md:py-5 lg:px-32"
       data-testid="site-header"
     >
       <span className="text-lg md:text-xl" aria-hidden>

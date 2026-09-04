@@ -1,3 +1,160 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+/* Carries the `@tailwindcss/typography` theme, which the plugin only reads from a JS config. */
+@config '../tailwind.config.js';
+
+/*
+ * Design tokens vendored from `@sanity/demo/tailwind` (package version 2.0.0, MIT,
+ * github.com/sanity-io/demo). `initial` resets replace Tailwind's default scale for that
+ * namespace, mirroring the original config's non-`extend` keys; the spacing steps extend the
+ * default multiplier-based scale (`--spacing`), so `p-10` and up keep their default values.
+ */
+@theme {
+  --radius-*: initial;
+  --radius-sm: 1px;
+  --radius: 3px;
+  --radius-md: 6px;
+  --radius-lg: 9px;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 20px;
+  --spacing-5: 32px;
+  --spacing-6: 52px;
+  --spacing-7: 84px;
+  --spacing-8: 136px;
+  --spacing-9: 220px;
+
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #0d0e12;
+
+  --color-gray-50: #f6f6f8;
+  --color-gray-100: #eeeef1;
+  --color-gray-200: #e3e4e8;
+  --color-gray-300: #bbbdc9;
+  --color-gray-400: #9499ad;
+  --color-gray-500: #727892;
+  --color-gray-600: #515870;
+  --color-gray-700: #383d51;
+  --color-gray-800: #252837;
+  --color-gray-900: #1b1d27;
+  --color-gray-950: #13141b;
+
+  --color-blue-50: #f5f8ff;
+  --color-blue-100: #e5edff;
+  --color-blue-200: #dbe5ff;
+  --color-blue-300: #a8bfff;
+  --color-blue-400: #7595ff;
+  --color-blue-500: #556bfc;
+  --color-blue-600: #4043e7;
+  --color-blue-700: #2927aa;
+  --color-blue-800: #192457;
+  --color-blue-900: #161a41;
+  --color-blue-950: #101228;
+
+  --color-purple-50: #f8f5ff;
+  --color-purple-100: #f1ebff;
+  --color-purple-200: #ece1fe;
+  --color-purple-300: #ccb1fc;
+  --color-purple-400: #b087f7;
+  --color-purple-500: #8f57ef;
+  --color-purple-600: #721fe5;
+  --color-purple-700: #4c1a9e;
+  --color-purple-800: #2f1862;
+  --color-purple-900: #23173f;
+  --color-purple-950: #181128;
+
+  --color-magenta-50: #fef6f9;
+  --color-magenta-100: #fde8ef;
+  --color-magenta-200: #fcdee9;
+  --color-magenta-300: #f7abc5;
+  --color-magenta-400: #f0709b;
+  --color-magenta-500: #e72767;
+  --color-magenta-600: #b11651;
+  --color-magenta-700: #7c1342;
+  --color-magenta-800: #4b1130;
+  --color-magenta-900: #341325;
+  --color-magenta-950: #1f0f14;
+
+  --color-red-50: #fff6f5;
+  --color-red-100: #ffe7e5;
+  --color-red-200: #ffdedc;
+  --color-red-300: #fdada5;
+  --color-red-400: #f77769;
+  --color-red-500: #ef4434;
+  --color-red-600: #cc2819;
+  --color-red-700: #8b2018;
+  --color-red-800: #4d1714;
+  --color-red-900: #321615;
+  --color-red-950: #1e1011;
+
+  --color-orange-50: #fff7f0;
+  --color-orange-100: #ffeadb;
+  --color-orange-200: #ffddc7;
+  --color-orange-300: #ffb685;
+  --color-orange-400: #ff8e42;
+  --color-orange-500: #fa6400;
+  --color-orange-600: #b14802;
+  --color-orange-700: #7c3404;
+  --color-orange-800: #461e07;
+  --color-orange-900: #32160b;
+  --color-orange-950: #21120d;
+
+  --color-yellow-50: #fefae1;
+  --color-yellow-100: #fcf3bb;
+  --color-yellow-200: #f9e994;
+  --color-yellow-300: #f7d455;
+  --color-yellow-400: #f9bc15;
+  --color-yellow-500: #d28a04;
+  --color-yellow-600: #965908;
+  --color-yellow-700: #653a0b;
+  --color-yellow-800: #3b220c;
+  --color-yellow-900: #271a11;
+  --color-yellow-950: #181410;
+
+  --color-green-50: #e7fef5;
+  --color-green-100: #c5fce8;
+  --color-green-200: #a9f9dc;
+  --color-green-300: #59f3ba;
+  --color-green-400: #0ff0a1;
+  --color-green-500: #04b97a;
+  --color-green-600: #01794f;
+  --color-green-700: #015133;
+  --color-green-800: #023120;
+  --color-green-900: #06231a;
+  --color-green-950: #071715;
+
+  --color-cyan-50: #e7fefe;
+  --color-cyan-100: #c5fcfc;
+  --color-cyan-200: #96f8f8;
+  --color-cyan-300: #62efef;
+  --color-cyan-400: #18e2e2;
+  --color-cyan-500: #04b8be;
+  --color-cyan-600: #037782;
+  --color-cyan-700: #024950;
+  --color-cyan-800: #042f34;
+  --color-cyan-900: #072227;
+  --color-cyan-950: #0d181c;
+}
+
+/* Font families come from next/font in app/layout.tsx; `inline` makes the utilities and
+   Preflight point at those variables directly instead of through a `--font-*` indirection. */
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-pt-serif);
+  --font-mono: var(--font-ibm-plex-mono);
+}
+
+/* Tailwind v4 defaults `border-*` and `divide-*` to `currentColor`; the bare `border`
+   utilities in this template rely on the v3 default of `gray-200`. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
