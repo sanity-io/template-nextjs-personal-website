@@ -36,7 +36,7 @@ export const handler = documentEventHandler<DescribeImagesPayload>(async ({conte
   const dry = dryRun(context)
   await datasetClient(context).patch(_id).setIfMissing(alts).commit({dryRun: dry})
   console.log(
-    `describe-images ${_id}: ${dry ? 'dry run, would set' : 'set'} ${paths.join(', ')}` +
+    `describe-images ${_id}: ${dry ? 'dry run, would setIfMissing' : 'setIfMissing'} ${paths.join(', ')}` +
       (undescribed > 0 ? `; no text for ${undescribed} more` : ''),
   )
 })
