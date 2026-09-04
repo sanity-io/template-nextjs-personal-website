@@ -11,7 +11,6 @@ export const handler = documentEventHandler<SlugRedirectsPayload>(async ({contex
   const {_id, _type, from} = event.data
   const client = datasetClient(context)
 
-  // The event's own `after()` slug is history by the time this runs; plan against the dataset.
   const current = await client.fetch<string | null>('*[_id == $id][0].slug.current', {id: _id})
   if (current === null || current === from) {
     console.log(`slug-redirects: ${_id} no longer needs a redirect from "${from}"`)

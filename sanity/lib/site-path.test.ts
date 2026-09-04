@@ -1,9 +1,6 @@
-import {describe, expect, it, vi} from 'vitest'
+import {describe, expect, it} from 'vitest'
 
-import {isSitePath} from './redirects'
-
-// `./live` pulls in `server-only`, which refuses to load outside a Server Component.
-vi.mock('./live', () => ({sanityFetch: vi.fn()}))
+import {isSitePath} from './site-path'
 
 describe('isSitePath', () => {
   it.each(['/', '/projects/new-slug', '/about-us', '/a/b/c-d_e.f'])('accepts %s', (path) => {

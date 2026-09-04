@@ -2,14 +2,12 @@ import {ArrowRightIcon} from '@sanity/icons/ArrowRight'
 import {defineField, defineType, type CustomValidator, type StringRule} from 'sanity'
 
 import {apiVersion} from '@/sanity/lib/api'
-
-// One leading slash, no protocol-relative `//host`, no query or fragment.
-const sitePath = /^\/(?!\/)[^?#\s]*$/
+import {sitePathPattern} from '@/sanity/lib/site-path'
 
 const pathRules = (rule: StringRule) => [
   rule.required(),
   rule
-    .regex(sitePath)
+    .regex(sitePathPattern)
     .error(
       'Must be a path on this site, starting with one slash and without query or fragment, for example /projects/old-slug',
     ),

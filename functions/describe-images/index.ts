@@ -7,11 +7,6 @@ import {readAlts} from './alts'
 const ALT_INSTRUCTION =
   "Write alt text for a screen reader user. One sentence, at most 125 characters. Name the subject and the setting. Do not start with 'Image of' or 'Picture of'. The image illustrates the project or page titled $title."
 
-/**
- * Transform only describes the images (`noWrite`); this function owns the write and uses
- * `setIfMissing` so alt text an editor typed while Transform ran is never overwritten. A failed
- * Transform leaves alt empty until the next asset change, which is the trigger anyway.
- */
 export const handler = documentEventHandler<DescribeImagesPayload>(async ({context, event}) => {
   const {_id, targets} = event.data
 

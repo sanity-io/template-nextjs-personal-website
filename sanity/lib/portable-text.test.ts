@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest'
 
-import {portableTextToString} from './portable-text'
+import {ptText} from './portable-text'
 
 const block = (key: string, ...texts: string[]) => ({
   _type: 'block',
@@ -8,16 +8,14 @@ const block = (key: string, ...texts: string[]) => ({
   children: texts.map((text, i) => ({_type: 'span', _key: `${key}${i}`, text})),
 })
 
-describe('portableTextToString', () => {
+describe('ptText', () => {
   it('joins spans within a block and separates blocks like pt::text', () => {
-    expect(portableTextToString([block('a', 'Hello, ', 'world'), block('b', 'Bye')])).toBe(
-      'Hello, world\n\nBye',
-    )
+    expect(ptText([block('a', 'Hello, ', 'world'), block('b', 'Bye')])).toBe('Hello, world\n\nBye')
   })
 
   it('ignores non-text blocks and non-array input', () => {
-    expect(portableTextToString([{_type: 'image', _key: 'i', asset: {_ref: 'image-1'}}])).toBe('')
-    expect(portableTextToString(undefined)).toBe('')
-    expect(portableTextToString('text')).toBe('')
+    expect(ptText([{_type: 'image', _key: 'i', asset: {_ref: 'image-1'}}])).toBe('')
+    expect(ptText(undefined)).toBe('')
+    expect(ptText('text')).toBe('')
   })
 })

@@ -17,7 +17,6 @@ const {
   SANITY_REVALIDATE_SECRET,
 } = process.env
 
-// An unscoped document function would run against every dataset in the project.
 if (!NEXT_PUBLIC_SANITY_PROJECT_ID || !NEXT_PUBLIC_SANITY_DATASET) {
   throw new Error(
     'Set NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET so the functions run against one dataset',

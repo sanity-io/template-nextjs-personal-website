@@ -14,10 +14,6 @@ const instructions: Record<ImageJob['kind'], string> = {
 
 export const imageInstruction = (kind: ImageJob['kind']) => instructions[kind]
 
-/**
- * Plain string constants for the instruction template. Settings has no title or overview of its
- * own, so its Open Graph image is described through the home page.
- */
 export function imageInstructionParams(
   job: ImageJob,
   doc: Pick<GenerateImagesPayload, '_type' | 'title' | 'overview'>,

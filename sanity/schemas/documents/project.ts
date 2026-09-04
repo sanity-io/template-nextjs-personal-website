@@ -2,6 +2,7 @@ import {DocumentIcon} from '@sanity/icons/Document'
 import {ImageIcon} from '@sanity/icons/Image'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {overviewMaxLength} from '@/sanity/lib/portable-text'
 import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
 import {imagePromptField} from '@/sanity/schemas/objects/imagePrompt'
 import {maxPortableTextLength} from '@/sanity/schemas/validation'
@@ -62,7 +63,7 @@ export default defineType({
           type: 'block',
         }),
       ],
-      validation: (rule) => rule.required().custom(maxPortableTextLength(155)),
+      validation: (rule) => rule.required().custom(maxPortableTextLength(overviewMaxLength)),
     }),
     defineField({
       name: 'coverImage',
