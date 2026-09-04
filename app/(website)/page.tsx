@@ -32,7 +32,7 @@ async function DynamicHome() {
 async function CachedHome({perspective, stega}: DynamicFetchOptions) {
   'use cache'
   const homePageQuery = defineQuery(`
-    *[_type == "home"][0]{
+    *[_id == "home"][0]{
       _id,
       _type,
       overview,

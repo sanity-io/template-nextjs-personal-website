@@ -28,8 +28,8 @@ import {DraftModeToast} from './DraftModeToast'
 export async function generateMetadata(): Promise<Metadata> {
   const {perspective} = await getDynamicFetchOptions()
   const layoutMetadataQuery = defineQuery(`{
-    "settings": *[_type == "settings"][0]{ogImage},
-    "home": *[_type == "home"][0]{
+    "settings": *[_id == "settings"][0]{ogImage},
+    "home": *[_id == "home"][0]{
       title,
       "overview": pt::text(overview),
     }
