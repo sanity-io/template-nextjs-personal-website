@@ -133,8 +133,7 @@ async function CachedProjectSlugPage({
         <ImageBox
           data-sanity={dataAttribute?.('coverImage')}
           image={coverImage}
-          // @TODO add alt field in schema
-          alt=""
+          alt={coverImage?.alt || `Cover image from ${title}`}
           classesWrapper="relative aspect-[16/9]"
         />
 
