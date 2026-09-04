@@ -1,6 +1,8 @@
 import {HomeIcon} from '@sanity/icons/Home'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {maxPortableTextLength} from '@/sanity/schemas/validation'
+
 export default defineType({
   name: 'home',
   title: 'Home',
@@ -56,7 +58,7 @@ export default defineType({
           type: 'block',
         }),
       ],
-      validation: (rule) => rule.max(155).required(),
+      validation: (rule) => rule.required().custom(maxPortableTextLength(155)),
     }),
     defineField({
       name: 'showcaseProjects',
