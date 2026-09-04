@@ -1,8 +1,7 @@
-import {ClientError} from '@sanity/client'
 import {documentEventHandler} from '@sanity/functions'
 
 import {slugify, slugMaxLength} from '../../sanity/lib/slugify'
-import {datasetClient, dryRun} from '../lib/agent'
+import {datasetClient, dryRun, isRevisionConflict} from '../lib/agent'
 import type {AutoSlugPayload} from '../lib/events'
 import {SETTLE_MS, settled} from '../lib/settle'
 import {SLUG_CANDIDATES, slugCandidates, uniqueSlug} from './unique'
@@ -45,11 +44,9 @@ export const handler = documentEventHandler<AutoSlugPayload>(async ({context, ev
       .setIfMissing({slug: {_type: 'slug', current}})
       .commit({dryRun: dry})
   } catch (error) {
-    if (error instanceof ClientError && error.statusCode === 409) {
-      console.log(`auto-slug ${_id}: skipped, the document changed before the slug was written`)
-      return
-    }
-    throw error
+    if (!isRevisionConflict(error)) throw error
+    console.log(`auto-slug ${_id}: skipped, the document changed before the slug was written`)
+    return
   }
   console.log(`auto-slug ${_id}: set slug "${current}"${dry ? ' (dry run)' : ''}`)
 })

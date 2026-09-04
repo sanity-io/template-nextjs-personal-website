@@ -1,7 +1,6 @@
-import {ClientError} from '@sanity/client'
 import {documentEventHandler} from '@sanity/functions'
 
-import {agentClient, datasetClient, dryRun, schemaId} from '../lib/agent'
+import {agentClient, datasetClient, dryRun, isRevisionConflict, schemaId} from '../lib/agent'
 import type {AutoTagPayload} from '../lib/events'
 import {normalizeTags} from './tags'
 
@@ -36,11 +35,9 @@ export const handler = documentEventHandler<AutoTagPayload>(async ({context, eve
   try {
     await datasetClient(context).patch(_id).ifRevisionId(_rev).set({tags}).commit({dryRun: dry})
   } catch (error) {
-    if (error instanceof ClientError && error.statusCode === 409) {
-      console.log(`auto-tag ${_id}: skipped, the document changed before the tags were written`)
-      return
-    }
-    throw error
+    if (!isRevisionConflict(error)) throw error
+    console.log(`auto-tag ${_id}: skipped, the document changed before the tags were written`)
+    return
   }
   console.log(`auto-tag ${_id}: set tags ${tags.join(', ')}${dry ? ' (dry run)' : ''}`)
 })
