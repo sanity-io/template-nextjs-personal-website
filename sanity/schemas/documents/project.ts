@@ -3,6 +3,7 @@ import {ImageIcon} from '@sanity/icons/Image'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import {maxPlainTextLength} from '@/sanity/lib/portable-text'
+import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
 
 export default defineType({
   name: 'project',
@@ -25,7 +26,8 @@ export default defineType({
       type: 'slug',
       options: {
         source: 'title',
-        maxLength: 96,
+        maxLength: slugMaxLength.project,
+        slugify: (input) => slugify(input, slugMaxLength.project),
         isUnique: (value, context) => context.defaultIsUnique(value, context),
       },
       validation: (rule) => rule.required(),
