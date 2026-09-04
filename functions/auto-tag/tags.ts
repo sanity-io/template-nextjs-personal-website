@@ -1,6 +1,5 @@
 export const MAX_TAGS = 5
 
-/** Reduces whatever Generate returned to the tags the schema stores: lowercase, unique, at most five. */
 export function normalizeTags(value: unknown): string[] {
   if (!Array.isArray(value)) return []
   const tags = value
