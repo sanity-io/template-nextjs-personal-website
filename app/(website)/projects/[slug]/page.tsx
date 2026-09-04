@@ -1,7 +1,7 @@
 import type {Metadata, ResolvingMetadata} from 'next'
 import {createDataAttribute, defineQuery} from 'next-sanity'
 import Link from 'next/link'
-import {notFound} from 'next/navigation'
+import {notFound, permanentRedirect} from 'next/navigation'
 
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
@@ -15,6 +15,7 @@ import {
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {redirectTarget} from '@/sanity/lib/redirects'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 export async function generateStaticParams() {
@@ -40,6 +41,7 @@ export async function generateMetadata(
   const projectSlugPageMetadataQuery = defineQuery(`
     *[_type == "project" && slug.current == $slug][0] {
       coverImage,
+      ogImage,
       title,
       "overview": pt::text(overview),
     }
@@ -50,16 +52,27 @@ export async function generateMetadata(
     perspective,
   })
 
-  const ogImage = urlForOpenGraphImage(data?.coverImage)
+  const image = urlForOpenGraphImage(data?.ogImage) ?? urlForOpenGraphImage(data?.coverImage)
+  const parentMetadata = await parent
   return {
     title: data?.title,
-    description: data?.overview || (await parent).description,
-    openGraph: ogImage ? {images: [ogImage, ...((await parent).openGraph?.images || [])]} : {},
+    description: data?.overview || parentMetadata.description,
+    // An `openGraph` object replaces the parent's wholesale, so only emit one when there is an image to add.
+    ...(image
+      ? {
+          openGraph: {
+            ...parentMetadata.openGraph,
+            images: [image, ...(parentMetadata.openGraph?.images ?? [])],
+          },
+        }
+      : {}),
   }
 }
 
 export default async function ProjectSlugPage({params}: PageProps<'/projects/[slug]'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
+  const to = await redirectTarget(`/projects/${slug}`)
+  if (to) permanentRedirect(to)
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
 
@@ -123,8 +136,7 @@ async function CachedProjectSlugPage({
         <ImageBox
           data-sanity={dataAttribute?.('coverImage')}
           image={coverImage}
-          // @TODO add alt field in schema
-          alt=""
+          alt={coverImage?.alt || `Cover image from ${title}`}
           classesWrapper="relative aspect-[16/9]"
         />
 

@@ -1,6 +1,6 @@
 name: Sanity Blueprints
 
-# Deploys `sanity.blueprint.ts` (the sync tag invalidate function in `functions/`) on pushes to
+# Deploys the Studio schema and `sanity.blueprint.ts` (the functions in `functions/`) on pushes to
 # main, and posts a plan preview on pull requests. Both jobs are skipped until the repository
 # variable SANITY_BLUEPRINT_STACK_ID is set. Required repository configuration:
 #   variables: SANITY_BLUEPRINT_STACK_ID, NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET,
@@ -62,6 +62,11 @@ jobs:
           node-version: lts/*
           cache: npm
       - run: npm ci
+      # Agent Actions read the schema deployed to the dataset, so it ships with the functions that
+      # call them. The blueprints-deployer role carries the deployStudio grant this needs.
+      - run: npx sanity schema deploy
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
       - uses: sanity-io/blueprints-actions/deploy@deploy-v3
         with:
           sanity-token: ${{ secrets.SANITY_DEPLOY_TOKEN }}

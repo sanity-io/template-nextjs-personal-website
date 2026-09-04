@@ -57,6 +57,16 @@ export type Milestone = {
   duration?: Duration
 }
 
+export type Redirect = {
+  _id: string
+  _type: 'redirect'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  from?: string
+  to?: string
+}
+
 export type Project = {
   _id: string
   _type: 'project'
@@ -80,10 +90,20 @@ export type Project = {
     _key: string
   }>
   coverImage?: {
+    asset: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    imagePrompt?: string
+    _type: 'image'
+  }
+  ogImage?: {
     asset?: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    imagePrompt?: string
     _type: 'image'
   }
   duration?: Duration
@@ -175,6 +195,14 @@ export type Page = {
     _type: 'block'
     _key: string
   }>
+  ogImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  }
   body?: Array<
     | {
         children?: Array<{
@@ -261,8 +289,10 @@ export type Settings = {
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    imagePrompt?: string
     _type: 'image'
   }
+  imageStyle?: string
 }
 
 export type Home = {
@@ -398,6 +428,7 @@ export type AllSanitySchemaTypes =
   | Timeline
   | SanityImageAssetReference
   | Milestone
+  | Redirect
   | Project
   | SanityImageCrop
   | SanityImageHotspot
@@ -420,8 +451,16 @@ export type AllSanitySchemaTypes =
 
 // Source: app/(website)/[slug]/page.tsx
 // Variable: slugPageMetadataQuery
-// Query: *[_type == "page" && slug.current == $slug][0] {      title,      "overview": pt::text(overview),    }
+// Query: *[_type == "page" && slug.current == $slug][0] {      ogImage,      title,      "overview": pt::text(overview),    }
 export type SlugPageMetadataQueryResult = {
+  ogImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  } | null
   title: string | null
   overview: string
 } | null
@@ -485,88 +524,182 @@ export type SlugPageQueryResult = {
 
 // Source: app/(website)/layout.tsx
 // Variable: layoutMetadataQuery
-// Query: {    "settings": *[_type == "settings"][0]{ogImage},    "home": *[_type == "home"][0]{      title,      "overview": pt::text(overview),    }  }
+// Query: {    "settings": *[_id == "settings"][0]{ogImage},    "home": *[_id == "home"][0]{      title,      "overview": pt::text(overview),    }  }
 export type LayoutMetadataQueryResult = {
-  settings: {
-    ogImage: {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
-    } | null
-  } | null
-  home: {
-    title: string | null
-    overview: string
-  } | null
+  settings:
+    | {
+        ogImage: null
+      }
+    | {
+        ogImage: {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          imagePrompt?: string
+          _type: 'image'
+        } | null
+      }
+    | null
+  home:
+    | {
+        title: null
+        overview: string
+      }
+    | {
+        title: string | null
+        overview: string
+      }
+    | null
 }
 
 // Source: app/(website)/page.tsx
 // Variable: homePageQuery
-// Query: *[_type == "home"][0]{      _id,      _type,      overview,      showcaseProjects[]{        _key,        ...@->{          _id,          _type,          coverImage,          overview,          "slug": slug.current,          tags,          title,        }      },      title,    }
-export type HomePageQueryResult = {
-  _id: string
-  _type: 'home'
-  overview: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal'
-    listItem?: never
-    markDefs?: Array<{
-      href?: string
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }> | null
-  showcaseProjects: Array<{
-    _key: string
-    _id: string
-    _type: 'project'
-    coverImage: {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
-    } | null
-    overview: Array<{
-      children?: Array<{
-        marks?: Array<string>
-        text?: string
-        _type: 'span'
+// Query: *[_id == "home"][0]{      _id,      _type,      overview,      showcaseProjects[]{        _key,        ...@->{          _id,          _type,          coverImage,          overview,          "slug": slug.current,          tags,          title,        }      },      title,    }
+export type HomePageQueryResult =
+  | {
+      _id: 'home'
+      _type: 'home'
+      overview: Array<{
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal'
+        listItem?: never
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
         _key: string
-      }>
-      style?: 'normal'
-      listItem?: never
-      markDefs?: null
-      level?: number
-      _type: 'block'
-      _key: string
-    }> | null
-    slug: string | null
-    tags: Array<string> | null
-    title: string | null
-  }> | null
-  title: string | null
-} | null
+      }> | null
+      showcaseProjects: Array<{
+        _key: string
+        _id: string
+        _type: 'project'
+        coverImage: {
+          asset: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          imagePrompt?: string
+          _type: 'image'
+        } | null
+        overview: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal'
+          listItem?: never
+          markDefs?: null
+          level?: number
+          _type: 'block'
+          _key: string
+        }> | null
+        slug: string | null
+        tags: Array<string> | null
+        title: string | null
+      }> | null
+      title: string | null
+    }
+  | {
+      _id: 'home'
+      _type: 'page'
+      overview: Array<{
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal'
+        listItem?: never
+        markDefs?: null
+        level?: number
+        _type: 'block'
+        _key: string
+      }> | null
+      showcaseProjects: null
+      title: string | null
+    }
+  | {
+      _id: 'home'
+      _type: 'project'
+      overview: Array<{
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal'
+        listItem?: never
+        markDefs?: null
+        level?: number
+        _type: 'block'
+        _key: string
+      }> | null
+      showcaseProjects: null
+      title: string | null
+    }
+  | {
+      _id: 'home'
+      _type: 'redirect'
+      overview: null
+      showcaseProjects: null
+      title: null
+    }
+  | {
+      _id: 'home'
+      _type: 'sanity.fileAsset'
+      overview: null
+      showcaseProjects: null
+      title: string | null
+    }
+  | {
+      _id: 'home'
+      _type: 'sanity.imageAsset'
+      overview: null
+      showcaseProjects: null
+      title: string | null
+    }
+  | {
+      _id: 'home'
+      _type: 'settings'
+      overview: null
+      showcaseProjects: null
+      title: null
+    }
+  | null
 
 // Source: app/(website)/projects/[slug]/page.tsx
 // Variable: projectSlugPageMetadataQuery
-// Query: *[_type == "project" && slug.current == $slug][0] {      coverImage,      title,      "overview": pt::text(overview),    }
+// Query: *[_type == "project" && slug.current == $slug][0] {      coverImage,      ogImage,      title,      "overview": pt::text(overview),    }
 export type ProjectSlugPageMetadataQueryResult = {
   coverImage: {
+    asset: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    imagePrompt?: string
+    _type: 'image'
+  } | null
+  ogImage: {
     asset?: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    imagePrompt?: string
     _type: 'image'
   } | null
   title: string | null
@@ -581,10 +714,12 @@ export type ProjectSlugPageQueryResult = {
   _type: 'project'
   client: string | null
   coverImage: {
-    asset?: SanityImageAssetReference
+    asset: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    alt?: string
+    imagePrompt?: string
     _type: 'image'
   } | null
   description: Array<
@@ -643,56 +778,120 @@ export type ProjectSlugPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
-// Query: *[_type == "settings"][0]{    _id,    _type,    footer,    menuItems[]{      _key,      ...@->{        _type,        "slug": slug.current,        title      }    },    ogImage,  }
-export type SettingsQueryResult = {
-  _id: string
-  _type: 'settings'
-  footer: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }> | null
-  menuItems: Array<
-    | {
-        _key: null
-        _type: 'home'
-        slug: null
-        title: string | null
-      }
-    | {
-        _key: null
-        _type: 'page'
-        slug: string | null
-        title: string | null
-      }
-    | {
-        _key: null
-        _type: 'project'
-        slug: string | null
-        title: string | null
-      }
-  > | null
-  ogImage: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
-  } | null
-} | null
+// Query: *[_id == "settings"][0]{    _id,    _type,    footer,    menuItems[]{      _key,      ...@->{        _type,        "slug": slug.current,        title      }    },    ogImage,  }
+export type SettingsQueryResult =
+  | {
+      _id: 'settings'
+      _type: 'home'
+      footer: null
+      menuItems: null
+      ogImage: null
+    }
+  | {
+      _id: 'settings'
+      _type: 'page'
+      footer: null
+      menuItems: null
+      ogImage: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        imagePrompt?: string
+        _type: 'image'
+      } | null
+    }
+  | {
+      _id: 'settings'
+      _type: 'project'
+      footer: null
+      menuItems: null
+      ogImage: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        imagePrompt?: string
+        _type: 'image'
+      } | null
+    }
+  | {
+      _id: 'settings'
+      _type: 'redirect'
+      footer: null
+      menuItems: null
+      ogImage: null
+    }
+  | {
+      _id: 'settings'
+      _type: 'sanity.fileAsset'
+      footer: null
+      menuItems: null
+      ogImage: null
+    }
+  | {
+      _id: 'settings'
+      _type: 'sanity.imageAsset'
+      footer: null
+      menuItems: null
+      ogImage: null
+    }
+  | {
+      _id: 'settings'
+      _type: 'settings'
+      footer: Array<{
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }> | null
+      menuItems: Array<
+        | {
+            _key: null
+            _type: 'home'
+            slug: null
+            title: string | null
+          }
+        | {
+            _key: null
+            _type: 'page'
+            slug: string | null
+            title: string | null
+          }
+        | {
+            _key: null
+            _type: 'project'
+            slug: string | null
+            title: string | null
+          }
+      > | null
+      ogImage: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        imagePrompt?: string
+        _type: 'image'
+      } | null
+    }
+  | null
+
+// Source: sanity/lib/queries.ts
+// Variable: redirectQuery
+// Query: *[_type == "redirect" && from == $from][0].to
+export type RedirectQueryResult = string | null
 
 // Source: sanity/lib/queries.ts
 // Variable: slugsByTypeQuery
@@ -704,13 +903,14 @@ export type SlugsByTypeQueryResult = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n    *[_type == "page" && slug.current == $slug][0] {\n      title,\n      "overview": pt::text(overview),\n    }\n  ': SlugPageMetadataQueryResult
+    '\n    *[_type == "page" && slug.current == $slug][0] {\n      ogImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': SlugPageMetadataQueryResult
     '\n    *[_type == "page" && slug.current == $slug][0] {\n      _id,\n      _type,\n      body,\n      overview,\n      title,\n      "slug": slug.current,\n    }\n  ': SlugPageQueryResult
-    '{\n    "settings": *[_type == "settings"][0]{ogImage},\n    "home": *[_type == "home"][0]{\n      title,\n      "overview": pt::text(overview),\n    }\n  }': LayoutMetadataQueryResult
-    '\n    *[_type == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          coverImage,\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
-    '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
+    '{\n    "settings": *[_id == "settings"][0]{ogImage},\n    "home": *[_id == "home"][0]{\n      title,\n      "overview": pt::text(overview),\n    }\n  }': LayoutMetadataQueryResult
+    '\n    *[_id == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          coverImage,\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
+    '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      ogImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
     '\n    *[_type == "project" && slug.current == $slug][0] {\n      _id,\n      _type,\n      client,\n      coverImage,\n      description,\n      duration,\n      overview,\n      site,\n      "slug": slug.current,\n      tags,\n      title,\n    }\n  ': ProjectSlugPageQueryResult
-    '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    ogImage,\n  }\n': SettingsQueryResult
+    '\n  *[_id == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    ogImage,\n  }\n': SettingsQueryResult
+    '*[_type == "redirect" && from == $from][0].to': RedirectQueryResult
     '\n  *[_type == $type && defined(slug.current)]{"slug": slug.current}\n': SlugsByTypeQueryResult
   }
 }

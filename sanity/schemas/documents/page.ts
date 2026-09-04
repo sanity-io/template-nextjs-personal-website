@@ -2,6 +2,11 @@ import {DocumentIcon} from '@sanity/icons/Document'
 import {ImageIcon} from '@sanity/icons/Image'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {overviewMaxLength} from '@/sanity/lib/portable-text'
+import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
+import {ogImageField} from '@/sanity/schemas/objects/ogImage'
+import {maxPortableTextLength} from '@/sanity/schemas/validation'
+
 export default defineType({
   type: 'document',
   name: 'page',
@@ -18,15 +23,19 @@ export default defineType({
       type: 'slug',
       name: 'slug',
       title: 'Slug',
+      description:
+        'Generated from the title on first save. Change it only when you have to; old addresses redirect automatically.',
       options: {
         source: 'title',
+        maxLength: slugMaxLength.page,
+        slugify: (input) => slugify(input, slugMaxLength.page),
       },
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'overview',
       description:
-        'Used both for the <meta> description tag for SEO, and the personal website subheader.',
+        'Used both for the <meta> description tag for SEO, and the personal website subheader. Written for you from the body when left empty; clearing it does not regenerate it, editing the body does.',
       title: 'Overview',
       type: 'array',
       of: [
@@ -50,8 +59,9 @@ export default defineType({
           type: 'block',
         }),
       ],
-      validation: (rule) => rule.max(155).required(),
+      validation: (rule) => rule.required().custom(maxPortableTextLength(overviewMaxLength)),
     }),
+    ogImageField('Shown when this page is shared. Falls back to the Open Graph image in Settings.'),
     defineField({
       type: 'array',
       name: 'body',

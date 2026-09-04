@@ -3,7 +3,7 @@ import {defineQuery} from 'next-sanity'
 import type {AllSanitySchemaTypes, Slug} from '@/sanity.types'
 
 export const settingsQuery = defineQuery(`
-  *[_type == "settings"][0]{
+  *[_id == "settings"][0]{
     _id,
     _type,
     footer,
@@ -18,6 +18,8 @@ export const settingsQuery = defineQuery(`
     ogImage,
   }
 `)
+
+export const redirectQuery = defineQuery(`*[_type == "redirect" && from == $from][0].to`)
 
 export const slugsByTypeQuery = defineQuery(`
   *[_type == $type && defined(slug.current)]{"slug": slug.current}

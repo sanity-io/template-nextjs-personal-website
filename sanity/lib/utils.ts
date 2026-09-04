@@ -17,19 +17,5 @@ export const urlForImage = (source: SanityImageSource | null | undefined) => {
 }
 
 export function urlForOpenGraphImage(image: SanityImageSource | null | undefined) {
-  return urlForImage(image)?.width(1200).height(627).fit('crop').url()
-}
-
-export function resolveHref(documentType?: string, slug?: string | null): string | undefined {
-  switch (documentType) {
-    case 'home':
-      return '/'
-    case 'page':
-      return slug ? `/${slug}` : undefined
-    case 'project':
-      return slug ? `/projects/${slug}` : undefined
-    default:
-      console.warn('Invalid document type:', documentType)
-      return undefined
-  }
+  return urlForImage(image)?.width(1200).height(630).fit('crop').url()
 }

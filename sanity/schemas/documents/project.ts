@@ -2,6 +2,12 @@ import {DocumentIcon} from '@sanity/icons/Document'
 import {ImageIcon} from '@sanity/icons/Image'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {overviewMaxLength} from '@/sanity/lib/portable-text'
+import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
+import {imagePromptField} from '@/sanity/schemas/objects/imagePrompt'
+import {ogImageField} from '@/sanity/schemas/objects/ogImage'
+import {maxPortableTextLength} from '@/sanity/schemas/validation'
+
 export default defineType({
   name: 'project',
   title: 'Project',
@@ -21,16 +27,20 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      description:
+        'Generated from the title on first save. Change it only when you have to; old addresses redirect automatically.',
       options: {
         source: 'title',
-        maxLength: 96,
+        maxLength: slugMaxLength.project,
+        slugify: (input) => slugify(input, slugMaxLength.project),
         isUnique: (value, context) => context.defaultIsUnique(value, context),
       },
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'overview',
-      description: 'Used both for the <meta> description tag for SEO, and project subheader.',
+      description:
+        'Used both for the <meta> description tag for SEO, and project subheader. Written for you from the body when left empty; clearing it does not regenerate it, editing the body does.',
       title: 'Overview',
       type: 'array',
       of: [
@@ -54,7 +64,7 @@ export default defineType({
           type: 'block',
         }),
       ],
-      validation: (rule) => rule.max(155).required(),
+      validation: (rule) => rule.required().custom(maxPortableTextLength(overviewMaxLength)),
     }),
     defineField({
       name: 'coverImage',
@@ -65,8 +75,21 @@ export default defineType({
       options: {
         hotspot: true,
       },
-      validation: (rule) => rule.required(),
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          description:
+            'Describes the image for screen readers and search engines. Written for you when left empty.',
+        }),
+        imagePromptField,
+      ],
+      validation: (rule) => rule.required().assetRequired(),
     }),
+    ogImageField(
+      'Shown when this project is shared. Falls back to the cover image, then to the Open Graph image in Settings.',
+    ),
     defineField({
       name: 'duration',
       title: 'Duration',

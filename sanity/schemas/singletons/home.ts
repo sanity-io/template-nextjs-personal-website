@@ -1,6 +1,9 @@
 import {HomeIcon} from '@sanity/icons/Home'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {overviewMaxLength} from '@/sanity/lib/portable-text'
+import {maxPortableTextLength} from '@/sanity/schemas/validation'
+
 export default defineType({
   name: 'home',
   title: 'Home',
@@ -56,12 +59,13 @@ export default defineType({
           type: 'block',
         }),
       ],
-      validation: (rule) => rule.max(155).required(),
+      validation: (rule) => rule.required().custom(maxPortableTextLength(overviewMaxLength)),
     }),
     defineField({
       name: 'showcaseProjects',
       title: 'Showcase projects',
-      description: 'These are the projects that will appear first on your landing page.',
+      description:
+        'Projects shown first on the landing page. A project is added here when it is first published; reorder or remove entries freely.',
       type: 'array',
       of: [
         defineArrayMember({

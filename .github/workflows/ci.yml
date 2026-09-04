@@ -36,6 +36,7 @@ jobs:
       - run: npm ci
       - run: npm run type-check
       - run: npm run lint
+      - run: npm run test:unit
       - name: Require Sanity credentials for e2e
         run: |
           missing=

@@ -1,6 +1,7 @@
 import {CogIcon} from '@sanity/icons/Cog'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {ogImageField} from '@/sanity/schemas/objects/ogImage'
 export default defineType({
   name: 'settings',
   title: 'Settings',
@@ -59,14 +60,14 @@ export default defineType({
         }),
       ],
     }),
+    ogImageField('Shown when a page without its own Open Graph image is shared.'),
     defineField({
-      name: 'ogImage',
-      title: 'Open Graph Image',
-      type: 'image',
-      description: 'Displayed on social cards and search engine results.',
-      options: {
-        hotspot: true,
-      },
+      name: 'imageStyle',
+      title: 'Image style',
+      type: 'text',
+      rows: 3,
+      description:
+        'Art direction for every AI-generated cover and Open Graph image, for example "flat vector illustration, warm palette, soft grain". Leave empty for a clean editorial look.',
     }),
   ],
   preview: {
