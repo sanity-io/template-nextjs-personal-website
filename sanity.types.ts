@@ -42,15 +42,6 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
-export type OgImage = {
-  _type: 'ogImage'
-  asset?: SanityImageAssetReference
-  media?: unknown
-  hotspot?: SanityImageHotspot
-  crop?: SanityImageCrop
-  imagePrompt?: string
-}
-
 export type Milestone = {
   _type: 'milestone'
   title?: string
@@ -107,7 +98,14 @@ export type Project = {
     imagePrompt?: string
     _type: 'image'
   }
-  ogImage?: OgImage
+  ogImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  }
   duration?: Duration
   client?: string
   site?: string
@@ -197,7 +195,14 @@ export type Page = {
     _type: 'block'
     _key: string
   }>
-  ogImage?: OgImage
+  ogImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  }
   body?: Array<
     | {
         children?: Array<{
@@ -279,7 +284,14 @@ export type Settings = {
     _type: 'block'
     _key: string
   }>
-  ogImage?: OgImage
+  ogImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  }
   imageStyle?: string
 }
 
@@ -415,7 +427,6 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | Timeline
   | SanityImageAssetReference
-  | OgImage
   | Milestone
   | Redirect
   | Project
@@ -442,7 +453,14 @@ export type AllSanitySchemaTypes =
 // Variable: slugPageMetadataQuery
 // Query: *[_type == "page" && slug.current == $slug][0] {      ogImage,      title,      "overview": pt::text(overview),    }
 export type SlugPageMetadataQueryResult = {
-  ogImage: OgImage | null
+  ogImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  } | null
   title: string | null
   overview: string
 } | null
@@ -509,7 +527,14 @@ export type SlugPageQueryResult = {
 // Query: {    "settings": *[_type == "settings"][0]{ogImage},    "home": *[_type == "home"][0]{      title,      "overview": pt::text(overview),    }  }
 export type LayoutMetadataQueryResult = {
   settings: {
-    ogImage: OgImage | null
+    ogImage: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      imagePrompt?: string
+      _type: 'image'
+    } | null
   } | null
   home: {
     title: string | null
@@ -588,7 +613,14 @@ export type ProjectSlugPageMetadataQueryResult = {
     imagePrompt?: string
     _type: 'image'
   } | null
-  ogImage: OgImage | null
+  ogImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  } | null
   title: string | null
   overview: string
 } | null
@@ -707,7 +739,14 @@ export type SettingsQueryResult = {
         title: string | null
       }
   > | null
-  ogImage: OgImage | null
+  ogImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    imagePrompt?: string
+    _type: 'image'
+  } | null
 } | null
 
 // Source: sanity/lib/queries.ts
