@@ -25,6 +25,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - [Project Overview](#project-overview)
   - [Important files and folders](#important-files-and-folders)
   - [Cache Components](#cache-components)
+  - [Sanity Functions: invalidate before the browser refreshes](#sanity-functions-invalidate-before-the-browser-refreshes)
 - [ Getting Started](#configuration)
   - [Step 1. Initialize template with Sanity CLI](#initialize-template-with-sanity-cli)
   - [Step 2. Run app locally in development mode](#run-app-locally-in-development-mode)
@@ -55,10 +56,13 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 | `next.config.ts`                             | Enables [Cache Components][cache-components] and sets the default `cacheLife` to Sanity Live |
 | `/app/studio/[[...tool]]/Studio.tsx`         | Where Sanity Studio is mounted                                                               |
 | `/app/api/draft-mode/enable/route.ts`        | Serverless route for triggering Draft mode                                                   |
+| `/app/api/revalidate/route.ts`               | Route handler the Sanity Function calls to expire cache tags before live events are released |
 | `/sanity/schemas`                            | Where Sanity Studio gets its content types from                                              |
 | `/sanity/plugins`                            | Where the advanced Sanity Studio customization is setup                                      |
 | `/sanity/lib/api.ts`,`/sanity/lib/client.ts` | Configuration for the Sanity Content Lake client                                             |
 | `/sanity/lib/live.ts`                        | `sanityFetch`, `sanityFetchMetadata`, `sanityFetchStaticParams`, `getDynamicFetchOptions`    |
+| `sanity.blueprint.ts`                        | [Sanity Blueprint][blueprints] that deploys the function in `/functions`                     |
+| `/functions/invalidate-sync-tags`            | Sync tag invalidate [Sanity Function][functions] backing `<SanityLive waitFor="function">`   |
 
 ### Cache Components
 
@@ -81,6 +85,77 @@ Data fetching follows the three-layer (Page → Dynamic → Cached) pattern from
 - [`app/(website)/projects/[slug]/page.tsx`](<./app/(website)/projects/[slug]/page.tsx>) — dynamic project route
 
 Every cached leaf takes `perspective` and `stega` as plain props sourced from `getDynamicFetchOptions()`, so Visual Editing overlays and content-release previewing keep working in Draft Mode while the static shell is fully prerendered in production.
+
+### Sanity Functions: invalidate before the browser refreshes
+
+By default every open browser tab reacts to a Sanity Live event by calling a Server Action that expires the cache and refreshes the page, racing the revalidation. This template can instead have Sanity run a [Function][sync-tag-function] that expires the Next.js cache first and only then release the event, so `<SanityLive waitFor="function">` clients render fresh content on the first refresh and the cache is expired once, not once per tab.
+
+It's opt-in and takes about ten minutes to set up. The pieces are already in the repo: [`functions/invalidate-sync-tags`](./functions/invalidate-sync-tags/index.ts) (the Function), [`sanity.blueprint.ts`](./sanity.blueprint.ts) (deploys it), [`app/api/revalidate/route.ts`](./app/api/revalidate/route.ts) (what it calls) and [`.github/workflows/blueprints.yml`](./.github/workflows/blueprints.yml) (deploys it from CI with the official [Blueprints GitHub Actions][blueprints-action]).
+
+#### Setup
+
+You need admin access to the Sanity project, plus access to the GitHub repository settings and the hosting provider's environment variables (Vercel below). Whenever the Sanity CLI prints an id as `<ST-abc123>`, paste it without the `<>`.
+
+**1. Generate a secret.** It's shared between the site and the Function, and used in steps 2 and 4.
+
+```shell
+openssl rand -hex 32
+```
+
+**2. Add environment variables on Vercel** (Project → Settings → Environment Variables, Production). Don't redeploy yet.
+
+| Name                            | Value                  |
+| ------------------------------- | ---------------------- |
+| `SANITY_REVALIDATE_SECRET`      | the secret from step 1 |
+| `SANITY_LIVE_WAIT_FOR_FUNCTION` | `true`                 |
+
+**3. Create a Blueprint stack and a deploy token.** Once, from your machine, in the project root:
+
+```shell
+npx sanity login
+npx sanity blueprints init . --project-id <project-id> --stack-name <dataset>
+npx sanity blueprints mint-deploy-token --print
+npx sanity blueprints info
+```
+
+- `<project-id>` is the `NEXT_PUBLIC_SANITY_PROJECT_ID` the deployed site uses.
+- A stack is a named deployment target inside the project. The name is only a label; naming it after the dataset (`production`) keeps one stack per environment.
+- `mint-deploy-token` prints a token; `info` prints the stack id (`ST-…`). Keep both for step 4.
+- `init` writes `.sanity/blueprint.config.json`, which is gitignored so every clone binds to its own stack. It also warns that the Blueprint is co-located with a Studio; that's fine here, the Studio is embedded in the Next.js app and the file sits next to the lockfile as [required][blueprints-layout].
+
+**4. Configure GitHub** (Repository → Settings → Secrets and variables → Actions):
+
+| Kind     | Name                            | Value                                             |
+| -------- | ------------------------------- | ------------------------------------------------- |
+| variable | `SANITY_BLUEPRINT_STACK_ID`     | the `ST-…` id from step 3                         |
+| variable | `NEXT_PUBLIC_SANITY_PROJECT_ID` | same as the Vercel project (CI already uses this) |
+| variable | `NEXT_PUBLIC_SANITY_DATASET`    | same as the Vercel project (CI already uses this) |
+| variable | `REVALIDATE_URL`                | `https://<your-production-domain>/api/revalidate` |
+| secret   | `SANITY_DEPLOY_TOKEN`           | the token from step 3                             |
+| secret   | `SANITY_REVALIDATE_SECRET`      | the secret from step 1                            |
+
+**5. Deploy the Function.** Actions → Sanity Blueprints → Run workflow → `main`. The log should end with `[Functions] Created 1 function` and `✅ Blueprints deployed successfully!`. From now on every push to `main` redeploys it and every pull request gets a plan comment showing what would change. (The workflow is skipped until `SANITY_BLUEPRINT_STACK_ID` exists, and the "Run workflow" button only appears once the workflow file is on the default branch.)
+
+**6. Redeploy the site on Vercel** so the variables from step 2 apply.
+
+#### Check that it works
+
+- `npx sanity functions env list invalidate-sync-tags` lists `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET`.
+- Open the site with the browser console open. The Sanity Live welcome message ends with "Events will be delayed until after a Sanity Function has processed them."
+- Publish a change in the Studio. The page updates on its first refresh, and `npx sanity functions logs invalidate-sync-tags` shows `Revalidated N sync tags: …`.
+
+#### Good to know
+
+- Only one sync tag invalidate Function can exist per dataset, which is why the Blueprint scopes it to `NEXT_PUBLIC_SANITY_PROJECT_ID.NEXT_PUBLIC_SANITY_DATASET`. Deploying a second one fails with "a sync tag invalidation subscription already exists".
+- The Function reads `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET` from whatever environment runs `blueprints deploy` (GitHub variables and secrets in CI, `.env.local` locally). Keep `SANITY_REVALIDATE_SECRET` identical on Vercel and GitHub; nothing else has to stay in sync.
+- `SANITY_LIVE_WAIT_FOR_FUNCTION` is read at build time, so changing it needs a redeploy. Leave it unset for local development (the Function can't reach `localhost`) and for Preview deployments unless you point `REVALIDATE_URL` at one. Draft Mode ignores it: `includeDrafts` wins and the browser refreshes on every event.
+- To deploy without GitHub Actions, add `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET` to `.env.local` and run `npx sanity blueprints deploy`.
+- To try the Function against a local dev server without deploying anything:
+
+  ```shell
+  REVALIDATE_URL=http://localhost:3000/api/revalidate SANITY_REVALIDATE_SECRET=<secret> \
+    npx sanity functions test invalidate-sync-tags --data '{"syncTags": ["s1:example"]}'
+  ```
 
 ## Getting Started
 
@@ -185,3 +260,8 @@ You can remove it by deleting the `IntroTemplate` component in `/app/(website)/l
 [personal-website-pages]: https://github.com/sanity-io/template-nextjs-personal-website
 [presentation]: https://www.sanity.io/docs/presentation
 [cache-components]: https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents
+[blueprints]: https://www.sanity.io/docs/blueprints/blueprints-introduction
+[blueprints-layout]: https://www.sanity.io/docs/blueprints/project-layout-and-monorepos
+[blueprints-action]: https://www.sanity.io/docs/blueprints/blueprint-action
+[functions]: https://www.sanity.io/docs/functions/functions-introduction
+[sync-tag-function]: https://www.sanity.io/docs/functions/sync-tag-function-quickstart

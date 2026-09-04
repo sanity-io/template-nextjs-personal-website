@@ -20,6 +20,7 @@
   "dependencies": {
     "@next/env": "16.3.4",
     "@sanity/client": "8.5.0",
+    "@sanity/functions": "1.7.1",
     "@sanity/icons": "5.2.1",
     "@sanity/image-url": "2.1.1",
     "@sanity/ui": "4.0.7",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@next/playwright": "16.3.4",
     "@playwright/test": "1.62.1",
+    "@sanity/blueprints": "0.24.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "25.9.5",
     "@types/react": "19.2.18",

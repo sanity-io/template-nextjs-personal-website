@@ -2,8 +2,11 @@ name: Sanity Blueprints
 
 # Deploys `sanity.blueprint.ts` (the sync tag invalidate function in `functions/`) on pushes to
 # main, and posts a plan preview on pull requests. Both jobs are skipped until the repository
-# variables SANITY_BLUEPRINT_STACK_ID and NEXT_PUBLIC_SANITY_PROJECT_ID are set. The token comes
-# from `npx sanity blueprints mint-deploy-token --print`, stored as the SANITY_DEPLOY_TOKEN secret.
+# variable SANITY_BLUEPRINT_STACK_ID is set. Required repository configuration:
+#   variables: SANITY_BLUEPRINT_STACK_ID, NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET,
+#              REVALIDATE_URL (https://<your-site>/api/revalidate)
+#   secrets:   SANITY_DEPLOY_TOKEN (`npx sanity blueprints mint-deploy-token --print`),
+#              SANITY_REVALIDATE_SECRET (same value as the Next.js deployment)
 
 on:
   pull_request:
@@ -18,10 +21,14 @@ concurrency:
 permissions:
   contents: read
 
-# The blueprint scopes the function to this dataset, so both jobs must see the same values.
+# sanity.blueprint.ts reads these: the first two scope the function to the dataset, the last two
+# become the deployed function's environment (they must match the Next.js deployment's
+# SANITY_REVALIDATE_SECRET and public URL). Both jobs get them so plan and deploy agree.
 env:
   NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
   NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+  REVALIDATE_URL: ${{ vars.REVALIDATE_URL }}
+  SANITY_REVALIDATE_SECRET: ${{ secrets.SANITY_REVALIDATE_SECRET }}
 
 jobs:
   plan:
