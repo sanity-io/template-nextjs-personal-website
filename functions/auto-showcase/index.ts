@@ -36,6 +36,6 @@ async function appendToHomes(client: SanityClient, projectId: string, options: {
   }
   await transaction.commit(options)
   console.log(
-    `auto-showcase: appended ${projectId} to ${targets.map((home) => home._id).join(', ')}`,
+    `auto-showcase${options.dryRun ? ' (dry run)' : ''}: appended ${projectId} to ${targets.map((home) => home._id).join(', ')}`,
   )
 }
