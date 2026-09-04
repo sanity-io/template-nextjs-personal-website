@@ -104,7 +104,6 @@ export type Project = {
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt?: string
-    decorative?: boolean
     imagePrompt?: string
     _type: 'image'
   }
@@ -142,7 +141,6 @@ export type Project = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
-        decorative?: boolean
         _type: 'image'
         _key: string
       }
@@ -229,7 +227,6 @@ export type Page = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
-        decorative?: boolean
         _type: 'image'
         _key: string
       }
@@ -484,7 +481,6 @@ export type SlugPageQueryResult = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
-        decorative?: boolean
         _type: 'image'
         _key: string
       }
@@ -554,7 +550,6 @@ export type HomePageQueryResult = {
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
       alt?: string
-      decorative?: boolean
       imagePrompt?: string
       _type: 'image'
     } | null
@@ -589,7 +584,6 @@ export type ProjectSlugPageMetadataQueryResult = {
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt?: string
-    decorative?: boolean
     imagePrompt?: string
     _type: 'image'
   } | null
@@ -610,7 +604,6 @@ export type ProjectSlugPageQueryResult = {
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt?: string
-    decorative?: boolean
     imagePrompt?: string
     _type: 'image'
   } | null
@@ -643,7 +636,6 @@ export type ProjectSlugPageQueryResult = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
-        decorative?: boolean
         _type: 'image'
         _key: string
       }

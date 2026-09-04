@@ -4,7 +4,6 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import {maxPlainTextLength} from '@/sanity/lib/portable-text'
 import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
-import {decorativeField} from '@/sanity/schemas/objects/decorative'
 import {imagePromptField} from '@/sanity/schemas/objects/imagePrompt'
 
 export default defineType({
@@ -79,7 +78,6 @@ export default defineType({
           description:
             'Describes the image for screen readers and search engines. Written for you when left empty.',
         }),
-        decorativeField,
         imagePromptField,
       ],
       validation: (rule) => rule.required(),
@@ -169,7 +167,6 @@ export default defineType({
               title: 'Alt text',
               description: 'Alternative text for screenreaders. Falls back on caption if not set',
             }),
-            decorativeField,
           ],
         }),
       ],

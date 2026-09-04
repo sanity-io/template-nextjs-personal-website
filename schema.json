@@ -509,13 +509,6 @@
               },
               "optional": true
             },
-            "decorative": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "boolean"
-              },
-              "optional": true
-            },
             "imagePrompt": {
               "type": "objectAttribute",
               "value": {
@@ -785,13 +778,6 @@
                     "type": "objectAttribute",
                     "value": {
                       "type": "string"
-                    },
-                    "optional": true
-                  },
-                  "decorative": {
-                    "type": "objectAttribute",
-                    "value": {
-                      "type": "boolean"
                     },
                     "optional": true
                   },
@@ -1351,13 +1337,6 @@
                     "type": "objectAttribute",
                     "value": {
                       "type": "string"
-                    },
-                    "optional": true
-                  },
-                  "decorative": {
-                    "type": "objectAttribute",
-                    "value": {
-                      "type": "boolean"
                     },
                     "optional": true
                   },
