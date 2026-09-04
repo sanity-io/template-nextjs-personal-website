@@ -38,8 +38,9 @@ export const handler = documentEventHandler<SlugRedirectsPayload>(async ({contex
   const transaction = client.transaction()
   for (const doc of plan.createOrReplace) transaction.createOrReplace(doc)
   for (const id of plan.delete) transaction.delete(id)
-  await transaction.commit({dryRun: dryRun(context)})
+  const isDryRun = dryRun(context)
+  await transaction.commit({dryRun: isDryRun})
   console.log(
-    `slug-redirects: ${fromPath} -> ${toPath}, wrote ${plan.createOrReplace.length} and deleted ${plan.delete.length} redirect(s)`,
+    `slug-redirects${isDryRun ? ' (dry run)' : ''}: ${fromPath} -> ${toPath}, wrote ${plan.createOrReplace.length} and deleted ${plan.delete.length} redirect(s)`,
   )
 })
