@@ -11,6 +11,17 @@ const {
   SANITY_REVALIDATE_SECRET,
 } = process.env
 
+// An unscoped document function would run against every dataset in the project.
+if (!NEXT_PUBLIC_SANITY_PROJECT_ID || !NEXT_PUBLIC_SANITY_DATASET) {
+  throw new Error(
+    'Set NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET so the functions run against one dataset',
+  )
+}
+const resource = {
+  type: 'dataset',
+  id: `${NEXT_PUBLIC_SANITY_PROJECT_ID}.${NEXT_PUBLIC_SANITY_DATASET}`,
+} as const
+
 // Blueprint `env` is additive, so leaving a value out keeps whatever is already deployed.
 const env: Record<string, string> = {}
 if (REVALIDATE_URL) env.REVALIDATE_URL = REVALIDATE_URL
@@ -18,21 +29,14 @@ if (SANITY_REVALIDATE_SECRET) env.SANITY_REVALIDATE_SECRET = SANITY_REVALIDATE_S
 
 /**
  * Deployed with `npx sanity blueprints deploy`, see "Sanity Functions" in the README.
- * A dataset can only have one sync tag invalidate function, so it's scoped to the one this app reads.
+ * Every function is scoped to the dataset this app reads; a dataset can only have one sync tag
+ * invalidate function.
  */
 export default defineBlueprint({
   resources: [
     defineSyncTagInvalidateFunction({
       name: 'invalidate-sync-tags',
-      event:
-        NEXT_PUBLIC_SANITY_PROJECT_ID && NEXT_PUBLIC_SANITY_DATASET
-          ? {
-              resource: {
-                type: 'dataset',
-                id: `${NEXT_PUBLIC_SANITY_PROJECT_ID}.${NEXT_PUBLIC_SANITY_DATASET}`,
-              },
-            }
-          : undefined,
+      event: {resource},
       env: Object.keys(env).length > 0 ? env : undefined,
     }),
   ],
