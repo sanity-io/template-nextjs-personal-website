@@ -4,6 +4,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import {overviewMaxLength} from '@/sanity/lib/portable-text'
 import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
+import {ogImageField} from '@/sanity/schemas/objects/ogImage'
 import {maxPortableTextLength} from '@/sanity/schemas/validation'
 
 export default defineType({
@@ -60,11 +61,7 @@ export default defineType({
       ],
       validation: (rule) => rule.required().custom(maxPortableTextLength(overviewMaxLength)),
     }),
-    defineField({
-      name: 'ogImage',
-      type: 'ogImage',
-      description: 'Falls back to the Open Graph image in Settings.',
-    }),
+    ogImageField('Shown when this page is shared. Falls back to the Open Graph image in Settings.'),
     defineField({
       type: 'array',
       name: 'body',

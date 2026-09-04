@@ -15,7 +15,6 @@ import project from '@/sanity/schemas/documents/project'
 import redirect from '@/sanity/schemas/documents/redirect'
 import duration from '@/sanity/schemas/objects/duration'
 import milestone from '@/sanity/schemas/objects/milestone'
-import ogImage from '@/sanity/schemas/objects/ogImage'
 import timeline from '@/sanity/schemas/objects/timeline'
 import home from '@/sanity/schemas/singletons/home'
 import settings from '@/sanity/schemas/singletons/settings'
@@ -44,7 +43,6 @@ export default defineConfig({
       redirect,
       // Objects
       milestone,
-      ogImage,
       timeline,
     ],
   },

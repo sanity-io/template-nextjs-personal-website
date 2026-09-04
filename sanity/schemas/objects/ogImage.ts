@@ -1,13 +1,17 @@
-import {defineType} from 'sanity'
+import {defineField} from 'sanity'
 
 import {imagePromptField} from '@/sanity/schemas/objects/imagePrompt'
 
-export default defineType({
-  name: 'ogImage',
-  title: 'Open Graph image',
-  type: 'image',
-  description:
-    'Shown when the page is shared on social media and in search results, cropped to 1200x630.',
-  options: {hotspot: true},
-  fields: [imagePromptField],
-})
+/**
+ * Declared inline rather than as a named image type: a named type would store `_type: 'ogImage'`,
+ * and the Open Graph image that already exists in Settings stores `_type: 'image'`.
+ */
+export const ogImageField = (description: string) =>
+  defineField({
+    name: 'ogImage',
+    title: 'Open Graph image',
+    type: 'image',
+    description: `${description} Cropped to 1200x630.`,
+    options: {hotspot: true},
+    fields: [imagePromptField],
+  })

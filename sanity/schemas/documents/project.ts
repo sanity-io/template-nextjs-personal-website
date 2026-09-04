@@ -5,6 +5,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {overviewMaxLength} from '@/sanity/lib/portable-text'
 import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
 import {imagePromptField} from '@/sanity/schemas/objects/imagePrompt'
+import {ogImageField} from '@/sanity/schemas/objects/ogImage'
 import {maxPortableTextLength} from '@/sanity/schemas/validation'
 
 export default defineType({
@@ -86,11 +87,9 @@ export default defineType({
       ],
       validation: (rule) => rule.required().assetRequired(),
     }),
-    defineField({
-      name: 'ogImage',
-      type: 'ogImage',
-      description: 'Falls back to the cover image, then to the Open Graph image in Settings.',
-    }),
+    ogImageField(
+      'Shown when this project is shared. Falls back to the cover image, then to the Open Graph image in Settings.',
+    ),
     defineField({
       name: 'duration',
       title: 'Duration',
