@@ -9,8 +9,8 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
+import {resolveHref} from '@/sanity/lib/href'
 import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
-import {resolveHref} from '@/sanity/lib/utils'
 
 export default async function IndexPage() {
   const {isEnabled: isDraftMode} = await draftMode()
