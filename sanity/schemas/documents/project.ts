@@ -25,6 +25,8 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      description:
+        'Generated from the title on first save. Change it only when you have to; old addresses redirect automatically.',
       options: {
         source: 'title',
         maxLength: slugMaxLength.project,
@@ -35,7 +37,8 @@ export default defineType({
     }),
     defineField({
       name: 'overview',
-      description: 'Used both for the <meta> description tag for SEO, and project subheader.',
+      description:
+        'Used both for the <meta> description tag for SEO, and project subheader. Written for you from the body when left empty; clearing it does not regenerate it, editing the body does.',
       title: 'Overview',
       type: 'array',
       of: [

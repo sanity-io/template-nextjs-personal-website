@@ -7,7 +7,7 @@ export default defineType({
   title: 'Open Graph image',
   type: 'image',
   description:
-    'Shown when the page is shared on social media and in search results. 1200x630 crop.',
+    'Shown when the page is shared on social media and in search results, cropped to 1200x630.',
   options: {hotspot: true},
   fields: [imagePromptField],
 })
