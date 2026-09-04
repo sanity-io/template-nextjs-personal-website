@@ -1,15 +1,12 @@
 import {documentEventHandler} from '@sanity/functions'
 
-import {portableTextToString} from '../../sanity/lib/portable-text'
+import {overviewMaxLength, ptText} from '../../sanity/lib/portable-text'
 import {agentClient, datasetClient, dryRun, isRevisionConflict, schemaId} from '../lib/agent'
 import type {SeoOverviewPayload, SlugDocumentType} from '../lib/events'
 import {SETTLE_MS, settled} from '../lib/settle'
 
 const OVERVIEW_INSTRUCTION =
   'Write the meta description for this page in one plain sentence of at most 155 characters, based on $title and $body. No markdown, no quotes.'
-
-/** The same limit the schema enforces on `overview` with `maxPortableTextLength`. */
-const OVERVIEW_MAX_LENGTH = 155
 
 function bodyPath(type: SlugDocumentType): 'description' | 'body' {
   switch (type) {
@@ -46,8 +43,8 @@ export const handler = documentEventHandler<SeoOverviewPayload>(async ({context,
     target: {path: 'overview', operation: 'set'},
   })
 
-  const text = portableTextToString(result.overview)
-  if (text.length === 0 || text.length > OVERVIEW_MAX_LENGTH) {
+  const text = ptText(result.overview)
+  if (text.length === 0 || text.length > overviewMaxLength) {
     console.log(`seo-overview ${_id}: skipped, Generate returned ${text.length} characters`)
     return
   }

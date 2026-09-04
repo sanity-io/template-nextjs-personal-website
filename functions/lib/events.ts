@@ -9,12 +9,10 @@ export type FunctionName =
   | 'slug-redirects'
   | 'auto-showcase'
 
-/** The blueprint scopes every event to one dataset, so a spec cannot pick its own `resource`. */
 export type FunctionEvent = Omit<BlueprintDocumentFunctionResourceEvent, 'resource'>
 
 export interface FunctionSpec {
   event: FunctionEvent
-  /** Seconds. */
   timeout: number
 }
 
@@ -22,7 +20,6 @@ export type SlugDocumentType = 'project' | 'page'
 
 const created = '!defined(before())'
 
-/** A path into the document as Agent Actions address it, for example `['description', {_key: 'i1'}, 'alt']`. */
 export type AltPath = (string | {_key: string})[]
 
 export interface DescribeImagesPayload {
@@ -84,7 +81,6 @@ export interface GenerateImagesPayload {
   jobs: ImageJob[]
 }
 
-/** A prompt with no image: the document is new, the prompt changed, or the image was removed. */
 const wantsImage = (field: ImageField) =>
   `(defined(${field}.imagePrompt) && !defined(${field}.asset) && (${created} || delta::changedAny(${field}.imagePrompt) || defined(before().${field}.asset)))`
 

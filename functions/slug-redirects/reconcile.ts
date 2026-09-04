@@ -17,15 +17,9 @@ export interface RedirectPlan {
   delete: string[]
 }
 
-/** One document per source path, whoever wrote it. */
 export const redirectId = (path: string) =>
   `redirect-${createHash('sha1').update(path).digest('hex').slice(0, 16)}`
 
-/**
- * The redirect table maps every retired path to the document's current path, in one hop. The
- * plan is the difference between that desired table and the rows that exist, so applying it
- * again, or applying a stale event after a newer one, changes nothing.
- */
 export function reconcileRedirects(existing: RedirectDoc[], change: SlugChange): RedirectPlan {
   const desired = new Map<string, string | null>([[change.fromPath, change.toPath]])
   for (const doc of existing) {

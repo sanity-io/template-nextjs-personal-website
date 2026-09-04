@@ -6,8 +6,7 @@ import type {AutoSlugPayload} from '../lib/events'
 import {SETTLE_MS, settled} from '../lib/settle'
 import {SLUG_CANDIDATES, slugCandidates, uniqueSlug} from './unique'
 
-/** Room for the `-20` suffix so every numbered candidate fits the schema's maximum length. */
-const SUFFIX_ROOM = 3
+const SUFFIX_ROOM = `-${SLUG_CANDIDATES}`.length
 
 export const handler = documentEventHandler<AutoSlugPayload>(async ({context, event}) => {
   const {_id, _type, _rev, title} = event.data
