@@ -2,6 +2,8 @@ import {DocumentIcon} from '@sanity/icons/Document'
 import {ImageIcon} from '@sanity/icons/Image'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {maxPlainTextLength} from '@/sanity/lib/portable-text'
+
 export default defineType({
   type: 'document',
   name: 'page',
@@ -50,7 +52,7 @@ export default defineType({
           type: 'block',
         }),
       ],
-      validation: (rule) => rule.max(155).required(),
+      validation: (rule) => rule.required().custom(maxPlainTextLength(155)),
     }),
     defineField({
       type: 'array',
