@@ -12,8 +12,10 @@ import * as resolve from '@/sanity/plugins/resolve'
 import {pageStructure, singletonPlugin} from '@/sanity/plugins/settings'
 import page from '@/sanity/schemas/documents/page'
 import project from '@/sanity/schemas/documents/project'
+import redirect from '@/sanity/schemas/documents/redirect'
 import duration from '@/sanity/schemas/objects/duration'
 import milestone from '@/sanity/schemas/objects/milestone'
+import ogImage from '@/sanity/schemas/objects/ogImage'
 import timeline from '@/sanity/schemas/objects/timeline'
 import home from '@/sanity/schemas/singletons/home'
 import settings from '@/sanity/schemas/singletons/settings'
@@ -39,8 +41,10 @@ export default defineConfig({
       duration,
       page,
       project,
+      redirect,
       // Objects
       milestone,
+      ogImage,
       timeline,
     ],
   },

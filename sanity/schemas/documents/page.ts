@@ -4,6 +4,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import {maxPlainTextLength} from '@/sanity/lib/portable-text'
 import {slugify, slugMaxLength} from '@/sanity/lib/slugify'
+import {decorativeField} from '@/sanity/schemas/objects/decorative'
 
 export default defineType({
   type: 'document',
@@ -56,6 +57,11 @@ export default defineType({
         }),
       ],
       validation: (rule) => rule.required().custom(maxPlainTextLength(155)),
+    }),
+    defineField({
+      name: 'ogImage',
+      type: 'ogImage',
+      description: 'Falls back to the Open Graph image in Settings.',
     }),
     defineField({
       type: 'array',
@@ -116,6 +122,7 @@ export default defineType({
               title: 'Alt text',
               description: 'Alternative text for screenreaders. Falls back on caption if not set',
             }),
+            decorativeField,
           ],
         }),
       ],

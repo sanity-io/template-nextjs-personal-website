@@ -42,6 +42,15 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
+export type OgImage = {
+  _type: 'ogImage'
+  asset?: SanityImageAssetReference
+  media?: unknown
+  hotspot?: SanityImageHotspot
+  crop?: SanityImageCrop
+  imagePrompt?: string
+}
+
 export type Milestone = {
   _type: 'milestone'
   title?: string
@@ -55,6 +64,16 @@ export type Milestone = {
   }
   tags?: Array<string>
   duration?: Duration
+}
+
+export type Redirect = {
+  _id: string
+  _type: 'redirect'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  from?: string
+  to?: string
 }
 
 export type Project = {
@@ -84,8 +103,12 @@ export type Project = {
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    alt?: string
+    decorative?: boolean
+    imagePrompt?: string
     _type: 'image'
   }
+  ogImage?: OgImage
   duration?: Duration
   client?: string
   site?: string
@@ -119,6 +142,7 @@ export type Project = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
+        decorative?: boolean
         _type: 'image'
         _key: string
       }
@@ -175,6 +199,7 @@ export type Page = {
     _type: 'block'
     _key: string
   }>
+  ogImage?: OgImage
   body?: Array<
     | {
         children?: Array<{
@@ -204,6 +229,7 @@ export type Page = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
+        decorative?: boolean
         _type: 'image'
         _key: string
       }
@@ -256,13 +282,8 @@ export type Settings = {
     _type: 'block'
     _key: string
   }>
-  ogImage?: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
-  }
+  ogImage?: OgImage
+  imageStyle?: string
 }
 
 export type Home = {
@@ -397,7 +418,9 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | Timeline
   | SanityImageAssetReference
+  | OgImage
   | Milestone
+  | Redirect
   | Project
   | SanityImageCrop
   | SanityImageHotspot
@@ -461,6 +484,7 @@ export type SlugPageQueryResult = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
+        decorative?: boolean
         _type: 'image'
         _key: string
       }
@@ -488,13 +512,7 @@ export type SlugPageQueryResult = {
 // Query: {    "settings": *[_type == "settings"][0]{ogImage},    "home": *[_type == "home"][0]{      title,      "overview": pt::text(overview),    }  }
 export type LayoutMetadataQueryResult = {
   settings: {
-    ogImage: {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
-    } | null
+    ogImage: OgImage | null
   } | null
   home: {
     title: string | null
@@ -535,6 +553,9 @@ export type HomePageQueryResult = {
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
+      alt?: string
+      decorative?: boolean
+      imagePrompt?: string
       _type: 'image'
     } | null
     overview: Array<{
@@ -567,6 +588,9 @@ export type ProjectSlugPageMetadataQueryResult = {
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    alt?: string
+    decorative?: boolean
+    imagePrompt?: string
     _type: 'image'
   } | null
   title: string | null
@@ -585,6 +609,9 @@ export type ProjectSlugPageQueryResult = {
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    alt?: string
+    decorative?: boolean
+    imagePrompt?: string
     _type: 'image'
   } | null
   description: Array<
@@ -616,6 +643,7 @@ export type ProjectSlugPageQueryResult = {
         crop?: SanityImageCrop
         caption?: string
         alt?: string
+        decorative?: boolean
         _type: 'image'
         _key: string
       }
@@ -685,13 +713,7 @@ export type SettingsQueryResult = {
         title: string | null
       }
   > | null
-  ogImage: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
-  } | null
+  ogImage: OgImage | null
 } | null
 
 // Source: sanity/lib/queries.ts

@@ -62,11 +62,16 @@ export default defineType({
     defineField({
       name: 'ogImage',
       title: 'Open Graph Image',
-      type: 'image',
+      type: 'ogImage',
       description: 'Displayed on social cards and search engine results.',
-      options: {
-        hotspot: true,
-      },
+    }),
+    defineField({
+      name: 'imageStyle',
+      title: 'Image style',
+      type: 'text',
+      rows: 3,
+      description:
+        'Art direction for every AI-generated cover and Open Graph image, for example "flat vector illustration, warm palette, soft grain". Leave empty for a clean editorial look.',
     }),
   ],
   preview: {
