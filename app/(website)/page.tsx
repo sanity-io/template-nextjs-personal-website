@@ -115,7 +115,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                   <div className="w-full xl:w-9/12">
                     <ImageBox
                       image={project.coverImage}
-                      alt={`Cover image from ${project.title}`}
+                      alt={project.coverImage?.alt || `Cover image from ${project.title}`}
                       classesWrapper="relative aspect-[16/9]"
                     />
                   </div>
