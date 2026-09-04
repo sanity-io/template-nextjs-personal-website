@@ -32,12 +32,21 @@ export const handler = documentEventHandler<AutoTagPayload>(async ({context, eve
   }
 
   const dry = dryRun(context)
+  const client = datasetClient(context)
   try {
-    await datasetClient(context).patch(_id).ifRevisionId(_rev).set({tags}).commit({dryRun: dry})
+    await client.patch(_id).ifRevisionId(_rev).set({tags}).commit({dryRun: dry})
   } catch (error) {
     if (!isRevisionConflict(error)) throw error
-    console.log(`auto-tag ${_id}: skipped, the document changed before the tags were written`)
-    return
+    // describe-images writes to the same document on this publish, so losing the race is normal.
+    const fresh = await client.fetch<{_rev: string; tags: string[] | null} | null>(
+      '*[_id == $id][0]{_rev, tags}',
+      {id: _id},
+    )
+    if (!fresh || fresh.tags?.length) {
+      console.log(`auto-tag ${_id}: skipped, the document changed before the tags were written`)
+      return
+    }
+    await client.patch(_id).ifRevisionId(fresh._rev).set({tags}).commit({dryRun: dry})
   }
   console.log(`auto-tag ${_id}: set tags ${tags.join(', ')}${dry ? ' (dry run)' : ''}`)
 })
