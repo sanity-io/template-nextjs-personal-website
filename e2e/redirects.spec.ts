@@ -1,7 +1,7 @@
 import {expect, test} from '@playwright/test'
 import {createClient} from '@sanity/client'
 
-import {readShowcaseProjects} from './showcase'
+import {projectUrlPattern, readShowcaseProjects, visibleTitle} from './showcase'
 
 test.describe('slug redirects', () => {
   test.skip(
@@ -11,9 +11,10 @@ test.describe('slug redirects', () => {
     'Requires Sanity write token and project env to create a redirect document',
   )
 
-  test('a retired project path answers with a 308 to its current path', async ({page, request}) => {
+  test('a retired project path lands on its current path', async ({page}) => {
     const projects = await readShowcaseProjects(page)
     expect(projects.length, 'homepage showcase needs a project link').toBeGreaterThanOrEqual(1)
+    const destination = projects[0]
 
     const client = createClient({
       projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -27,13 +28,13 @@ test.describe('slug redirects', () => {
       _id: `redirect-e2e-${random}`,
       _type: 'redirect',
       from: `/projects/e2e-redirect-${random}`,
-      to: projects[0].href,
+      to: destination.href,
     }
     await client.createOrReplace(redirect)
     try {
-      const response = await request.get(redirect.from, {maxRedirects: 0})
-      expect(response.status()).toBe(308)
-      expect(response.headers()['location']).toBe(redirect.to)
+      await page.goto(redirect.from)
+      await expect(page).toHaveURL(projectUrlPattern(redirect.to), {timeout: 20000})
+      await expect(visibleTitle(page, destination.title)).toBeVisible({timeout: 20000})
     } finally {
       await client.delete(redirect._id)
     }

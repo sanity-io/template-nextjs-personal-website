@@ -1,6 +1,6 @@
 import type {Metadata, ResolvingMetadata} from 'next'
 import {defineQuery} from 'next-sanity'
-import {notFound} from 'next/navigation'
+import {notFound, permanentRedirect} from 'next/navigation'
 
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
@@ -12,6 +12,7 @@ import {
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {redirectTarget} from '@/sanity/lib/redirects'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 export async function generateStaticParams() {
@@ -66,6 +67,8 @@ export async function generateMetadata(
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
+  const to = await redirectTarget(`/${slug}`)
+  if (to) permanentRedirect(to)
   return <CachedSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
 
