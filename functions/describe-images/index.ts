@@ -1,6 +1,6 @@
 import {documentEventHandler} from '@sanity/functions'
 
-import {agentClient, datasetClient, dryRun, isDraftId, schemaId} from '../lib/agent'
+import {agentClient, datasetClient, dryRun, schemaId} from '../lib/agent'
 import type {DescribeImagesPayload} from '../lib/events'
 import {readAlts} from './alts'
 
@@ -18,7 +18,6 @@ export const handler = documentEventHandler<DescribeImagesPayload>(async ({conte
   const described = await agentClient(context).agent.action.transform({
     schemaId,
     documentId: _id,
-    forcePublishedWrite: !isDraftId(_id),
     noWrite: true,
     instruction: ALT_INSTRUCTION,
     instructionParams: {title: {type: 'field', path: 'title'}},
