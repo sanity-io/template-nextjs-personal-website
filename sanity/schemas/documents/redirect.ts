@@ -28,7 +28,7 @@ const uniqueFrom: CustomValidator<string | undefined> = async (from, context) =>
 }
 
 const notSelf: CustomValidator<string | undefined> = (to, context) =>
-  to === undefined || to !== context.document?.from || 'Must differ from the From path'
+  to === undefined || to !== context.document?.from || 'A redirect cannot point at itself'
 
 export default defineType({
   name: 'redirect',

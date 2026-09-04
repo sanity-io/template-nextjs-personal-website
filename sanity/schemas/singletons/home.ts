@@ -63,7 +63,8 @@ export default defineType({
     defineField({
       name: 'showcaseProjects',
       title: 'Showcase projects',
-      description: 'These are the projects that will appear first on your landing page.',
+      description:
+        'Projects shown first on the landing page. A project is added here when it is first published; reorder or remove entries freely.',
       type: 'array',
       of: [
         defineArrayMember({
