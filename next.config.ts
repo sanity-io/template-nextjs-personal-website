@@ -11,6 +11,16 @@ const config: NextConfig = {
     // Opt-in for local/CI production builds measured by `instant()`. Never set
     // EXPOSE_TESTING_API in real production.
     exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === '1',
+    // Turbopack minifies CSS with Lightning CSS against browserslist defaults
+    // that still down-transpile `light-dark()` into `--lightningcss-light` /
+    // `--lightningcss-dark` toggled only by `prefers-color-scheme`. Studio
+    // theme colors from `@sanity/ui` v5 then follow the OS instead of
+    // `color-scheme` when the two disagree. Exclude the polyfill — same as
+    // Tailwind and sanity#14704 — rather than raising CSS targets (that would
+    // change other lowering). See https://github.com/parcel-bundler/lightningcss/issues/873
+    lightningCssFeatures: {
+      exclude: ['light-dark'],
+    },
   },
   images: {
     remotePatterns: [{hostname: 'cdn.sanity.io'}],
