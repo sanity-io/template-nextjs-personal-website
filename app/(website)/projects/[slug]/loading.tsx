@@ -6,7 +6,7 @@ export default function ProjectSlugLoading() {
         <div className="mt-4 h-6 w-full animate-pulse rounded bg-gray-100" />
       </div>
       <div className="overflow-hidden rounded-md border">
-        <div className="relative aspect-[16/9] animate-pulse bg-gray-200" />
+        <div className="relative aspect-video animate-pulse bg-gray-200" />
       </div>
     </div>
   )
