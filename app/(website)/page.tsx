@@ -9,8 +9,8 @@ import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
+import {resolveHref} from '@/sanity/lib/href'
 import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
-import {resolveHref} from '@/sanity/lib/utils'
 
 export default async function IndexPage() {
   const {isEnabled: isDraftMode} = await draftMode()
@@ -32,7 +32,7 @@ async function DynamicHome() {
 async function CachedHome({perspective, stega}: DynamicFetchOptions) {
   'use cache'
   const homePageQuery = defineQuery(`
-    *[_type == "home"][0]{
+    *[_id == "home"][0]{
       _id,
       _type,
       overview,
@@ -115,7 +115,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
                   <div className="w-full xl:w-9/12">
                     <ImageBox
                       image={project.coverImage}
-                      alt={`Cover image from ${project.title}`}
+                      alt={project.coverImage?.alt || `Cover image from ${project.title}`}
                       classesWrapper="relative aspect-[16/9]"
                     />
                   </div>

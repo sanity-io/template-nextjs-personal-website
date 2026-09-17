@@ -25,7 +25,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - [Project Overview](#project-overview)
   - [Important files and folders](#important-files-and-folders)
   - [Cache Components](#cache-components)
-  - [Sanity Functions: invalidate before the browser refreshes](#sanity-functions-invalidate-before-the-browser-refreshes)
+  - [Sanity Functions](#sanity-functions)
 - [ Getting Started](#configuration)
   - [Step 1. Initialize template with Sanity CLI](#initialize-template-with-sanity-cli)
   - [Step 2. Run app locally in development mode](#run-app-locally-in-development-mode)
@@ -49,20 +49,21 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 
 ### Important files and folders
 
-| File(s)                                      | Description                                                                                  |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `sanity.config.ts`                           | Config file for Sanity Studio                                                                |
-| `sanity.cli.ts`                              | Config file for Sanity CLI                                                                   |
-| `next.config.ts`                             | Enables [Cache Components][cache-components] and sets the default `cacheLife` to Sanity Live |
-| `/app/studio/[[...tool]]/Studio.tsx`         | Where Sanity Studio is mounted                                                               |
-| `/app/api/draft-mode/enable/route.ts`        | Serverless route for triggering Draft mode                                                   |
-| `/app/api/revalidate/route.ts`               | Route handler the Sanity Function calls to expire cache tags before live events are released |
-| `/sanity/schemas`                            | Where Sanity Studio gets its content types from                                              |
-| `/sanity/plugins`                            | Where the advanced Sanity Studio customization is setup                                      |
-| `/sanity/lib/api.ts`,`/sanity/lib/client.ts` | Configuration for the Sanity Content Lake client                                             |
-| `/sanity/lib/live.ts`                        | `sanityFetch`, `sanityFetchMetadata`, `sanityFetchStaticParams`, `getDynamicFetchOptions`    |
-| `sanity.blueprint.ts`                        | [Sanity Blueprint][blueprints] that deploys the function in `/functions`                     |
-| `/functions/invalidate-sync-tags`            | Sync tag invalidate [Sanity Function][functions] backing `<SanityLive waitFor="function">`   |
+| File(s)                                      | Description                                                                                   |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `sanity.config.ts`                           | Config file for Sanity Studio                                                                 |
+| `sanity.cli.ts`                              | Config file for Sanity CLI                                                                    |
+| `next.config.ts`                             | Enables [Cache Components][cache-components] and sets the default `cacheLife` to Sanity Live  |
+| `/app/studio/[[...tool]]/Studio.tsx`         | Where Sanity Studio is mounted                                                                |
+| `/app/api/draft-mode/enable/route.ts`        | Serverless route for triggering Draft mode                                                    |
+| `/app/api/revalidate/route.ts`               | Route handler the Sanity Function calls to expire cache tags before live events are released  |
+| `/sanity/schemas`                            | Where Sanity Studio gets its content types from                                               |
+| `/sanity/plugins`                            | Where the advanced Sanity Studio customization is setup                                       |
+| `/sanity/lib/api.ts`,`/sanity/lib/client.ts` | Configuration for the Sanity Content Lake client                                              |
+| `/sanity/lib/live.ts`                        | `sanityFetch`, `sanityFetchMetadata`, `sanityFetchStaticParams`, `getDynamicFetchOptions`     |
+| `sanity.blueprint.ts`                        | [Sanity Blueprint][blueprints] that deploys the [Sanity Functions][functions] in `/functions` |
+| `/functions/lib/events.ts`                   | When each Function runs (GROQ filters and projections) and the payload type it receives       |
+| `/functions/invalidate-sync-tags`            | Sync tag invalidate Function backing `<SanityLive waitFor="function">`                        |
 
 ### Cache Components
 
@@ -86,17 +87,34 @@ Data fetching follows the three-layer (Page → Dynamic → Cached) pattern from
 
 Every cached leaf takes `perspective` and `stega` as plain props sourced from `getDynamicFetchOptions()`, so Visual Editing overlays and content-release previewing keep working in Draft Mode while the static shell is fully prerendered in production.
 
-### Sanity Functions: invalidate before the browser refreshes
+### Sanity Functions
 
-By default every open browser tab reacts to a Sanity Live event by calling a Server Action that expires the cache and refreshes the page, racing the revalidation. This template can instead have Sanity run a [Function][sync-tag-function] that expires the Next.js cache first and only then release the event, so `<SanityLive waitFor="function">` clients render fresh content on the first refresh and the cache is expired once, not once per tab.
+The Blueprint in [`sanity.blueprint.ts`](./sanity.blueprint.ts) deploys eight [Sanity Functions][functions]. Seven of them fill in content while editors work, four of those through [Agent Actions][agent-actions]. The eighth expires the Next.js cache before Sanity Live releases an event. All of them are opt-in: nothing runs until you complete the setup below.
 
-It's opt-in and takes about ten minutes to set up. The pieces are already in the repo: [`functions/invalidate-sync-tags`](./functions/invalidate-sync-tags/index.ts) (the Function), [`sanity.blueprint.ts`](./sanity.blueprint.ts) (deploys it), [`app/api/revalidate/route.ts`](./app/api/revalidate/route.ts) (what it calls) and [`.github/workflows/blueprints.yml`](./.github/workflows/blueprints.yml) (deploys it from CI with the official [Blueprints GitHub Actions][blueprints-action]).
+| Function                                                            | Runs when                                                                                          | What it does                                                                                                                                                                      |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`describe-images`](./functions/describe-images/index.ts)           | an image is added to or replaced on a project or page and has no alternative text                  | Writes alternative text from the image itself with [Transform][agent-transform]. Text an editor typed is never overwritten.                                                       |
+| [`generate-images`](./functions/generate-images/index.ts)           | a cover or Open Graph image has a prompt in its "Generate with AI" field and no image              | Generates the image with [Generate][agent-generate], following the "Image style" from Settings and a layout suited to covers or 1200x630 social cards. Takes about half a minute. |
+| [`auto-slug`](./functions/auto-slug/index.ts)                       | a project or page has a title and no slug                                                          | Fills the slug from the title, unique among documents of that type.                                                                                                               |
+| [`seo-overview`](./functions/seo-overview/index.ts)                 | the body of a project or page changes while the overview is empty and the body has 200+ characters | Writes a meta description of at most 155 characters.                                                                                                                              |
+| [`auto-tag`](./functions/auto-tag/index.ts)                         | a project with a description is published for the first time without tags                          | Adds three to five tags, reusing tags from other projects when they fit.                                                                                                          |
+| [`slug-redirects`](./functions/slug-redirects/index.ts)             | a published project or page changes its slug                                                       | Creates a `redirect` document from the old address to the new one; visitors of the old address land on the new one.                                                               |
+| [`auto-showcase`](./functions/auto-showcase/index.ts)               | a project is published for the first time                                                          | Appends it to the showcase list on the Home document.                                                                                                                             |
+| [`invalidate-sync-tags`](./functions/invalidate-sync-tags/index.ts) | Sanity Live emits an event                                                                         | Expires the Next.js cache tags through [`app/api/revalidate/route.ts`](./app/api/revalidate/route.ts), then releases the event to `<SanityLive waitFor="function">` clients.      |
+
+The Functions that react to drafts write into the draft the editor has open, so the result shows up in the Studio a few seconds after the edit that caused it. Redirects, tags and the showcase entry react to publishing, so they show up on the published document. [`functions/lib/events.ts`](./functions/lib/events.ts) holds the exact trigger for every Function next to the payload type its handler receives, and [`functions/lib/events.test.ts`](./functions/lib/events.test.ts) runs each trigger against before/after fixtures with the same GROQ engine Sanity uses.
+
+#### Invalidate before the browser refreshes
+
+By default every open browser tab reacts to a Sanity Live event by calling a Server Action that expires the cache and refreshes the page, racing the revalidation. With the [sync tag invalidate Function][sync-tag-function] deployed, Sanity expires the Next.js cache first and only then releases the event, so `<SanityLive waitFor="function">` clients render fresh content on the first refresh and the cache is expired once, not once per tab.
+
+The setup below takes about ten minutes and covers every Function. The pieces are already in the repo: the handlers in [`functions/`](./functions), [`sanity.blueprint.ts`](./sanity.blueprint.ts) (deploys them), [`app/api/revalidate/route.ts`](./app/api/revalidate/route.ts) (what the sync tag Function calls) and [`.github/workflows/blueprints.yml`](./.github/workflows/blueprints.yml) (deploys the schema and the Blueprint from CI with the official [Blueprints GitHub Actions][blueprints-action]).
 
 #### Setup
 
 You need admin access to the Sanity project, plus access to the GitHub repository settings and the hosting provider's environment variables (Vercel below). Whenever the Sanity CLI prints an id as `<ST-abc123>`, paste it without the `<>`.
 
-**1. Generate a secret.** It's shared between the site and the Function, and used in steps 2 and 4.
+**1. Generate a secret.** It's shared between the site and the sync tag invalidate Function, and used in steps 2 and 4.
 
 ```shell
 openssl rand -hex 32
@@ -134,7 +152,7 @@ npx sanity blueprints info
 | secret   | `SANITY_DEPLOY_TOKEN`           | the token from step 3                             |
 | secret   | `SANITY_REVALIDATE_SECRET`      | the secret from step 1                            |
 
-**5. Deploy the Function.** Actions → Sanity Blueprints → Run workflow → `main`. The log should end with `[Functions] Created 1 function` and `✅ Blueprints deployed successfully!`. From now on every push to `main` redeploys it and every pull request gets a plan comment showing what would change. (The workflow is skipped until `SANITY_BLUEPRINT_STACK_ID` exists, and the "Run workflow" button only appears once the workflow file is on the default branch.)
+**5. Deploy the Functions.** Actions → Sanity Blueprints → Run workflow → `main`. The job first runs `npx sanity schema deploy`, because Agent Actions read the deployed schema, then deploys the Blueprint. The log should end with `[Functions] Created 8 functions` and `✅ Blueprints deployed successfully!`. From now on every push to `main` redeploys the schema and the Functions, and every pull request gets a plan comment showing what would change. (The workflow is skipped until `SANITY_BLUEPRINT_STACK_ID` exists, and the "Run workflow" button only appears once the workflow file is on the default branch.)
 
 **6. Redeploy the site on Vercel** so the variables from step 2 apply.
 
@@ -143,19 +161,30 @@ npx sanity blueprints info
 - `npx sanity functions env list invalidate-sync-tags` lists `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET`.
 - Open the site with the browser console open. The Sanity Live welcome message ends with "Events will be delayed until after a Sanity Function has processed them."
 - Publish a change in the Studio. The page updates on its first refresh, and `npx sanity functions logs invalidate-sync-tags` shows `Revalidated N sync tags: …`.
+- Create a project in the Studio and type a title. The slug appears after a moment. Upload a cover image and its alternative text follows. Type a sentence into the cover image's "Generate with AI" field instead and an image arrives about half a minute later. `npx sanity functions logs <name>` shows one line per run.
 
 #### Good to know
 
-- Only one sync tag invalidate Function can exist per dataset, which is why the Blueprint scopes it to `NEXT_PUBLIC_SANITY_PROJECT_ID.NEXT_PUBLIC_SANITY_DATASET`. Deploying a second one fails with "a sync tag invalidation subscription already exists".
-- The Function reads `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET` from whatever environment runs `blueprints deploy` (GitHub variables and secrets in CI, `.env.local` locally). Keep `SANITY_REVALIDATE_SECRET` identical on Vercel and GitHub; nothing else has to stay in sync.
+- Every Function is scoped to `NEXT_PUBLIC_SANITY_PROJECT_ID.NEXT_PUBLIC_SANITY_DATASET`. The Blueprint refuses to deploy when either variable is missing, because an unscoped Function would run against every dataset in the project. Only one sync tag invalidate Function can exist per dataset; deploying a second one fails with "a sync tag invalidation subscription already exists".
+- Agent Actions read the schema deployed to the dataset (`_.schemas.default`), not your local files. The deploy job deploys it on every push to `main`. After changing a schema locally, run `npx sanity schema deploy` before testing a Function against that change.
+- The sync tag invalidate Function reads `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET` from whatever environment runs `blueprints deploy` (GitHub variables and secrets in CI, `.env.local` locally). Keep `SANITY_REVALIDATE_SECRET` identical on Vercel and GitHub; nothing else has to stay in sync.
 - `SANITY_LIVE_WAIT_FOR_FUNCTION` is read at build time, so changing it needs a redeploy. Leave it unset for local development (the Function can't reach `localhost`) and for Preview deployments unless you point `REVALIDATE_URL` at one. Draft Mode ignores it: `includeDrafts` wins and the browser refreshes on every event.
-- To deploy without GitHub Actions, add `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET` to `.env.local` and run `npx sanity blueprints deploy`.
-- To try the Function against a local dev server without deploying anything:
+- To deploy without GitHub Actions, add `REVALIDATE_URL` and `SANITY_REVALIDATE_SECRET` to `.env.local` and run `npx sanity schema deploy && npx sanity blueprints deploy`.
+- Image generation writes the image about half a minute after the prompt. Wait for it before changing the prompt again or uploading an image by hand, otherwise whichever finishes last wins. To generate a new image, clear the image and keep or edit the prompt.
+- Clearing an overview does not regenerate it, so an editor can write their own. The next change to the body regenerates an empty overview. Removing tags from a project keeps them removed; `auto-tag` only runs on the first publish.
+- Functions on drafts run once per Studio save while a field is still missing. `auto-slug`, `seo-overview` and `generate-images` wait a couple of seconds and re-read the document before writing, so a title typed in three bursts produces one slug, not three.
+- To run a Function locally against the dataset, sign in with `npx sanity login` (or set `SANITY_AUTH_TOKEN`) and pass a document change. Local runs are dry runs unless `SANITY_FUNCTIONS_LOCAL_WRITE=1` is set, so the first command below only logs what it would write:
 
   ```shell
+  npx sanity functions test auto-slug --with-user-token --event update \
+    --data-before '{"_id": "drafts.example", "_type": "project"}' \
+    --data-after '{"_id": "drafts.example", "_type": "project", "_rev": "<current rev>", "title": "Hello World"}'
+
   REVALIDATE_URL=http://localhost:3000/api/revalidate SANITY_REVALIDATE_SECRET=<secret> \
     npx sanity functions test invalidate-sync-tags --data '{"syncTags": ["s1:example"]}'
   ```
+
+  The CLI evaluates the Function's GROQ filter against the before/after pair and skips the run when it does not match, the same way Sanity does after deployment.
 
 ## Getting Started
 
@@ -265,3 +294,6 @@ You can remove it by deleting the `IntroTemplate` component in `/app/(website)/l
 [blueprints-action]: https://www.sanity.io/docs/blueprints/blueprint-action
 [functions]: https://www.sanity.io/docs/functions/functions-introduction
 [sync-tag-function]: https://www.sanity.io/docs/functions/sync-tag-function-quickstart
+[agent-actions]: https://www.sanity.io/docs/agent-actions
+[agent-transform]: https://www.sanity.io/docs/agent-actions/transform-cheatsheet
+[agent-generate]: https://www.sanity.io/docs/agent-actions/agent-actions-image-generation

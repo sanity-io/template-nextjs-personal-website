@@ -1,6 +1,6 @@
 import type {Metadata, ResolvingMetadata} from 'next'
 import {defineQuery} from 'next-sanity'
-import {notFound} from 'next/navigation'
+import {notFound, permanentRedirect} from 'next/navigation'
 
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
@@ -12,6 +12,8 @@ import {
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
 import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {redirectTarget} from '@/sanity/lib/redirects'
+import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -35,6 +37,7 @@ export async function generateMetadata(
   const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
   const slugPageMetadataQuery = defineQuery(`
     *[_type == "page" && slug.current == $slug][0] {
+      ogImage,
       title,
       "overview": pt::text(overview),
     }
@@ -45,14 +48,27 @@ export async function generateMetadata(
     perspective,
   })
 
+  const image = urlForOpenGraphImage(data?.ogImage)
+  const parentMetadata = await parent
   return {
     title: data?.title,
-    description: data?.overview || (await parent).description,
+    description: data?.overview || parentMetadata.description,
+    // An `openGraph` object replaces the parent's wholesale, so only emit one when there is an image to add.
+    ...(image
+      ? {
+          openGraph: {
+            ...parentMetadata.openGraph,
+            images: [image, ...(parentMetadata.openGraph?.images ?? [])],
+          },
+        }
+      : {}),
   }
 }
 
 export default async function SlugPage({params}: PageProps<'/[slug]'>) {
   const [{slug}, {perspective, stega}] = await Promise.all([params, getDynamicFetchOptions()])
+  const to = await redirectTarget(`/${slug}`)
+  if (to) permanentRedirect(to)
   return <CachedSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
 
