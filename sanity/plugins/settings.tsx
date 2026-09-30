@@ -1,52 +1,25 @@
 /**
- * This plugin contains all the logic for setting up the singletons
+ * Structure Tool resolver for the studio.
+ *
+ * Singletons (such as Home and Settings) are registered through the first-class
+ * `document.singletons` option in `sanity.config.ts`. The studio takes care of
+ * hiding them from "create new" menus, removing the "duplicate" action and
+ * filtering them out of `S.documentTypeListItems()`, so this resolver only has
+ * to decide where they appear.
  */
 
-import {type DocumentDefinition} from 'sanity'
 import {type StructureResolver} from 'sanity/structure'
 
-export const singletonPlugin = (types: string[]) => {
-  return {
-    name: 'singletonPlugin',
-    document: {
-      // Hide 'Singletons (such as Home)' from new document options
-      // https://user-images.githubusercontent.com/81981/195728798-e0c6cf7e-d442-4e58-af3a-8cd99d7fcc28.png
-      newDocumentOptions: (prev, {creationContext}) => {
-        if (creationContext.type === 'global') {
-          return prev.filter((templateItem) => !types.includes(templateItem.templateId))
-        }
-
-        return prev
-      },
-      // Removes the "duplicate" action on the Singletons (such as Home)
-      actions: (prev, {schemaType}) => {
-        if (types.includes(schemaType)) {
-          return prev.filter(({action}) => action !== 'duplicate')
-        }
-
-        return prev
-      },
-    },
-  }
-}
-
-// The StructureResolver is how we're changing the DeskTool structure to linking to document (named Singleton)
-// like how "Home" is handled.
-export const pageStructure = (typeDefArray: DocumentDefinition[]): StructureResolver => {
+export const pageStructure = (singletonIds: string[]): StructureResolver => {
   return (S) => {
-    // Goes through all of the singletons that were provided and translates them into something the
-    // Desktool can understand
-    const singletonItems = typeDefArray.map((typeDef) => {
-      return S.listItem()
-        .title(typeDef.title!)
-        .icon(typeDef.icon)
-        .child(S.editor().id(typeDef.name).schemaType(typeDef.name).documentId(typeDef.name))
-    })
+    // `S.listItem().singleton()` creates both the list item and its document
+    // pane from the registered singleton definition (title and icon fall back
+    // to the schema type's).
+    const singletonItems = singletonIds.map((id) => S.listItem().singleton(id))
 
-    // The default root list items (except custom ones)
-    const defaultListItems = S.documentTypeListItems().filter(
-      (listItem) => !typeDefArray.find((singleton) => singleton.name === listItem.getId()),
-    )
+    // The default root list items; singleton schema types are excluded
+    // automatically. `showCount()` adds a live document count badge.
+    const defaultListItems = S.documentTypeListItems().map((item) => item.showCount())
 
     return S.list()
       .title('Content')
