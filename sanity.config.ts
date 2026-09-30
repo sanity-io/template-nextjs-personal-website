@@ -57,6 +57,12 @@ export default defineConfig({
     // are filtered out of the default document type lists and get a "Singleton" badge.
     singletons,
   },
+  beta: {
+    // Keeps the three most recently used tools mounted when switching between them, so going from
+    // Presentation to Structure and back restores the preview and open document instantly.
+    // Beta: not production-ready yet, see https://www.sanity.io/docs/changelog/studio-Ni4xNi4w
+    reactActivityMode: {enabled: true},
+  },
   plugins: [
     presentationTool({
       resolve,
