@@ -9,7 +9,7 @@ import {structureTool} from 'sanity/structure'
 
 import {apiVersion, dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import * as resolve from '@/sanity/plugins/resolve'
-import {pageStructure, singletonPlugin} from '@/sanity/plugins/settings'
+import {pageStructure} from '@/sanity/plugins/settings'
 import page from '@/sanity/schemas/documents/page'
 import project from '@/sanity/schemas/documents/project'
 import duration from '@/sanity/schemas/objects/duration'
@@ -23,6 +23,14 @@ import settings from '@/sanity/schemas/singletons/settings'
  */
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Personal Website with Sanity.io'
+
+/**
+ * Singleton documents, registered with the first-class singletons API (beta, Studio >= 6.17.0).
+ * The string shorthand means the schema type name doubles as the singleton id and the document id,
+ * e.g. the `home` type edits the document with `_id: "home"`.
+ * Use `defineSingleton({documentId, schemaType, title, ...})` from `sanity` when they need to differ.
+ */
+const singletons = [home.name, settings.name]
 
 export default defineConfig({
   basePath: studioUrl,
@@ -44,16 +52,19 @@ export default defineConfig({
       timeline,
     ],
   },
+  document: {
+    // Registered singletons are omitted from "create new" menus, can't be duplicated,
+    // are filtered out of the default document type lists and get a "Singleton" badge.
+    singletons,
+  },
   plugins: [
     presentationTool({
       resolve,
       previewUrl: {previewMode: {enable: '/api/draft-mode/enable'}},
     }),
     structureTool({
-      structure: pageStructure([home, settings]),
+      structure: pageStructure(singletons),
     }),
-    // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    singletonPlugin([home.name, settings.name]),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
     // Vision lets you query your content with GROQ in the studio
