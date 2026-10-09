@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import {usePathname} from 'next/navigation'
+import {useSelectedLayoutSegment} from 'next/navigation'
 import {useDeferredValue, useSyncExternalStore} from 'react'
 
 import {studioUrl} from '@/sanity/lib/api'
@@ -23,7 +23,11 @@ function useAfterHydration<Snapshot>(
 export default function IntroTemplate() {
   const studioURL = useAfterHydration(() => `${location.origin}${studioUrl}`, studioUrl)
   const hasUTMtags = useAfterHydration(() => window.location.search.includes('utm'), false)
-  const pathname = usePathname()
+  // The index page of this layout. `usePathname()` disagrees across the server
+  // and the browser when the URL has a search string: Next seeds the server
+  // canonical URL as `/index?…` while `location.pathname` stays `/`, so the
+  // server skips this block and hydration throws React #418.
+  const segment = useSelectedLayoutSegment()
 
   const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
   const hasRepoEnvVars =
@@ -35,8 +39,7 @@ export default function IntroTemplate() {
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_PROVIDER}.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/blob/main/README.md#how-can-i-remove-the-next-steps-block-from-my-app`
     : `https://github.com/sanity-io/template-nextjs-clean#how-can-i-remove-the-next-steps-block-from-my-app`
 
-  // Only display this on the home page
-  if (pathname !== '/') {
+  if (segment !== null) {
     return null
   }
 
