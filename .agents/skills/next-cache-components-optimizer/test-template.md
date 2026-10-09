@@ -23,6 +23,7 @@ never as a warming race. Do not add waits or hovers.
 ```ts
 import {instant} from '@next/playwright'
 import {expect, test} from '@playwright/test'
+
 // Use the auth/setup helpers your e2e suite already has. Run as the test user
 // (defined in SKILL.md phase B).
 import {logIntoTestAccount, testUrl} from '../helpers'
