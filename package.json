@@ -52,7 +52,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "oxfmt": "0.72.0",
     "oxlint": "1.87.0",
-    "oxlint-tsgolint": "7.0.2003",
+    "oxlint-tsgolint": "7.0.2004",
     "postcss": "8.5.29",
     "tailwindcss": "3.4.19",
     "typescript": "^7.0.2"
