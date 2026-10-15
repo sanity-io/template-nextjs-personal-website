@@ -22,7 +22,9 @@ test.describe('studio CSS', () => {
     ).join('\n')
 
     expect(css).toContain('light-dark(')
-    expect(css).not.toContain('--lightningcss-light')
-    expect(css).not.toContain('--lightningcss-dark')
+    // Sanity's precompiled CSS can reference these variables. Only definitions
+    // indicate that Next.js generated the OS-driven light-dark() polyfill.
+    expect(css).not.toMatch(/--lightningcss-light\s*:/)
+    expect(css).not.toMatch(/--lightningcss-dark\s*:/)
   })
 })
