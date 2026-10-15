@@ -1,5 +1,10 @@
 {
-  "description": "Check the readme: https://github.com/sanity-io/renovate-config#readme",
+  "description": [
+    "Check the readme: https://github.com/sanity-io/renovate-config#readme",
+    "`npmrc`: npm 12 defaults `allow-remote=none` and its `--package-lock-only` path wrongly classifies registry tarballs of packages that declare `bundleDependencies` (here `@tailwindcss/oxide-wasm32-wasi`, pulled in by Tailwind CSS v4) as `remote`, failing lockfile updates with EALLOWREMOTE. Restores the pre-npm-12 behaviour for Renovate only. Remove once https://github.com/npm/cli/issues/9800 is fixed."
+  ],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>sanity-io/renovate-config:starter-template"]
+  "extends": ["github>sanity-io/renovate-config:starter-template"],
+  "npmrc": "allow-remote=all",
+  "npmrcMerge": true
 }
