@@ -18,19 +18,19 @@
     "typegen": "sanity schema extract --force && sanity typegen generate"
   },
   "dependencies": {
-    "@next/env": "16.4.1",
+    "@next/env": "16.4.2",
     "@sanity/client": "8.9.0",
-    "@sanity/functions": "1.9.0",
+    "@sanity/functions": "1.10.1",
     "@sanity/icons": "5.2.3",
     "@sanity/image-url": "2.1.1",
-    "@sanity/ui": "4.4.7",
+    "@sanity/ui": "4.4.9",
     "@sanity/util": "6.19.0",
     "@sanity/vision": "6.19.0",
     "@tailwindcss/typography": "0.5.20",
     "@vercel/speed-insights": "2.0.0",
     "classnames": "2.5.1",
     "date-fns": "4.4.0",
-    "next": "16.4.1",
+    "next": "16.4.2",
     "next-sanity": "13.3.4",
     "react": "19.3.1",
     "react-dom": "19.3.1",
@@ -43,7 +43,7 @@
     "styled-components": "6.6.0"
   },
   "devDependencies": {
-    "@next/playwright": "16.4.1",
+    "@next/playwright": "16.4.2",
     "@playwright/test": "1.64.1",
     "@sanity/blueprints": "0.28.0",
     "@tailwindcss/postcss": "4.3.3",
