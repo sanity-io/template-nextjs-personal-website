@@ -14,8 +14,10 @@ interface ProjectDurationProps {
 
 export function ProjectDuration(props: ProjectDurationProps) {
   const {duration} = props
-  const startYear = duration?.start ? new Date(duration.start).getFullYear() : undefined
-  const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
+  // Use UTC so SSR (typically UTC) and browser local time agree on ISO datetimes
+  // near year boundaries (avoids hydration mismatch / one-year drift).
+  const startYear = duration?.start ? new Date(duration.start).getUTCFullYear() : undefined
+  const endYear = duration?.end ? new Date(duration.end).getUTCFullYear() : 'Now'
 
   if (!(startYear && endYear)) {
     return null
