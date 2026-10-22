@@ -1,0 +1,5 @@
+*[_type == "project" && slug.current == $slug][0] {
+  coverImage,
+  title,
+  "overview": pt::text(overview),
+}

@@ -1,14 +1,12 @@
 import type {PathSegment} from '@sanity/client/csm'
-import {
-  PortableText,
-  type InferStrictComponents,
-  type InferValue,
-  type SanityQueries,
-} from 'next-sanity'
+import {PortableText, type InferStrictComponents, type InferValue} from 'next-sanity'
 import Link from 'next/link'
 
 import ImageBox from '@/components/ImageBox'
 import {TimelineSection} from '@/components/TimelineSection'
+import type {AllSanitySchemaTypes} from '@/sanity.types'
+
+type PortableTextValue = InferValue<AllSanitySchemaTypes>
 
 export function CustomPortableText({
   id,
@@ -21,7 +19,7 @@ export function CustomPortableText({
   type: string | null
   path: PathSegment[]
   paragraphClasses?: string
-  value: InferValue<SanityQueries[keyof SanityQueries]>
+  value: PortableTextValue
 }) {
   const components = {
     block: {

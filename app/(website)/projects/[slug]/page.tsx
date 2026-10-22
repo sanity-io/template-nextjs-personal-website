@@ -1,8 +1,13 @@
 import type {Metadata, ResolvingMetadata} from 'next'
-import {createDataAttribute, defineQuery} from 'next-sanity'
+import {createDataAttribute} from 'next-sanity'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
+import projectSlugPageQuery, {
+  type QueryResponse,
+} from '#queries/projectSlugPage.groq' with {type: 'text'}
+import projectSlugPageMetadataQuery from '#queries/projectSlugPageMetadata.groq' with {type: 'text'}
+import slugsByTypeQuery from '#queries/slugsByType.groq' with {type: 'text'}
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import ImageBox from '@/components/ImageBox'
@@ -14,13 +19,14 @@ import {
   sanityFetchStaticParams,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
-import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
+
+import {ProjectDuration} from './ProjectDuration'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
     query: slugsByTypeQuery,
-    params: {type: 'project'} satisfies SlugsByTypeQueryParams,
+    params: {type: 'project'},
   })
   if (data.length > 0) {
     return data
@@ -37,13 +43,6 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
-  const projectSlugPageMetadataQuery = defineQuery(`
-    *[_type == "project" && slug.current == $slug][0] {
-      coverImage,
-      title,
-      "overview": pt::text(overview),
-    }
-  `)
   const {data} = await sanityFetchMetadata({
     query: projectSlugPageMetadataQuery,
     params: {slug},
@@ -63,33 +62,31 @@ export default async function ProjectSlugPage({params}: PageProps<'/projects/[sl
   return <CachedProjectSlugPage slug={slug} perspective={perspective} stega={stega} />
 }
 
-async function CachedProjectSlugPage({
-  slug,
-  perspective,
-  stega,
-}: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
+/**
+ * Cache leaf for the project document. The explicit return type comes straight off the `.groq`
+ * module, from the same import statement as the query it describes.
+ */
+async function fetchProject(
+  slug: string,
+  {perspective, stega}: DynamicFetchOptions,
+): Promise<QueryResponse> {
   'use cache'
-  const projectSlugPageQuery = defineQuery(`
-    *[_type == "project" && slug.current == $slug][0] {
-      _id,
-      _type,
-      client,
-      coverImage,
-      description,
-      duration,
-      overview,
-      site,
-      "slug": slug.current,
-      tags,
-      title,
-    }
-  `)
   const {data} = await sanityFetch({
     query: projectSlugPageQuery,
     params: {slug},
     perspective,
     stega,
   })
+  return data
+}
+
+async function CachedProjectSlugPage({
+  slug,
+  perspective,
+  stega,
+}: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
+  'use cache'
+  const data = await fetchProject(slug, {perspective, stega})
 
   if (!data?._id) notFound()
 
@@ -103,9 +100,6 @@ async function CachedProjectSlugPage({
       : null
 
   const {client, coverImage, description, duration, overview, site, tags, title} = data ?? {}
-
-  const startYear = duration?.start ? new Date(duration.start).getFullYear() : undefined
-  const endYear = duration?.end ? new Date(duration?.end).getFullYear() : 'Now'
 
   return (
     <div className="space-y-6" data-testid="project-content">
@@ -130,16 +124,11 @@ async function CachedProjectSlugPage({
 
         <div className="grid grid-cols-1 divide-y divide-inherit lg:grid-cols-4 lg:divide-x lg:divide-y-0">
           {/* Duration */}
-          {!!(startYear && endYear) && (
-            <div className="p-3 lg:p-4">
-              <div className="text-xs md:text-sm">Duration</div>
-              <div className="text-md md:text-lg">
-                <span data-sanity={dataAttribute?.('duration.start')}>{startYear}</span>
-                {' - '}
-                <span data-sanity={dataAttribute?.('duration.end')}>{endYear}</span>
-              </div>
-            </div>
-          )}
+          <ProjectDuration
+            duration={duration}
+            data-sanity-start={dataAttribute?.('duration.start')}
+            data-sanity-end={dataAttribute?.('duration.end')}
+          />
 
           {/* Client */}
           {client && (
