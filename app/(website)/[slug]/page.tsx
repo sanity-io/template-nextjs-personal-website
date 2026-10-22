@@ -1,5 +1,4 @@
 import type {Metadata, ResolvingMetadata} from 'next'
-import {defineQuery} from 'next-sanity'
 import {notFound} from 'next/navigation'
 
 import {CustomPortableText} from '@/components/CustomPortableText'
@@ -11,12 +10,15 @@ import {
   sanityFetchStaticParams,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
-import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import slugsByTypeQuery from '@/sanity/lib/queries/slugsByType.groq' with {type: 'text'}
+
+import slugPageQuery from './slugPage.groq' with {type: 'text'}
+import slugPageMetadataQuery from './slugPageMetadata.groq' with {type: 'text'}
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
     query: slugsByTypeQuery,
-    params: {type: 'page'} satisfies SlugsByTypeQueryParams,
+    params: {type: 'page'},
   })
   if (data.length > 0) {
     return data
@@ -33,12 +35,6 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
-  const slugPageMetadataQuery = defineQuery(`
-    *[_type == "page" && slug.current == $slug][0] {
-      title,
-      "overview": pt::text(overview),
-    }
-  `)
   const {data} = await sanityFetchMetadata({
     query: slugPageMetadataQuery,
     params: {slug},
@@ -62,16 +58,6 @@ async function CachedSlugPage({
   stega,
 }: Awaited<PageProps<'/[slug]'>['params']> & DynamicFetchOptions) {
   'use cache'
-  const slugPageQuery = defineQuery(`
-    *[_type == "page" && slug.current == $slug][0] {
-      _id,
-      _type,
-      body,
-      overview,
-      title,
-      "slug": slug.current,
-    }
-  `)
   const {data} = await sanityFetch({query: slugPageQuery, params: {slug}, perspective, stega})
 
   if (!data?._id) notFound()

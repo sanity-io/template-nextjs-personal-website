@@ -2,8 +2,8 @@ import {createDataAttribute, stegaClean} from 'next-sanity'
 
 import {AppLink} from '@/components/AppLink'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
-import type {SettingsQueryResult} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
+import type {QueryResponse as SettingsQueryResult} from '@/sanity/lib/queries/settings.groq'
 import {resolveHref} from '@/sanity/lib/utils'
 
 interface NavbarProps {

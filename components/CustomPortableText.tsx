@@ -1,14 +1,16 @@
 import type {PathSegment} from '@sanity/client/csm'
-import {
-  PortableText,
-  type InferStrictComponents,
-  type InferValue,
-  type SanityQueries,
-} from 'next-sanity'
+import {PortableText, type InferStrictComponents, type InferValue} from 'next-sanity'
 import Link from 'next/link'
 
 import ImageBox from '@/components/ImageBox'
 import {TimelineSection} from '@/components/TimelineSection'
+import type {Home, Page, Project, Settings} from '@/sanity.types'
+
+/**
+ * Every Portable Text field the site renders, taken from the schema document types. The `.groq`
+ * modules declare nothing globally, so there is no `SanityQueries` registry to union over.
+ */
+type PortableTextValue = InferValue<Home | Page | Project | Settings>
 
 export function CustomPortableText({
   id,
@@ -21,7 +23,7 @@ export function CustomPortableText({
   type: string | null
   path: PathSegment[]
   paragraphClasses?: string
-  value: InferValue<SanityQueries[keyof SanityQueries]>
+  value: PortableTextValue
 }) {
   const components = {
     block: {

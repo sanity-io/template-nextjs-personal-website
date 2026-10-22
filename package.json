@@ -14,12 +14,12 @@
     "start": "next start",
     "stega-warn": "echo 'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4'",
     "test:e2e": "playwright test",
-    "type-check": "tsc --noEmit",
+    "type-check": "node node_modules/typescript/lib/tsc.js --noEmit --runExternalCode",
     "typegen": "sanity schema extract --force && sanity typegen generate"
   },
   "dependencies": {
     "@next/env": "16.4.1",
-    "@sanity/client": "8.9.0",
+    "@sanity/client": "https://pkg.pr.new/@sanity/client@1373",
     "@sanity/functions": "1.9.0",
     "@sanity/icons": "5.2.3",
     "@sanity/image-url": "2.1.1",
@@ -46,6 +46,7 @@
     "@next/playwright": "16.4.1",
     "@playwright/test": "1.64.1",
     "@sanity/blueprints": "0.28.0",
+    "@sanity/codegen": "https://pkg.pr.new/@sanity/codegen@177",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "25.9.9",
     "@types/react": "19.3.0",
@@ -55,6 +56,12 @@
     "oxlint-tsgolint": "7.0.2004",
     "postcss": "8.5.30",
     "tailwindcss": "4.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "7.1.0-beta"
+  },
+  "overrides": {
+    "next-sanity": {
+      "@sanity/client": "$@sanity/client"
+    },
+    "typescript": "$typescript"
   }
 }

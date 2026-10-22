@@ -24,6 +24,13 @@
       "@/*": ["./*"]
     }
   },
+  "contentMappers": [
+    {
+      "package": "@sanity/codegen",
+      "extensions": [".groq"],
+      "options": {"schema": "./schema.json"}
+    }
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
