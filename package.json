@@ -1,6 +1,9 @@
 {
   "name": "sanity-template-template-nextjs-personal-website",
   "private": true,
+  "imports": {
+    "#queries/*": "./sanity/lib/queries/*"
+  },
   "scripts": {
     "analyze": "next experimental-analyze --serve",
     "prebuild": "npm run stega-warn",
@@ -14,12 +17,12 @@
     "start": "next start",
     "stega-warn": "echo 'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4'",
     "test:e2e": "playwright test",
-    "type-check": "tsc --noEmit",
+    "type-check": "node node_modules/typescript/lib/tsc.js --noEmit --runExternalCode",
     "typegen": "sanity schema extract --force && sanity typegen generate"
   },
   "dependencies": {
     "@next/env": "16.4.2",
-    "@sanity/client": "8.10.1",
+    "@sanity/client": "^8.11.0",
     "@sanity/functions": "1.10.1",
     "@sanity/icons": "5.2.3",
     "@sanity/image-url": "2.1.1",
@@ -31,7 +34,7 @@
     "classnames": "2.5.1",
     "date-fns": "4.4.0",
     "next": "16.4.2",
-    "next-sanity": "13.3.4",
+    "next-sanity": "13.4.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-live-transitions": "0.2.0",
@@ -45,6 +48,7 @@
   "devDependencies": {
     "@next/playwright": "16.4.2",
     "@playwright/test": "1.64.1",
+    "@sanity-labs/groq-content-mapper": "^0.1.8",
     "@sanity/blueprints": "0.28.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "25.9.9",
@@ -55,6 +59,9 @@
     "oxlint-tsgolint": "7.0.2004",
     "postcss": "8.5.31",
     "tailwindcss": "4.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "7.1.0-beta"
+  },
+  "overrides": {
+    "typescript": "$typescript"
   }
 }

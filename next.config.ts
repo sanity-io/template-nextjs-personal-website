@@ -1,3 +1,4 @@
+import {withGroqFiles} from '@sanity-labs/groq-content-mapper/next'
 import type {NextConfig} from 'next'
 import {sanity} from 'next-sanity/live/cache-life'
 
@@ -36,4 +37,7 @@ const config: NextConfig = {
   },
 }
 
-export default config
+// Turbopack delivers `import q from './x.groq' with {type: 'text'}` on its own; the wrapper
+// re-runs the production type check with `--runExternalCode` so the `.groq` content mapper
+// in tsconfig.json can type those imports (Next's own check runs `tsc` without that flag).
+export default withGroqFiles(config)

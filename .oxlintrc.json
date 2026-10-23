@@ -2,7 +2,7 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "options": {
     "typeAware": true,
-    "typeCheck": true,
+    "typeCheck": false,
     "denyWarnings": true,
     "reportUnusedDisableDirectives": "error"
   },
@@ -45,6 +45,7 @@
     "react/no-unstable-nested-components": ["error", {"allowAsProps": true}],
     "unicorn/no-abusive-eslint-disable": "error",
     "unicorn/consistent-function-scoping": "off",
+    "import/no-duplicates": "error",
     "import/no-unassigned-import": ["error", {"allow": ["**/*.css", "server-only"]}],
     "typescript/ban-ts-comment": "error",
     "typescript/no-deprecated": "error",

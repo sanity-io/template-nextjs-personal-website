@@ -1,11 +1,12 @@
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata, Viewport} from 'next'
-import {defineQuery} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
 import {draftMode} from 'next/headers'
 import {Suspense} from 'react'
 import {Toaster} from 'sonner'
 
+import layoutMetadataQuery from '#queries/layoutMetadata.groq' with {type: 'text'}
+import settingsQuery from '#queries/settings.groq' with {type: 'text'}
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {DraftModeProvider} from '@/components/DraftModeContext'
 import {Navbar} from '@/components/Navbar'
@@ -18,7 +19,6 @@ import {
   SanityLive,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
-import {settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 import {handleError} from './client-functions'
@@ -26,13 +26,6 @@ import {DraftModeToast} from './DraftModeToast'
 
 export async function generateMetadata(): Promise<Metadata> {
   const {perspective} = await getDynamicFetchOptions()
-  const layoutMetadataQuery = defineQuery(`{
-    "settings": *[_type == "settings"][0]{ogImage},
-    "home": *[_type == "home"][0]{
-      title,
-      "overview": pt::text(overview),
-    }
-  }`)
   const {
     data: {settings, home},
   } = await sanityFetchMetadata({query: layoutMetadataQuery, perspective})

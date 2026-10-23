@@ -1,0 +1,14 @@
+*[_type == "settings"][0]{
+  _id,
+  _type,
+  footer,
+  menuItems[]{
+    _key,
+    ...@->{
+      _type,
+      "slug": slug.current,
+      title
+    }
+  },
+  ogImage,
+}

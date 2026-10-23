@@ -1,8 +1,9 @@
-import {createDataAttribute, defineQuery} from 'next-sanity'
+import {createDataAttribute} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
+import homePageQuery from '#queries/homePage.groq' with {type: 'text'}
 import {AppLink} from '@/components/AppLink'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
@@ -31,26 +32,6 @@ async function DynamicHome() {
 
 async function CachedHome({perspective, stega}: DynamicFetchOptions) {
   'use cache'
-  const homePageQuery = defineQuery(`
-    *[_type == "home"][0]{
-      _id,
-      _type,
-      overview,
-      showcaseProjects[]{
-        _key,
-        ...@->{
-          _id,
-          _type,
-          coverImage,
-          overview,
-          "slug": slug.current,
-          tags,
-          title,
-        }
-      },
-      title,
-    }
-  `)
   const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
 
   if (!data) {

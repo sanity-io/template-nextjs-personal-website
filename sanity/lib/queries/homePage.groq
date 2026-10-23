@@ -1,0 +1,18 @@
+*[_type == "home"][0]{
+  _id,
+  _type,
+  overview,
+  showcaseProjects[]{
+    _key,
+    ...@->{
+      _id,
+      _type,
+      coverImage,
+      overview,
+      "slug": slug.current,
+      tags,
+      title,
+    }
+  },
+  title,
+}

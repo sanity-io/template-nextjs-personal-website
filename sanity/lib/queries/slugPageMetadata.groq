@@ -1,0 +1,4 @@
+*[_type == "page" && slug.current == $slug][0] {
+  title,
+  "overview": pt::text(overview),
+}
