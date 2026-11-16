@@ -1,0 +1,74 @@
+name: Next.js canary
+
+# Runs the CI checks against the latest `next@canary` (or the version passed to a manual run) so
+# regressions in upcoming Next.js releases surface before Renovate bumps the lockfile.
+# Do not set EXPOSE_TESTING_API on Vercel — it is CI-only, below.
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "next version or dist-tag, e.g. canary or 16.5.0-canary.52"
+        required: true
+        default: canary
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_VERSION: ${{ inputs.version || 'canary' }}
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+      SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+      SANITY_API_WRITE_TOKEN: ${{ secrets.SANITY_API_WRITE_TOKEN }}
+      SANITY_REVALIDATE_SECRET: ci-only-revalidate-secret
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      # Semver excludes prereleases such as 16.5.0-canary.52 from peer ranges like next-sanity's
+      # `^16.0.0-0`, so a strict install fails with ERESOLVE.
+      - name: Install next@${{ env.NEXT_VERSION }}
+        run: npm install --no-save --legacy-peer-deps "next@$NEXT_VERSION" "@next/env@$NEXT_VERSION" "@next/playwright@$NEXT_VERSION"
+      - run: npx next --version
+      - run: npm run type-check
+      - run: npm run lint
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+        env:
+          EXPOSE_TESTING_API: "1"
+      - name: npm run test:e2e
+        run: |
+          set -o pipefail
+          npm run test:e2e 2>&1 | tee e2e.log
+      # Draft-mode renders used to log this once per `'use cache'` read even though output was
+      # correct, see https://github.com/vercel/next.js/issues/100680
+      - name: Fail on unexpected cache misses in server logs
+        run: |
+          if grep -q 'Unexpected cache miss' e2e.log; then
+            grep -m 5 'Unexpected cache miss' e2e.log
+            echo "::error::next start logged 'Unexpected cache miss' during the e2e run"
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-next-canary
+          path: |
+            e2e.log
+            playwright-report
+            test-results
+          retention-days: 7
