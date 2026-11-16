@@ -18,7 +18,7 @@ import {
   SanityLive,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
-import {settingsQuery} from '@/sanity/lib/queries'
+import {imageFunctions, settingsQuery} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 import {handleError} from './client-functions'
@@ -26,8 +26,10 @@ import {DraftModeToast} from './DraftModeToast'
 
 export async function generateMetadata(): Promise<Metadata> {
   const {perspective} = await getDynamicFetchOptions()
-  const layoutMetadataQuery = defineQuery(`{
-    "settings": *[_type == "settings"][0]{ogImage},
+  const layoutMetadataQuery = defineQuery(`
+    ${imageFunctions}
+    {
+    "settings": *[_type == "settings"][0]{"ogImage": image::field(ogImage)},
     "home": *[_type == "home"][0]{
       title,
       "overview": pt::text(overview),

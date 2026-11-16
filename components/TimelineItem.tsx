@@ -1,7 +1,21 @@
-import ImageBox from '@/components/ImageBox'
-import type {Milestone} from '@/sanity.types'
+import type {SanityQueries} from 'next-sanity'
+import type {InferImageValue} from 'next-sanity/image'
 
-export function TimelineItem({milestone}: {milestone: Milestone}) {
+import ImageBox from '@/components/ImageBox'
+
+export interface TimelineMilestone {
+  _key: string
+  title?: string | null
+  description?: string | null
+  image?: InferImageValue<SanityQueries[keyof SanityQueries]> | null
+  tags?: Array<string | null> | null
+  duration?: {
+    start?: string | null
+    end?: string | null
+  } | null
+}
+
+export function TimelineItem({milestone}: {milestone: TimelineMilestone}) {
   const {description, duration, image, tags, title} = milestone
   const startYear = duration?.start ? new Date(duration.start).getFullYear() : undefined
   const endYear = duration?.end ? new Date(duration.end).getFullYear() : 'Now'
@@ -17,9 +31,8 @@ export function TimelineItem({milestone}: {milestone: Milestone}) {
           <ImageBox
             image={image}
             alt={title || 'Timeline item icon'}
+            classesWrapper="h-full"
             size="10vw"
-            width={65}
-            height={65}
           />
         </div>
         {/* Vertical line */}

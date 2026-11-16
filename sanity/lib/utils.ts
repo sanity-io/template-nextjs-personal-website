@@ -1,4 +1,4 @@
-import {createImageUrlBuilder, type SanityImageSource} from '@sanity/image-url'
+import {createImageUrlBuilder, isImageWithAsset, type SanityImageLike} from '@sanity/image-url'
 
 import {dataset, projectId} from '@/sanity/lib/api'
 
@@ -7,17 +7,18 @@ const imageBuilder = createImageUrlBuilder({
   dataset: dataset || '',
 })
 
-export const urlForImage = (source: SanityImageSource | null | undefined) => {
-  // Ensure that source image contains a valid reference
-  if (typeof source === 'string' || !source || ('asset' in source && !source?.asset?._ref)) {
-    return undefined
-  }
+export function urlForOpenGraphImage(image: SanityImageLike | null | undefined) {
+  // Open Graph metadata needs a URL. Rendered images go through `next-sanity/image`.
+  if (!isImageWithAsset(image)) return undefined
 
-  return imageBuilder?.image(source).auto('format').fit('max')
-}
-
-export function urlForOpenGraphImage(image: SanityImageSource | null | undefined) {
-  return urlForImage(image)?.width(1200).height(627).fit('crop').url()
+  return imageBuilder
+    .image(image)
+    .auto('format')
+    .fit('max')
+    .width(1200)
+    .height(627)
+    .fit('crop')
+    .url()
 }
 
 export function resolveHref(documentType?: string, slug?: string | null): string | undefined {

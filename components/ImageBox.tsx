@@ -1,42 +1,48 @@
-import type {SanityImageSource} from '@sanity/image-url'
-import Image from 'next/image'
+import type {SanityQueries} from 'next-sanity'
+import {Image, isImageWithAsset, type InferImageValue} from 'next-sanity/image'
 
-import {urlForImage} from '@/sanity/lib/utils'
+import {dataset, projectId} from '@/sanity/lib/api'
+
+type ImageValue = InferImageValue<SanityQueries[keyof SanityQueries]>
 
 interface ImageBoxProps {
-  'image'?: SanityImageSource | null | undefined
-  'alt'?: string
-  'width'?: number
-  'height'?: number
+  'image'?: ImageValue | null
+  'alt'?: string | null
   'size'?: string
   'classesWrapper'?: string
   'data-sanity'?: string
 }
 
+function hasLqip(image: ImageValue): boolean {
+  const asset = image.asset
+  if (!asset || typeof asset !== 'object' || !('metadata' in asset)) return false
+  const metadata = asset.metadata
+  if (!metadata || typeof metadata !== 'object' || !('lqip' in metadata)) return false
+  return typeof metadata.lqip === 'string' && metadata.lqip.length > 0
+}
+
 export default function ImageBox({
   image,
   alt = 'Cover image',
-  width = 3500,
-  height = 2000,
   size = '100vw',
   classesWrapper,
-  ...props
+  'data-sanity': dataSanity,
 }: ImageBoxProps) {
-  const imageUrl = image && urlForImage(image)?.height(height).width(width).fit('crop').url()
-
   return (
     <div
-      className={`w-full overflow-hidden rounded-[3px] bg-gray-50 ${classesWrapper}`}
-      data-sanity={props['data-sanity']}
+      className={`relative w-full overflow-hidden rounded-[3px] bg-gray-50 ${classesWrapper ?? ''}`}
+      data-sanity={dataSanity}
     >
-      {imageUrl && (
+      {isImageWithAsset(image) && (
         <Image
-          className="absolute h-full w-full"
-          alt={alt}
-          width={width}
-          height={height}
+          alt={alt ?? ''}
+          className="object-cover"
+          dataset={dataset}
+          fill
+          placeholder={hasLqip(image) ? 'blur' : 'empty'}
+          projectId={projectId}
           sizes={size}
-          src={imageUrl}
+          src={image}
         />
       )}
     </div>

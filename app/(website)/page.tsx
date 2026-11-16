@@ -10,6 +10,7 @@ import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
 import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
+import {imageFunctions} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 
 export default async function IndexPage() {
@@ -32,6 +33,7 @@ async function DynamicHome() {
 async function CachedHome({perspective, stega}: DynamicFetchOptions) {
   'use cache'
   const homePageQuery = defineQuery(`
+    ${imageFunctions}
     *[_type == "home"][0]{
       _id,
       _type,
@@ -41,7 +43,7 @@ async function CachedHome({perspective, stega}: DynamicFetchOptions) {
         ...@->{
           _id,
           _type,
-          coverImage,
+          "coverImage": image::field(coverImage),
           overview,
           "slug": slug.current,
           tags,
