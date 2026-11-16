@@ -22,9 +22,6 @@ const config: NextConfig = {
       exclude: ['light-dark'],
     },
   },
-  images: {
-    remotePatterns: [{hostname: 'cdn.sanity.io'}],
-  },
   logging: {
     fetches: {
       fullUrl: true,

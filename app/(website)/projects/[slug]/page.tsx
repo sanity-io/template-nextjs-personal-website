@@ -14,7 +14,7 @@ import {
   sanityFetchStaticParams,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
-import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {imageFunctions, slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 import {urlForOpenGraphImage} from '@/sanity/lib/utils'
 
 export async function generateStaticParams() {
@@ -38,8 +38,9 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
   const projectSlugPageMetadataQuery = defineQuery(`
+    ${imageFunctions}
     *[_type == "project" && slug.current == $slug][0] {
-      coverImage,
+      "coverImage": image::field(coverImage),
       title,
       "overview": pt::text(overview),
     }
@@ -70,12 +71,13 @@ async function CachedProjectSlugPage({
 }: Awaited<PageProps<'/projects/[slug]'>['params']> & DynamicFetchOptions) {
   'use cache'
   const projectSlugPageQuery = defineQuery(`
+    ${imageFunctions}
     *[_type == "project" && slug.current == $slug][0] {
       _id,
       _type,
       client,
-      coverImage,
-      description,
+      "coverImage": image::field(coverImage),
+      "description": image::richText(description),
       duration,
       overview,
       site,

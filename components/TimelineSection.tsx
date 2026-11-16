@@ -1,16 +1,15 @@
 import type {StudioPathLike} from '@sanity/client/csm'
 import {createDataAttribute, stegaClean} from 'next-sanity'
 
-import {TimelineItem} from '@/components/TimelineItem'
-import type {Milestone} from '@/sanity.types'
+import {TimelineItem, type TimelineMilestone} from '@/components/TimelineItem'
 import {studioUrl} from '@/sanity/lib/api'
 
 import {OptimisticSortOrder} from './OptimisticSortOrder'
 
-interface TimelineItem {
+interface TimelineEntry {
   _key: string
-  title?: string
-  milestones?: (Milestone & {_key: string})[]
+  title?: string | null
+  milestones?: Array<TimelineMilestone> | null
 }
 
 export function TimelineSection({
@@ -19,7 +18,7 @@ export function TimelineSection({
   type,
   path,
 }: {
-  timelines: TimelineItem[] | undefined
+  timelines: Array<TimelineEntry> | null | undefined
   id: string | null
   type: string | null
   path: StudioPathLike

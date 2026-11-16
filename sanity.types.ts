@@ -428,14 +428,11 @@ export type SlugPageMetadataQueryResult = {
 
 // Source: app/(website)/[slug]/page.tsx
 // Variable: slugPageQuery
-// Query: *[_type == "page" && slug.current == $slug][0] {      _id,      _type,      body,      overview,      title,      "slug": slug.current,    }
+// Query: fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};  fn image::richText($blocks) = $blocks[]{    ...,    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},    _type == "timeline" => {      ...,      items[]{        ...,        milestones[]{          ...,          "image": image::field(image)        }      }    }  };    *[_type == "page" && slug.current == $slug][0] {      _id,      _type,      "body": image::richText(body),      overview,      title,      "slug": slug.current,    }
 export type SlugPageQueryResult = {
   _id: string
   _type: 'page'
   body: Array<
-    | ({
-        _key: string
-      } & Timeline)
     | {
         children?: Array<{
           marks?: Array<string>
@@ -455,14 +452,48 @@ export type SlugPageQueryResult = {
         _key: string
       }
     | {
-        asset?: SanityImageAssetReference
+        asset: {
+          url: string | null
+          metadata: {
+            lqip: string | null
+            dimensions: SanityImageDimensions | null
+          } | null
+        } | null
         media?: unknown
-        hotspot?: SanityImageHotspot
-        crop?: SanityImageCrop
-        caption?: string
-        alt?: string
+        hotspot: SanityImageHotspot | null
+        crop: SanityImageCrop | null
+        caption: string | null
+        alt: string | null
         _type: 'image'
         _key: string
+      }
+    | {
+        _key: string
+        _type: 'timeline'
+        items: Array<{
+          title?: string
+          milestones: Array<{
+            _key: string
+            _type: 'milestone'
+            title?: string
+            description?: string
+            image: {
+              crop: SanityImageCrop | null
+              hotspot: SanityImageHotspot | null
+              asset: {
+                url: string | null
+                metadata: {
+                  lqip: string | null
+                  dimensions: SanityImageDimensions | null
+                } | null
+              } | null
+            } | null
+            tags?: Array<string>
+            duration?: Duration
+          }> | null
+          _type: 'item'
+          _key: string
+        }> | null
       }
   > | null
   overview: Array<{
@@ -485,15 +516,19 @@ export type SlugPageQueryResult = {
 
 // Source: app/(website)/layout.tsx
 // Variable: layoutMetadataQuery
-// Query: {    "settings": *[_type == "settings"][0]{ogImage},    "home": *[_type == "home"][0]{      title,      "overview": pt::text(overview),    }  }
+// Query: fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};  fn image::richText($blocks) = $blocks[]{    ...,    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},    _type == "timeline" => {      ...,      items[]{        ...,        milestones[]{          ...,          "image": image::field(image)        }      }    }  };    {    "settings": *[_type == "settings"][0]{"ogImage": image::field(ogImage)},    "home": *[_type == "home"][0]{      title,      "overview": pt::text(overview),    }  }
 export type LayoutMetadataQueryResult = {
   settings: {
     ogImage: {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
+      crop: SanityImageCrop | null
+      hotspot: SanityImageHotspot | null
+      asset: {
+        url: string | null
+        metadata: {
+          lqip: string | null
+          dimensions: SanityImageDimensions | null
+        } | null
+      } | null
     } | null
   } | null
   home: {
@@ -504,7 +539,7 @@ export type LayoutMetadataQueryResult = {
 
 // Source: app/(website)/page.tsx
 // Variable: homePageQuery
-// Query: *[_type == "home"][0]{      _id,      _type,      overview,      showcaseProjects[]{        _key,        ...@->{          _id,          _type,          coverImage,          overview,          "slug": slug.current,          tags,          title,        }      },      title,    }
+// Query: fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};  fn image::richText($blocks) = $blocks[]{    ...,    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},    _type == "timeline" => {      ...,      items[]{        ...,        milestones[]{          ...,          "image": image::field(image)        }      }    }  };    *[_type == "home"][0]{      _id,      _type,      overview,      showcaseProjects[]{        _key,        ...@->{          _id,          _type,          "coverImage": image::field(coverImage),          overview,          "slug": slug.current,          tags,          title,        }      },      title,    }
 export type HomePageQueryResult = {
   _id: string
   _type: 'home'
@@ -531,11 +566,15 @@ export type HomePageQueryResult = {
     _id: string
     _type: 'project'
     coverImage: {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
+      crop: SanityImageCrop | null
+      hotspot: SanityImageHotspot | null
+      asset: {
+        url: string | null
+        metadata: {
+          lqip: string | null
+          dimensions: SanityImageDimensions | null
+        } | null
+      } | null
     } | null
     overview: Array<{
       children?: Array<{
@@ -560,14 +599,18 @@ export type HomePageQueryResult = {
 
 // Source: app/(website)/projects/[slug]/page.tsx
 // Variable: projectSlugPageMetadataQuery
-// Query: *[_type == "project" && slug.current == $slug][0] {      coverImage,      title,      "overview": pt::text(overview),    }
+// Query: fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};  fn image::richText($blocks) = $blocks[]{    ...,    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},    _type == "timeline" => {      ...,      items[]{        ...,        milestones[]{          ...,          "image": image::field(image)        }      }    }  };    *[_type == "project" && slug.current == $slug][0] {      "coverImage": image::field(coverImage),      title,      "overview": pt::text(overview),    }
 export type ProjectSlugPageMetadataQueryResult = {
   coverImage: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
+    crop: SanityImageCrop | null
+    hotspot: SanityImageHotspot | null
+    asset: {
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: SanityImageDimensions | null
+      } | null
+    } | null
   } | null
   title: string | null
   overview: string
@@ -575,22 +618,23 @@ export type ProjectSlugPageMetadataQueryResult = {
 
 // Source: app/(website)/projects/[slug]/page.tsx
 // Variable: projectSlugPageQuery
-// Query: *[_type == "project" && slug.current == $slug][0] {      _id,      _type,      client,      coverImage,      description,      duration,      overview,      site,      "slug": slug.current,      tags,      title,    }
+// Query: fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};  fn image::richText($blocks) = $blocks[]{    ...,    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},    _type == "timeline" => {      ...,      items[]{        ...,        milestones[]{          ...,          "image": image::field(image)        }      }    }  };    *[_type == "project" && slug.current == $slug][0] {      _id,      _type,      client,      "coverImage": image::field(coverImage),      "description": image::richText(description),      duration,      overview,      site,      "slug": slug.current,      tags,      title,    }
 export type ProjectSlugPageQueryResult = {
   _id: string
   _type: 'project'
   client: string | null
   coverImage: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
+    crop: SanityImageCrop | null
+    hotspot: SanityImageHotspot | null
+    asset: {
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: SanityImageDimensions | null
+      } | null
+    } | null
   } | null
   description: Array<
-    | ({
-        _key: string
-      } & Timeline)
     | {
         children?: Array<{
           marks?: Array<string>
@@ -610,14 +654,48 @@ export type ProjectSlugPageQueryResult = {
         _key: string
       }
     | {
-        asset?: SanityImageAssetReference
+        asset: {
+          url: string | null
+          metadata: {
+            lqip: string | null
+            dimensions: SanityImageDimensions | null
+          } | null
+        } | null
         media?: unknown
-        hotspot?: SanityImageHotspot
-        crop?: SanityImageCrop
-        caption?: string
-        alt?: string
+        hotspot: SanityImageHotspot | null
+        crop: SanityImageCrop | null
+        caption: string | null
+        alt: string | null
         _type: 'image'
         _key: string
+      }
+    | {
+        _key: string
+        _type: 'timeline'
+        items: Array<{
+          title?: string
+          milestones: Array<{
+            _key: string
+            _type: 'milestone'
+            title?: string
+            description?: string
+            image: {
+              crop: SanityImageCrop | null
+              hotspot: SanityImageHotspot | null
+              asset: {
+                url: string | null
+                metadata: {
+                  lqip: string | null
+                  dimensions: SanityImageDimensions | null
+                } | null
+              } | null
+            } | null
+            tags?: Array<string>
+            duration?: Duration
+          }> | null
+          _type: 'item'
+          _key: string
+        }> | null
       }
   > | null
   duration: Duration | null
@@ -643,7 +721,7 @@ export type ProjectSlugPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
-// Query: *[_type == "settings"][0]{    _id,    _type,    footer,    menuItems[]{      _key,      ...@->{        _type,        "slug": slug.current,        title      }    },    ogImage,  }
+// Query: fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};  fn image::richText($blocks) = $blocks[]{    ...,    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},    _type == "timeline" => {      ...,      items[]{        ...,        milestones[]{          ...,          "image": image::field(image)        }      }    }  };  *[_type == "settings"][0]{    _id,    _type,    footer,    menuItems[]{      _key,      ...@->{        _type,        "slug": slug.current,        title      }    },    "ogImage": image::field(ogImage),  }
 export type SettingsQueryResult = {
   _id: string
   _type: 'settings'
@@ -686,11 +764,15 @@ export type SettingsQueryResult = {
       }
   > | null
   ogImage: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
+    crop: SanityImageCrop | null
+    hotspot: SanityImageHotspot | null
+    asset: {
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: SanityImageDimensions | null
+      } | null
+    } | null
   } | null
 } | null
 
@@ -705,12 +787,12 @@ export type SlugsByTypeQueryResult = Array<{
 declare global {
   interface SanityQueries {
     '\n    *[_type == "page" && slug.current == $slug][0] {\n      title,\n      "overview": pt::text(overview),\n    }\n  ': SlugPageMetadataQueryResult
-    '\n    *[_type == "page" && slug.current == $slug][0] {\n      _id,\n      _type,\n      body,\n      overview,\n      title,\n      "slug": slug.current,\n    }\n  ': SlugPageQueryResult
-    '{\n    "settings": *[_type == "settings"][0]{ogImage},\n    "home": *[_type == "home"][0]{\n      title,\n      "overview": pt::text(overview),\n    }\n  }': LayoutMetadataQueryResult
-    '\n    *[_type == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          coverImage,\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
-    '\n    *[_type == "project" && slug.current == $slug][0] {\n      coverImage,\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
-    '\n    *[_type == "project" && slug.current == $slug][0] {\n      _id,\n      _type,\n      client,\n      coverImage,\n      description,\n      duration,\n      overview,\n      site,\n      "slug": slug.current,\n      tags,\n      title,\n    }\n  ': ProjectSlugPageQueryResult
-    '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    ogImage,\n  }\n': SettingsQueryResult
+    '\n    \n  fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};\n  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};\n  fn image::richText($blocks) = $blocks[]{\n    ...,\n    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},\n    _type == "timeline" => {\n      ...,\n      items[]{\n        ...,\n        milestones[]{\n          ...,\n          "image": image::field(image)\n        }\n      }\n    }\n  };\n\n    *[_type == "page" && slug.current == $slug][0] {\n      _id,\n      _type,\n      "body": image::richText(body),\n      overview,\n      title,\n      "slug": slug.current,\n    }\n  ': SlugPageQueryResult
+    '\n    \n  fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};\n  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};\n  fn image::richText($blocks) = $blocks[]{\n    ...,\n    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},\n    _type == "timeline" => {\n      ...,\n      items[]{\n        ...,\n        milestones[]{\n          ...,\n          "image": image::field(image)\n        }\n      }\n    }\n  };\n\n    {\n    "settings": *[_type == "settings"][0]{"ogImage": image::field(ogImage)},\n    "home": *[_type == "home"][0]{\n      title,\n      "overview": pt::text(overview),\n    }\n  }': LayoutMetadataQueryResult
+    '\n    \n  fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};\n  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};\n  fn image::richText($blocks) = $blocks[]{\n    ...,\n    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},\n    _type == "timeline" => {\n      ...,\n      items[]{\n        ...,\n        milestones[]{\n          ...,\n          "image": image::field(image)\n        }\n      }\n    }\n  };\n\n    *[_type == "home"][0]{\n      _id,\n      _type,\n      overview,\n      showcaseProjects[]{\n        _key,\n        ...@->{\n          _id,\n          _type,\n          "coverImage": image::field(coverImage),\n          overview,\n          "slug": slug.current,\n          tags,\n          title,\n        }\n      },\n      title,\n    }\n  ': HomePageQueryResult
+    '\n    \n  fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};\n  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};\n  fn image::richText($blocks) = $blocks[]{\n    ...,\n    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},\n    _type == "timeline" => {\n      ...,\n      items[]{\n        ...,\n        milestones[]{\n          ...,\n          "image": image::field(image)\n        }\n      }\n    }\n  };\n\n    *[_type == "project" && slug.current == $slug][0] {\n      "coverImage": image::field(coverImage),\n      title,\n      "overview": pt::text(overview),\n    }\n  ': ProjectSlugPageMetadataQueryResult
+    '\n    \n  fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};\n  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};\n  fn image::richText($blocks) = $blocks[]{\n    ...,\n    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},\n    _type == "timeline" => {\n      ...,\n      items[]{\n        ...,\n        milestones[]{\n          ...,\n          "image": image::field(image)\n        }\n      }\n    }\n  };\n\n    *[_type == "project" && slug.current == $slug][0] {\n      _id,\n      _type,\n      client,\n      "coverImage": image::field(coverImage),\n      "description": image::richText(description),\n      duration,\n      overview,\n      site,\n      "slug": slug.current,\n      tags,\n      title,\n    }\n  ': ProjectSlugPageQueryResult
+    '\n  \n  fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};\n  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};\n  fn image::richText($blocks) = $blocks[]{\n    ...,\n    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},\n    _type == "timeline" => {\n      ...,\n      items[]{\n        ...,\n        milestones[]{\n          ...,\n          "image": image::field(image)\n        }\n      }\n    }\n  };\n\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    footer,\n    menuItems[]{\n      _key,\n      ...@->{\n        _type,\n        "slug": slug.current,\n        title\n      }\n    },\n    "ogImage": image::field(ogImage),\n  }\n': SettingsQueryResult
     '\n  *[_type == $type && defined(slug.current)]{"slug": slug.current}\n': SlugsByTypeQueryResult
   }
 }

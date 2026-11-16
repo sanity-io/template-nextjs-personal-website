@@ -2,7 +2,32 @@ import {defineQuery} from 'next-sanity'
 
 import type {AllSanitySchemaTypes, Slug} from '@/sanity.types'
 
+/**
+ * Custom GROQ functions for `next-sanity/image`: crop, hotspot, asset URL, LQIP, and dimensions.
+ * Functions must be declared at the start of every query that calls them, so prepend this constant.
+ * https://www.sanity.io/docs/content-lake/custom-groq-functions
+ */
+export const imageFunctions = /* groq */ `
+  fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};
+  fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};
+  fn image::richText($blocks) = $blocks[]{
+    ...,
+    _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},
+    _type == "timeline" => {
+      ...,
+      items[]{
+        ...,
+        milestones[]{
+          ...,
+          "image": image::field(image)
+        }
+      }
+    }
+  };
+`
+
 export const settingsQuery = defineQuery(`
+  ${imageFunctions}
   *[_type == "settings"][0]{
     _id,
     _type,
@@ -15,7 +40,7 @@ export const settingsQuery = defineQuery(`
         title
       }
     },
-    ogImage,
+    "ogImage": image::field(ogImage),
   }
 `)
 

@@ -11,7 +11,7 @@ import {
   sanityFetchStaticParams,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
-import {slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
+import {imageFunctions, slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
@@ -63,10 +63,11 @@ async function CachedSlugPage({
 }: Awaited<PageProps<'/[slug]'>['params']> & DynamicFetchOptions) {
   'use cache'
   const slugPageQuery = defineQuery(`
+    ${imageFunctions}
     *[_type == "page" && slug.current == $slug][0] {
       _id,
       _type,
-      body,
+      "body": image::richText(body),
       overview,
       title,
       "slug": slug.current,
