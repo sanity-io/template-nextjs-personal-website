@@ -9,7 +9,6 @@ import {structureTool} from 'sanity/structure'
 
 import {apiVersion, dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import * as resolve from '@/sanity/plugins/resolve'
-import {pageStructure} from '@/sanity/plugins/settings'
 import page from '@/sanity/schemas/documents/page'
 import project from '@/sanity/schemas/documents/project'
 import duration from '@/sanity/schemas/objects/duration'
@@ -23,14 +22,6 @@ import settings from '@/sanity/schemas/singletons/settings'
  */
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Personal Website with Sanity.io'
-
-/**
- * Singleton documents, registered with the first-class singletons API (beta, Studio >= 6.17.0).
- * The string shorthand means the schema type name doubles as the singleton id and the document id,
- * e.g. the `home` type edits the document with `_id: "home"`.
- * Use `defineSingleton({documentId, schemaType, title, ...})` from `sanity` when they need to differ.
- */
-const singletons = [home.name, settings.name]
 
 export default defineConfig({
   basePath: studioUrl,
@@ -53,9 +44,9 @@ export default defineConfig({
     ],
   },
   document: {
-    // Registered singletons are omitted from "create new" menus, can't be duplicated,
-    // are filtered out of the default document type lists and get a "Singleton" badge.
-    singletons,
+    // The schema type name doubles as the document id, e.g. `home` edits `_id: "home"`.
+    // Use `defineSingleton({documentId, schemaType, ...})` from `sanity` when they need to differ.
+    singletons: [home.name, settings.name],
   },
   beta: {
     // Keeps the three most recently used tools mounted when switching between them, so going from
@@ -69,7 +60,16 @@ export default defineConfig({
       previewUrl: {previewMode: {enable: '/api/draft-mode/enable'}},
     }),
     structureTool({
-      structure: pageStructure(singletons),
+      structure: (S) =>
+        // `.singletons()` only appends, and the builder it returns has no `.items()`,
+        // so the registered items are read back and placed ahead of the type lists.
+        S.list()
+          .title('Content')
+          .items([
+            ...(S.list().singletons().getItems() ?? []),
+            S.divider(),
+            ...S.documentTypeListItems().map((item) => item.showCount()),
+          ]),
     }),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
