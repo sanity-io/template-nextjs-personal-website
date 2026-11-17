@@ -48,7 +48,7 @@
     "@playwright/test": "1.65.1",
     "@sanity/blueprints": "0.34.1",
     "@tailwindcss/postcss": "4.3.5",
-    "@types/node": "25.9.9",
+    "@types/node": "26.6.6",
     "@types/react": "19.3.0",
     "babel-plugin-react-compiler": "1.0.0",
     "oxfmt": "0.79.0",
