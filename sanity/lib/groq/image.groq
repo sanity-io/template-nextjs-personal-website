@@ -1,0 +1,19 @@
+// Custom GROQ functions for `next-sanity/image`: crop, hotspot, asset URL, LQIP, and dimensions.
+// The content mapper prepends each one to the queries that call it, listed under `functions` in tsconfig.json.
+// https://www.sanity.io/docs/content-lake/custom-groq-functions
+fn image::asset($asset) = $asset->{url, metadata{lqip, dimensions}};
+fn image::field($image) = $image{crop, hotspot, "asset": image::asset(asset)};
+fn image::richText($blocks) = $blocks[]{
+  ...,
+  _type == "image" => {_key, _type, alt, caption, crop, hotspot, "asset": image::asset(asset)},
+  _type == "timeline" => {
+    ...,
+    items[]{
+      ...,
+      milestones[]{
+        ...,
+        "image": image::field(image)
+      }
+    }
+  }
+};

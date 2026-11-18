@@ -1,4 +1,4 @@
-import {type QueryParams} from 'next-sanity'
+import type {ClientParams} from 'next-sanity'
 import {defineLive, resolvePerspectiveFromCookies, type LivePerspective} from 'next-sanity/live'
 import {cookies, draftMode} from 'next/headers'
 
@@ -48,10 +48,10 @@ export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
  */
 export async function sanityFetchStaticParams<const QueryString extends string>({
   query,
-  params = {},
+  params,
 }: {
   query: QueryString
-  params?: QueryParams
+  params?: ClientParams<QueryString>
 }) {
   'use cache'
   const {data} = await sanityFetch({query, params, perspective: 'published', stega: false})
@@ -66,11 +66,11 @@ export async function sanityFetchStaticParams<const QueryString extends string>(
  */
 export async function sanityFetchMetadata<const QueryString extends string>({
   query,
-  params = {},
+  params,
   perspective,
 }: {
   query: QueryString
-  params?: QueryParams
+  params?: ClientParams<QueryString>
   perspective: LivePerspective
 }) {
   'use cache'

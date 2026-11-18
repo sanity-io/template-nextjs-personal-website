@@ -12,6 +12,13 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
 
 export default defineCliConfig({
   api: {projectId, dataset},
+  // `sanity schema extract` writes the schema that the `.groq` content mapper in tsconfig.json
+  // types query imports against.
+  schemaExtraction: {
+    path: './schema.json', // default
+    enforceRequiredFields: false, // default
+    // workspace: 'production', // required if sanity.config.ts exports an array of named workspaces
+  },
   vite: {
     resolve: {
       alias: {

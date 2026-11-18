@@ -1,8 +1,9 @@
-import {createDataAttribute, defineQuery} from 'next-sanity'
+import {createDataAttribute} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
+import homePageQuery from '#queries/homePage.groq'
 import {AppLink} from '@/components/AppLink'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
@@ -10,7 +11,6 @@ import ImageBox from '@/components/ImageBox'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
 import {studioUrl} from '@/sanity/lib/api'
 import {getDynamicFetchOptions, sanityFetch, type DynamicFetchOptions} from '@/sanity/lib/live'
-import {imageFunctions} from '@/sanity/lib/queries'
 import {resolveHref} from '@/sanity/lib/utils'
 
 export default async function IndexPage() {
@@ -32,27 +32,6 @@ async function DynamicHome() {
 
 async function CachedHome({perspective, stega}: DynamicFetchOptions) {
   'use cache'
-  const homePageQuery = defineQuery(`
-    ${imageFunctions}
-    *[_type == "home"][0]{
-      _id,
-      _type,
-      overview,
-      showcaseProjects[]{
-        _key,
-        ...@->{
-          _id,
-          _type,
-          "coverImage": image::field(coverImage),
-          overview,
-          "slug": slug.current,
-          tags,
-          title,
-        }
-      },
-      title,
-    }
-  `)
   const {data} = await sanityFetch({query: homePageQuery, perspective, stega})
 
   if (!data) {
