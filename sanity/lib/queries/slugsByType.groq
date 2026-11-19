@@ -1,0 +1,6 @@
+// An empty array fails generateStaticParams, so a type with no documents gets a placeholder slug.
+select(
+  defined(*[_type == $type && defined(slug.current)][0]) =>
+    *[_type == $type && defined(slug.current)] { "slug": slug.current },
+  [{ "slug": "__placeholder__" }]
+)

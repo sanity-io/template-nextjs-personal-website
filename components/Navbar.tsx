@@ -1,8 +1,8 @@
 import {createDataAttribute, stegaClean} from 'next-sanity'
 
+import type {QueryResponse as SettingsQueryResult} from '#queries/settings.groq'
 import {AppLink} from '@/components/AppLink'
 import {OptimisticSortOrder} from '@/components/OptimisticSortOrder'
-import type {SettingsQueryResult} from '@/sanity.types'
 import {studioUrl} from '@/sanity/lib/api'
 import {resolveHref} from '@/sanity/lib/utils'
 

@@ -1,6 +1,9 @@
 {
   "name": "sanity-template-template-nextjs-personal-website",
   "private": true,
+  "imports": {
+    "#queries/*": "./sanity/lib/queries/*"
+  },
   "scripts": {
     "analyze": "next experimental-analyze --serve",
     "prebuild": "npm run stega-warn",
@@ -14,7 +17,7 @@
     "start": "next start",
     "stega-warn": "echo 'This template is using stega to embed Content Source Maps, see more information here: https://www.sanity.io/docs/loaders-and-overlays#26cf681fadd4'",
     "test:e2e": "playwright test",
-    "type-check": "tsc --noEmit",
+    "type-check": "node node_modules/typescript/lib/tsc.js --noEmit --runExternalCode",
     "typegen": "sanity schema extract --force && sanity typegen generate"
   },
   "dependencies": {
@@ -45,6 +48,7 @@
   "devDependencies": {
     "@next/playwright": "16.4.6",
     "@playwright/test": "1.65.1",
+    "@sanity-labs/groq-content-mapper": "^0.7.0",
     "@sanity/blueprints": "0.34.1",
     "@tailwindcss/postcss": "4.3.5",
     "@types/node": "26.6.6",
@@ -55,7 +59,10 @@
     "oxlint-tsgolint": "7.0.2007",
     "postcss": "8.5.33",
     "tailwindcss": "4.3.5",
-    "typescript": "^7.0.2"
+    "typescript": "7.1.0-beta"
+  },
+  "overrides": {
+    "typescript": "$typescript"
   },
   "packageManager": "npm@12.2.3"
 }

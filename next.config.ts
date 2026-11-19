@@ -1,3 +1,4 @@
+import {withGroqFiles} from '@sanity-labs/groq-content-mapper/next'
 import type {NextConfig} from 'next'
 import {sanity} from 'next-sanity/live/cache-life'
 
@@ -33,4 +34,8 @@ const config: NextConfig = {
   },
 }
 
-export default config
+// The wrapper adds the `.groq` loader, which prepends the shared functions in sanity/lib/groq/ to
+// each query that calls them, and re-runs the production type check with `--runExternalCode` so
+// the content mapper in tsconfig.json can type those imports (Next's own check runs `tsc` without
+// that flag). A `with {type: 'text'}` import would bypass the loader and lose the functions.
+export default withGroqFiles(config)
