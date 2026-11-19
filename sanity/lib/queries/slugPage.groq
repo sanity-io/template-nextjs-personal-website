@@ -4,5 +4,5 @@
   "body": image::richText(body),
   overview,
   title,
-  "slug": slug.current,
+  "slug": slug.current
 }

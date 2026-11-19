@@ -1,1 +1,1 @@
-*[_type == $type && defined(slug.current)]{"slug": slug.current}
+*[_type == $type && defined(slug.current)] { "slug": slug.current }

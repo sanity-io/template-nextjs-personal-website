@@ -1,18 +1,18 @@
-*[_type == "home"][0]{
+*[_type == "home"][0] {
   _id,
   _type,
   overview,
-  showcaseProjects[]{
+  showcaseProjects[] {
     _key,
-    ...@->{
+    ...@-> {
       _id,
       _type,
       "coverImage": image::field(coverImage),
       overview,
       "slug": slug.current,
       tags,
-      title,
+      title
     }
   },
-  title,
+  title
 }

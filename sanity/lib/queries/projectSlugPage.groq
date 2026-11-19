@@ -9,5 +9,5 @@
   site,
   "slug": slug.current,
   tags,
-  title,
+  title
 }
