@@ -19,14 +19,7 @@ export async function generateStaticParams() {
     query: slugsByTypeQuery,
     params: {type: 'page'},
   })
-  if (data.length > 0) {
-    return data
-  }
-  // Cache Components requires `generateStaticParams` to return at least one param — an empty
-  // array fails the build (https://nextjs.org/docs/messages/empty-generate-static-params).
-  // With no page documents in the dataset yet, prerender a placeholder slug that resolves to
-  // the 404 page instead.
-  return [{slug: '__placeholder__'}]
+  return data
 }
 
 export async function generateMetadata(

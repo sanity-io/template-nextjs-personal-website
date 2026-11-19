@@ -1,1 +1,10 @@
-*[_type == $type && defined(slug.current)] { "slug": slug.current }
+// `generateStaticParams` has to return at least one param. An empty array fails the build
+// (https://nextjs.org/docs/messages/empty-generate-static-params), so a type with no
+// documents yet gets a placeholder slug that prerenders to the 404 page.
+{
+  "slugs": *[_type == $type && defined(slug.current)] {
+    "slug": slug.current
+  }
+} {
+  "slugs": select(count(slugs) > 0 => slugs, [{"slug": "__placeholder__"}])
+}.slugs
