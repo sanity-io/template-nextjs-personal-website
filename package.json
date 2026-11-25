@@ -56,6 +56,7 @@
     "oxlint-tsgolint": "7.0.2008",
     "postcss": "8.5.33",
     "tailwindcss": "4.3.5",
+    "tsrs": "0.25.0-ts7.1.0-beta",
     "typescript": "^7.0.2"
   },
   "packageManager": "npm@12.2.3"
