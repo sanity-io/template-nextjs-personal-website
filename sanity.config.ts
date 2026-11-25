@@ -1,6 +1,7 @@
 'use client'
 
 import '@sanity/ui/styles.css'
+import {vercelProtectionBypassTool} from '@sanity/vercel-protection-bypass'
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {unsplashImageAsset} from 'sanity-plugin-asset-source-unsplash'
@@ -71,6 +72,10 @@ export default defineConfig({
             ...S.documentTypeListItems().map((item) => item.showCount()),
           ]),
     }),
+    // Lets Presentation load previews on Vercel deployments that have Deployment Protection enabled.
+    // Open the "Vercel Protection Bypass" tab in the Studio to save the secret, see the README.
+    // https://www.sanity.io/docs/visual-editing/vercel-protection-bypass
+    vercelProtectionBypassTool(),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
     // Vision lets you query your content with GROQ in the studio

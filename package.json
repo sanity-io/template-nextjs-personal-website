@@ -25,6 +25,7 @@
     "@sanity/image-url": "2.2.0",
     "@sanity/ui": "4.4.12",
     "@sanity/util": "6.24.0",
+    "@sanity/vercel-protection-bypass": "5.0.28",
     "@sanity/vision": "6.24.0",
     "@tailwindcss/typography": "0.5.20",
     "@vercel/speed-insights": "2.1.0",

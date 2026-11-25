@@ -297,6 +297,15 @@ export type Home = {
   >
 }
 
+export type SanityVercelProtectionBypass = {
+  _id: string
+  _type: 'sanity.vercelProtectionBypass'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  secret?: string
+}
+
 export type SanityImagePaletteSwatch = {
   _type: 'sanity.imagePaletteSwatch'
   background?: string
@@ -409,6 +418,7 @@ export type AllSanitySchemaTypes =
   | ProjectReference
   | Settings
   | Home
+  | SanityVercelProtectionBypass
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions

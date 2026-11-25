@@ -36,6 +36,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - [Deploying your application and inviting editors](<>)
   - [Step 1. Deploy Next.js app to Vercel](#deploy-next.js-app-to-vercel)
   - [Step 2. Invite a collaborator](#invite-a-collaborator)
+  - [Step 3. Use Presentation with Vercel Deployment Protection](#use-presentation-with-vercel-deployment-protection)
 - [Questions and Answers](#questions-and-answers)
   - [It doesn't work! Where can I get help?](#it-doesnt-work-where-can-i-get-help)
   - [How can I remove the "Next steps" block from my personal site?](#how-can-i-remove-the-next-steps-block-from-my-personal-website)
@@ -219,6 +220,15 @@ Now that you’ve deployed your Next.js application and Sanity Studio, you can o
 
 They will be able to access the deployed Studio, where you can collaborate together on creating content.
 
+#### 3. Use Presentation with Vercel Deployment Protection
+
+If [Deployment Protection][vercel-deployment-protection] is enabled on your Vercel project (Vercel Authentication, Password Protection, or Trusted IPs), the Presentation preview iframe and Draft Mode can't load the protected deployment, and you'll see a Vercel login or error page instead of your site. The template already includes the [`@sanity/vercel-protection-bypass`][vercel-protection-bypass-plugin] tool in `sanity.config.ts`, so enabling the bypass takes two steps:
+
+1. In Vercel, open your project → Settings → Deployment Protection and create a **Protection Bypass for Automation** secret.
+2. In the Studio, open the **Vercel Protection Bypass** tool and save that secret. It's stored in your dataset, so Presentation appends it to the preview URL for every editor.
+
+Nothing changes when protection is off, and no Next.js changes are needed. See [Vercel protection bypass][sanity-vercel-protection-bypass] in the Sanity docs for details. Once the secret is saved you can remove the tool from `sanity.config.ts` and uninstall the package.
+
 ## Questions and Answers
 
 ### It doesn't work! Where can I get help?
@@ -259,6 +269,9 @@ You can remove it by deleting the `IntroTemplate` component in `/app/(website)/l
 [vercel-github]: https://github.com/vercel/next.js/discussions
 [personal-website-pages]: https://github.com/sanity-io/template-nextjs-personal-website
 [presentation]: https://www.sanity.io/docs/presentation
+[vercel-deployment-protection]: https://vercel.com/docs/deployment-protection
+[vercel-protection-bypass-plugin]: https://github.com/sanity-io/plugins/tree/main/plugins/%40sanity/vercel-protection-bypass#readme
+[sanity-vercel-protection-bypass]: https://www.sanity.io/docs/visual-editing/vercel-protection-bypass
 [cache-components]: https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents
 [blueprints]: https://www.sanity.io/docs/blueprints/blueprints-introduction
 [blueprints-layout]: https://www.sanity.io/docs/blueprints/project-layout-and-monorepos
