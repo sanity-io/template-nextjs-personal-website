@@ -8,6 +8,6 @@
 - LOOP: stop whatever owns port 3000 → `EXPOSE_TESTING_API=1 npm run build` → `npx next start --port 3000` → `npx playwright test` → read the failure → fix → rebuild. Fully agent-drivable. Fail the loop on `EADDRINUSE`. Confirm the newly started `next start` process owns port 3000 before running tests.
 - LIVENESS: n/a (local `build && start`; the artifact is the one just built).
 - WALLS:
-  - `npm run build` needs `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_READ_TOKEN` (`generateStaticParams` fetches slugs from Sanity).
+  - `npm run build` needs `NEXT_PUBLIC_SANITY_PROJECT_ID` and `NEXT_PUBLIC_SANITY_DATASET` (`generateStaticParams` fetches published slugs from Sanity without a token).
   - Chromium must be installed once: `npx playwright install chromium`.
   - GitHub CI (`.github/workflows/ci.yml`) runs type-check, lint, `EXPOSE_TESTING_API=1 npm run build`, and `npm run test:e2e`. Actions variables: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`. Secret: `SANITY_API_READ_TOKEN`. Optional secret: `SANITY_API_WRITE_TOKEN` (draft-mode e2e). Never set `EXPOSE_TESTING_API` on Vercel.

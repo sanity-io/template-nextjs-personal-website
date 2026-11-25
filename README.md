@@ -25,6 +25,7 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 - [Project Overview](#project-overview)
   - [Important files and folders](#important-files-and-folders)
   - [Cache Components](#cache-components)
+  - [Sanity tokens: Vercel OIDC with a robot token fallback](#sanity-tokens-vercel-oidc-with-a-robot-token-fallback)
   - [Sanity Functions: invalidate before the browser refreshes](#sanity-functions-invalidate-before-the-browser-refreshes)
 - [ Getting Started](#configuration)
   - [Step 1. Initialize template with Sanity CLI](#initialize-template-with-sanity-cli)
@@ -61,7 +62,8 @@ The Studio connects to Sanity Content Lake, which gives you hosted content APIs 
 | `/sanity/schemas`                            | Where Sanity Studio gets its content types from                                              |
 | `/sanity/plugins`                            | Where the advanced Sanity Studio customization is setup                                      |
 | `/sanity/lib/api.ts`,`/sanity/lib/client.ts` | Configuration for the Sanity Content Lake client                                             |
-| `/sanity/lib/live.ts`                        | `sanityFetch`, `sanityFetchMetadata`, `sanityFetchStaticParams`, `getDynamicFetchOptions`    |
+| `/sanity/lib/live.tsx`                       | `sanityFetch`, `sanityFetchMetadata`, `sanityFetchStaticParams`, `getDynamicFetchOptions`    |
+| `/sanity/lib/token.ts`                       | Mints Sanity Viewer tokens through Vercel OIDC, falls back to `SANITY_API_READ_TOKEN`        |
 | `sanity.blueprint.ts`                        | [Sanity Blueprint][blueprints] that deploys the function in `/functions`                     |
 | `/functions/invalidate-sync-tags`            | Sync tag invalidate [Sanity Function][functions] backing `<SanityLive waitFor="function">`   |
 
@@ -86,6 +88,13 @@ Data fetching follows the three-layer (Page → Dynamic → Cached) pattern from
 - [`app/(website)/projects/[slug]/page.tsx`](<./app/(website)/projects/[slug]/page.tsx>) — dynamic project route
 
 Every cached leaf takes `perspective` and `stega` as plain props sourced from `getDynamicFetchOptions()`, so Visual Editing overlays and content-release previewing keep working in Draft Mode while the static shell is fully prerendered in production.
+
+### Sanity tokens: Vercel OIDC with a robot token fallback
+
+Published pages are fetched without a token. Draft previews, `<SanityLive includeDrafts>` and `/api/draft-mode/enable` need a Sanity Viewer token, which `sanity/lib/token.ts` resolves per request:
+
+1. When the deployment has a Vercel OIDC token (on Vercel, or locally after `npx vercel env pull`), it mints a short-lived `viewer` token for the [Sanity Vercel Marketplace integration][integration] with `getIntegrationToken` from `@vercel/integrations`. Minted tokens are cached until shortly before they expire, and open previews refresh before the token in the browser expires.
+2. Without an OIDC token, or when minting fails (for example a Vercel project that is not connected to the integration), it uses `SANITY_API_READ_TOKEN` (after a failed mint, for the next 5 minutes before trying again), so the template still runs anywhere a robot token is set.
 
 ### Sanity Functions: invalidate before the browser refreshes
 
