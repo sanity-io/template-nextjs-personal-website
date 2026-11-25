@@ -1,0 +1,4 @@
+{
+  "settings": *[_type == "settings"][0] { "ogImage": image::field(ogImage) },
+  "home": *[_type == "home"][0] { title, "overview": pt::text(overview) }
+}

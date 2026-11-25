@@ -1,13 +1,14 @@
-import type {SanityQueries} from 'next-sanity'
 import type {InferImageValue} from 'next-sanity/image'
 
 import ImageBox from '@/components/ImageBox'
+import type {QueryResults} from '@/sanity/lib/queryResults'
 
 export interface TimelineMilestone {
   _key: string
   title?: string | null
   description?: string | null
-  image?: InferImageValue<SanityQueries[keyof SanityQueries]> | null
+  // oxlint-disable-next-line typescript/no-redundant-type-constituents -- inferred from `.groq` imports oxlint cannot see
+  image?: InferImageValue<QueryResults> | null
   tags?: Array<string | null> | null
   duration?: {
     start?: string | null

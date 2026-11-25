@@ -1,7 +1,9 @@
 import type {Metadata, ResolvingMetadata} from 'next'
-import {defineQuery} from 'next-sanity'
 import {notFound} from 'next/navigation'
 
+import slugPageQuery from '#queries/slugPage.groq'
+import slugPageMetadataQuery from '#queries/slugPageMetadata.groq'
+import slugsByTypeQuery from '#queries/slugsByType.groq'
 import {CustomPortableText} from '@/components/CustomPortableText'
 import {Header} from '@/components/Header'
 import {
@@ -11,21 +13,13 @@ import {
   sanityFetchStaticParams,
   type DynamicFetchOptions,
 } from '@/sanity/lib/live'
-import {imageFunctions, slugsByTypeQuery, type SlugsByTypeQueryParams} from '@/sanity/lib/queries'
 
 export async function generateStaticParams() {
   const {data} = await sanityFetchStaticParams({
     query: slugsByTypeQuery,
-    params: {type: 'page'} satisfies SlugsByTypeQueryParams,
+    params: {type: 'page'},
   })
-  if (data.length > 0) {
-    return data
-  }
-  // Cache Components requires `generateStaticParams` to return at least one param — an empty
-  // array fails the build (https://nextjs.org/docs/messages/empty-generate-static-params).
-  // With no page documents in the dataset yet, prerender a placeholder slug that resolves to
-  // the 404 page instead.
-  return [{slug: '__placeholder__'}]
+  return data
 }
 
 export async function generateMetadata(
@@ -33,12 +27,6 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const [{slug}, {perspective}] = await Promise.all([params, getDynamicFetchOptions()])
-  const slugPageMetadataQuery = defineQuery(`
-    *[_type == "page" && slug.current == $slug][0] {
-      title,
-      "overview": pt::text(overview),
-    }
-  `)
   const {data} = await sanityFetchMetadata({
     query: slugPageMetadataQuery,
     params: {slug},
@@ -62,17 +50,6 @@ async function CachedSlugPage({
   stega,
 }: Awaited<PageProps<'/[slug]'>['params']> & DynamicFetchOptions) {
   'use cache'
-  const slugPageQuery = defineQuery(`
-    ${imageFunctions}
-    *[_type == "page" && slug.current == $slug][0] {
-      _id,
-      _type,
-      "body": image::richText(body),
-      overview,
-      title,
-      "slug": slug.current,
-    }
-  `)
   const {data} = await sanityFetch({query: slugPageQuery, params: {slug}, perspective, stega})
 
   if (!data?._id) notFound()

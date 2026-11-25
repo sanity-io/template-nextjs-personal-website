@@ -1,11 +1,12 @@
-import type {SanityQueries} from 'next-sanity'
 import {Image, isImageWithAsset, type InferImageValue} from 'next-sanity/image'
 
 import {dataset, projectId} from '@/sanity/lib/api'
+import type {QueryResults} from '@/sanity/lib/queryResults'
 
-type ImageValue = InferImageValue<SanityQueries[keyof SanityQueries]>
+type ImageValue = InferImageValue<QueryResults>
 
 interface ImageBoxProps {
+  // oxlint-disable-next-line typescript/no-redundant-type-constituents -- ImageValue is inferred from `.groq` imports oxlint cannot see
   'image'?: ImageValue | null
   'alt'?: string | null
   'size'?: string
