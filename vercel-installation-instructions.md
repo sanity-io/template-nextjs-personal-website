@@ -30,6 +30,8 @@ Download the environment variables needed to connect Next.js and the Studio to y
 npx vercel env pull
 ```
 
+The app authenticates to Sanity with short-lived tokens minted through [Vercel OIDC](https://vercel.com/docs/oidc) and falls back to `SANITY_API_READ_TOKEN` when there is no OIDC token or minting fails. The pulled `VERCEL_OIDC_TOKEN` expires after 12 hours; `@vercel/oidc` refreshes it while your Vercel CLI login is valid, otherwise run `npx vercel env pull` again.
+
 ### Step 3. Run Next.js locally in development mode
 
 ```bash

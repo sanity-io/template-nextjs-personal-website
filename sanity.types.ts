@@ -297,6 +297,44 @@ export type Home = {
   >
 }
 
+export type SanityReleaseMetadata = {
+  _type: 'sanity.releaseMetadata'
+  title?: string
+  description?: string
+  releaseType?: 'asap' | 'scheduled' | 'undecided'
+  intendedPublishAt?: string
+  cardinality?: 'many' | 'one'
+}
+
+export type SystemRelease = {
+  _id: string
+  _type: 'system.release'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: string
+  state?:
+    | 'active'
+    | 'archiving'
+    | 'unarchiving'
+    | 'archived'
+    | 'published'
+    | 'publishing'
+    | 'scheduled'
+    | 'scheduling'
+  error?: {
+    message?: string
+  }
+  publishAt?: string
+  publishedAt?: string
+  metadata?: SanityReleaseMetadata
+  finalDocumentStates?: Array<{
+    id?: string
+    _key: string
+  }>
+  userId?: string
+}
+
 export type SanityVercelProtectionBypass = {
   _id: string
   _type: 'sanity.vercelProtectionBypass'
@@ -418,6 +456,8 @@ export type AllSanitySchemaTypes =
   | ProjectReference
   | Settings
   | Home
+  | SanityReleaseMetadata
+  | SystemRelease
   | SanityVercelProtectionBypass
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -790,7 +830,7 @@ export type SettingsQueryResult = {
 // Variable: slugsByTypeQuery
 // Query: *[_type == $type && defined(slug.current)]{"slug": slug.current}
 export type SlugsByTypeQueryResult = Array<{
-  slug: string | null
+  slug: string
 }>
 
 // Query TypeMap
