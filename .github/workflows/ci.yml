@@ -33,6 +33,8 @@ jobs:
         with:
           node-version: lts/*
           cache: npm
+      - name: Use the npm version from packageManager
+        run: npm install -g "$(node -p "require('./package.json').packageManager")"
       - run: npm ci
       - run: npm run type-check
       - run: npm run lint
