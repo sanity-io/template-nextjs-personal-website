@@ -23,10 +23,10 @@
     "@sanity/functions": "1.11.1",
     "@sanity/icons": "5.4.0",
     "@sanity/image-url": "2.2.0",
-    "@sanity/ui": "4.4.12",
-    "@sanity/util": "6.25.0",
+    "@sanity/ui": "4.4.14",
+    "@sanity/util": "7.0.0-next-major.20261127112435",
     "@sanity/vercel-protection-bypass": "5.0.28",
-    "@sanity/vision": "6.25.0",
+    "@sanity/vision": "7.0.0-next-major.20261127112435",
     "@tailwindcss/typography": "0.5.20",
     "@vercel/speed-insights": "2.1.0",
     "classnames": "2.5.1",
@@ -37,11 +37,11 @@
     "react-dom": "19.3.1",
     "react-live-transitions": "0.2.0",
     "rxjs": "7.8.2",
-    "sanity": "6.25.0",
+    "sanity": "7.0.0-next-major.20261127112435",
     "sanity-plugin-asset-source-unsplash": "7.0.31",
     "server-only": "0.0.1",
     "sonner": "2.0.8",
-    "styled-components": "6.6.0"
+    "styled-components": "6.7.0"
   },
   "devDependencies": {
     "@next/playwright": "16.4.6",
@@ -58,5 +58,13 @@
     "tailwindcss": "4.3.5",
     "typescript": "^7.0.2"
   },
-  "packageManager": "npm@12.2.3"
+  "overrides": {
+    "@sanity/util": "$@sanity/util",
+    "@sanity/vision": "$@sanity/vision",
+    "sanity": "$sanity"
+  },
+  "packageManager": "npm@12.2.3",
+  "patchedDependencies": {
+    "next-sanity@13.5.1": "patches/next-sanity@13.5.1.patch"
+  }
 }

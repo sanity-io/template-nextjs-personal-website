@@ -1,0 +1,12 @@
+--- a/dist/NextStudio.js	
++++ b/dist/NextStudio.js	
+@@ -1,8 +1,8 @@
+ import { n as NextStudioLayout, t as NextStudioNoScript } from "./NextStudioNoScript.js";
+ import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+ import { useDeferredValue, useMemo, useSyncExternalStore } from "react";
+-import { Studio } from "sanity";
++import { Studio } from "sanity/_dangerously_use_private_internals_that_do_not_follow_semver-1";
+ import { createHashHistory } from "history";
+ /** @internal */
+ function createHashHistoryForStudio() {
+ 	const history = createHashHistory();

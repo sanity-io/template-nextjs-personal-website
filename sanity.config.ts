@@ -49,12 +49,6 @@ export default defineConfig({
     // Use `defineSingleton({documentId, schemaType, ...})` from `sanity` when they need to differ.
     singletons: [home.name, settings.name],
   },
-  beta: {
-    // Keeps the three most recently used tools mounted when switching between them, so going from
-    // Presentation to Structure and back restores the preview and open document instantly.
-    // Beta: not production-ready yet, see https://www.sanity.io/docs/changelog/studio-Ni4xNi4w
-    reactActivityMode: {enabled: true},
-  },
   plugins: [
     presentationTool({
       resolve,
